@@ -7,3 +7,98 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Table {
+  id            String   @id @default(uuid()) @db.Uuid
+  name          String
+  capacity      Int
+  tableLeaderId String?  @db.Uuid
+  orders        Order[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  people      People[] @relation("TableMembers")
+  tableLeader People?  @relation("TableLeader", fields: [tableLeaderId], references: [id])
+}
+
+model People {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  tableId   String   @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  table     Table   @relation("TableMembers", fields: [tableId], references: [id])
+  tableLeader Table[] @relation("TableLeader")
+}
+
+model Food {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String
+  price       Float
+  imageUrl    String?
+  description String?
+  categoryId  String   @db.Uuid
+  size        Size
+  available   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category    Category @relation(fields: [categoryId], references: [id])
+  orders          Order[]
+  translation FoodTranslation[]
+
+}
+
+model FoodTranslation {
+  id          String   @id @default(uuid()) @db.Uuid
+  foodId      String   @db.Uuid
+  language    String
+  name        String
+  description String?
+
+  foods Food @relation(fields: [foodId], references: [id])
+
+  @@unique([foodId, language])
+  @@index([language])
+}
+
+model Category {
+  id                  String                @id @default(uuid()) @db.Uuid
+  name                String                @unique
+  description         String?
+  
+  translation CategoryTranslation[]
+  foods               Food[]
+}
+
+model CategoryTranslation {
+  id          String  @id @default(uuid()) @db.Uuid
+  categoryId  String  @db.Uuid
+  language    String
+  name        String
+  description String?
+
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@unique([categoryId, language])
+  @@index([language])
+}
+
+model Order {
+  id        String   @id @default(uuid()) @db.Uuid
+  tableId   String   @db.Uuid
+  foodId    String   @db.Uuid
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  table Table @relation(fields: [tableId], references: [id])
+  food  Food  @relation(fields: [foodId], references: [id])
+}
+
+enum Size {
+  SMALL
+  MEDIUM
+  LARGE
+}

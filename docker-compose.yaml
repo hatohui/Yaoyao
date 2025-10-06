@@ -1,0 +1,17 @@
+name: yaoyao
+
+services:
+  yaoyaoDB:
+    image: postgres:17
+    container_name: yaoyaoDB
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: yaoyao
+    ports:
+      - "51213:5432"
+    volumes:
+      - yaoyao_db_data:/var/lib/postgresql/data
+volumes:
+  yaoyao_db_data:
+    driver: local

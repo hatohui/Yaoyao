@@ -1,4 +1,4 @@
-import { Language } from "@/types/language";
+import { Language } from "@/common/language";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
