@@ -1,7 +1,7 @@
 import { Language } from "@/common/language";
 import { prisma } from "@/common/prisma";
-import { Category } from "@/generated/prisma";
 import { TranslatedCategory } from "@/types/models/category";
+import { Category } from "@prisma/client";
 
 const getCategories = async (
   lang?: Language | unknown

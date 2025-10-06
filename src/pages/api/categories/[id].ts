@@ -1,6 +1,6 @@
 import Errors from "@/common/errors";
 import { Language, SUPPORTED_LANGS } from "@/common/language";
-import { getCategoryById } from "@/services/category-service";
+import { getCategoryById } from "@/repositories/category-repo";
 import { GetCategoryByIdResponse } from "@/types/api/category/GET";
 import { TranslatedCategory } from "@/types/models/category";
 import { NextApiHandler } from "next";

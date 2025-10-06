@@ -1,5 +1,5 @@
 "use client";
-import { Table } from "@/generated/prisma";
+import { Table } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 
 const useTables = () =>
