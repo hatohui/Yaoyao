@@ -1,17 +1,13 @@
 "use client";
-import { Table } from "@prisma/client";
+import axios from "@/common/axios";
+import { GetTablesResponse } from "@/types/api/table/GET";
 import { useQuery } from "@tanstack/react-query";
 
 const useTables = () =>
-  useQuery<Table[], Error>({
+  useQuery<GetTablesResponse[], Error>({
     queryKey: ["tables"],
-    queryFn: async () => {
-      const response = await fetch("/api/(tables)/table");
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    },
+    queryFn: () =>
+      axios.get<GetTablesResponse[]>("/tables").then((res) => res.data),
   });
 
 export default useTables;

@@ -33,7 +33,8 @@ const handler: NextApiHandler = async (req, res) => {
         }
       } else foods = await getFoods(lang);
 
-      if (foods === null) return NotFound("No food found");
+      if (foods === null || foods.length === 0)
+        return NotFound("No food found");
 
       const response: GetFoodsResponse = foods.map(mapFoodToResponse);
 

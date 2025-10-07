@@ -3,9 +3,9 @@ import { Status } from "@/common/status";
 import { getFoodById } from "@/repositories/food-repo";
 import { GetFoodByIdResponse } from "@/types/api/food/GET";
 import { TranslatedFood } from "@/types/models/food";
+import { isValidId } from "@/utils/idValidation";
 import { mapFoodToResponse } from "@/utils/mapFoodToResponse";
 import { NextApiHandler } from "next";
-import z from "zod/v4";
 
 const handler: NextApiHandler = async (req, res) => {
   const method = req.method;
@@ -19,9 +19,7 @@ const handler: NextApiHandler = async (req, res) => {
           "lang is required and must be one of " + SUPPORTED_LANGS.join(", ")
         );
 
-      const idValidation = z.uuid().safeParse(id);
-
-      if (!id || !idValidation.success)
+      if (!isValidId(id))
         return BadRequest("id is required and must be a valid UUID");
 
       const food = (await getFoodById(id, lang)) as TranslatedFood;

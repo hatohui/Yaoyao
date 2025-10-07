@@ -10,15 +10,15 @@ datasource db {
 
 model Table {
   id            String   @id @default(uuid()) @db.Uuid
-  name          String
+  name          String   @unique
   capacity      Int
   tableLeaderId String?  @db.Uuid
-  orders        Order[]
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   people      People[] @relation("TableMembers")
   tableLeader People?  @relation("TableLeader", fields: [tableLeaderId], references: [id])
+  orders      Order[]
 }
 
 model People {

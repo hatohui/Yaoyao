@@ -92,6 +92,9 @@ CREATE TABLE "Order" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Table_name_key" ON "Table"("name");
+
+-- CreateIndex
 CREATE INDEX "FoodTranslation_language_idx" ON "FoodTranslation"("language");
 
 -- CreateIndex
