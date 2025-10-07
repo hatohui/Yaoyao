@@ -1,16 +1,16 @@
 import axios from "@/common/axios";
 import { useQuery } from "@tanstack/react-query";
-import { Language } from "@/common/language";
 import { GetCategoriesResponse } from "@/types/api/category/GET";
+import { useSearchParams } from "next/navigation";
 
-const useCategories = (locale: Language) => {
-  const lang: Language | undefined = locale !== "en" ? locale : undefined;
+const useCategories = () => {
+  const locale = useSearchParams()?.get("lang") || "en";
 
   return useQuery<GetCategoriesResponse>({
-    queryKey: ["categories", lang],
+    queryKey: ["categories", locale],
     queryFn: () =>
       axios
-        .get("/categories", lang ? { params: { lang } } : {})
+        .get("/categories", { params: { lang: locale } })
         .then((res) => res.data),
   });
 };

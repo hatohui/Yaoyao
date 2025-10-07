@@ -1,11 +1,15 @@
 "use client";
-import { Language } from "@/common/language";
-import { useQueryClient } from "@tanstack/react-query";
+import { Language, SUPPORTED_LANGS } from "@/common/language";
+import { setNewParamString } from "@/utils/setParams";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const useLanguage = () => {
-  const [locale, setLocale] = useState<Language>("en");
-  const queryClient = useQueryClient();
+const useLanguage = (serverLocale: Language = "en") => {
+  const [locale, setLocale] = useState<Language>(serverLocale);
+  const router = useRouter();
+  const params = useSearchParams();
+
+  console.log(params);
 
   useEffect(() => {
     const cookie = document.cookie
@@ -13,23 +17,26 @@ const useLanguage = () => {
       .find((row) => row.startsWith("locale="))
       ?.split("=")[1] as Language | undefined;
 
-    if (cookie) {
+    if (cookie && SUPPORTED_LANGS.includes(cookie)) {
       setLocale(cookie);
     } else {
-      const defaultLocale = navigator.language.slice(0, 2) as Language;
-      setLocale(defaultLocale);
-      document.cookie = `locale=${defaultLocale}; path=/`;
+      const defaultLocale =
+        (navigator.language.slice(0, 2) as Language) || "en";
+      if (SUPPORTED_LANGS.includes(defaultLocale)) {
+        setLocale(defaultLocale);
+        document.cookie = `locale=${defaultLocale}; path=/; max-age=31536000`;
+      }
     }
   }, []);
 
   const changeLanguage = (newLocale: Language) => {
-    document.cookie = `locale=${newLocale}; path=/`;
-    setLocale(newLocale);
-    try {
-      queryClient.invalidateQueries({ queryKey: ["categories", locale] });
-      queryClient.invalidateQueries({ queryKey: ["foods", locale] });
-    } catch {
-      queryClient.clear();
+    if (SUPPORTED_LANGS.includes(newLocale)) {
+      document.cookie = `locale=${newLocale}; path=/; max-age=31536000`;
+      setLocale(newLocale);
+      const newPath = setNewParamString(params, "lang", newLocale);
+      router.push(newPath);
+      router.refresh();
+      return;
     }
   };
 

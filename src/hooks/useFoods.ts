@@ -1,17 +1,16 @@
 import axios from "@/common/axios";
 import { GetFoodsResponse } from "@/types/api/food/GET";
 import { useQuery } from "@tanstack/react-query";
-import useLanguage from "@/hooks/useLanguage";
+import { useSearchParams } from "next/navigation";
 
 const useFoods = (category?: string | null) => {
-  const { locale } = useLanguage();
-  const lang = locale !== "en" ? locale : undefined;
+  const locale = useSearchParams()?.get("lang") || "en";
 
   return useQuery({
-    queryKey: ["foods", category, lang],
+    queryKey: ["foods", category, locale],
     queryFn: () =>
       axios
-        .get<GetFoodsResponse>("/foods", { params: { category, lang } })
+        .get<GetFoodsResponse>("/foods", { params: { category, lang: locale } })
         .then((res) => res.data),
   });
 };

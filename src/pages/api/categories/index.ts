@@ -12,7 +12,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   switch (method) {
     case "GET":
-      if (!SUPPORTED_LANGS.includes(lang || "en"))
+      if (lang && !SUPPORTED_LANGS.includes(lang as Language))
         return BadRequest(
           "lang is required and must be one of " + SUPPORTED_LANGS.join(", ")
         );

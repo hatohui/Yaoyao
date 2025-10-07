@@ -8,7 +8,7 @@ const getFoodById = async (
   id: string,
   lang?: Language
 ): Promise<TranslatedFood | Food | null> => {
-  if (lang) {
+  if (lang && lang !== "en") {
     return await prisma.food.findUnique({
       where: { id },
 
@@ -48,7 +48,7 @@ const getFoodById = async (
 const getFoods = async (
   lang?: Language
 ): Promise<TranslatedFood[] | Food[] | null> => {
-  if (lang) {
+  if (lang && lang !== "en") {
     return await prisma.food.findMany({
       include: {
         translations: {
@@ -86,7 +86,7 @@ const getFoodsByCategory = async (
   categoryId: string,
   lang?: Language
 ): Promise<TranslatedFood[] | Food[] | null> => {
-  if (lang) {
+  if (lang && lang !== "en") {
     return await prisma.food.findMany({
       where: { categoryId },
       include: {

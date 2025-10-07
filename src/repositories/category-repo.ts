@@ -6,7 +6,7 @@ import { Category } from "@prisma/client";
 const getCategories = async (
   lang?: Language | unknown
 ): Promise<TranslatedCategory[] | Category[] | null> => {
-  if (lang) {
+  if (lang && lang !== "en") {
     return await prisma.category.findMany({
       include: {
         translation: {
@@ -24,7 +24,7 @@ const getCategoryById = async (
   id: string,
   lang?: Language | unknown
 ): Promise<TranslatedCategory | Category | null> => {
-  if (lang) {
+  if (lang && lang !== "en") {
     return await prisma.category.findUnique({
       where: { id },
       include: {
@@ -45,7 +45,7 @@ const getCategoryByName = async (
   name: string,
   lang?: Language | unknown
 ): Promise<TranslatedCategory | Category | null> => {
-  if (lang) {
+  if (lang && lang !== "en") {
     return await prisma.category.findFirst({
       where: {
         name: {
