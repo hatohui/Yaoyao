@@ -1,4 +1,4 @@
-import { Category } from "@prisma/client";
+import { TranslatedCategory } from "@/types/models/category";
 
-export type GetCategoriesResponse = Category[];
-export type GetCategoryByIdResponse = Category;
+export type GetCategoriesResponse = (TranslatedCategory & { key: string })[];
+export type GetCategoryByIdResponse = TranslatedCategory & { key: string };

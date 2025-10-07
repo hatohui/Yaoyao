@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist_Mono, Inter } from "next/font/google";
 import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
+import NavBar from "@/components/nav/NavBar";
+import TanstackProvider from "@/config/TanstackProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -30,9 +32,12 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={`${inter.variable} ${geistMono.variable} antialiased`}>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        <TanstackProvider>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <NavBar />
+            {children}
+          </NextIntlClientProvider>
+        </TanstackProvider>
       </body>
     </html>
   );

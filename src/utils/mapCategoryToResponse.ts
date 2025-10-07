@@ -1,8 +1,9 @@
+import { GetCategoryByIdResponse } from "@/types/api/category/GET";
 import { TranslatedCategory } from "@/types/models/category";
 
 const mapCategoryToResponse = (
   category: TranslatedCategory
-): TranslatedCategory => {
+): GetCategoryByIdResponse => {
   return {
     id: category.id,
     name: category.translation?.[0].name
@@ -11,6 +12,7 @@ const mapCategoryToResponse = (
     description: category.translation?.[0].description
       ? category.translation[0].description
       : category.description,
+    key: category.name,
   };
 };
 

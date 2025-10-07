@@ -1,31 +1,36 @@
+"use client";
 import { Language } from "@/common/language";
-import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 const useLanguage = () => {
-  const [locale, setLocale] = useState<string>("");
-  const router = useRouter();
+  const [locale, setLocale] = useState<Language>("en");
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const cookie = document.cookie
       .split("; ")
       .find((row) => row.startsWith("locale="))
-      ?.split("=")[1];
+      ?.split("=")[1] as Language | undefined;
 
     if (cookie) {
       setLocale(cookie);
     } else {
-      const defaultLocale = navigator.language.slice(0, 2);
+      const defaultLocale = navigator.language.slice(0, 2) as Language;
       setLocale(defaultLocale);
       document.cookie = `locale=${defaultLocale}; path=/`;
-      router.refresh();
     }
-  }, [router]);
+  }, []);
 
   const changeLanguage = (newLocale: Language) => {
     document.cookie = `locale=${newLocale}; path=/`;
     setLocale(newLocale);
-    router.refresh();
+    try {
+      queryClient.invalidateQueries({ queryKey: ["categories", locale] });
+      queryClient.invalidateQueries({ queryKey: ["foods", locale] });
+    } catch {
+      queryClient.clear();
+    }
   };
 
   return { locale, changeLanguage };

@@ -244,7 +244,7 @@ export const beverageData: FoodData = {
         th: { name: "เบียร์ (ไทเกอร์ / คาร์ลสเบิร์ก)" },
         zh: { name: "啤酒（虎牌/嘉士伯）" },
       },
-      variants: [{ price: 11.9, currency: "RM", isSeasonal: true }],
+      variants: [{ price: 11.9, currency: "RM" }],
     },
     {
       name: "Beer (Heineken)",
@@ -253,7 +253,7 @@ export const beverageData: FoodData = {
         th: { name: "เบียร์ไฮเนเก้น" },
         zh: { name: "啤酒（喜力）" },
       },
-      variants: [{ price: 15.9, currency: "RM", isSeasonal: true }],
+      variants: [{ price: 15.9, currency: "RM" }],
     },
     {
       name: "Beer (Guinness)",
@@ -262,7 +262,7 @@ export const beverageData: FoodData = {
         th: { name: "เบียร์กินเนสส์" },
         zh: { name: "啤酒（健力士）" },
       },
-      variants: [{ price: 13.9, currency: "RM", isSeasonal: true }],
+      variants: [{ price: 13.9, currency: "RM" }],
     },
     {
       name: "Mineral Water",

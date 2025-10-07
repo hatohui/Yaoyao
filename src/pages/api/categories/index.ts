@@ -1,9 +1,9 @@
 import Errors from "@/common/status";
 import { Language, SUPPORTED_LANGS } from "@/common/language";
 import { getCategories } from "@/repositories/category-repo";
-import { GetCategoriesResponse } from "@/types/api/category/GET";
 import { NextApiHandler } from "next";
 import mapCategoryToResponse from "@/utils/mapCategoryToResponse";
+import { GetCategoriesResponse } from "@/types/api/category/GET";
 
 const handler: NextApiHandler = async (req, res) => {
   const method = req.method;
