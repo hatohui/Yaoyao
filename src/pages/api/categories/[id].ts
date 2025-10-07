@@ -2,9 +2,9 @@ import Errors from "@/common/status";
 import { Language, SUPPORTED_LANGS } from "@/common/language";
 import { getCategoryById } from "@/repositories/category-repo";
 import { GetCategoryByIdResponse } from "@/types/api/category/GET";
-import { TranslatedCategory } from "@/types/models/category";
 import { NextApiHandler } from "next";
 import { z } from "zod/mini";
+import mapCategoryToResponse from "@/utils/mapCategoryToResponse";
 
 const handler: NextApiHandler = async (req, res) => {
   const method = req.method;
@@ -23,21 +23,13 @@ const handler: NextApiHandler = async (req, res) => {
       if (!id || !idValidation.success)
         return BadRequest("id is required and must be a valid UUID");
 
-      const category = (await getCategoryById(id, lang)) as TranslatedCategory;
+      const category = await getCategoryById(id, lang);
 
       if (!category) {
         return NotFound("No category found");
       }
 
-      const response: GetCategoryByIdResponse = {
-        id: category.id,
-        description: category.translation?.[0].description
-          ? category.translation[0].description
-          : category.description,
-        name: category.translation?.[0].name
-          ? category.translation[0].name
-          : category.name,
-      };
+      const response: GetCategoryByIdResponse = mapCategoryToResponse(category);
 
       return res.status(200).json(response);
     case "POST":

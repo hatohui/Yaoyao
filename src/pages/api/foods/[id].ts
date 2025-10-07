@@ -3,6 +3,7 @@ import { Status } from "@/common/status";
 import { getFoodById } from "@/repositories/food-repo";
 import { GetFoodByIdResponse } from "@/types/api/food/GET";
 import { TranslatedFood } from "@/types/models/food";
+import { mapFoodToResponse } from "@/utils/mapFoodToResponse";
 import { NextApiHandler } from "next";
 import z from "zod/v4";
 
@@ -27,21 +28,7 @@ const handler: NextApiHandler = async (req, res) => {
 
       if (food === null) return NotFound("No food found");
 
-      const response: GetFoodByIdResponse = {
-        id: food.id,
-        name: food.translations?.[0].name
-          ? food.translations[0].name
-          : food.name,
-        description: food.translations?.[0].description
-          ? food.translations[0].description
-          : food.description,
-        available: food.available,
-        imageUrl: food.imageUrl,
-        categoryId: food.categoryId,
-        createdAt: food.createdAt,
-        updatedAt: food.updatedAt,
-        variants: food.variants,
-      };
+      const response: GetFoodByIdResponse = mapFoodToResponse(food);
 
       return Ok(response);
     case "POST":

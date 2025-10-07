@@ -3,7 +3,7 @@ import Status from "@/common/status";
 import { getCategoryByName } from "@/repositories/category-repo";
 import { getFoods, getFoodsByCategory } from "@/repositories/food-repo";
 import { GetFoodsResponse } from "@/types/api/food/GET";
-import { TranslatedFood } from "@/types/models/food";
+import { mapFoodToResponse } from "@/utils/mapFoodToResponse";
 import { NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {
@@ -35,21 +35,7 @@ const handler: NextApiHandler = async (req, res) => {
 
       if (foods === null) return NotFound("No food found");
 
-      const response: GetFoodsResponse = foods.map((food: TranslatedFood) => ({
-        id: food.id,
-        name: food.translations?.[0].name
-          ? food.translations[0].name
-          : food.name,
-        description: food.translations?.[0].description
-          ? food.translations[0].description
-          : food.description,
-        available: food.available,
-        imageUrl: food.imageUrl,
-        categoryId: food.categoryId,
-        createdAt: food.createdAt,
-        updatedAt: food.updatedAt,
-        variants: food.variants,
-      }));
+      const response: GetFoodsResponse = foods.map(mapFoodToResponse);
 
       return Ok(response);
     case "POST":

@@ -2,8 +2,8 @@ import Errors from "@/common/status";
 import { Language, SUPPORTED_LANGS } from "@/common/language";
 import { getCategories } from "@/repositories/category-repo";
 import { GetCategoriesResponse } from "@/types/api/category/GET";
-import { TranslatedCategory } from "@/types/models/category";
 import { NextApiHandler } from "next";
+import mapCategoryToResponse from "@/utils/mapCategoryToResponse";
 
 const handler: NextApiHandler = async (req, res) => {
   const method = req.method;
@@ -24,15 +24,7 @@ const handler: NextApiHandler = async (req, res) => {
       }
 
       const response: GetCategoriesResponse = categories.map(
-        (category: TranslatedCategory) => ({
-          id: category.id,
-          description: category.translation?.[0].description
-            ? category.translation[0].description
-            : category.description,
-          name: category.translation?.[0].name
-            ? category.translation[0].name
-            : category.name,
-        })
+        mapCategoryToResponse
       );
 
       return res.status(200).json(response);
