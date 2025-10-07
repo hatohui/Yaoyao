@@ -9,8 +9,6 @@ const useLanguage = (serverLocale: Language = "en") => {
   const router = useRouter();
   const params = useSearchParams();
 
-  console.log(params);
-
   useEffect(() => {
     const cookie = document.cookie
       .split("; ")
