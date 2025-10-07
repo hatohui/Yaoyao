@@ -1,11 +1,7 @@
 import { Language, SUPPORTED_LANGS } from "@/common/language";
 import Status from "@/common/status";
 import { getCategoryByName } from "@/repositories/category-repo";
-import {
-  createFood,
-  getFoods,
-  getFoodsByCategory,
-} from "@/repositories/food-repo";
+import { getFoods, getFoodsByCategory } from "@/repositories/food-repo";
 import { GetFoodsResponse } from "@/types/api/food/GET";
 import { TranslatedFood } from "@/types/models/food";
 import { NextApiHandler } from "next";
@@ -16,8 +12,7 @@ const handler: NextApiHandler = async (req, res) => {
     lang?: Language;
     category?: string;
   };
-  const { NotAllowed, Ok, Created, InternalError, BadRequest, NotFound } =
-    Status(res);
+  const { NotAllowed, Ok, BadRequest, NotFound } = Status(res);
 
   switch (method) {
     case "GET":
@@ -58,11 +53,6 @@ const handler: NextApiHandler = async (req, res) => {
 
       return Ok(response);
     case "POST":
-      const data = req.body;
-      const newFood = await createFood(data);
-      if (!newFood) return InternalError("Failed to create food");
-
-      return Created(newFood);
     case "PUT":
     case "DELETE":
     default:
