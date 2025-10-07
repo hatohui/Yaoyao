@@ -62,7 +62,10 @@ export const sendError = (res: NextApiResponse, error: ErrorMessage) => {
   return res.status(error.code).json(error);
 };
 
-export const Errors = (res: NextApiResponse) => ({
+export const Status = (res: NextApiResponse) => ({
+  Ok: (data: unknown) => res.status(200).json(data),
+  Created: (data: unknown) => res.status(201).json(data),
+  NoContent: () => res.status(204).end(),
   NotAllowed: (msg?: string) => sendError(res, NotAllowedMessage(msg)),
   InternalError: (msg?: string) => sendError(res, InternalErrorMessage(msg)),
   BadRequest: (msg?: string) => sendError(res, BadRequestMessage(msg)),
@@ -77,4 +80,4 @@ export const Errors = (res: NextApiResponse) => ({
     sendError(res, CustomErrorMessage(msg, code)),
 });
 
-export default Errors;
+export default Status;

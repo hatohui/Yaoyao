@@ -35,19 +35,30 @@ model People {
 model Food {
   id          String   @id @default(uuid()) @db.Uuid
   name        String
-  price       Float
   imageUrl    String?
   description String?
   categoryId  String   @db.Uuid
-  size        Size
   available   Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   category    Category @relation(fields: [categoryId], references: [id])
-  orders          Order[]
-  translation FoodTranslation[]
+  variants    FoodVariant[]
+  translations FoodTranslation[]
+  orders      Order[]
+}
 
+
+model FoodVariant {
+  id        String   @id @default(uuid()) @db.Uuid
+  foodId    String   @db.Uuid
+  label     String   
+  price     Float?   
+  currency  String?  @default("MR") 
+  available Boolean  @default(true)
+  isSeasonal Boolean  @default(false)
+
+  food      Food     @relation(fields: [foodId], references: [id])
 }
 
 model FoodTranslation {
@@ -95,10 +106,4 @@ model Order {
 
   table Table @relation(fields: [tableId], references: [id])
   food  Food  @relation(fields: [foodId], references: [id])
-}
-
-enum Size {
-  SMALL
-  MEDIUM
-  LARGE
 }

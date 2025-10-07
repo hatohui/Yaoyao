@@ -1,11 +1,13 @@
 import { PrismaClient } from "@prisma/client";
-import { seedCategories } from "./category";
+import { seedCategories } from "./scripts/category";
+import { seedFoods } from "./scripts/food";
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log("🌱 Starting database seeding...");
   await seedCategories();
+  await seedFoods();
   console.log("✅ All seeding completed!");
 }
 

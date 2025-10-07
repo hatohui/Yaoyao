@@ -1,4 +1,4 @@
-import Errors from "@/common/errors";
+import Errors from "@/common/status";
 import { Language, SUPPORTED_LANGS } from "@/common/language";
 import { getCategoryById } from "@/repositories/category-repo";
 import { GetCategoryByIdResponse } from "@/types/api/category/GET";
