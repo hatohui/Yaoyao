@@ -41,4 +41,35 @@ const getCategoryById = async (
   }
 };
 
-export { getCategories, getCategoryById };
+const getCategoryByName = async (
+  name: string,
+  lang?: Language | unknown
+): Promise<TranslatedCategory | Category | null> => {
+  if (lang) {
+    return await prisma.category.findFirst({
+      where: {
+        name: {
+          startsWith: name,
+          mode: "insensitive",
+        },
+      },
+      include: {
+        translation: {
+          where: { language: lang },
+          select: { name: true, description: true },
+        },
+      },
+    });
+  } else {
+    return await prisma.category.findFirst({
+      where: {
+        name: {
+          startsWith: name,
+          mode: "insensitive",
+        },
+      },
+    });
+  }
+};
+
+export { getCategories, getCategoryById, getCategoryByName };

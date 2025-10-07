@@ -1,5 +1,6 @@
-import { Food, FoodTranslation } from "@prisma/client";
+import { Food, FoodTranslation, FoodVariant } from "@prisma/client";
 
 export type TranslatedFood = Food & {
-  translation?: [Pick<FoodTranslation, "name" | "description">];
+  translations?: Pick<FoodTranslation, "name" | "description">[];
+  variants?: Omit<FoodVariant, "id" | "foodId">[];
 };

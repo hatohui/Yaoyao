@@ -11,16 +11,37 @@ const getFoodById = async (
   if (lang) {
     return await prisma.food.findUnique({
       where: { id },
+
       include: {
         translations: {
           where: { language: lang },
           select: { name: true, description: true },
+        },
+        variants: {
+          select: {
+            label: true,
+            price: true,
+            currency: true,
+            isSeasonal: true,
+            available: true,
+          },
         },
       },
     });
   } else
     return await prisma.food.findUnique({
       where: { id },
+      include: {
+        variants: {
+          select: {
+            label: true,
+            price: true,
+            currency: true,
+            isSeasonal: true,
+            available: true,
+          },
+        },
+      },
     });
 };
 
@@ -34,9 +55,71 @@ const getFoods = async (
           where: { language: lang },
           select: { name: true, description: true },
         },
+        variants: {
+          select: {
+            label: true,
+            price: true,
+            currency: true,
+            isSeasonal: true,
+            available: true,
+          },
+        },
       },
     });
-  } else return await prisma.food.findMany();
+  } else
+    return await prisma.food.findMany({
+      include: {
+        variants: {
+          select: {
+            label: true,
+            price: true,
+            currency: true,
+            isSeasonal: true,
+            available: true,
+          },
+        },
+      },
+    });
+};
+
+const getFoodsByCategory = async (
+  categoryId: string,
+  lang?: Language
+): Promise<TranslatedFood[] | Food[] | null> => {
+  if (lang) {
+    return await prisma.food.findMany({
+      where: { categoryId },
+      include: {
+        translations: {
+          where: { language: lang },
+          select: { name: true, description: true },
+        },
+        variants: {
+          select: {
+            label: true,
+            price: true,
+            currency: true,
+            isSeasonal: true,
+            available: true,
+          },
+        },
+      },
+    });
+  } else
+    return await prisma.food.findMany({
+      where: { categoryId },
+      include: {
+        variants: {
+          select: {
+            label: true,
+            price: true,
+            currency: true,
+            isSeasonal: true,
+            available: true,
+          },
+        },
+      },
+    });
 };
 
 const createFood = async (data: PostFoodRequest) => {
@@ -61,4 +144,10 @@ const createFoodTranslation = async (
   });
 };
 
-export { getFoodById, getFoods, createFood, createFoodTranslation };
+export {
+  getFoodById,
+  getFoods,
+  createFood,
+  createFoodTranslation,
+  getFoodsByCategory,
+};

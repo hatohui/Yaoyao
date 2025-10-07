@@ -1,4 +1,4 @@
-import { Food } from "@prisma/client";
+import { TranslatedFood } from "@/types/models/food";
 
-export type GetFoodsResponse = Food[];
-export type GetFoodByIdResponse = Food | null;
+export type GetFoodsResponse = TranslatedFood[];
+export type GetFoodByIdResponse = TranslatedFood | null;
