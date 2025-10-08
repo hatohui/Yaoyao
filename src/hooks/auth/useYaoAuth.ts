@@ -1,8 +1,10 @@
 import { PASSWORD } from "@/config/app";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import useAuthStore, { AuthState } from "@/stores/useAuthStore";
 
 const useYaoAuth = () => {
-  const [isVerified, setIsVerified] = useState(false);
+  const isVerified = useAuthStore((s: AuthState) => s.isVerified);
+  const setIsVerified = useAuthStore((s: AuthState) => s.setVerified);
   const secret = useRef("");
 
   useEffect(() => {
@@ -43,7 +45,7 @@ const useYaoAuth = () => {
     return () => {
       document.removeEventListener("keydown", keyTracker);
     };
-  }, [isVerified]);
+  }, [isVerified, setIsVerified]);
 
   return { isVerified, setIsVerified };
 };

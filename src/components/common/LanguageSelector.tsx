@@ -1,6 +1,6 @@
 "use client";
 import { Language, SUPPORTED_LANGS } from "@/common/language";
-import useLanguage from "@/hooks/useLanguage";
+import useLanguage from "@/hooks/common/useLanguage";
 import React from "react";
 
 const LanguageSelector = () => {

@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { useTranslations } from "next-intl";
 import LanguageSelector from "../common/LanguageSelector";
+import useAuthStore, { AuthState } from "@/stores/useAuthStore";
 
 const NavBar = () => {
   const pathname = usePathname();
@@ -66,8 +67,12 @@ const NavBar = () => {
             })}
           </div>
 
-          {/* Language Selector */}
-          <div className="flex items-center">
+          <div className="flex items-center gap-3">
+            {useAuthStore((s: AuthState) => s.isVerified) && (
+              <div className="px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-sm font-medium">
+                Hii Yaoyao binch
+              </div>
+            )}
             <LanguageSelector />
           </div>
         </div>

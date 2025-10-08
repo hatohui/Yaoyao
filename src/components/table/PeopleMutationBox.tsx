@@ -1,5 +1,5 @@
 import { ErrorMessage } from "@/common/status";
-import usePeopleInTableMutation from "@/hooks/usePeopleInTableMutation";
+import usePeopleInTableMutation from "@/hooks/table/usePeopleInTableMutation";
 import { AxiosError } from "axios";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";

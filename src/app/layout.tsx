@@ -4,7 +4,12 @@ import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import NavBar from "@/components/nav/NavBar";
 import TanstackProvider from "@/config/TanstackProvider";
+import dynamic from "next/dynamic";
 import "./globals.css";
+
+const AuthHydrator = dynamic(
+  () => import("@/components/auth/AuthHydrator.client")
+);
 
 const inter = Inter({
   variable: "--font-inter",
@@ -35,6 +40,7 @@ export default async function RootLayout({
         <TanstackProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <NavBar />
+            <AuthHydrator />
             {children}
           </NextIntlClientProvider>
         </TanstackProvider>

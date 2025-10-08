@@ -1,6 +1,6 @@
 "use client";
 
-import usePeopleInTableMutation from "@/hooks/usePeopleInTableMutation";
+import usePeopleInTableMutation from "@/hooks/table/usePeopleInTableMutation";
 import { GetTableByIdResponse } from "@/types/api/table/GET";
 import { People } from "@prisma/client";
 import { useTranslations } from "next-intl";
