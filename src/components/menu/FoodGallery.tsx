@@ -1,4 +1,4 @@
-import useFoods from "@/hooks/useFoods";
+import useFoods from "@/hooks/food/useFoods";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React from "react";

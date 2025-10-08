@@ -1,5 +1,5 @@
 "use client";
-import useCategories from "@/hooks/useCategories";
+import useCategories from "@/hooks/food/useCategories";
 import { setNewParamString } from "@/utils/setParams";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";

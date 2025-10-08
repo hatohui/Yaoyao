@@ -5,8 +5,12 @@ import React from "react";
 import { useTranslations } from "next-intl";
 
 const TableMap = () => {
-  const { data: tables, isLoading } = useTables();
+  const { data, isLoading } = useTables();
   const t = useTranslations("tables");
+
+  const tables = data?.sort((a, b) =>
+    Number(a.name.split(" ")[1]) > Number(b.name.split(" ")[1]) ? 1 : -1
+  );
 
   if (isLoading) {
     return (
@@ -48,7 +52,6 @@ const TableMap = () => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {tables?.map((table) => {
-        // Changed logic: FULL when people count >= capacity, otherwise AVAILABLE
         const peopleCount = table._count?.people || 0;
         const isFull = peopleCount >= table.capacity;
         const statusText = isFull ? t("full") : t("available");
