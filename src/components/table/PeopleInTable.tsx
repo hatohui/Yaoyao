@@ -34,9 +34,9 @@ const PeopleInTable = ({ people, table }: PeopleInTableProps) => {
     capacity > 0 ? (currentCount / capacity) * 100 : 0;
 
   return (
-    <div className="bg-white rounded-md shadow-sm overflow-hidden">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden border border-main/10">
       {/* Compact Header */}
-      <div className="bg-slate-600 px-4 py-2">
+      <div className="bg-darkest px-4 py-2.5">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-white flex items-center gap-1.5">
             {t("partyMembers")}
@@ -54,14 +54,14 @@ const PeopleInTable = ({ people, table }: PeopleInTableProps) => {
 
         {/* Occupancy Bar */}
         <div className="mt-2">
-          <div className="w-full bg-slate-500 rounded-full h-1.5 overflow-hidden">
+          <div className="w-full bg-darkest/50 rounded-full h-1.5 overflow-hidden">
             <div
               className={`h-full transition-all duration-300 ${
                 isFull
                   ? "bg-red-400"
                   : occupancyPercentage > 75
                   ? "bg-yellow-400"
-                  : "bg-green-400"
+                  : "bg-main"
               }`}
               style={{ width: `${Math.min(occupancyPercentage, 100)}%` }}
             ></div>
@@ -110,7 +110,7 @@ const PeopleInTable = ({ people, table }: PeopleInTableProps) => {
                     {/* Avatar */}
                     <div
                       className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-white text-xs ${
-                        isLeader ? "bg-yellow-500" : "bg-blue-600"
+                        isLeader ? "bg-yellow-500" : "bg-main"
                       }`}
                     >
                       {person.name?.charAt(0).toUpperCase() ?? "?"}
@@ -152,7 +152,7 @@ const PeopleInTable = ({ people, table }: PeopleInTableProps) => {
                       className={`p-1.5 text-xs font-medium rounded-md transition-all ${
                         isLeader
                           ? "bg-slate-200 text-slate-400 cursor-not-allowed"
-                          : "bg-blue-600 hover:bg-blue-700 text-white"
+                          : "bg-main hover:bg-main/90 text-white"
                       }`}
                     >
                       <svg

@@ -16,8 +16,10 @@ const FoodGallery = ({ className, category }: FoodGalleryProps) => {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
-          <p className="mt-4 text-slate-600">{t("loading")}</p>
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-main border-r-transparent"></div>
+          <p className="mt-4 text-slate-600 text-sm sm:text-base">
+            {t("loading")}
+          </p>
         </div>
       </div>
     );
@@ -51,18 +53,17 @@ const FoodGallery = ({ className, category }: FoodGalleryProps) => {
 
   return (
     <div className={className}>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-slate-900">
+      <div className="flex items-center justify-between mb-4 sm:mb-6">
+        <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-darkest">
           {category ? t("categoryMenu") : t("allMenu")}
         </h2>
-        <span className="text-sm text-slate-600">
+        <span className="text-xs sm:text-sm text-main font-medium">
           {foods.length} {foods.length === 1 ? t("dish") : t("dishes")}
         </span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
         {foods.map((food) => {
-          // Get translated name and description if available
           const translatedName = food.translations?.[0]?.name || food.name;
           const translatedDescription =
             food.translations?.[0]?.description || food.description;
@@ -70,10 +71,9 @@ const FoodGallery = ({ className, category }: FoodGalleryProps) => {
           return (
             <div
               key={food.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow border border-slate-200"
+              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow border border-main/10 hover:border-main/30"
             >
-              {/* Image */}
-              <div className="relative h-48 bg-gradient-to-br from-slate-200 to-slate-100">
+              <div className="relative h-40 sm:h-48 bg-gradient-to-br from-slate-200 to-slate-100">
                 {food.imageUrl ? (
                   <Image
                     src={food.imageUrl}
@@ -81,12 +81,10 @@ const FoodGallery = ({ className, category }: FoodGalleryProps) => {
                     fill
                     className="object-cover"
                     onError={(e) => {
-                      // Fallback if image fails to load
                       e.currentTarget.style.display = "none";
                     }}
                   />
                 ) : (
-                  // Fallback placeholder
                   <div className="w-full h-full flex items-center justify-center">
                     <svg
                       className="w-20 h-20 text-slate-300"
@@ -112,43 +110,45 @@ const FoodGallery = ({ className, category }: FoodGalleryProps) => {
               </div>
 
               {/* Content */}
-              <div className="p-4">
-                <h3 className="text-lg font-bold text-slate-900 mb-2 line-clamp-2">
+              <div className="p-3 sm:p-4">
+                <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2 line-clamp-2">
                   {translatedName}
                 </h3>
                 {translatedDescription && (
-                  <p className="text-sm text-slate-600 mb-3 line-clamp-2">
+                  <p className="text-xs sm:text-sm text-slate-600 mb-3 line-clamp-2">
                     {translatedDescription}
                   </p>
                 )}
 
                 {/* Variants/Prices */}
                 {food.variants && food.variants.length > 0 && (
-                  <div className="space-y-2 pt-3 border-t border-slate-100">
+                  <div className="space-y-2 pt-3 border-t border-main/10 mt-auto">
                     {food.variants.map((variant, index) => (
                       <div
                         key={index}
-                        className="flex items-center justify-between text-sm"
+                        className="flex items-start justify-between gap-2 text-sm"
                       >
-                        <span className="text-slate-700 font-medium">
+                        <span className="text-darkest font-medium flex-shrink-0 min-w-0">
                           {variant.label || t("price")}:
                         </span>
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-col items-end gap-1 flex-shrink-0">
                           {variant.price && (
-                            <span className="font-semibold text-slate-900">
+                            <span className="font-semibold text-main whitespace-nowrap">
                               {variant.price} {variant.currency}
                             </span>
                           )}
-                          {variant.isSeasonal && (
-                            <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded">
-                              {t("seasonal")}
-                            </span>
-                          )}
-                          {!variant.available && (
-                            <span className="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-medium rounded">
-                              {t("unavailable")}
-                            </span>
-                          )}
+                          <div className="flex gap-1 flex-wrap justify-end">
+                            {variant.isSeasonal && (
+                              <span className="px-1.5 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded whitespace-nowrap">
+                                {t("seasonal")}
+                              </span>
+                            )}
+                            {!variant.available && (
+                              <span className="px-1.5 py-0.5 bg-red-100 text-red-700 text-xs font-medium rounded whitespace-nowrap">
+                                {t("unavailable")}
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
                     ))}

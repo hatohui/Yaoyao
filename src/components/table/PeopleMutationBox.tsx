@@ -52,9 +52,9 @@ const PeopleMutationBox = ({ id }: { id: string }) => {
   };
 
   return (
-    <div className="bg-white rounded-md shadow-sm overflow-hidden">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden border border-main/10">
       {/* Compact Header */}
-      <div className="bg-blue-600 px-4 py-2">
+      <div className="bg-darkest px-4 py-2.5">
         <h2 className="text-sm font-semibold text-white">{t("addPerson")}</h2>
       </div>
 
@@ -74,7 +74,7 @@ const PeopleMutationBox = ({ id }: { id: string }) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t("enterName")}
-              className="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              className="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-md focus:ring-2 focus:ring-main focus:border-main transition-colors"
               disabled={addPeople.isPending}
             />
           </div>
@@ -82,7 +82,7 @@ const PeopleMutationBox = ({ id }: { id: string }) => {
           <button
             type="submit"
             disabled={addPeople.isPending || !name.trim()}
-            className="w-full px-3 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white text-sm font-medium rounded-md transition-colors flex items-center justify-center gap-2"
+            className="w-full px-3 py-2 bg-main hover:bg-main/90 disabled:bg-slate-300 disabled:cursor-not-allowed text-white text-sm font-medium rounded-md transition-colors flex items-center justify-center gap-2"
           >
             {addPeople.isPending ? (
               <>

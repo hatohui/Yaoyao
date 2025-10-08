@@ -63,7 +63,6 @@ export async function seedFoods() {
       const name = item.name;
       const description = item.description ?? null;
 
-      // prepare variants
       const variants = (item.variants ?? []).map((v) => ({
         label: v.label ?? "",
         price: v.price ?? null,
@@ -71,7 +70,6 @@ export async function seedFoods() {
         isSeasonal: v.isSeasonal ?? false,
       }));
 
-      // prepare translations for supported languages only
       const translations = SUPPORTED_TRANSLATIONS.flatMap((lang) => {
         const t = item.translations?.[lang as string];
         if (!t) return [];
@@ -84,13 +82,11 @@ export async function seedFoods() {
         ];
       });
 
-      // find existing food by name + category
       const existing = await prisma.food.findFirst({
         where: { name, categoryId: category.id },
       });
 
       if (existing) {
-        // update basic fields, then replace variants & translations inside a transaction
         await prisma.$transaction([
           prisma.food.update({
             where: { id: existing.id },
@@ -101,7 +97,6 @@ export async function seedFoods() {
         ]);
 
         if (variants.length > 0) {
-          // createMany for variants
           await prisma.foodVariant.createMany({
             data: variants.map((v) => ({ ...v, foodId: existing.id })),
           });
@@ -114,7 +109,6 @@ export async function seedFoods() {
           });
         }
       } else {
-        // create food with nested creates
         await prisma.food.create({
           data: {
             name,

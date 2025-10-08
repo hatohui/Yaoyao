@@ -7,9 +7,7 @@ import TanstackProvider from "@/config/TanstackProvider";
 import dynamic from "next/dynamic";
 import "./globals.css";
 
-const AuthHydrator = dynamic(
-  () => import("@/components/auth/AuthHydrator.client")
-);
+const AuthHydrator = dynamic(() => import("@/components/auth/AuthHydrator"));
 
 const inter = Inter({
   variable: "--font-inter",

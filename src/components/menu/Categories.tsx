@@ -16,7 +16,7 @@ const Categories = ({ className }: { className?: string }) => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-4">
-        <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-solid border-blue-600 border-r-transparent"></div>
+        <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-solid border-main border-r-transparent"></div>
       </div>
     );
   }
@@ -32,16 +32,16 @@ const Categories = ({ className }: { className?: string }) => {
 
   return (
     <div className={className}>
-      <h3 className="text-sm font-semibold text-slate-700 mb-3 uppercase tracking-wide">
+      <h3 className="text-xs sm:text-sm font-semibold text-darkest mb-2 sm:mb-3 uppercase tracking-wide">
         {t("categories")}
       </h3>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-1.5 sm:gap-2">
         <button
           onClick={handleShowAll}
-          className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-sm transition-all ${
             !currentCategory
-              ? "bg-blue-600 text-white shadow-md"
-              : "bg-white text-slate-700 border border-slate-300 hover:border-blue-400 hover:bg-blue-50"
+              ? "bg-main text-white shadow-md"
+              : "bg-white text-slate-700 border border-slate-300 hover:bg-slate-50"
           }`}
         >
           {t("allCategories")}
@@ -52,10 +52,10 @@ const Categories = ({ className }: { className?: string }) => {
           return (
             <button
               key={category.id}
-              className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-sm transition-all ${
                 isActive
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "bg-white text-slate-700 border border-slate-300 hover:border-blue-400 hover:bg-blue-50"
+                  ? "bg-main text-white shadow-md"
+                  : "bg-white text-slate-700 border border-slate-300 hover:bg-slate-50"
               }`}
               onClick={() => handleCategoryClick(category.key)}
             >

@@ -13,17 +13,17 @@ const TableDetailHeader = ({ table, isOccupied }: TableHeaderProps) => {
   const t = useTranslations("tables");
 
   return (
-    <div className="bg-white shadow-sm border-b border-slate-200">
+    <div className="bg-white shadow-sm border-b border-main/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
               onClick={() => router.back()}
-              className="p-1.5 hover:bg-slate-100 rounded-md transition-colors"
+              className="p-1.5 hover:bg-main/10 rounded-md transition-colors"
               aria-label="Go back"
             >
               <svg
-                className="w-5 h-5 text-slate-600"
+                className="w-5 h-5 text-darkest"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -37,21 +37,21 @@ const TableDetailHeader = ({ table, isOccupied }: TableHeaderProps) => {
               </svg>
             </button>
             <div>
-              <h1 className="text-lg font-semibold text-slate-900">
+              <h1 className="text-lg font-semibold text-darkest">
                 {table?.name || t("tableDetails")}
               </h1>
               <p className="text-xs text-slate-500">{t("manageParty")}</p>
             </div>
           </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-slate-300">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-main/30 bg-main/5">
             <div
               className={`w-2 h-2 rounded-full ${
-                isOccupied ? "bg-blue-500" : "bg-green-500"
+                isOccupied ? "bg-main" : "bg-green-500"
               }`}
             ></div>
             <span
               className={`text-xs font-medium ${
-                isOccupied ? "text-blue-700" : "text-green-700"
+                isOccupied ? "text-darkest" : "text-green-700"
               }`}
             >
               {isOccupied ? t("occupied") : t("available")}

@@ -1,2 +1,2 @@
-export const PASSWORD = "im oayoay";
+export const PASSWORD = "awrf awrf";
 export const TABLE_PUBLIC_ENABLED = false;

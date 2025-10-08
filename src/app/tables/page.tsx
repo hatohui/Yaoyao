@@ -17,12 +17,15 @@ const TablePage = () => {
 
       {/* Main Content */}
       {TABLE_PUBLIC_ENABLED || isVerified ? (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
           <TableMap />
         </div>
       ) : (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <p className="text-center text-gray-500"> {t("noTables")}</p>
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
+          <p className="text-center text-gray-500 text-sm sm:text-base">
+            {" "}
+            {t("noTables")}
+          </p>
         </div>
       )}
     </div>

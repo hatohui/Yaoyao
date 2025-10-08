@@ -39,9 +39,9 @@ const TableMutationBox = ({ table }: TableMutationBoxProps) => {
   };
 
   return (
-    <div className="bg-white rounded-md shadow-sm overflow-hidden">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden border border-main/10">
       {/* Compact Header */}
-      <div className="bg-slate-600 px-4 py-2">
+      <div className="bg-darkest px-4 py-2.5">
         <h2 className="text-sm font-semibold text-white">
           {t("tableSettings")}
         </h2>
@@ -73,7 +73,7 @@ const TableMutationBox = ({ table }: TableMutationBoxProps) => {
                   setCapacity(Number(e.target.value));
                   setIsEditing(true);
                 }}
-                className="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-md focus:ring-2 focus:ring-main focus:border-main transition-colors"
               />
             </div>
             {isEditing && (
@@ -81,7 +81,7 @@ const TableMutationBox = ({ table }: TableMutationBoxProps) => {
                 <button
                   type="submit"
                   disabled={changeCapacity.isPending}
-                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white text-xs font-medium rounded-md transition-colors flex items-center gap-1.5"
+                  className="px-3 py-1.5 bg-main hover:bg-main/90 disabled:bg-main/50 text-white text-xs font-medium rounded-md transition-colors flex items-center gap-1.5"
                 >
                   {changeCapacity.isPending ? (
                     <>

@@ -16,8 +16,10 @@ const TableMap = () => {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
-          <p className="mt-4 text-slate-600">{t("loading")}</p>
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-main border-r-transparent"></div>
+          <p className="mt-4 text-slate-600 text-sm sm:text-base">
+            {t("loading")}
+          </p>
         </div>
       </div>
     );
@@ -50,7 +52,7 @@ const TableMap = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
       {tables?.map((table) => {
         const peopleCount = table._count?.people || 0;
         const isFull = peopleCount >= table.capacity;
@@ -64,36 +66,40 @@ const TableMap = () => {
           >
             <div
               className={`
-              relative overflow-hidden rounded-lg border-2 transition-all duration-200 h-full flex flex-col
+              relative overflow-hidden rounded-lg border-2 transition-all duration-200 h-full flex flex-col bg-white shadow-md group-hover:shadow-lg
               ${
                 isFull
-                  ? "border-red-200 bg-red-50 hover:border-red-400 hover:shadow-lg"
-                  : "border-green-200 bg-green-50 hover:border-green-400 hover:shadow-lg"
+                  ? "border-red-200 hover:border-red-400"
+                  : "border-available/20 hover:border-available/50"
               }
             `}
             >
               {/* Status Badge */}
               <div
                 className={`
-                absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-semibold
-                ${isFull ? "bg-red-500 text-white" : "bg-green-500 text-white"}
+                absolute top-3 right-3 px-2.5 py-1 rounded-full text-xs font-semibold shadow-sm
+                ${isFull ? "bg-red-500 text-white" : "bg-available text-white"}
               `}
               >
                 {statusText}
               </div>
 
-              <div className="p-6 flex-1">
+              <div className="p-5 sm:p-6 flex-1">
                 {/* Table Icon & Name */}
                 <div className="flex items-center gap-3 mb-4">
                   <div
                     className={`
                     w-12 h-12 rounded-lg flex items-center justify-center
-                    ${isFull ? "bg-red-100" : "bg-green-100"}
+                    ${
+                      isFull
+                        ? "bg-red-50 border border-red-200"
+                        : "bg-available/10 border border-available/20"
+                    }
                   `}
                   >
                     <svg
                       className={`w-6 h-6 ${
-                        isFull ? "text-red-600" : "text-green-600"
+                        isFull ? "text-red-600" : "text-available"
                       }`}
                       fill="none"
                       stroke="currentColor"
@@ -108,17 +114,19 @@ const TableMap = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-slate-900 group-hover:text-slate-700">
+                    <h3 className="text-lg sm:text-xl font-bold text-darkest group-hover:text-main transition-colors">
                       {table.name}
                     </h3>
                   </div>
                 </div>
 
                 {/* Table Details */}
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-slate-600">
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-2 text-sm text-slate-700">
                     <svg
-                      className="w-4 h-4"
+                      className={`w-4 h-4 ${
+                        isFull ? "text-red-500" : "text-available"
+                      }`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -141,7 +149,11 @@ const TableMap = () => {
                   {table.tableLeader ? (
                     <div className="mt-3 pt-3 border-t border-slate-200 min-h-[60px]">
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
+                        <div
+                          className={`w-8 h-8 rounded-full ${
+                            isFull ? "bg-red-500" : "bg-available"
+                          } flex items-center justify-center text-white text-xs font-bold`}
+                        >
                           {table.tableLeader.name.charAt(0).toUpperCase()}
                         </div>
                         <div className="flex-1 min-w-0">

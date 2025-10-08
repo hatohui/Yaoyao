@@ -25,14 +25,14 @@ const LanguageSelector = () => {
         onChange={handleChange}
         className="
           appearance-none cursor-pointer
-          px-3 py-1.5 pr-8
-          text-sm font-medium
+          px-2 sm:px-3 py-1 sm:py-1.5 pr-6 sm:pr-8
+          text-xs sm:text-sm font-medium
           bg-white
           border border-slate-300
           rounded-md
           text-slate-700
           hover:border-slate-400
-          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+          focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent
           transition-colors
         "
       >
@@ -43,9 +43,9 @@ const LanguageSelector = () => {
         ))}
       </select>
       {/* Dropdown Arrow Icon */}
-      <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+      <div className="absolute inset-y-0 right-0 flex items-center pr-1.5 sm:pr-2 pointer-events-none">
         <svg
-          className="w-4 h-4 text-slate-400"
+          className="w-3 h-3 sm:w-4 sm:h-4 text-slate-400"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
