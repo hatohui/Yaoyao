@@ -3,6 +3,8 @@ export const prawnData: FoodData = {
   items: [
     {
       name: "Fresh Water Prawn with Glass Noodle Soup",
+      imageUrl:
+        "https://trello.com/1/cards/68e68b27fee7d351019a8aff/attachments/68e68b322252b2f0280593a3/download/page13_img3.png",
       description:
         "Fresh water prawns cooked with glass noodles in a savory claypot soup.",
       translations: {
@@ -25,6 +27,8 @@ export const prawnData: FoodData = {
       name: "Steamed Fresh Water Prawn",
       description:
         "Fresh prawns steamed with garlic or yellow wine for natural sweetness.",
+      imageUrl:
+        "https://trello.com/1/cards/68e68b27fee7d351019a8aff/attachments/68e68b34fe34a022920efedc/download/page13_img4.png",
       translations: {
         vi: {
           name: "Tôm càng hấp",
@@ -45,6 +49,8 @@ export const prawnData: FoodData = {
     },
     {
       name: "Stir-Fried Fresh Water Prawn with Superior Soy Sauce",
+      imageUrl:
+        "https://trello.com/1/cards/68e68b27fee7d351019a8aff/attachments/68e68b2e87cba8805b8f40ee/download/page13_img1.png",
       description:
         "Fresh prawns stir-fried with premium soy sauce for rich flavor.",
       translations: {
@@ -66,6 +72,8 @@ export const prawnData: FoodData = {
     },
     {
       name: "Deep-Fried Prawn",
+      imageUrl:
+        "https://trello.com/1/cards/68e68b27fee7d351019a8aff/attachments/68e68b30671030142688cf89/download/page13_img2.png",
       description: "Golden fried prawns, crispy and juicy.",
       translations: {
         vi: {
@@ -88,6 +96,8 @@ export const prawnData: FoodData = {
     },
     {
       name: "Pan-Fried Prawn",
+      imageUrl:
+        "https://trello.com/1/cards/68e68b27fee7d351019a8aff/attachments/68e68b377ef400d627868f3b/download/page13_img5.png",
       description: "Lightly pan-fried prawns with a golden crust.",
       translations: {
         vi: {
@@ -111,6 +121,8 @@ export const prawnData: FoodData = {
     },
     {
       name: "Assam Prawn",
+      imageUrl:
+        "https://trello.com/1/cards/68e68b27fee7d351019a8aff/attachments/68e68b39976b0b42d82fd285/download/page13_img6.png",
       description:
         "Prawns cooked in tangy tamarind sauce with a hint of spice.",
       translations: {
@@ -135,6 +147,8 @@ export const prawnData: FoodData = {
     },
     {
       name: "Stir-Fried Prawn with Butter & Egg Floss",
+      imageUrl:
+        "https://trello.com/1/cards/68e68b27fee7d351019a8aff/attachments/68e68b2d692f459ec628afbe/download/page14_img9.png",
       description:
         "Buttery prawns tossed with golden egg floss for a creamy aroma.",
       translations: {
@@ -158,6 +172,8 @@ export const prawnData: FoodData = {
     },
     {
       name: "Stir-Fried Prawn with Salted Egg Yolk",
+      imageUrl:
+        "https://trello.com/1/cards/68e68b27fee7d351019a8aff/attachments/68e68b44414c2729f1ff7bce/download/page14_img7.png",
       description: "Crispy prawns coated in creamy salted egg yolk sauce.",
       translations: {
         vi: {
@@ -180,6 +196,8 @@ export const prawnData: FoodData = {
     },
     {
       name: "Stir-Fried Prawn with Mixed Vegetables",
+      imageUrl:
+        "https://trello.com/1/cards/68e68b27fee7d351019a8aff/attachments/68e68b3cf60f7a26ebfef6fd/download/page14_img2.png",
       description: "Colorful mix of vegetables stir-fried with fresh prawns.",
       translations: {
         vi: {
@@ -202,6 +220,8 @@ export const prawnData: FoodData = {
     },
     {
       name: "Stir-Fried Prawn with Broccoli",
+      imageUrl:
+        "https://trello.com/1/cards/68e68b27fee7d351019a8aff/attachments/68e68b465ec8219ed4c724d6/download/page14_img8.png",
       description: "Tender prawns and crisp broccoli stir-fried to perfection.",
       translations: {
         vi: {
@@ -224,6 +244,8 @@ export const prawnData: FoodData = {
     },
     {
       name: "Stir-Fried Prawn with XO Sauce",
+      imageUrl:
+        "https://trello.com/1/cards/68e68b27fee7d351019a8aff/attachments/68e68b4301ffb7dd5ac9dbd2/download/page14_img6.png",
       description: "Rich and savory XO sauce wok-fried with prawns.",
       translations: {
         vi: {
@@ -246,6 +268,8 @@ export const prawnData: FoodData = {
     },
     {
       name: "Stir-Fried Prawn with Marmite",
+      imageUrl:
+        "https://trello.com/1/cards/68e68b27fee7d351019a8aff/attachments/68e68b3bdb03267315507b00/download/page14_img1.png",
       description: "Prawns coated in rich, umami Marmite sauce.",
       translations: {
         vi: {
@@ -268,6 +292,8 @@ export const prawnData: FoodData = {
     },
     {
       name: "Stir-Fried Prawn with Petai",
+      imageUrl:
+        "https://trello.com/1/cards/68e68b27fee7d351019a8aff/attachments/68e68b3e64abbf8d87dcfbc8/download/page14_img3.png",
       description: "Spicy prawns stir-fried with pungent petai beans.",
       translations: {
         vi: {
@@ -290,6 +316,8 @@ export const prawnData: FoodData = {
     },
     {
       name: "Salad Prawn",
+      imageUrl:
+        "https://trello.com/1/cards/68e68b27fee7d351019a8aff/attachments/68e68b4099164aab47bbfb3a/download/page14_img4.png",
       description: "Crispy fried prawns topped with creamy salad dressing.",
       translations: {
         vi: {
@@ -312,6 +340,8 @@ export const prawnData: FoodData = {
     },
     {
       name: "Fried Prawn with Garlic",
+      imageUrl:
+        "https://trello.com/1/cards/68e68b27fee7d351019a8aff/attachments/68e68b423b70e41686be18ab/download/page14_img5.png",
       description: "Golden fried prawns tossed with crispy garlic bits.",
       translations: {
         vi: {

@@ -114,6 +114,7 @@ export async function seedFoods() {
             name,
             description,
             categoryId: category.id,
+            imageUrl: item.imageUrl || null,
             variants: variants.length > 0 ? { create: variants } : undefined,
             translations:
               translations.length > 0

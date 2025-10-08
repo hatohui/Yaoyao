@@ -3,6 +3,7 @@ export type FoodData = {
   items: {
     name: string;
     description?: string;
+    imageUrl: string;
     translations: {
       [key: string]: { description?: string; name: string }; // key is language code, e.g. "en", "zh", "ms", etc.
     };
