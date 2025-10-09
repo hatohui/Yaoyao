@@ -1,12 +1,12 @@
 "use client";
 import Categories from "@/components/menu/Categories";
 import FoodGallery from "@/components/menu/FoodGallery";
-import { useSearchParams } from "next/navigation";
 import React from "react";
+
 import { useTranslations } from "next-intl";
+import SearchBar from "@/components/common/SearchBar";
 
 const MenuPage = () => {
-  const category = useSearchParams()?.get("category");
   const t = useTranslations("menu");
 
   return (
@@ -22,6 +22,11 @@ const MenuPage = () => {
               {t("subtitle")}
             </p>
           </div>
+
+          {/* Search Bar */}
+          <SearchBar
+            placeholder={t("searchPlaceholder") || "Search for dishes..."}
+          />
         </div>
       </div>
 
@@ -34,7 +39,7 @@ const MenuPage = () => {
           </div>
 
           {/* Food Gallery Section */}
-          <FoodGallery category={category} />
+          <FoodGallery />
         </div>
       </div>
     </div>

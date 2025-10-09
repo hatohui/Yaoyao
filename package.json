@@ -17,6 +17,7 @@
     "seed": "tsx prisma/seeds/index.ts"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@prisma/client": "^6.16.3",
     "@tanstack/react-query": "^5.90.2",
     "axios": "^1.12.2",
@@ -27,6 +28,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
+    "react-toastify": "^11.0.5",
     "zod": "^4.1.11",
     "zustand": "^5.0.8"
   },

@@ -2,81 +2,111 @@ import { NextApiResponse } from "next";
 
 export type ErrorMessage = {
   message: string;
-  code: number;
+  code: string | number;
 };
 
-export const NotAllowedMessage = (msg?: string): ErrorMessage => ({
+export const NotAllowedMessage = (
+  msg?: string,
+  code?: string
+): ErrorMessage => ({
   message: msg || "Method Not Allowed",
-  code: 405,
+  code: code || 405,
 });
 
-export const InternalErrorMessage = (msg?: string): ErrorMessage => ({
+export const InternalErrorMessage = (
+  msg?: string,
+  code?: string
+): ErrorMessage => ({
   message: msg || "Internal Server Error",
-  code: 500,
+  code: code || 500,
 });
 
-export const BadRequestMessage = (msg?: string): ErrorMessage => ({
+export const BadRequestMessage = (
+  msg?: string,
+  code?: string
+): ErrorMessage => ({
   message: msg || "Bad Request",
-  code: 400,
+  code: code || 400,
 });
 
-export const NotFoundMessage = (msg?: string): ErrorMessage => ({
+export const NotFoundMessage = (msg?: string, code?: string): ErrorMessage => ({
   message: msg || "Not Found",
-  code: 404,
+  code: code || 404,
 });
 
-export const ConflictMessage = (msg?: string): ErrorMessage => ({
+export const ConflictMessage = (msg?: string, code?: string): ErrorMessage => ({
   message: msg || "Conflict",
-  code: 409,
+  code: code || 409,
 });
 
-export const UnauthorizedMessage = (msg?: string): ErrorMessage => ({
+export const UnauthorizedMessage = (
+  msg?: string,
+  code?: string
+): ErrorMessage => ({
   message: msg || "Unauthorized",
-  code: 401,
+  code: code || 401,
 });
 
-export const ForbiddenMessage = (msg?: string): ErrorMessage => ({
+export const ForbiddenMessage = (
+  msg?: string,
+  code?: string
+): ErrorMessage => ({
   message: msg || "Forbidden",
-  code: 403,
+  code: code || 403,
 });
 
-export const ServiceUnavailableMessage = (msg?: string): ErrorMessage => ({
+export const ServiceUnavailableMessage = (
+  msg?: string,
+  code?: string
+): ErrorMessage => ({
   message: msg || "Service Unavailable",
-  code: 503,
+  code: code || 503,
 });
 
-export const GatewayTimeoutMessage = (msg?: string): ErrorMessage => ({
+export const GatewayTimeoutMessage = (
+  msg?: string,
+  code?: string
+): ErrorMessage => ({
   message: msg || "Gateway Timeout",
-  code: 504,
+  code: code || 504,
 });
 
 export const CustomErrorMessage = (
   msg: string,
-  code: number
+  code: string | number
 ): ErrorMessage => ({
   message: msg,
   code,
 });
 
 export const sendError = (res: NextApiResponse, error: ErrorMessage) => {
-  return res.status(error.code).json(error);
+  const statusCode = typeof error.code === "number" ? error.code : 500;
+  return res.status(statusCode).json(error);
 };
 
 export const Status = (res: NextApiResponse) => ({
   Ok: (data: unknown) => res.status(200).json(data),
   Created: (data: unknown) => res.status(201).json(data),
   NoContent: () => res.status(204).end(),
-  NotAllowed: (msg?: string) => sendError(res, NotAllowedMessage(msg)),
-  InternalError: (msg?: string) => sendError(res, InternalErrorMessage(msg)),
-  BadRequest: (msg?: string) => sendError(res, BadRequestMessage(msg)),
-  NotFound: (msg?: string) => sendError(res, NotFoundMessage(msg)),
-  Conflict: (msg?: string) => sendError(res, ConflictMessage(msg)),
-  Unauthorized: (msg?: string) => sendError(res, UnauthorizedMessage(msg)),
-  Forbidden: (msg?: string) => sendError(res, ForbiddenMessage(msg)),
-  ServiceUnavailable: (msg?: string) =>
-    sendError(res, ServiceUnavailableMessage(msg)),
-  GatewayTimeout: (msg?: string) => sendError(res, GatewayTimeoutMessage(msg)),
-  CustomError: (msg: string, code: number) =>
+  NotAllowed: (msg?: string, code?: string) =>
+    sendError(res, NotAllowedMessage(msg, code)),
+  InternalError: (msg?: string, code?: string) =>
+    sendError(res, InternalErrorMessage(msg, code)),
+  BadRequest: (msg?: string, code?: string) =>
+    sendError(res, BadRequestMessage(msg, code)),
+  NotFound: (msg?: string, code?: string) =>
+    sendError(res, NotFoundMessage(msg, code)),
+  Conflict: (msg?: string, code?: string) =>
+    sendError(res, ConflictMessage(msg, code)),
+  Unauthorized: (msg?: string, code?: string) =>
+    sendError(res, UnauthorizedMessage(msg, code)),
+  Forbidden: (msg?: string, code?: string) =>
+    sendError(res, ForbiddenMessage(msg, code)),
+  ServiceUnavailable: (msg?: string, code?: string) =>
+    sendError(res, ServiceUnavailableMessage(msg, code)),
+  GatewayTimeout: (msg?: string, code?: string) =>
+    sendError(res, GatewayTimeoutMessage(msg, code)),
+  CustomError: (msg: string, code: string | number) =>
     sendError(res, CustomErrorMessage(msg, code)),
 });
 

@@ -2,6 +2,7 @@ import { GetTableByIdResponse } from "@/types/api/table/GET";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { FiArrowLeft } from "react-icons/fi";
 
 export type TableHeaderProps = {
   table: GetTableByIdResponse | undefined;
@@ -22,19 +23,7 @@ const TableDetailHeader = ({ table, isOccupied }: TableHeaderProps) => {
               className="p-1.5 hover:bg-main/10 rounded-md transition-colors"
               aria-label="Go back"
             >
-              <svg
-                className="w-5 h-5 text-darkest"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                />
-              </svg>
+              <FiArrowLeft className="w-5 h-5 text-darkest" />
             </button>
             <div>
               <h1 className="text-lg font-semibold text-darkest">

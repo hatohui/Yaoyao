@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslations } from "next-intl";
+import SearchBar from "../common/SearchBar";
 
 const TableHeader = () => {
   const t = useTranslations("tables");
@@ -31,6 +32,9 @@ const TableHeader = () => {
             </div>
           </div>
         </div>
+        <SearchBar
+          placeholder={t("searchPlaceholder") || "Search for tables..."}
+        />
       </div>
     </div>
   );

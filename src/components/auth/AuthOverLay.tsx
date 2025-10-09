@@ -32,7 +32,7 @@ const AuthOverLay: React.FC<{ open: boolean; onClose: () => void }> = ({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 h-screen w-screen flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
 
       <div className="relative bg-white rounded-lg p-4 sm:p-6 w-full max-w-sm mx-auto shadow-xl">

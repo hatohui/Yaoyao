@@ -369,7 +369,8 @@ export const beverageData: FoodData = {
     {
       name: "Carrot Juice",
       description: "Carrot juice has a sweet and refreshing flavor.",
-      imageUrl: "",
+      imageUrl:
+        "https://trello.com/1/cards/68e68c4e6fcd1f244adbbbb0/attachments/68e6c8e43e7d77a6e7b1cba9/download/image.png",
       translations: {
         vi: {
           name: "Nước cà rốt tươi",
@@ -386,7 +387,8 @@ export const beverageData: FoodData = {
     {
       name: "Pineapple Juice",
       description: "Pineapple juice has a sweet and tangy flavor.",
-      imageUrl: "",
+      imageUrl:
+        "https://trello.com/1/cards/68e68c4e6fcd1f244adbbbb0/attachments/68e6c917858e8484565adb6d/download/image.png",
       translations: {
         vi: {
           name: "Nước dứa tươi",
@@ -404,7 +406,8 @@ export const beverageData: FoodData = {
       name: "Bitter Gourd with Pineapple Juice",
       description:
         "Bitter gourd with pineapple juice has a unique and refreshing flavor.",
-      imageUrl: "",
+      imageUrl:
+        "https://trello.com/1/cards/68e68c4e6fcd1f244adbbbb0/attachments/68e6c93dff22f77bbe087b49/download/image.png",
       translations: {
         vi: {
           name: "Nước khổ qua và dứa",
@@ -421,7 +424,8 @@ export const beverageData: FoodData = {
     {
       name: "Chinese Tea",
       description: "Chinese tea has a fragrant and delicious flavor.",
-      imageUrl: "",
+      imageUrl:
+        "https://trello.com/1/cards/68e68c4e6fcd1f244adbbbb0/attachments/68e6c9599b0ce49dfd1ec3fa/download/image.png",
       translations: {
         vi: {
           name: "Trà Trung Hoa",
@@ -436,7 +440,8 @@ export const beverageData: FoodData = {
       name: "Filtered Water with Sliced Lemon",
       description:
         "Filtered water with sliced lemon has a refreshing lemon aroma.",
-      imageUrl: "",
+      imageUrl:
+        "https://trello.com/1/cards/68e68c4e6fcd1f244adbbbb0/attachments/68e6c98379fa81bb2a671ec9/download/image.png",
       translations: {
         vi: {
           name: "Nước lọc với lát chanh",
@@ -457,7 +462,8 @@ export const beverageData: FoodData = {
       name: "Beer (Tiger / Carlsberg)",
       description:
         "Beer (Tiger / Carlsberg) has a smooth and refreshing flavor.",
-      imageUrl: "",
+      imageUrl:
+        "https://trello.com/1/cards/68e68c4e6fcd1f244adbbbb0/attachments/68e6c9c818eddccb95459e16/download/image.png",
       translations: {
         vi: {
           name: "Bia (Tiger / Carlsberg)",
@@ -477,7 +483,8 @@ export const beverageData: FoodData = {
     {
       name: "Beer (Heineken)",
       description: "Beer (Heineken) has a smooth and refreshing flavor.",
-      imageUrl: "",
+      imageUrl:
+        "https://trello.com/1/cards/68e68c4e6fcd1f244adbbbb0/attachments/68e6c9e3308207530f5a46f9/download/image.png",
       translations: {
         vi: {
           name: "Bia Heineken",
@@ -497,7 +504,8 @@ export const beverageData: FoodData = {
     {
       name: "Beer (Guinness)",
       description: "Beer (Guinness) has a rich and creamy flavor.",
-      imageUrl: "",
+      imageUrl:
+        "https://trello.com/1/cards/68e68c4e6fcd1f244adbbbb0/attachments/68e6ca0099e55600d382e12b/download/image.png",
       translations: {
         vi: {
           name: "Bia Guinness",
@@ -517,7 +525,8 @@ export const beverageData: FoodData = {
     {
       name: "Mineral Water",
       description: "Mineral water has a refreshing taste.",
-      imageUrl: "",
+      imageUrl:
+        "https://trello.com/1/cards/68e68c4e6fcd1f244adbbbb0/attachments/68e6ca147257bf9e6531d6c2/download/image.png",
       translations: {
         vi: {
           name: "Nước khoáng",

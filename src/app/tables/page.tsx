@@ -5,10 +5,12 @@ import { TABLE_PUBLIC_ENABLED } from "@/config/app";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import { useTranslations } from "next-intl";
 import React from "react";
+import useSearch from "@/hooks/common/useSearch";
 
 const TablePage = () => {
   const t = useTranslations("tables");
   const { isVerified } = useYaoAuth();
+  const { searchQuery } = useSearch();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
@@ -18,12 +20,11 @@ const TablePage = () => {
       {/* Main Content */}
       {TABLE_PUBLIC_ENABLED || isVerified ? (
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
-          <TableMap />
+          <TableMap searchQuery={searchQuery} />
         </div>
       ) : (
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
           <p className="text-center text-gray-500 text-sm sm:text-base">
-            {" "}
             {t("noTables")}
           </p>
         </div>

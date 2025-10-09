@@ -40,13 +40,25 @@ const handler: NextApiHandler = async (req, res) => {
         Omit<Table, "id" | "createdAt" | "updatedAt">
       >;
 
-      console.log(data);
-
       if (!data || Object.keys(data).length === 0)
         return BadRequest("No data provided for update");
 
       const tableToUpdate = await getTableById(tableId);
       if (!tableToUpdate) return NotFound("No table found to update");
+
+      if (data.capacity) {
+        const { count } = await getNumberOfPeopleInTable(tableId);
+        if (data.capacity < count)
+          return BadRequest(
+            `Capacity cannot be less than current number of people: ${count}`,
+            "MAX_CAPACITY_REACHED"
+          );
+        if (data.capacity <= 0)
+          return BadRequest(
+            "Capacity must be a positive number",
+            "INVALID_CAPACITY"
+          );
+      }
 
       const update = await putTableById(tableId, data);
       if (!update) return BadRequest("Failed to update the table");

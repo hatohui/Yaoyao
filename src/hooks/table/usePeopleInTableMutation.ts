@@ -1,49 +1,49 @@
 import axios from "@/common/axios";
 import { People } from "@prisma/client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
+import useMutationWithError from "../common/useMutationWithError";
 
 const usePeopleInTableMutation = () => {
   const client = useQueryClient();
 
-  const addPeople = useMutation({
+  const addPeople = useMutationWithError({
     mutationFn: (data: { tableId: string; name: string }) =>
       axios.post<People>(`/tables/${data.tableId}`, { name: data.name }),
-    onSuccess: (_data, variables) => {
+    successMessageKey: "personAdded",
+    onSuccessCallback: (_data, variables) => {
       client.invalidateQueries({
         queryKey: ["tables", variables.tableId, "people"],
       });
     },
   });
 
-  const removePeople = useMutation({
+  const removePeople = useMutationWithError({
     mutationFn: (data: { tableId: string; personId: string }) =>
       axios.delete(`/tables/${data.tableId}/people/${data.personId}`),
-    onSuccess: (_data, variables) => {
+    onSuccessCallback: (_data, variables) => {
       client.invalidateQueries({
         queryKey: ["tables", variables.tableId, "people"],
       });
     },
   });
 
-  const assignLeader = useMutation({
+  const assignLeader = useMutationWithError({
     mutationFn: (data: { tableId: string; personId: string }) =>
       axios.put(`/tables/${data.tableId}/leader`, {
         id: data.personId,
       }),
-    onSuccess: (_data, variables) => {
+    onSuccessCallback: () => {
       client.invalidateQueries({
-        queryKey: ["tables", variables.tableId],
+        queryKey: ["tables"],
       });
     },
   });
 
-  const removeLeader = useMutation({
+  const removeLeader = useMutationWithError({
     mutationFn: (data: { tableId: string }) =>
       axios.delete(`/tables/${data.tableId}/leader`),
-    onSuccess: (_data, variables) => {
-      client.invalidateQueries({
-        queryKey: ["tables", variables.tableId],
-      });
+    onSuccessCallback: () => {
+      client.invalidateQueries({ queryKey: ["tables"] });
     },
   });
 

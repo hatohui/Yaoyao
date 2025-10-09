@@ -44,8 +44,6 @@ const datasets: FoodData[] = [
 ];
 
 export async function seedFoods() {
-  const counts: Record<string, number> = {};
-
   for (const data of datasets) {
     const categoryName = data.key;
 
@@ -133,9 +131,6 @@ export async function seedFoods() {
       seeded += 1;
     }
 
-    counts[categoryName] = seeded;
     console.log(`✅ Seeded ${seeded} items for category: ${categoryName}`);
   }
-
-  console.log("\n🎯 Food seeding summary:", counts);
 }

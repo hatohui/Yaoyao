@@ -8,6 +8,8 @@ const useTableDetail = (id: string) =>
     queryKey: ["tables", id],
     queryFn: () =>
       axios.get<GetTableByIdResponse>(`/tables/${id}`).then((res) => res.data),
+    retry: false,
+    enabled: !!id,
   });
 
 export default useTableDetail;

@@ -2,8 +2,13 @@
 import { Language, SUPPORTED_LANGS } from "@/common/language";
 import useLanguage from "@/hooks/common/useLanguage";
 import React from "react";
+import { FiChevronDown } from "react-icons/fi";
 
-const LanguageSelector = () => {
+interface LanguageSelectorProps {
+  className?: string;
+}
+
+const LanguageSelector = ({ className }: LanguageSelectorProps) => {
   const { locale, changeLanguage } = useLanguage();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -23,9 +28,9 @@ const LanguageSelector = () => {
       <select
         value={locale}
         onChange={handleChange}
-        className="
+        className={`
           appearance-none cursor-pointer
-          px-2 sm:px-3 py-1 sm:py-1.5 pr-6 sm:pr-8
+          px-1.5 sm:px-2 py-1 sm:py-1.5 pr-5 sm:pr-6
           text-xs sm:text-sm font-medium
           bg-white
           border border-slate-300
@@ -34,7 +39,8 @@ const LanguageSelector = () => {
           hover:border-slate-400
           focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent
           transition-colors
-        "
+          ${className}
+        `}
       >
         {SUPPORTED_LANGS.map((lang) => (
           <option key={lang} value={lang}>
@@ -44,19 +50,7 @@ const LanguageSelector = () => {
       </select>
       {/* Dropdown Arrow Icon */}
       <div className="absolute inset-y-0 right-0 flex items-center pr-1.5 sm:pr-2 pointer-events-none">
-        <svg
-          className="w-3 h-3 sm:w-4 sm:h-4 text-slate-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
+        <FiChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-slate-400" />
       </div>
     </div>
   );
