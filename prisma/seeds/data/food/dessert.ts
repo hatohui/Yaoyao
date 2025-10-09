@@ -118,7 +118,7 @@ export const dessertData: FoodData = {
       variants: [{ price: 8.9, currency: "RM" }],
     },
     {
-      name: "Mango Pudding",
+      name: "Manggo Pudding",
       imageUrl:
         "https://trello.com/1/cards/68e68c4b474175e8e8a22c35/attachments/68e68d727b1f9d03f09bd600/download/page31_img5.png",
       description: "A smooth and creamy mango pudding, a tropical delight.",

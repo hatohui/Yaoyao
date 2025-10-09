@@ -11,7 +11,9 @@ const useYaoAuth = () => {
     if (isVerified) return;
 
     const keyTracker = (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
+      const key = typeof e.key === "string" ? e.key : undefined;
+
+      if (key === "Enter") {
         if (secret.current === PASSWORD) {
           setIsVerified(true);
           document.removeEventListener("keydown", keyTracker);
@@ -19,15 +21,17 @@ const useYaoAuth = () => {
         secret.current = "";
         return;
       }
-      if (e.key === "Backspace") {
+      if (key === "Backspace") {
         secret.current = secret.current.slice(0, -1);
         return;
       }
-      if (e.key.length === 1) {
-        const nextSecret = secret.current + e.key;
+
+      // Only handle single-character printable keys
+      if (key && key.length === 1) {
+        const nextSecret = secret.current + key;
         if (secret.current.length === 0) {
-          if (e.key === PASSWORD[0]) {
-            secret.current = e.key;
+          if (key === PASSWORD[0]) {
+            secret.current = key;
           } else {
             secret.current = "";
           }
