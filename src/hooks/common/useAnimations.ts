@@ -137,11 +137,7 @@ export const useAnimations = () => {
     },
 
     // Number counter animation
-    countUp: (
-      element: HTMLElement | null,
-      endValue: number,
-      duration = 1
-    ) => {
+    countUp: (element: HTMLElement | null, endValue: number, duration = 1) => {
       if (!element) return;
       const obj = { value: 0 };
       gsap.to(obj, {
@@ -248,7 +244,7 @@ export const useStatCardsAnimation = (values: number[]) => {
   useEffect(() => {
     if (statsRef.current) {
       const statCards = statsRef.current.querySelectorAll("[data-stat-card]");
-      
+
       // Animate cards in
       gsap.fromTo(
         statCards,

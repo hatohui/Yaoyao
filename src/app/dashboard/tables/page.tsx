@@ -7,6 +7,10 @@ import { notFound } from "next/navigation";
 import Loading from "@/components/common/Loading";
 import { FiUsers, FiFilter, FiSearch } from "react-icons/fi";
 import TableCard from "@/components/dashboard/TableCard";
+import {
+  usePageAnimation,
+  useCardStaggerAnimation,
+} from "@/hooks/common/useAnimations";
 
 const DashboardTablesPage = () => {
   const { isVerified } = useYaoAuth();
@@ -19,10 +23,6 @@ const DashboardTablesPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const { data: tables, isLoading } = useTables();
-
-  if (!isVerified) {
-    return notFound();
-  }
 
   // Filter tables based on payment status and search query
   const filteredTables = tables?.filter((table) => {
@@ -46,12 +46,20 @@ const DashboardTablesPage = () => {
     return true;
   });
 
+  // Animation refs
+  const pageRef = usePageAnimation();
+  const cardsRef = useCardStaggerAnimation([filteredTables]);
+
+  if (!isVerified) {
+    return notFound();
+  }
+
   if (isLoading) {
     return <Loading />;
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div ref={pageRef} className="min-h-screen bg-slate-50">
       {/* Header */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -131,9 +139,11 @@ const DashboardTablesPage = () => {
         </div>
 
         {/* Tables Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div ref={cardsRef} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredTables?.map((table) => (
-            <TableCard key={table.id} table={table} />
+            <div key={table.id} data-animate-card>
+              <TableCard table={table} />
+            </div>
           ))}
         </div>
 

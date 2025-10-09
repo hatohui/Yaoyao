@@ -5,7 +5,6 @@ import { NextIntlClientProvider } from "next-intl";
 import NavBar from "@/components/nav/NavBar";
 import TanstackProvider from "@/config/TanstackProvider";
 import dynamic from "next/dynamic";
-import { ToastContainer } from "react-toastify";
 import enableGsapPlugins from "@/config/gsap";
 import "./globals.css";
 
@@ -43,7 +42,6 @@ export default async function RootLayout({
             <NavBar />
             <AuthHydrator />
             {children}
-            <ToastContainer />
           </NextIntlClientProvider>
         </TanstackProvider>
       </body>

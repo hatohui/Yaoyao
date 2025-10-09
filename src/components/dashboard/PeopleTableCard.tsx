@@ -1,8 +1,9 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
 import { FiUsers, FiStar, FiAlertCircle } from "react-icons/fi";
 import { People } from "@prisma/client";
 import { useTranslations } from "next-intl";
+import { useAnimations } from "@/hooks/common/useAnimations";
 
 type PeopleTableCardProps = {
   tableName: string;
@@ -17,13 +18,20 @@ const PeopleTableCard = ({
   capacity,
 }: PeopleTableCardProps) => {
   const tTables = useTranslations("tables");
+  const cardRef = useRef<HTMLDivElement>(null);
+  const animations = useAnimations();
 
   const peopleCount = people.length;
   const isFull = peopleCount >= capacity;
   const occupancyPercentage = capacity > 0 ? (peopleCount / capacity) * 100 : 0;
 
   return (
-    <div className="bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow">
+    <div
+      ref={cardRef}
+      onMouseEnter={() => animations.hoverScale(cardRef.current, 1.02)}
+      onMouseLeave={() => animations.hoverScaleReset(cardRef.current)}
+      className="bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden transition-shadow"
+    >
       {/* Header */}
       <div className="bg-darkest px-4 py-2.5">
         <div className="flex items-center justify-between">

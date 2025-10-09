@@ -8,6 +8,11 @@ import Loading from "@/components/common/Loading";
 import { FiUsers, FiAlertCircle, FiSearch, FiStar } from "react-icons/fi";
 import { People } from "@prisma/client";
 import PeopleTableCard from "@/components/dashboard/PeopleTableCard";
+import {
+  usePageAnimation,
+  useCardStaggerAnimation,
+  useStatCardsAnimation,
+} from "@/hooks/common/useAnimations";
 
 const DashboardPeoplePage = () => {
   const { isVerified } = useYaoAuth();
@@ -92,6 +97,15 @@ const DashboardPeoplePage = () => {
       .filter((table) => table.people.length > 0 || !searchQuery); // Show all tables when no search
   }, [tables, searchQuery, duplicateNames]);
 
+  // Animation refs
+  const pageRef = usePageAnimation();
+  const statsRef = useStatCardsAnimation([
+    allPeople.length,
+    allPeople.filter((p) => p.isLeader).length,
+    duplicateNames.size,
+  ]);
+  const cardsRef = useCardStaggerAnimation([tablesWithPeople]);
+
   // Security: Only Yaoyao can access dashboard
   if (!isVerified) {
     return notFound();
@@ -102,7 +116,7 @@ const DashboardPeoplePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div ref={pageRef} className="min-h-screen bg-slate-50">
       {/* Header */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -118,9 +132,15 @@ const DashboardPeoplePage = () => {
 
       {/* Stats & Search */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div
+          ref={statsRef}
+          className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6"
+        >
           {/* Total People */}
-          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-3">
+          <div
+            data-stat-card
+            className="bg-white rounded-lg shadow-sm border border-slate-200 p-3"
+          >
             <div className="flex items-center gap-2.5">
               <div className="p-2.5 bg-main/10 rounded-lg">
                 <FiUsers className="w-5 h-5 text-main" />
@@ -129,15 +149,21 @@ const DashboardPeoplePage = () => {
                 <p className="text-xs text-slate-600">
                   {t("totalPeople") || "Total People"}
                 </p>
-                <p className="text-xl font-bold text-slate-900">
-                  {allPeople.length}
+                <p
+                  data-stat-number
+                  className="text-xl font-bold text-slate-900"
+                >
+                  0
                 </p>
               </div>
             </div>
           </div>
 
           {/* Table Leaders */}
-          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-3">
+          <div
+            data-stat-card
+            className="bg-white rounded-lg shadow-sm border border-slate-200 p-3"
+          >
             <div className="flex items-center gap-2.5">
               <div className="p-2.5 bg-yellow-100 rounded-lg">
                 <FiStar className="w-5 h-5 text-yellow-600" />
@@ -146,15 +172,21 @@ const DashboardPeoplePage = () => {
                 <p className="text-xs text-slate-600">
                   {t("tableLeaders") || "Table Leaders"}
                 </p>
-                <p className="text-xl font-bold text-slate-900">
-                  {allPeople.filter((p) => p.isLeader).length}
+                <p
+                  data-stat-number
+                  className="text-xl font-bold text-slate-900"
+                >
+                  0
                 </p>
               </div>
             </div>
           </div>
 
           {/* Duplicates */}
-          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-3">
+          <div
+            data-stat-card
+            className="bg-white rounded-lg shadow-sm border border-slate-200 p-3"
+          >
             <div className="flex items-center gap-2.5">
               <div className="p-2.5 bg-red-100 rounded-lg">
                 <FiAlertCircle className="w-5 h-5 text-red-600" />
@@ -163,8 +195,11 @@ const DashboardPeoplePage = () => {
                 <p className="text-xs text-slate-600">
                   {t("duplicateNames") || "Duplicate Names"}
                 </p>
-                <p className="text-xl font-bold text-slate-900">
-                  {duplicateNames.size}
+                <p
+                  data-stat-number
+                  className="text-xl font-bold text-slate-900"
+                >
+                  0
                 </p>
               </div>
             </div>
@@ -193,7 +228,10 @@ const DashboardPeoplePage = () => {
         </div>
 
         {/* People List by Table */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div
+          ref={cardsRef}
+          className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6"
+        >
           {tablesWithPeople.length === 0 ? (
             <div className="col-span-full bg-white rounded-lg shadow-sm border border-slate-200 p-12 text-center">
               <FiUsers className="w-16 h-16 text-slate-300 mx-auto mb-4" />
@@ -206,13 +244,14 @@ const DashboardPeoplePage = () => {
             </div>
           ) : (
             tablesWithPeople.map((table) => (
-              <PeopleTableCard
-                key={table.id}
-                tableId={table.id}
-                tableName={table.name}
-                capacity={table.capacity}
-                people={table.people}
-              />
+              <div key={table.id} data-animate-card>
+                <PeopleTableCard
+                  tableId={table.id}
+                  tableName={table.name}
+                  capacity={table.capacity}
+                  people={table.people}
+                />
+              </div>
             ))
           )}
         </div>
