@@ -1,0 +1,117 @@
+import Image from "next/image";
+import { FiImage } from "react-icons/fi";
+
+type FoodCardProps = {
+  food: {
+    id: string;
+    name: string;
+    description?: string | null;
+    imageUrl?: string | null;
+    available: boolean;
+    variants?: Array<{
+      label: string;
+      price?: number | null;
+      currency?: string | null;
+      isSeasonal?: boolean;
+      available?: boolean;
+    }>;
+  };
+  translatedName: string;
+  translatedDescription?: string | null;
+  t: (key: string) => string;
+};
+
+const FoodCard = ({
+  food,
+  translatedName,
+  translatedDescription,
+  t,
+}: FoodCardProps) => {
+  const isUnavailable = !food.available;
+
+  return (
+    <div
+      className={`bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow border border-main/10 hover:border-main/30 ${
+        isUnavailable ? "opacity-60 grayscale" : ""
+      }`}
+    >
+      <div className="relative h-40 sm:h-48 bg-gradient-to-br from-slate-200 to-slate-100">
+        {food.imageUrl ? (
+          <Image
+            src={food.imageUrl}
+            alt={translatedName}
+            fill
+            className={`object-cover ${isUnavailable ? "opacity-50" : ""}`}
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <FiImage className="w-20 h-20 text-slate-300" />
+          </div>
+        )}
+
+        {/* Availability Badge */}
+        {isUnavailable && (
+          <div className="absolute top-2 right-2 px-3 py-1 bg-red-500 text-white text-xs font-semibold rounded-full shadow-lg">
+            {t("unavailable")}
+          </div>
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="p-3 sm:p-4">
+        <h3
+          className={`text-base sm:text-lg font-bold mb-2 line-clamp-2 ${
+            isUnavailable ? "text-slate-500" : "text-slate-900"
+          }`}
+        >
+          {translatedName}
+        </h3>
+        {translatedDescription && (
+          <p className="text-xs sm:text-sm text-slate-600 mb-3 line-clamp-2">
+            {translatedDescription}
+          </p>
+        )}
+
+        {/* Variants/Prices */}
+        {food.variants && food.variants.length > 0 && (
+          <div className="space-y-2 pt-3 border-t border-main/10 mt-auto">
+            {food.variants.map((variant, index: number) => (
+              <div
+                key={index}
+                className="flex items-start justify-between gap-2 text-sm"
+              >
+                <span className="text-darkest font-medium flex-shrink-0 min-w-0">
+                  {variant.label || t("price")}:
+                </span>
+                <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                  {variant.price && (
+                    <span className="font-semibold text-main whitespace-nowrap">
+                      {variant.price} RM
+                    </span>
+                  )}
+                  <div className="flex gap-1 flex-wrap justify-end">
+                    {variant.isSeasonal && (
+                      <span className="px-1.5 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded whitespace-nowrap">
+                        {t("seasonal")}
+                      </span>
+                    )}
+                    {!variant.available && (
+                      <span className="px-1.5 py-0.5 bg-red-100 text-red-700 text-xs font-medium rounded whitespace-nowrap">
+                        {t("unavailable")}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default FoodCard;

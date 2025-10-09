@@ -9,10 +9,13 @@ import { isValidId } from "@/utils/idValidation";
 import { Table } from "@prisma/client";
 import { NextApiHandler } from "next";
 
+const YAOYAO_USER_ID = "yaoyao"; // Admin user
+
 const handler: NextApiHandler = async (req, res) => {
   const method = req.method;
   const { tableId } = req.query;
-  const { NotAllowed, Ok, BadRequest, Created, NotFound } = Status(res);
+  const { NotAllowed, Ok, BadRequest, Created, NotFound, Unauthorized } =
+    Status(res);
 
   if (!isValidId(tableId))
     return BadRequest("tableId is required and must be a valid UUID");
@@ -23,8 +26,19 @@ const handler: NextApiHandler = async (req, res) => {
       if (!table) return NotFound("No table found");
       return Ok(table);
     case "POST":
-      const { name } = req.body;
+      const { name, id: userId } = req.body;
       if (!name) return BadRequest("Missing name");
+
+      // Check authorization: must be Yaoyao (admin) or table leader
+      const tableInfo = await getTableById(tableId);
+      if (!tableInfo) return NotFound("No table found");
+
+      const isYaoyao = userId === YAOYAO_USER_ID;
+      const isTableLeader = tableInfo.tableLeaderId === userId;
+
+      if (!isYaoyao && !isTableLeader) {
+        return Unauthorized("Only Yaoyao or the table leader can add people");
+      }
 
       const { count, capacity } = await getNumberOfPeopleInTable(tableId);
 
@@ -36,17 +50,20 @@ const handler: NextApiHandler = async (req, res) => {
 
       return Created("Successfully added new person");
     case "PUT":
+      const { id: authUserId } = req.body;
       const data = req.body as Partial<
         Omit<Table, "id" | "createdAt" | "updatedAt">
-      >;
+      > & { id?: string };
 
       if (!data || Object.keys(data).length === 0)
         return BadRequest("No data provided for update");
 
-      const tableToUpdate = await getTableById(tableId);
-      if (!tableToUpdate) return NotFound("No table found to update");
-
+      // Capacity changes only allowed for Yaoyao
       if (data.capacity) {
+        if (authUserId !== YAOYAO_USER_ID) {
+          return Unauthorized("Only Yaoyao can change table capacity");
+        }
+
         const { count } = await getNumberOfPeopleInTable(tableId);
         if (data.capacity < count)
           return BadRequest(
@@ -60,7 +77,14 @@ const handler: NextApiHandler = async (req, res) => {
           );
       }
 
-      const update = await putTableById(tableId, data);
+      const tableToUpdate = await getTableById(tableId);
+      if (!tableToUpdate) return NotFound("No table found to update");
+
+      // Remove the id field before updating
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, ...updateData } = data;
+
+      const update = await putTableById(tableId, updateData);
       if (!update) return BadRequest("Failed to update the table");
 
       return Ok("Successfully updated the table");

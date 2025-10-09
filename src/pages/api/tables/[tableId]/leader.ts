@@ -8,9 +8,11 @@ import { PostPeopleRequest } from "@/types/api/people/POST";
 import { isValidId } from "@/utils/idValidation";
 import { NextApiHandler } from "next";
 
+const YAOYAO_USER_ID = "yaoyao"; // Admin user
+
 const handler: NextApiHandler = async (req, res) => {
   const method = req.method;
-  const { NotAllowed, Ok, BadRequest, NotFound } = Status(res);
+  const { NotAllowed, Ok, BadRequest, NotFound, Unauthorized } = Status(res);
   const { tableId } = req.query;
 
   if (!isValidId(tableId)) return BadRequest("Invalid tableId");
@@ -23,7 +25,14 @@ const handler: NextApiHandler = async (req, res) => {
 
       return Ok(leader);
     case "POST":
-      const { name } = req.body as PostPeopleRequest;
+      const { name, id: userId } = req.body as PostPeopleRequest & {
+        id?: string;
+      };
+
+      // Only Yaoyao can create and assign a new leader
+      if (userId !== YAOYAO_USER_ID) {
+        return Unauthorized("Only Yaoyao can assign a table leader");
+      }
 
       if (!name) return BadRequest("Missing name");
 
@@ -36,12 +45,19 @@ const handler: NextApiHandler = async (req, res) => {
 
       return Ok(newLeader);
     case "PUT":
-      const { id } = req.body as { id?: string };
+      const { id: personId, id: authUserId } = req.body as {
+        id?: string;
+      };
 
-      if (!isValidId(id))
+      // Only Yaoyao can change the table leader
+      if (authUserId !== YAOYAO_USER_ID) {
+        return Unauthorized("Only Yaoyao can assign a table leader");
+      }
+
+      if (!isValidId(personId))
         return BadRequest("peopleId is required and must be a valid UUID");
 
-      const updatedLeader = await assignTableLeader(tableId, id);
+      const updatedLeader = await assignTableLeader(tableId, personId);
 
       if (!updatedLeader) return BadRequest("Failed to assign leader");
 

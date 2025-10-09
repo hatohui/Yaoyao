@@ -3,12 +3,18 @@ import { useTranslations } from "next-intl";
 import React from "react";
 import AddPersonForm from "./forms/AddPersonForm";
 
-const PeopleMutationBox = ({ id }: { id: string }) => {
+const PeopleMutationBox = ({
+  id,
+  userId,
+}: {
+  id: string;
+  userId?: string | null;
+}) => {
   const t = useTranslations("tables");
   const { addPeople } = usePeopleInTableMutation();
 
   const handleSubmit = (name: string) => {
-    addPeople.mutate({ tableId: id, name });
+    addPeople.mutate({ tableId: id, name, userId: userId || undefined });
   };
 
   return (

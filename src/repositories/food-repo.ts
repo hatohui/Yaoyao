@@ -19,6 +19,7 @@ const getFoodById = async (
         },
         variants: {
           select: {
+            id: true,
             label: true,
             price: true,
             currency: true,
@@ -34,6 +35,7 @@ const getFoodById = async (
       include: {
         variants: {
           select: {
+            id: true,
             label: true,
             price: true,
             currency: true,
@@ -57,6 +59,7 @@ const getFoods = async (
         },
         variants: {
           select: {
+            id: true,
             label: true,
             price: true,
             currency: true,
@@ -71,6 +74,7 @@ const getFoods = async (
       include: {
         variants: {
           select: {
+            id: true,
             label: true,
             price: true,
             currency: true,
@@ -96,6 +100,7 @@ const getFoodsByCategory = async (
         },
         variants: {
           select: {
+            id: true,
             label: true,
             price: true,
             currency: true,
@@ -111,6 +116,7 @@ const getFoodsByCategory = async (
       include: {
         variants: {
           select: {
+            id: true,
             label: true,
             price: true,
             currency: true,
@@ -144,10 +150,45 @@ const createFoodTranslation = async (
   });
 };
 
+/**
+ * Get food by ID with full variant details including id for order validation
+ */
+const getFoodWithVariantsForOrder = async (id: string) => {
+  return await prisma.food.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      available: true,
+      variants: {
+        select: {
+          id: true,
+          label: true,
+          price: true,
+          currency: true,
+          available: true,
+        },
+      },
+    },
+  });
+};
+
+/**
+ * Update food availability status
+ */
+const updateFoodAvailability = async (id: string, available: boolean) => {
+  return await prisma.food.update({
+    where: { id },
+    data: { available },
+  });
+};
+
 export {
   getFoodById,
   getFoods,
   createFood,
   createFoodTranslation,
   getFoodsByCategory,
+  getFoodWithVariantsForOrder,
+  updateFoodAvailability,
 };

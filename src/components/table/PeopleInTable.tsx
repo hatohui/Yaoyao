@@ -6,15 +6,22 @@ import { People } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import React from "react";
 import { FiUsers, FiStar, FiTrash2 } from "react-icons/fi";
+import useYaoAuth from "@/hooks/auth/useYaoAuth";
 
 type PeopleInTableProps = {
   table: GetTableByIdResponse | undefined;
   people: People[] | undefined;
+  canManage?: boolean;
 };
 
-const PeopleInTable = ({ people, table }: PeopleInTableProps) => {
+const PeopleInTable = ({
+  people,
+  table,
+  canManage = false,
+}: PeopleInTableProps) => {
   const { removePeople, assignLeader } = usePeopleInTableMutation();
   const t = useTranslations("tables");
+  const { isVerified } = useYaoAuth();
 
   const handleDelete = (personId: string) => {
     if (window.confirm(t("confirmRemove"))) {
@@ -36,7 +43,6 @@ const PeopleInTable = ({ people, table }: PeopleInTableProps) => {
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden border border-main/10">
-      {/* Compact Header */}
       <div className="bg-darkest px-4 py-2.5">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-white flex items-center gap-1.5">
@@ -52,8 +58,6 @@ const PeopleInTable = ({ people, table }: PeopleInTableProps) => {
             <span className="opacity-90"> / {capacity}</span>
           </div>
         </div>
-
-        {/* Occupancy Bar */}
         <div className="mt-2">
           <div className="w-full bg-darkest/50 rounded-full h-1.5 overflow-hidden">
             <div
@@ -69,8 +73,6 @@ const PeopleInTable = ({ people, table }: PeopleInTableProps) => {
           </div>
         </div>
       </div>
-
-      {/* Content */}
       <div className="p-4">
         {!people || people.length === 0 ? (
           <div className="text-center py-6">
@@ -96,7 +98,6 @@ const PeopleInTable = ({ people, table }: PeopleInTableProps) => {
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    {/* Avatar */}
                     <div
                       className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-white text-xs ${
                         isLeader ? "bg-yellow-500" : "bg-main"
@@ -104,8 +105,6 @@ const PeopleInTable = ({ people, table }: PeopleInTableProps) => {
                     >
                       {person.name?.charAt(0).toUpperCase() ?? "?"}
                     </div>
-
-                    {/* Person Info */}
                     <div>
                       <div className="flex items-center gap-1.5">
                         <span className="text-sm font-semibold text-slate-900">
@@ -123,31 +122,37 @@ const PeopleInTable = ({ people, table }: PeopleInTableProps) => {
                       </p>
                     </div>
                   </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      onClick={() => !isLeader && handleMakeLeader(person.id)}
-                      disabled={isLeader}
-                      title={
-                        isLeader ? t("alreadyLeader") : t("makeLeaderPrompt")
-                      }
-                      className={`p-1.5 text-xs font-medium rounded-md transition-all ${
-                        isLeader
-                          ? "bg-slate-200 text-slate-400 cursor-not-allowed"
-                          : "bg-main hover:bg-main/90 text-white"
-                      }`}
-                    >
-                      <FiStar className="w-3.5 h-3.5" />
-                    </button>
-
-                    <button
-                      onClick={() => handleDelete(person.id)}
-                      className="p-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-md transition-all flex items-center"
-                    >
-                      <FiTrash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
+                  {canManage && (
+                    <div className="flex items-center gap-1.5">
+                      {/* Star button only for Yaoyao */}
+                      {isVerified && (
+                        <button
+                          onClick={() =>
+                            !isLeader && handleMakeLeader(person.id)
+                          }
+                          disabled={isLeader}
+                          title={
+                            isLeader
+                              ? t("alreadyLeader")
+                              : t("makeLeaderPrompt")
+                          }
+                          className={`p-1.5 text-xs font-medium rounded-md transition-all ${
+                            isLeader
+                              ? "bg-slate-200 text-slate-400 cursor-not-allowed"
+                              : "bg-main hover:bg-main/90 text-white"
+                          }`}
+                        >
+                          <FiStar className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleDelete(person.id)}
+                        className="p-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-md transition-all flex items-center"
+                      >
+                        <FiTrash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             })}

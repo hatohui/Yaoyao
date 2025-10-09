@@ -6,6 +6,16 @@ const getTables = async (): Promise<Table[]> => {
   return await prisma.table.findMany({
     include: {
       tableLeader: true,
+      people: true,
+      orders: {
+        include: {
+          food: {
+            include: {
+              variants: true,
+            },
+          },
+        },
+      },
       _count: {
         select: {
           people: true,
@@ -102,6 +112,16 @@ const putTableById = async (
   });
 };
 
+const updateTablePaymentStatus = async (
+  tableId: string,
+  paid: boolean
+): Promise<Table> => {
+  return await prisma.table.update({
+    where: { id: tableId },
+    data: { paid },
+  });
+};
+
 export {
   getTables,
   getTableById,
@@ -113,4 +133,5 @@ export {
   getTableLeaderByTableId,
   getNumberOfPeopleInTable,
   putTableById,
+  updateTablePaymentStatus,
 };

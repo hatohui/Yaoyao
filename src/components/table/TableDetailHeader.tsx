@@ -3,15 +3,28 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { FiArrowLeft } from "react-icons/fi";
+import OrderLinkGenerator from "./OrderLinkGenerator";
 
 export type TableHeaderProps = {
   table: GetTableByIdResponse | undefined;
   isOccupied: boolean;
+  isTableLeader: boolean;
+  isVerified: boolean;
 };
 
-const TableDetailHeader = ({ table, isOccupied }: TableHeaderProps) => {
+const TableDetailHeader = ({
+  table,
+  isOccupied,
+  isTableLeader,
+  isVerified,
+}: TableHeaderProps) => {
   const router = useRouter();
   const t = useTranslations("tables");
+
+  const handleback = () => {
+    if (isTableLeader) router.back();
+    else router.push("/tables".concat(window.location.search));
+  };
 
   return (
     <div className="bg-white shadow-sm border-b border-main/20">
@@ -19,12 +32,21 @@ const TableDetailHeader = ({ table, isOccupied }: TableHeaderProps) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
-              onClick={() => router.back()}
+              onClick={handleback}
               className="p-1.5 hover:bg-main/10 rounded-md transition-colors"
               aria-label="Go back"
             >
               <FiArrowLeft className="w-5 h-5 text-darkest" />
             </button>
+            {/* Order Link Generator - For Table Leaders (with param) and Yaoyao */}
+            {table?.tableLeader && (isTableLeader || isVerified) && (
+              <OrderLinkGenerator
+                tableId={table.id}
+                tableLeaderId={table.tableLeader.id}
+                tableName={table.name}
+                simple
+              />
+            )}
             <div>
               <h1 className="text-lg font-semibold text-darkest">
                 {table?.name || t("tableDetails")}

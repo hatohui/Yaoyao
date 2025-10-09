@@ -13,6 +13,7 @@ model Table {
   name          String   @unique
   capacity      Int
   tableLeaderId String?  @db.Uuid
+  paid          Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -59,6 +60,7 @@ model FoodVariant {
   isSeasonal Boolean  @default(false)
 
   food      Food     @relation(fields: [foodId], references: [id])
+  orders    Order[]
 }
 
 model FoodTranslation {
@@ -100,10 +102,15 @@ model Order {
   id        String   @id @default(uuid()) @db.Uuid
   tableId   String   @db.Uuid
   foodId    String   @db.Uuid
-  quantity  Int
+  variantId String?  @db.Uuid
+  quantity  Int      @default(1)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  table Table @relation(fields: [tableId], references: [id])
-  food  Food  @relation(fields: [foodId], references: [id])
+  table   Table        @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  food    Food         @relation(fields: [foodId], references: [id], onDelete: Cascade)
+  variant FoodVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  @@index([tableId])
+  @@index([foodId])
 }
