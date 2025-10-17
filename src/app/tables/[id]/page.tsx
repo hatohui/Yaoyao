@@ -47,9 +47,13 @@ const TableDetailPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
         {isNormalMember ? (
           /* Layout for normal members: Table Details and Members side by side */
-          <div className="max-w-7xl mx-auto space-y-3 md:space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 items-start">
-              <TableDetail table={table} isloading={isLoading} compact={true} />
+          <div className="grid grid-cols-1 lg:grid-cols-2 md:space-x-5 max-w-7xl mx-auto space-y-3 md:space-y-4">
+            <div
+              className={`gap-4 md:gap-6 space-y-3 md:space-y-4 items-start ${
+                hasOrders ? "" : ""
+              }`}
+            >
+              <TableDetail table={table} isloading={isLoading} />
               <PeopleInTable
                 table={table}
                 people={people}
@@ -60,7 +64,7 @@ const TableDetailPage = () => {
             </div>
             {/* Orders section below for normal members */}
             {hasOrders && (
-              <div className="max-w-2xl mx-auto">
+              <div className="space-y-3 md:space-y-4 min-h-[500px]">
                 <TableOrdersList tableId={id} />
               </div>
             )}
