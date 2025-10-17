@@ -7,14 +7,9 @@ import { FiShoppingBag, FiDollarSign } from "react-icons/fi";
 type OrderSummaryProps = {
   orders: GetOrdersResponse[] | undefined;
   peopleCount: number;
-  isPaid?: boolean;
 };
 
-const OrderSummary = ({
-  orders,
-  peopleCount,
-  isPaid = false,
-}: OrderSummaryProps) => {
+const OrderSummary = ({ orders, peopleCount }: OrderSummaryProps) => {
   const t = useTranslations("orders");
 
   const totalItems =
@@ -74,24 +69,6 @@ const OrderSummary = ({
             </span>
           </div>
         )}
-
-        {/* Payment Status */}
-        <div className="mt-4 pt-3 border-t border-slate-200">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-slate-700">
-              {t("paymentStatus")}
-            </span>
-            <span
-              className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                isPaid
-                  ? "bg-green-100 text-green-700"
-                  : "bg-yellow-100 text-yellow-700"
-              }`}
-            >
-              {isPaid ? t("paid") : t("unpaid")}
-            </span>
-          </div>
-        </div>
       </div>
     </div>
   );

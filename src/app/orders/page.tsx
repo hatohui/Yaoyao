@@ -94,11 +94,7 @@ const OrderPage = () => {
           <div className="lg:col-span-1 order-2 lg:order-1">
             <div className="lg:sticky lg:top-24">
               {table && (
-                <OrderSummary
-                  orders={orders}
-                  peopleCount={peopleCount}
-                  isPaid={table.paid ?? false}
-                />
+                <OrderSummary orders={orders} peopleCount={peopleCount} />
               )}
             </div>
           </div>
