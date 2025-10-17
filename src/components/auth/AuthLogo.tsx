@@ -3,6 +3,7 @@ import { IoPaw } from "react-icons/io5";
 import AuthOverLay from "./AuthOverLay";
 import useAuthStore, { AuthState } from "@/stores/useAuthStore";
 import gsap from "gsap";
+import Link from "next/link";
 
 export interface YaoLogoProps {
   className?: string;
@@ -13,7 +14,7 @@ const YaoLogo = ({ className }: YaoLogoProps) => {
   const [open, setOpen] = useState(false);
   const isVerified = useAuthStore((s: AuthState) => s.isVerified);
   const pawRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     if (count === 0) return;
@@ -21,8 +22,7 @@ const YaoLogo = ({ className }: YaoLogoProps) => {
     return () => clearTimeout(t);
   }, [count]);
 
-  const handleLogoClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleLogoClick = () => {
     if (!isVerified) {
       const next = count + 1;
       setCount(next);
@@ -41,9 +41,8 @@ const YaoLogo = ({ className }: YaoLogoProps) => {
           },
         });
 
-        // Color change and scale based on proximity to trigger
-        const hueRotation = (next / 5) * 360; // Full spectrum rotation as we approach 5
-        const scale = 1 + next * 0.1; // Grows with each click
+        const hueRotation = (next / 5) * 360;
+        const scale = 1 + next * 0.1;
 
         gsap.to(pawRef.current, {
           filter: `hue-rotate(${hueRotation}deg)`,
@@ -97,7 +96,8 @@ const YaoLogo = ({ className }: YaoLogoProps) => {
 
   return (
     <div>
-      <button
+      <Link
+        href="/"
         ref={buttonRef}
         onClick={handleLogoClick}
         className={`text-base sm:text-lg font-bold text-white hover:text-main transition-colors flex items-center gap-1.5 sm:gap-2 bg-transparent border-none cursor-pointer ${className}`}
@@ -107,7 +107,7 @@ const YaoLogo = ({ className }: YaoLogoProps) => {
           <IoPaw className="w-5 h-5 sm:w-6 sm:h-6 text-main" />
         </div>
         <span className="hidden xs:inline sm:hidden md:inline">Yao Yao</span>
-      </button>
+      </Link>
 
       <AuthOverLay open={open} onClose={() => setOpen(false)} />
     </div>
