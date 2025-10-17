@@ -126,6 +126,8 @@
     "makeLeader": "设为餐桌领队",
     "alreadyLeader": "此人已经是餐桌领队",
     "makeLeaderPrompt": "将此人设为餐桌领队",
+    "demoteLeader": "降为成员",
+    "confirmDemoteLeader": "您确定要将该餐桌领队降为普通成员吗？",
     "confirmRemove": "您确定要从餐桌中移除此人吗？",
     "confirmMakeLeader": "您确定要将此人设为餐桌领队吗？",
     "orderLink": "餐桌点餐链接",

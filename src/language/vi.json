@@ -127,6 +127,8 @@
     "makeLeader": "Đặt làm Trưởng bàn",
     "alreadyLeader": "Người này đã là trưởng bàn",
     "makeLeaderPrompt": "Đặt người này làm trưởng bàn",
+    "demoteLeader": "Hạ bậc thành Thành viên",
+    "confirmDemoteLeader": "Bạn có chắc chắn muốn hạ bậc trưởng bàn này thành thành viên thường?",
     "confirmRemove": "Bạn có chắc chắn muốn xóa người này khỏi bàn?",
     "confirmMakeLeader": "Bạn có chắc chắn muốn đặt người này làm trưởng bàn?",
     "orderLink": "Liên kết đặt món cho bàn",

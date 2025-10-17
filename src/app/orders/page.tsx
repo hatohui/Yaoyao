@@ -38,10 +38,6 @@ const OrderPage = () => {
   useEffect(() => {
     if (isLoadingTable) return;
 
-    // Redirect to 404 if:
-    // 1. No tableId or leaderId provided
-    // 2. Table doesn't exist
-    // 3. Leader ID doesn't match table leader
     if (!tableId || !leaderId || !table || !isValid) {
       notFound();
     }

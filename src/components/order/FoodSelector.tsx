@@ -256,7 +256,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
       {isOpen && (
         <div
           ref={modalRef}
-          className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-4 bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex h-screen items-center justify-center p-0 md:p-4 bg-black/60 backdrop-blur-sm"
         >
           <div
             ref={contentRef}

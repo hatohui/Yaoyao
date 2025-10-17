@@ -15,9 +15,9 @@ const usePeopleInTableMutation = () => {
         id: data.userId || (isVerified ? "yaoyao" : undefined),
       }),
     successMessageKey: "personAdded",
-    onSuccessCallback: (_data, variables) => {
+    onSuccessCallback: () => {
       client.invalidateQueries({
-        queryKey: ["tables", variables.tableId, "people"],
+        queryKey: ["tables"],
       });
     },
   });
@@ -25,9 +25,9 @@ const usePeopleInTableMutation = () => {
   const removePeople = useMutationWithError({
     mutationFn: (data: { tableId: string; personId: string }) =>
       axios.delete(`/tables/${data.tableId}/people/${data.personId}`),
-    onSuccessCallback: (_data, variables) => {
+    onSuccessCallback: () => {
       client.invalidateQueries({
-        queryKey: ["tables", variables.tableId, "people"],
+        queryKey: ["tables"],
       });
     },
   });

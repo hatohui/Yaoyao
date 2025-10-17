@@ -5,8 +5,11 @@ import { GetTableByIdResponse } from "@/types/api/table/GET";
 import { People } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import React from "react";
-import { FiUsers, FiStar, FiTrash2 } from "react-icons/fi";
+import { FiUsers } from "react-icons/fi";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
+import TableLeaderTag from "../../tags/TableLeaderTag";
+import DeleteButton from "../buttons/DeleteButton";
+import MakeLeaderButton from "../buttons/MakeLeaderButton";
 
 type PeopleInTableProps = {
   table: GetTableByIdResponse | undefined;
@@ -19,7 +22,8 @@ const PeopleInTable = ({
   table,
   canManage = false,
 }: PeopleInTableProps) => {
-  const { removePeople, assignLeader } = usePeopleInTableMutation();
+  const { removePeople, assignLeader, removeLeader } =
+    usePeopleInTableMutation();
   const t = useTranslations("tables");
   const { isVerified } = useYaoAuth();
 
@@ -32,6 +36,12 @@ const PeopleInTable = ({
   const handleMakeLeader = (personId: string) => {
     if (window.confirm(t("confirmMakeLeader"))) {
       assignLeader.mutate({ tableId: table?.id ?? "", personId });
+    }
+  };
+
+  const handleDemoteLeader = () => {
+    if (window.confirm(t("confirmDemoteLeader"))) {
+      removeLeader.mutate({ tableId: table?.id ?? "" });
     }
   };
 
@@ -73,7 +83,7 @@ const PeopleInTable = ({
           </div>
         </div>
       </div>
-      <div className="p-4">
+      <div className="p-4 max-h-[400px] overflow-y-auto">
         {!people || people.length === 0 ? (
           <div className="text-center py-6">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 mb-3">
@@ -110,12 +120,7 @@ const PeopleInTable = ({
                         <span className="text-sm font-semibold text-slate-900">
                           {person.name}
                         </span>
-                        {isLeader && (
-                          <span className="inline-flex items-center px-1.5 py-0.5 text-xs font-semibold bg-yellow-500 text-white rounded">
-                            <FiStar className="w-2.5 h-2.5 mr-0.5" />
-                            {t("leader")}
-                          </span>
-                        )}
+                        {isLeader && <TableLeaderTag />}
                       </div>
                       <p className="text-xs text-slate-600">
                         {isLeader ? t("leader") : t("guest")}
@@ -124,34 +129,27 @@ const PeopleInTable = ({
                   </div>
                   {canManage && (
                     <div className="flex items-center gap-1.5">
-                      {/* Star button only for Yaoyao */}
-                      {isVerified && (
+                      {isVerified && !isLeader && (
+                        <MakeLeaderButton
+                          isLeader={isLeader}
+                          handleMakeLeader={handleMakeLeader}
+                          person={person}
+                        />
+                      )}
+                      {isVerified && isLeader && (
                         <button
-                          onClick={() =>
-                            !isLeader && handleMakeLeader(person.id)
-                          }
-                          disabled={isLeader}
-                          title={
-                            isLeader
-                              ? t("alreadyLeader")
-                              : t("makeLeaderPrompt")
-                          }
-                          className={`p-1.5 text-xs font-medium rounded-md transition-all ${
-                            isLeader
-                              ? "bg-slate-200 text-slate-400 cursor-not-allowed"
-                              : "bg-main hover:bg-main/90 text-white"
-                          }`}
+                          onClick={handleDemoteLeader}
+                          title={t("demoteLeader")}
+                          className="p-1.5 text-xs font-medium rounded-md transition-all bg-yellow-500 hover:bg-yellow-600 text-white"
                         >
-                          <FiStar className="w-3.5 h-3.5" />
+                          <FiUsers className="w-3.5 h-3.5" />
                         </button>
                       )}
-                      {!isLeader && (
-                        <button
-                          onClick={() => handleDelete(person.id)}
-                          className="p-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-md transition-all flex items-center"
-                        >
-                          <FiTrash2 className="w-3.5 h-3.5" />
-                        </button>
+                      {isVerified && !isLeader && (
+                        <DeleteButton
+                          handleDelete={handleDelete}
+                          person={person}
+                        />
                       )}
                     </div>
                   )}

@@ -1,7 +1,11 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { GetTableByIdResponse } from "@/types/api/table/GET";
 import { useTranslations } from "next-intl";
-import { FiGrid, FiUsers, FiUser } from "react-icons/fi";
+import { FiGrid, FiUsers, FiUser, FiEdit2 } from "react-icons/fi";
+import useTableMutation from "@/hooks/table/useTableMutation";
+import useYaoAuth from "@/hooks/auth/useYaoAuth";
+import CapacityForm from "./forms/CapacityForm";
 
 export type TableDetailProps = {
   className?: string;
@@ -11,6 +15,31 @@ export type TableDetailProps = {
 
 const TableDetail = ({ className, table, isloading }: TableDetailProps) => {
   const t = useTranslations("tables");
+  const { isVerified } = useYaoAuth();
+  const { changeCapacity } = useTableMutation();
+  const [isEditingCapacity, setIsEditingCapacity] = useState(false);
+
+  const handleSubmit = (capacity: number) => {
+    changeCapacity.mutate(
+      {
+        newCapacity: capacity,
+        tableId: table?.id ?? "",
+      },
+      {
+        onSuccess: () => {
+          setIsEditingCapacity(false);
+        },
+      }
+    );
+  };
+
+  const handleCancel = () => {
+    setIsEditingCapacity(false);
+  };
+
+  const handleEdit = () => {
+    setIsEditingCapacity(true);
+  };
 
   if (isloading) {
     return (
@@ -52,10 +81,44 @@ const TableDetail = ({ className, table, isloading }: TableDetailProps) => {
             <FiUsers className="w-4 h-4" />
             <span className="text-xs font-medium">{t("capacity")}</span>
           </div>
-          <span className="text-sm font-semibold text-slate-900">
-            {table?.capacity} {t("people")}
-          </span>
+          {isVerified ? (
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-slate-900">
+                {table?.capacity} {t("people")}
+              </span>
+              <button
+                onClick={handleEdit}
+                disabled={isEditingCapacity}
+                className="p-1 hover:bg-slate-100 rounded transition-colors disabled:opacity-50"
+                title={t("changeCapacity")}
+              >
+                <FiEdit2 className="w-3.5 h-3.5 text-main" />
+              </button>
+            </div>
+          ) : (
+            <span className="text-sm font-semibold text-slate-900">
+              {table?.capacity} {t("people")}
+            </span>
+          )}
         </div>
+
+        {/* Capacity Edit Form */}
+        {isVerified && isEditingCapacity && (
+          <div className="py-2 border-b border-main/10">
+            <CapacityForm
+              key={table?.capacity ?? 0}
+              currentCapacity={table?.capacity ?? 0}
+              onSubmit={handleSubmit}
+              onCancel={handleCancel}
+              onEdit={handleEdit}
+              isPending={changeCapacity.isPending}
+              isEditing={isEditingCapacity}
+              formError={changeCapacity.formError}
+              formSuccess={changeCapacity.formSuccess}
+              clearError={changeCapacity.clearError}
+            />
+          </div>
+        )}
 
         <div className="py-2">
           <div className="flex items-center gap-1.5 text-darkest mb-2">

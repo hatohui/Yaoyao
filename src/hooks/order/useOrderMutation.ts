@@ -13,7 +13,7 @@ export const useAddOrder = (tableId: string) => {
       axios.post(`/tables/${tableId}/orders`, data),
     successMessageKey: "orderAdded",
     onSuccessCallback: () => {
-      queryClient.invalidateQueries({ queryKey: ["orders", tableId] });
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
     },
   });
 };
@@ -26,7 +26,7 @@ export const useUpdateOrder = (tableId: string, orderId: string) => {
       axios.put(`/tables/${tableId}/orders/${orderId}`, data),
     successMessageKey: "orderUpdated",
     onSuccessCallback: () => {
-      queryClient.invalidateQueries({ queryKey: ["orders", tableId] });
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
     },
   });
 };
@@ -38,7 +38,7 @@ export const useDeleteOrder = (tableId: string, orderId: string) => {
     mutationFn: () => axios.delete(`/tables/${tableId}/orders/${orderId}`),
     successMessageKey: "orderRemoved",
     onSuccessCallback: () => {
-      queryClient.invalidateQueries({ queryKey: ["orders", tableId] });
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
     },
   });
 };

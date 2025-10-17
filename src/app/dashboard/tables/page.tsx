@@ -5,7 +5,7 @@ import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import { useTranslations } from "next-intl";
 import { notFound } from "next/navigation";
 import Loading from "@/components/common/Loading";
-import { FiUsers, FiFilter, FiSearch } from "react-icons/fi";
+import { FiUsers, FiSearch } from "react-icons/fi";
 import TableCard from "@/components/dashboard/TableCard";
 import {
   usePageAnimation,
@@ -16,21 +16,11 @@ const DashboardTablesPage = () => {
   const { isVerified } = useYaoAuth();
   const t = useTranslations("dashboard");
   const tTables = useTranslations("tables");
-
-  const [paymentFilter, setPaymentFilter] = useState<"all" | "paid" | "unpaid">(
-    "all"
-  );
   const [searchQuery, setSearchQuery] = useState("");
-
   const { data: tables, isLoading } = useTables();
 
   // Filter tables based on payment status and search query
   const filteredTables = tables?.filter((table) => {
-    // Payment filter
-    if (paymentFilter === "paid" && !table.paid) return false;
-    if (paymentFilter === "unpaid" && table.paid) return false;
-
-    // Search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       const matchesName = table.name.toLowerCase().includes(query);
@@ -42,7 +32,6 @@ const DashboardTablesPage = () => {
       );
       return matchesName || matchesLeader || matchesPeople;
     }
-
     return true;
   });
 
@@ -86,55 +75,6 @@ const DashboardTablesPage = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-main focus:border-main outline-none"
             />
-          </div>
-        </div>
-
-        {/* Payment Filter */}
-        <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4 mb-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div className="flex items-center gap-2">
-              <FiFilter className="text-slate-400 w-5 h-5" />
-              <span className="text-sm font-medium text-slate-700">
-                {t("filterByPayment") || "Filter by Payment"}:
-              </span>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setPaymentFilter("all")}
-                className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
-                  paymentFilter === "all"
-                    ? "bg-main text-white"
-                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                }`}
-              >
-                {t("allTables") || "All Tables"}
-              </button>
-              <button
-                onClick={() => setPaymentFilter("paid")}
-                className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
-                  paymentFilter === "paid"
-                    ? "bg-green-500 text-white"
-                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                }`}
-              >
-                {t("paidOnly") || "Paid Only"}
-              </button>
-              <button
-                onClick={() => setPaymentFilter("unpaid")}
-                className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
-                  paymentFilter === "unpaid"
-                    ? "bg-amber-500 text-white"
-                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                }`}
-              >
-                {t("unpaidOnly") || "Unpaid Only"}
-              </button>
-            </div>
-          </div>
-
-          <div className="mt-4 text-sm text-slate-600">
-            {filteredTables?.length || 0} {tTables("tableName")}{" "}
-            {t("found") || "found"}
           </div>
         </div>
 

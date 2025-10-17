@@ -118,6 +118,8 @@
     "makeLeader": "Make Table Leader",
     "alreadyLeader": "This person is already the table leader",
     "makeLeaderPrompt": "Make this person the table leader",
+    "demoteLeader": "Demote to Member",
+    "confirmDemoteLeader": "Are you sure you want to demote this table leader to a regular member?",
     "confirmRemove": "Are you sure you want to remove this person from the table?",
     "confirmMakeLeader": "Are you sure you want to make this person the table leader?",
     "orderLink": "Order Link for",
