@@ -113,6 +113,8 @@
     "full": "FULL",
     "noGuests": "No members yet",
     "noGuestsMessage": "Add members to this table to get started",
+    "addMemberCard": "Add Member",
+    "addMemberPlaceholder": "Enter member name...",
     "leader": "Table Leader",
     "guest": "Member",
     "makeLeader": "Make Table Leader",

@@ -22,8 +22,7 @@ const TableDetailHeader = ({
   const t = useTranslations("tables");
 
   const handleback = () => {
-    if (isTableLeader) router.back();
-    else router.push("/tables".concat(window.location.search));
+    router.back();
   };
 
   return (

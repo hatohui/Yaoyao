@@ -121,6 +121,8 @@
     "full": "已满",
     "noGuests": "暂无成员",
     "noGuestsMessage": "将成员添加到此餐桌以开始",
+    "addMemberCard": "添加成员",
+    "addMemberPlaceholder": "输入成员姓名...",
     "leader": "餐桌领队",
     "guest": "成员",
     "makeLeader": "设为餐桌领队",

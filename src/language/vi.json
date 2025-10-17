@@ -122,6 +122,8 @@
     "full": "ĐẦY",
     "noGuests": "Chưa có thành viên",
     "noGuestsMessage": "Thêm thành viên vào bàn này để bắt đầu",
+    "addMemberCard": "Thêm thành viên",
+    "addMemberPlaceholder": "Nhập tên thành viên...",
     "leader": "Trưởng bàn",
     "guest": "Thành viên",
     "makeLeader": "Đặt làm Trưởng bàn",

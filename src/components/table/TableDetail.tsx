@@ -11,9 +11,15 @@ export type TableDetailProps = {
   className?: string;
   table: GetTableByIdResponse | undefined;
   isloading: boolean;
+  compact?: boolean;
 };
 
-const TableDetail = ({ className, table, isloading }: TableDetailProps) => {
+const TableDetail = ({
+  className,
+  table,
+  isloading,
+  compact = false,
+}: TableDetailProps) => {
   const t = useTranslations("tables");
   const { isVerified } = useYaoAuth();
   const { changeCapacity } = useTableMutation();
@@ -59,104 +65,112 @@ const TableDetail = ({ className, table, isloading }: TableDetailProps) => {
         className || ""
       }`}
     >
-      <div className="bg-darkest px-4 py-2.5">
+      <div className="bg-darkest px-4 py-2.5 flex items-center justify-between">
         <h2 className="text-sm font-semibold text-white">{t("tableInfo")}</h2>
       </div>
 
-      <div className="p-4 space-y-3">
-        <div className="flex items-center gap-2 pb-2 border-b border-main/10">
-          <div className="w-8 h-8 rounded-md bg-main/10 flex items-center justify-center flex-shrink-0">
-            <FiGrid className="w-4 h-4 text-main" />
+      <div className="overflow-hidden">
+        <div className={`p-4 space-y-3 ${compact ? "min-h-[300px]" : ""}`}>
+          <div className="flex items-center gap-2 pb-2 border-b border-main/10">
+            <div className="w-8 h-8 rounded-md bg-main/10 flex items-center justify-center flex-shrink-0">
+              <FiGrid className="w-4 h-4 text-main" />
+            </div>
+            <div>
+              <p className="text-xs text-slate-500">{t("tableName")}</p>
+              <p className="text-sm font-semibold text-slate-900">
+                {table?.name}
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="text-xs text-slate-500">{t("tableName")}</p>
-            <p className="text-sm font-semibold text-slate-900">
-              {table?.name}
-            </p>
-          </div>
-        </div>
 
-        <div className="flex items-center justify-between py-2 border-b border-main/10">
-          <div className="flex items-center gap-1.5 text-darkest">
-            <FiUsers className="w-4 h-4" />
-            <span className="text-xs font-medium">{t("capacity")}</span>
-          </div>
-          {isVerified ? (
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between py-2 border-b border-main/10">
+            <div className="flex items-center gap-1.5 text-darkest">
+              <FiUsers className="w-4 h-4" />
+              <span className="text-xs font-medium">{t("capacity")}</span>
+            </div>
+            {isVerified ? (
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-slate-900">
+                  {table?.capacity} {t("people")}
+                </span>
+                <button
+                  onClick={handleEdit}
+                  disabled={isEditingCapacity}
+                  className="p-1 hover:bg-slate-100 rounded transition-colors disabled:opacity-50"
+                  title={t("changeCapacity")}
+                >
+                  <FiEdit2 className="w-3.5 h-3.5 text-main" />
+                </button>
+              </div>
+            ) : (
               <span className="text-sm font-semibold text-slate-900">
                 {table?.capacity} {t("people")}
               </span>
-              <button
-                onClick={handleEdit}
-                disabled={isEditingCapacity}
-                className="p-1 hover:bg-slate-100 rounded transition-colors disabled:opacity-50"
-                title={t("changeCapacity")}
-              >
-                <FiEdit2 className="w-3.5 h-3.5 text-main" />
-              </button>
-            </div>
-          ) : (
-            <span className="text-sm font-semibold text-slate-900">
-              {table?.capacity} {t("people")}
-            </span>
-          )}
-        </div>
-
-        {/* Capacity Edit Form */}
-        {isVerified && isEditingCapacity && (
-          <div className="py-2 border-b border-main/10">
-            <CapacityForm
-              key={table?.capacity ?? 0}
-              currentCapacity={table?.capacity ?? 0}
-              onSubmit={handleSubmit}
-              onCancel={handleCancel}
-              onEdit={handleEdit}
-              isPending={changeCapacity.isPending}
-              isEditing={isEditingCapacity}
-              formError={changeCapacity.formError}
-              formSuccess={changeCapacity.formSuccess}
-              clearError={changeCapacity.clearError}
-            />
+            )}
           </div>
-        )}
 
-        <div className="py-2">
-          <div className="flex items-center gap-1.5 text-darkest mb-2">
-            <FiUser className="w-4 h-4" />
-            <span className="text-xs font-medium">{t("partyLeader")}</span>
-          </div>
-          {table?.tableLeader ? (
-            <div className="ml-5 flex items-center gap-2 p-2 bg-main/10 rounded-md border border-main/20">
-              <div className="w-7 h-7 rounded-full bg-main flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                {table.tableLeader.name.charAt(0).toUpperCase()}
-              </div>
-              <div className="min-w-0">
-                <p className="text-sm font-medium text-slate-900 truncate">
-                  {table.tableLeader.name}
-                </p>
-                <p className="text-xs text-slate-500">{t("leader")}</p>
-              </div>
-            </div>
-          ) : (
-            <div className="ml-5 p-2 bg-slate-50 rounded-md">
-              <p className="text-xs text-slate-500 italic">{t("noLeader")}</p>
+          {/* Capacity Edit Form */}
+          {isVerified && isEditingCapacity && (
+            <div className="py-2 border-b border-main/10">
+              <CapacityForm
+                key={table?.capacity ?? 0}
+                currentCapacity={table?.capacity ?? 0}
+                onSubmit={handleSubmit}
+                onCancel={handleCancel}
+                onEdit={handleEdit}
+                isPending={changeCapacity.isPending}
+                isEditing={isEditingCapacity}
+                formError={changeCapacity.formError}
+                formSuccess={changeCapacity.formSuccess}
+                clearError={changeCapacity.clearError}
+              />
             </div>
           )}
-        </div>
 
-        <div className="pt-2 space-y-1.5 text-xs">
-          <div className="flex items-center justify-between">
-            <span className="text-slate-500">{t("created")}</span>
-            <span className="text-slate-700">
-              {new Date(table?.createdAt ?? "").toLocaleDateString()}
-            </span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-slate-500">{t("lastUpdated")}</span>
-            <span className="text-slate-700">
-              {new Date(table?.updatedAt ?? "").toLocaleDateString()}
-            </span>
-          </div>
+          {!compact && (
+            <div className="py-2">
+              <div className="flex items-center gap-1.5 text-darkest mb-2">
+                <FiUser className="w-4 h-4" />
+                <span className="text-xs font-medium">{t("partyLeader")}</span>
+              </div>
+              {table?.tableLeader ? (
+                <div className="ml-5 flex items-center gap-2 p-2 bg-main/10 rounded-md border border-main/20">
+                  <div className="w-7 h-7 rounded-full bg-main flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                    {table.tableLeader.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-slate-900 truncate">
+                      {table.tableLeader.name}
+                    </p>
+                    <p className="text-xs text-slate-500">{t("leader")}</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="ml-5 p-2 bg-slate-50 rounded-md">
+                  <p className="text-xs text-slate-500 italic">
+                    {t("noLeader")}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {!compact && (
+            <div className="pt-2 space-y-1.5 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="text-slate-500">{t("created")}</span>
+                <span className="text-slate-700">
+                  {new Date(table?.createdAt ?? "").toLocaleDateString()}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-500">{t("lastUpdated")}</span>
+                <span className="text-slate-700">
+                  {new Date(table?.updatedAt ?? "").toLocaleDateString()}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
