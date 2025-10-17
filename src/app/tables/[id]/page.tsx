@@ -77,7 +77,7 @@ const TableDetailPage = () => {
             } gap-4 md:gap-6 items-start`}
           >
             {/* Left Column - Table Info & Management & People */}
-            <div className="space-y-3 md:space-y-4">
+            <div className="space-y-3 md:space-y-4 grid">
               <TableDetail table={table} isloading={isLoading} />
 
               {/* People Management - Always in left column */}
@@ -93,9 +93,7 @@ const TableDetailPage = () => {
             {/* Right Column - Table Orders (only shown when there are orders) */}
             <div className="space-y-3 md:space-y-4 min-h-[500px]">
               {/* Manage Orders Button - For Table Leaders and Yaoyao */}
-              {table?.tableLeader && canManage && (
-                <ManageOrderButton table={table} />
-              )}
+              {(isVerified || canManage) && <ManageOrderButton table={table} />}
               {hasOrders && <TableOrdersList tableId={id} />}
             </div>
           </div>
