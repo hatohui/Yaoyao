@@ -1,7 +1,39 @@
 @import "tailwindcss";
 
+/* Configure dark mode variant to use class strategy */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --color-main: #be79e6;
+  --color-main-light: #d399f0;
+  --color-main-bright: #e0b3f7;
   --color-darkest: #4c2e50;
   --color-available: #10b981;
+
+  /* Dark mode colors - Enhanced for better visibility */
+  --color-dark-bg: #0f172a;
+  --color-dark-surface: #1e293b;
+  --color-dark-card: #334155;
+  --color-dark-border: #475569;
+  --color-dark-text: #f1f5f9;
+  --color-dark-text-secondary: #cbd5e1;
+
+  /* Dark mode accent colors - More vibrant */
+  --color-dark-main: #d399f0;
+  --color-dark-main-hover: #e0b3f7;
+  --color-dark-accent: #a855f7;
+  --color-dark-success: #34d399;
+  --color-dark-warning: #fbbf24;
+  --color-dark-error: #f87171;
+}
+
+/* Dark mode base styles */
+.dark {
+  color-scheme: dark;
+}
+
+/* Enhanced dark mode utilities */
+.dark {
+  /* Make main color more vibrant in dark mode */
+  --color-main: #d399f0;
 }

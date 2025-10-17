@@ -77,7 +77,7 @@ const CapacityForm = ({
     <form onSubmit={handleSubmit}>
       <label
         htmlFor="capacity"
-        className="block text-xs font-medium text-slate-700 mb-1.5"
+        className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5"
       >
         {t("changeCapacity")}
       </label>
@@ -90,14 +90,14 @@ const CapacityForm = ({
           value={capacityForm.value}
           onChange={capacityForm.handleChange}
           disabled={!isEditing}
-          className={`w-full px-3 py-1.5 pr-24 text-sm border rounded-md focus:ring-2 focus:ring-main focus:border-main transition-colors ${
+          className={`w-full px-3 py-1.5 pr-24 text-sm border rounded-md focus:ring-2 focus:ring-main focus:border-main transition-colors text-slate-900 dark:text-slate-100 ${
             !isEditing
-              ? "bg-slate-50 cursor-not-allowed"
+              ? "bg-slate-50 dark:bg-slate-700/50 cursor-not-allowed"
               : formError || capacityForm.error
-              ? "border-red-500"
+              ? "border-red-500 dark:border-red-500 bg-white dark:bg-slate-700"
               : formSuccess
-              ? "border-green-500"
-              : "border-slate-300"
+              ? "border-green-500 dark:border-green-500 bg-white dark:bg-slate-700"
+              : "border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700"
           }`}
         />
         {/* Buttons inside/next to input */}
@@ -133,7 +133,7 @@ const CapacityForm = ({
                 type="button"
                 onClick={handleCancel}
                 disabled={isPending}
-                className="px-2 py-1 bg-slate-200 hover:bg-slate-300 disabled:bg-slate-100 text-slate-700 text-xs font-medium rounded transition-colors"
+                className="px-2 py-1 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 disabled:bg-slate-100 dark:disabled:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium rounded transition-colors"
                 title={tCommon("cancel")}
               >
                 ✕

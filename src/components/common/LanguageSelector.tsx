@@ -32,11 +32,11 @@ const LanguageSelector = ({ className }: LanguageSelectorProps) => {
           appearance-none cursor-pointer
           px-1.5 sm:px-2 py-1 sm:py-1.5 pr-5 sm:pr-6
           text-xs sm:text-sm font-medium
-          bg-white
-          border border-slate-300
+          bg-white dark:bg-slate-700
+          border border-slate-300 dark:border-slate-600
           rounded-md
-          text-slate-700
-          hover:border-slate-400
+          text-slate-700 dark:text-slate-200
+          hover:border-slate-400 dark:hover:border-slate-500
           focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent
           transition-colors
           ${className}
@@ -50,7 +50,7 @@ const LanguageSelector = ({ className }: LanguageSelectorProps) => {
       </select>
       {/* Dropdown Arrow Icon */}
       <div className="absolute inset-y-0 right-0 flex items-center pr-1.5 sm:pr-2 pointer-events-none">
-        <FiChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-slate-400" />
+        <FiChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-slate-400 dark:text-slate-500" />
       </div>
     </div>
   );

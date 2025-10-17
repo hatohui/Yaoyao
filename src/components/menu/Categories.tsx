@@ -32,7 +32,7 @@ const Categories = ({ className }: { className?: string }) => {
 
   return (
     <div className={className}>
-      <h3 className="text-xs sm:text-sm font-semibold text-darkest mb-2 sm:mb-3 uppercase tracking-wide">
+      <h3 className="text-xs sm:text-sm font-semibold text-darkest dark:text-slate-200 mb-2 sm:mb-3 uppercase tracking-wide">
         {t("categories")}
       </h3>
       <div className="flex flex-wrap gap-1.5 sm:gap-2">
@@ -41,7 +41,7 @@ const Categories = ({ className }: { className?: string }) => {
           className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-sm transition-all ${
             !currentCategory
               ? "bg-main text-white shadow-md"
-              : "bg-white text-slate-700 border border-slate-300 hover:bg-slate-50"
+              : "bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600"
           }`}
         >
           {t("allCategories")}
@@ -55,7 +55,7 @@ const Categories = ({ className }: { className?: string }) => {
               className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-sm transition-all ${
                 isActive
                   ? "bg-main text-white shadow-md"
-                  : "bg-white text-slate-700 border border-slate-300 hover:bg-slate-50"
+                  : "bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600"
               }`}
               onClick={() => handleCategoryClick(category.key)}
             >

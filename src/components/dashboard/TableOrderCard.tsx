@@ -61,20 +61,24 @@ const TableOrderCard = ({ table }: TableOrderCardProps) => {
   return (
     <Link
       href={`/orders?table=${table.id}&id=${table.tableLeader?.id}`}
-      className="block bg-white rounded-lg shadow-sm border border-slate-200 hover:shadow-md hover:border-main/30 transition-all p-6"
+      className="block bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md hover:border-main/30 dark:hover:border-main/50 transition-all p-6"
     >
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h3 className="text-lg font-bold text-slate-900">{table.name}</h3>
-          <p className="text-sm text-slate-600">{table.tableLeader?.name}</p>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+            {table.name}
+          </h3>
+          <p className="text-sm text-slate-600 dark:text-slate-400">
+            {table.tableLeader?.name}
+          </p>
         </div>
         {table.paid ? (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 text-sm font-medium rounded-full">
             <FiCheckCircle className="w-4 h-4" />
             {tOrder("paid")}
           </span>
         ) : (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-100 text-amber-700 text-sm font-medium rounded-full">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 text-sm font-medium rounded-full">
             <FiXCircle className="w-4 h-4" />
             {tOrder("unpaid")}
           </span>
@@ -82,20 +86,24 @@ const TableOrderCard = ({ table }: TableOrderCardProps) => {
       </div>
 
       {isLoading ? (
-        <div className="py-4 text-center text-sm text-slate-500">
+        <div className="py-4 text-center text-sm text-slate-500 dark:text-slate-400">
           {tOrder("loading")}
         </div>
       ) : (
-        <div className="space-y-3 pt-4 border-t border-slate-200">
+        <div className="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-700">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-slate-600">{t("orderCount")}:</span>
-            <span className="font-semibold text-slate-900">
+            <span className="text-sm text-slate-600 dark:text-slate-400">
+              {t("orderCount")}:
+            </span>
+            <span className="font-semibold text-slate-900 dark:text-slate-100">
               {totalItems} {tOrder("items")}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-slate-600">{t("totalAmount")}:</span>
-            <span className="font-bold text-main text-lg flex items-center gap-1">
+            <span className="text-sm text-slate-600 dark:text-slate-400">
+              {t("totalAmount")}:
+            </span>
+            <span className="font-bold text-main dark:text-main text-lg flex items-center gap-1">
               <FiDollarSign className="w-5 h-5" />
               {totalAmount.toFixed(2)} {currency}
             </span>

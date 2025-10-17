@@ -4,6 +4,7 @@ import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import NavBar from "@/components/nav/NavBar";
 import TanstackProvider from "@/config/TanstackProvider";
+import ThemeProvider from "@/components/common/ThemeProvider";
 import dynamic from "next/dynamic";
 import enableGsapPlugins from "@/config/gsap";
 import "./globals.css";
@@ -35,15 +36,19 @@ export default async function RootLayout({
   enableGsapPlugins();
 
   return (
-    <html lang={locale}>
-      <body className={`${inter.variable} ${geistMono.variable} antialiased`}>
-        <TanstackProvider>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            <NavBar />
-            <AuthHydrator />
-            {children}
-          </NextIntlClientProvider>
-        </TanstackProvider>
+    <html lang={locale} suppressHydrationWarning>
+      <body
+        className={`${inter.variable} ${geistMono.variable} antialiased bg-white dark:bg-dark-bg text-slate-900 dark:text-dark-text`}
+      >
+        <ThemeProvider>
+          <TanstackProvider>
+            <NextIntlClientProvider locale={locale} messages={messages}>
+              <NavBar />
+              <AuthHydrator />
+              {children}
+            </NextIntlClientProvider>
+          </TanstackProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

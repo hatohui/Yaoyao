@@ -20,7 +20,7 @@ const MakeLeaderButton = ({
       title={isLeader ? t("alreadyLeader") : t("makeLeaderPrompt")}
       className={`p-1.5 text-xs font-medium rounded-md transition-all ${
         isLeader
-          ? "bg-slate-200 text-slate-400 cursor-not-allowed"
+          ? "bg-slate-200 dark:bg-slate-700 text-slate-400 dark:text-slate-500 cursor-not-allowed"
           : "bg-main hover:bg-main/90 text-white"
       }`}
     >

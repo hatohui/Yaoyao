@@ -100,7 +100,7 @@ const YaoLogo = ({ className }: YaoLogoProps) => {
         href="/"
         ref={buttonRef}
         onClick={handleLogoClick}
-        className={`text-base sm:text-lg font-bold text-white hover:text-main transition-colors flex items-center gap-1.5 sm:gap-2 bg-transparent border-none cursor-pointer ${className}`}
+        className={`text-base sm:text-lg font-bold text-white dark:text-slate-200 hover:text-main dark:hover:text-main transition-colors flex items-center gap-1.5 sm:gap-2 bg-transparent border-none cursor-pointer ${className}`}
         title="Yao Yao Restaurant"
       >
         <div ref={pawRef} className="inline-block">

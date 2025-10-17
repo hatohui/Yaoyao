@@ -52,10 +52,10 @@ const TableCard = ({ table }: TableCardProps) => {
       ref={cardRef}
       onMouseEnter={() => animations.hoverScale(cardRef.current, 1.02)}
       onMouseLeave={() => animations.hoverScaleReset(cardRef.current)}
-      className="bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden transition-shadow"
+      className="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-slate-200 dark:border-slate-700 overflow-hidden transition-shadow"
     >
       {/* Header */}
-      <div className="bg-darkest px-4 py-2.5">
+      <div className="bg-darkest dark:bg-slate-900 px-4 py-2.5">
         <div className="flex items-center justify-between">
           <h3 className="text-base font-bold text-white">{table.name}</h3>
           <span
@@ -73,12 +73,12 @@ const TableCard = ({ table }: TableCardProps) => {
         {/* People Count */}
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-1.5">
-            <FiUsers className="w-3.5 h-3.5 text-slate-400" />
-            <span className="font-medium text-slate-600">
+            <FiUsers className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+            <span className="font-medium text-slate-600 dark:text-slate-400">
               {tTables("people")}:
             </span>
           </div>
-          <span className="font-semibold text-slate-900">
+          <span className="font-semibold text-slate-900 dark:text-slate-100">
             {peopleCount} / {table.capacity}
           </span>
         </div>
@@ -87,24 +87,24 @@ const TableCard = ({ table }: TableCardProps) => {
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-1.5">
             <FiStar className="w-3.5 h-3.5 text-yellow-500" />
-            <span className="font-medium text-slate-600">
+            <span className="font-medium text-slate-600 dark:text-slate-400">
               {tTables("partyLeader")}:
             </span>
           </div>
-          <span className="font-semibold text-slate-900">
+          <span className="font-semibold text-slate-900 dark:text-slate-100">
             {table.tableLeader?.name || tTables("noLeader")}
           </span>
         </div>
 
         {/* Total Cost */}
-        <div className="flex items-center justify-between pt-2 border-t border-slate-200">
+        <div className="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-700">
           <div className="flex items-center gap-1.5">
-            <FiDollarSign className="w-3.5 h-3.5 text-green-600" />
-            <span className="font-medium text-slate-600 text-xs">
+            <FiDollarSign className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
+            <span className="font-medium text-slate-600 dark:text-slate-400 text-xs">
               {t("totalAmount")}:
             </span>
           </div>
-          <span className="text-base font-bold text-green-600">
+          <span className="text-base font-bold text-green-600 dark:text-green-400">
             {tableTotal.toFixed(2)} RM
           </span>
         </div>
@@ -112,22 +112,24 @@ const TableCard = ({ table }: TableCardProps) => {
         {/* Per Pax */}
         {peopleCount > 0 && (
           <div className="flex items-center justify-between text-xs">
-            <span className="font-medium text-slate-600">{t("perPax")}:</span>
-            <span className="font-semibold text-slate-900">
+            <span className="font-medium text-slate-600 dark:text-slate-400">
+              {t("perPax")}:
+            </span>
+            <span className="font-semibold text-slate-900 dark:text-slate-100">
               {perPax.toFixed(2)} RM
             </span>
           </div>
         )}
 
         {/* Orders Count */}
-        <div className="text-xs text-slate-500 text-center pt-1">
+        <div className="text-xs text-slate-500 dark:text-slate-400 text-center pt-1">
           {table.orders?.length || 0}{" "}
           {table.orders?.length === 1 ? t("orderSingular") : t("ordersPlural")}
         </div>
       </div>
 
       {/* Action Buttons at Bottom - Side by Side */}
-      <div className="border-t border-slate-200 p-3 bg-slate-50 flex gap-2">
+      <div className="border-t border-slate-200 dark:border-slate-700 p-3 bg-slate-50 dark:bg-slate-900/50 flex gap-2">
         {/* Payment Toggle Button */}
         <button
           onClick={handleTogglePayment}

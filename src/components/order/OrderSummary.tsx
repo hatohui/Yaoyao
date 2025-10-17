@@ -27,9 +27,9 @@ const OrderSummary = ({ orders, peopleCount }: OrderSummaryProps) => {
   const currency = "RM";
 
   return (
-    <div className="bg-white rounded-lg shadow-md border border-main/10 overflow-hidden">
+    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-main/10 dark:border-slate-700 overflow-hidden">
       {/* Header */}
-      <div className="bg-darkest px-4 py-3">
+      <div className="bg-darkest dark:bg-slate-900 px-4 py-3">
         <h2 className="text-base font-semibold text-white flex items-center gap-2">
           <FiDollarSign className="w-5 h-5" />
           {t("orderSummary")}
@@ -39,32 +39,34 @@ const OrderSummary = ({ orders, peopleCount }: OrderSummaryProps) => {
       {/* Content */}
       <div className="p-4 space-y-3">
         {/* Total Items */}
-        <div className="flex items-center justify-between py-2 border-b border-slate-100">
-          <span className="text-sm text-slate-600 flex items-center gap-2">
+        <div className="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-700">
+          <span className="text-sm text-slate-600 dark:text-slate-400 flex items-center gap-2">
             <FiShoppingBag className="w-4 h-4" />
             {t("totalItems")}
           </span>
-          <span className="text-base font-semibold text-slate-900">
+          <span className="text-base font-semibold text-slate-900 dark:text-slate-100">
             {totalItems} {totalItems === 1 ? t("item") : t("items")}
           </span>
         </div>
 
         {/* Total Price */}
-        <div className="flex items-center justify-between py-2 border-b border-slate-100">
-          <span className="text-sm text-slate-600">{t("totalPrice")}</span>
-          <span className="text-lg font-bold text-main">
+        <div className="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-700">
+          <span className="text-sm text-slate-600 dark:text-slate-400">
+            {t("totalPrice")}
+          </span>
+          <span className="text-lg font-bold text-main dark:text-main">
             {totalPrice.toFixed(2)} {currency}
           </span>
         </div>
 
         {/* Price Per Person */}
         {peopleCount > 0 && (
-          <div className="flex items-center justify-between py-2 border-b border-slate-100">
-            <span className="text-sm text-slate-600">
+          <div className="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-700">
+            <span className="text-sm text-slate-600 dark:text-slate-400">
               {t("pricePerPerson")} ({peopleCount}{" "}
               {peopleCount === 1 ? "person" : "people"})
             </span>
-            <span className="text-base font-semibold text-slate-700">
+            <span className="text-base font-semibold text-slate-700 dark:text-slate-300">
               {pricePerPerson.toFixed(2)} {currency}
             </span>
           </div>

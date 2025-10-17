@@ -110,9 +110,9 @@ const PeopleInTable = ({
   const canAddMember = canManage && !isFull;
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden border border-main/10">
+    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden border border-main/10 dark:border-slate-700">
       <div
-        className="bg-darkest px-4 py-2.5 cursor-pointer hover:bg-darkest/90 transition-colors"
+        className="bg-darkest dark:bg-slate-900 px-4 py-2.5 cursor-pointer hover:bg-darkest/90 dark:hover:bg-slate-900/90 transition-colors"
         onClick={() => setIsCollapsed(!isCollapsed)}
       >
         <div className="flex items-center justify-between">
@@ -137,7 +137,7 @@ const PeopleInTable = ({
           </div>
         </div>
         <div className="mt-2">
-          <div className="w-full bg-darkest/50 rounded-full h-1.5 overflow-hidden">
+          <div className="w-full bg-darkest/50 dark:bg-slate-950/50 rounded-full h-1.5 overflow-hidden">
             <div
               className={`h-full transition-all duration-300 ${
                 isFull
@@ -163,8 +163,8 @@ const PeopleInTable = ({
                     key={person.id}
                     className={`flex items-center justify-between p-3 rounded-md border transition-all ${
                       isLeader
-                        ? "border-yellow-300 bg-yellow-50"
-                        : "border-slate-200 bg-slate-50 hover:border-slate-300"
+                        ? "border-yellow-300 dark:border-yellow-900/50 bg-yellow-50 dark:bg-yellow-900/20"
+                        : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 hover:border-slate-300 dark:hover:border-slate-600"
                     }`}
                   >
                     <div className="flex items-center gap-2">
@@ -177,12 +177,12 @@ const PeopleInTable = ({
                       </div>
                       <div>
                         <div className="flex items-center gap-1.5">
-                          <span className="text-sm font-semibold text-slate-900">
+                          <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                             {person.name}
                           </span>
                           {isLeader && <TableLeaderTag />}
                         </div>
-                        <p className="text-xs text-slate-600">
+                        <p className="text-xs text-slate-600 dark:text-slate-400">
                           {isLeader ? t("leader") : t("guest")}
                         </p>
                       </div>
@@ -218,21 +218,23 @@ const PeopleInTable = ({
               })
             ) : (
               <div className="text-center py-6">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 mb-3">
-                  <FiUsers className="w-6 h-6 text-slate-400" />
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-700 mb-3">
+                  <FiUsers className="w-6 h-6 text-slate-400 dark:text-slate-500" />
                 </div>
-                <h3 className="text-sm font-medium text-slate-900 mb-1">
+                <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100 mb-1">
                   {t("noGuests")}
                 </h3>
-                <p className="text-xs text-slate-600">{t("noGuestsMessage")}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400">
+                  {t("noGuestsMessage")}
+                </p>
               </div>
             )}
 
             {/* Add Member Card */}
             {canAddMember &&
               (isAddingMember ? (
-                <div className="flex items-center gap-2 p-3 rounded-md border-2 border-dashed border-main/50 bg-main/5">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-main/20 flex-shrink-0">
+                <div className="flex items-center gap-2 p-3 rounded-md border-2 border-dashed border-main/50 dark:border-main/40 bg-main/5 dark:bg-main/10">
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-main/20 dark:bg-main/30 flex-shrink-0">
                     <FiPlus className="w-4 h-4 text-main" />
                   </div>
                   <input
@@ -246,7 +248,7 @@ const PeopleInTable = ({
                       }
                     }}
                     placeholder={t("addMemberPlaceholder")}
-                    className="flex-1 text-sm bg-transparent border-none outline-none placeholder:text-slate-400"
+                    className="flex-1 text-sm bg-transparent border-none outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500 text-slate-900 dark:text-slate-100"
                     autoFocus
                     disabled={addPeople.isPending}
                   />
@@ -257,12 +259,12 @@ const PeopleInTable = ({
               ) : (
                 <button
                   onClick={() => setIsAddingMember(true)}
-                  className="w-full flex items-center justify-center gap-2 p-3 rounded-md border-2 border-dashed border-slate-300 bg-slate-50 hover:border-main hover:bg-main/5 transition-all group"
+                  className="w-full flex items-center justify-center gap-2 p-3 rounded-md border-2 border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 hover:border-main hover:bg-main/5 dark:hover:bg-main/10 transition-all group"
                 >
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-200 group-hover:bg-main/20 transition-colors">
-                    <FiPlus className="w-4 h-4 text-slate-500 group-hover:text-main transition-colors" />
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-600 group-hover:bg-main/20 dark:group-hover:bg-main/30 transition-colors">
+                    <FiPlus className="w-4 h-4 text-slate-500 dark:text-slate-400 group-hover:text-main transition-colors" />
                   </div>
-                  <span className="text-sm font-medium text-slate-600 group-hover:text-main transition-colors">
+                  <span className="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover:text-main transition-colors">
                     {t("addMemberCard")}
                   </span>
                 </button>

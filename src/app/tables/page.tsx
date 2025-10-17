@@ -13,7 +13,7 @@ const TablePage = () => {
   const { searchQuery } = useSearch();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
       {/* Header Section */}
       <TableHeader />
 
@@ -24,7 +24,7 @@ const TablePage = () => {
         </div>
       ) : (
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
-          <p className="text-center text-gray-500 text-sm sm:text-base">
+          <p className="text-center text-gray-500 dark:text-slate-400 text-sm sm:text-base">
             {t("noTables")}
           </p>
         </div>

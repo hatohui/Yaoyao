@@ -30,10 +30,10 @@ const PeopleTableCard = ({
       ref={cardRef}
       onMouseEnter={() => animations.hoverScale(cardRef.current, 1.02)}
       onMouseLeave={() => animations.hoverScaleReset(cardRef.current)}
-      className="bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden transition-shadow"
+      className="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-slate-200 dark:border-slate-700 overflow-hidden transition-shadow"
     >
       {/* Header */}
-      <div className="bg-darkest px-4 py-2.5">
+      <div className="bg-darkest dark:bg-slate-900 px-4 py-2.5">
         <div className="flex items-center justify-between">
           <h3 className="text-base font-bold text-white">{tableName}</h3>
           <div className="flex items-center gap-2">
@@ -52,7 +52,7 @@ const PeopleTableCard = ({
         </div>
         {/* Capacity Bar */}
         <div className="mt-2">
-          <div className="w-full bg-white/20 rounded-full h-1 overflow-hidden">
+          <div className="w-full bg-white/20 dark:bg-slate-950/50 rounded-full h-1 overflow-hidden">
             <div
               className={`h-full transition-all duration-300 ${
                 isFull
@@ -71,10 +71,10 @@ const PeopleTableCard = ({
       <div className="p-3">
         {people.length === 0 ? (
           <div className="text-center py-4">
-            <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 mb-2">
-              <FiUsers className="w-5 h-5 text-slate-400" />
+            <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700 mb-2">
+              <FiUsers className="w-5 h-5 text-slate-400 dark:text-slate-500" />
             </div>
-            <p className="text-xs text-slate-600">
+            <p className="text-xs text-slate-600 dark:text-slate-400">
               {tTables("noGuests") || "No guests yet"}
             </p>
           </div>
@@ -85,10 +85,10 @@ const PeopleTableCard = ({
                 key={person.id}
                 className={`flex items-center gap-2.5 p-2.5 rounded-lg border transition-all ${
                   person.isLeader
-                    ? "border-yellow-300 bg-yellow-50"
+                    ? "border-yellow-300 dark:border-yellow-900/50 bg-yellow-50 dark:bg-yellow-900/20"
                     : person.isDuplicate
-                    ? "border-red-300 bg-red-50"
-                    : "border-slate-200 bg-slate-50"
+                    ? "border-red-300 dark:border-red-900/50 bg-red-50 dark:bg-red-900/20"
+                    : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50"
                 }`}
               >
                 <div
@@ -104,17 +104,17 @@ const PeopleTableCard = ({
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1">
-                    <span className="text-xs font-semibold text-slate-900 truncate">
+                    <span className="text-xs font-semibold text-slate-900 dark:text-slate-100 truncate">
                       {person.name}
                     </span>
                     {person.isLeader && (
-                      <FiStar className="w-3 h-3 text-yellow-600 flex-shrink-0" />
+                      <FiStar className="w-3 h-3 text-yellow-600 dark:text-yellow-400 flex-shrink-0" />
                     )}
                     {person.isDuplicate && (
-                      <FiAlertCircle className="w-3 h-3 text-red-600 flex-shrink-0" />
+                      <FiAlertCircle className="w-3 h-3 text-red-600 dark:text-red-400 flex-shrink-0" />
                     )}
                   </div>
-                  <p className="text-xs text-slate-600">
+                  <p className="text-xs text-slate-600 dark:text-slate-400">
                     {person.isLeader
                       ? tTables("leader") || "Table Leader"
                       : tTables("guest") || "Member"}

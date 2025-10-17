@@ -24,7 +24,7 @@ const FoodGallery = ({ className }: FoodGalleryProps) => {
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-main border-r-transparent"></div>
-          <p className="mt-4 text-slate-600 text-sm sm:text-base">
+          <p className="mt-4 text-slate-600 dark:text-slate-400 text-sm sm:text-base">
             {t("loading")}
           </p>
         </div>
@@ -35,13 +35,15 @@ const FoodGallery = ({ className }: FoodGalleryProps) => {
   if (!foods || foods.length === 0) {
     return (
       <div className="text-center py-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
-          <FiInbox className="w-8 h-8 text-slate-400" />
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-700 mb-4">
+          <FiInbox className="w-8 h-8 text-slate-400 dark:text-slate-500" />
         </div>
-        <h3 className="text-lg font-medium text-slate-900 mb-2">
+        <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">
           {t("noFoodsTitle")}
         </h3>
-        <p className="text-slate-600">{t("noFoodsMessage")}</p>
+        <p className="text-slate-600 dark:text-slate-400">
+          {t("noFoodsMessage")}
+        </p>
       </div>
     );
   }
@@ -49,13 +51,13 @@ const FoodGallery = ({ className }: FoodGalleryProps) => {
   if (filteredFoods.length === 0) {
     return (
       <div className="text-center py-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
-          <FiSearch className="w-8 h-8 text-slate-400" />
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-700 mb-4">
+          <FiSearch className="w-8 h-8 text-slate-400 dark:text-slate-500" />
         </div>
-        <h3 className="text-lg font-medium text-slate-900 mb-2">
+        <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">
           {t("noSearchResults") || "No results found"}
         </h3>
-        <p className="text-slate-600">
+        <p className="text-slate-600 dark:text-slate-400">
           {t("tryDifferentSearch") ||
             `No dishes found matching "${searchQuery}"`}
         </p>
@@ -66,7 +68,7 @@ const FoodGallery = ({ className }: FoodGalleryProps) => {
   return (
     <div className={className}>
       <div className="flex items-center justify-between mb-4 sm:mb-6">
-        <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-darkest">
+        <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-darkest dark:text-slate-100">
           {searchQuery
             ? `${t("searchResults") || "Search Results"} (${
                 filteredFoods.length
@@ -75,7 +77,7 @@ const FoodGallery = ({ className }: FoodGalleryProps) => {
             ? t("categoryMenu")
             : t("allMenu")}
         </h2>
-        <span className="text-xs sm:text-sm text-main font-medium">
+        <span className="text-xs sm:text-sm text-main dark:text-main font-medium">
           {filteredFoods.length}{" "}
           {filteredFoods.length === 1 ? t("dish") : t("dishes")}
         </span>

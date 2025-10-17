@@ -14,11 +14,13 @@ const ManageOrderButton = ({
   return (
     <Link
       href={`/orders?table=${table?.id}&id=${table?.tableLeader?.id}`}
-      className="block w-full bg-darkest hover:bg-darkest/90 text-white font-medium py-3 px-4 rounded-lg shadow-sm hover:shadow-md transition-all border border-main/20"
+      className="block w-full bg-darkest dark:bg-gradient-to-r dark:from-main/20 dark:to-purple-600/20 hover:bg-darkest/90 dark:hover:from-main/30 dark:hover:to-purple-600/30 text-white font-medium py-3 px-4 rounded-lg shadow-sm hover:shadow-md dark:shadow-main/10 transition-all border border-main/20 dark:border-main/40"
     >
       <div className="flex items-center justify-center gap-2">
-        <FiShoppingCart className="w-5 h-5" />
-        <span className="text-sm">{t("manageOrders") || "Manage Orders"}</span>
+        <FiShoppingCart className="w-5 h-5 dark:text-main" />
+        <span className="text-sm dark:text-slate-100">
+          {t("manageOrders") || "Manage Orders"}
+        </span>
       </div>
     </Link>
   );

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import LanguageSelector from "../common/LanguageSelector";
+import DarkModeToggle from "../common/DarkModeToggle";
 import YaoTag from "../auth/YaoTag";
 import YaoLogo from "../auth/AuthLogo";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
@@ -37,7 +38,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-darkest shadow-lg border-b border-main/20">
+    <nav className="bg-darkest dark:bg-slate-900 shadow-lg border-b border-main/20 dark:border-main/40">
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16">
           <YaoLogo />
@@ -51,6 +52,7 @@ const NavBar = () => {
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
             {isVerified && <YaoTag />}
+            <DarkModeToggle />
             <div className="sm:flex hidden">
               <LanguageSelector />
             </div>

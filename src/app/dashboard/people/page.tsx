@@ -116,14 +116,14 @@ const DashboardPeoplePage = () => {
   }
 
   return (
-    <div ref={pageRef} className="min-h-screen bg-slate-50">
+    <div ref={pageRef} className="min-h-screen bg-slate-50 dark:bg-slate-900">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200">
+      <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <h1 className="text-xl font-bold text-darkest">
+          <h1 className="text-xl font-bold text-darkest dark:text-slate-100">
             {t("peopleManagement") || "People Management"}
           </h1>
-          <p className="text-sm text-slate-600 mt-0.5">
+          <p className="text-sm text-slate-600 dark:text-slate-400 mt-0.5">
             {t("peopleManagementDesc") ||
               "View all guests and manage table assignments"}
           </p>
@@ -139,19 +139,19 @@ const DashboardPeoplePage = () => {
           {/* Total People */}
           <div
             data-stat-card
-            className="bg-white rounded-lg shadow-sm border border-slate-200 p-3"
+            className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-3"
           >
             <div className="flex items-center gap-2.5">
-              <div className="p-2.5 bg-main/10 rounded-lg">
+              <div className="p-2.5 bg-main/10 dark:bg-main/20 rounded-lg">
                 <FiUsers className="w-5 h-5 text-main" />
               </div>
               <div>
-                <p className="text-xs text-slate-600">
+                <p className="text-xs text-slate-600 dark:text-slate-400">
                   {t("totalPeople") || "Total People"}
                 </p>
                 <p
                   data-stat-number
-                  className="text-xl font-bold text-slate-900"
+                  className="text-xl font-bold text-slate-900 dark:text-slate-100"
                 >
                   0
                 </p>
@@ -162,19 +162,19 @@ const DashboardPeoplePage = () => {
           {/* Table Leaders */}
           <div
             data-stat-card
-            className="bg-white rounded-lg shadow-sm border border-slate-200 p-3"
+            className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-3"
           >
             <div className="flex items-center gap-2.5">
-              <div className="p-2.5 bg-yellow-100 rounded-lg">
-                <FiStar className="w-5 h-5 text-yellow-600" />
+              <div className="p-2.5 bg-yellow-100 dark:bg-yellow-900/40 rounded-lg">
+                <FiStar className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
               </div>
               <div>
-                <p className="text-xs text-slate-600">
+                <p className="text-xs text-slate-600 dark:text-slate-400">
                   {t("tableLeaders") || "Table Leaders"}
                 </p>
                 <p
                   data-stat-number
-                  className="text-xl font-bold text-slate-900"
+                  className="text-xl font-bold text-slate-900 dark:text-slate-100"
                 >
                   0
                 </p>
@@ -185,19 +185,19 @@ const DashboardPeoplePage = () => {
           {/* Duplicates */}
           <div
             data-stat-card
-            className="bg-white rounded-lg shadow-sm border border-slate-200 p-3"
+            className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-3"
           >
             <div className="flex items-center gap-2.5">
-              <div className="p-2.5 bg-red-100 rounded-lg">
-                <FiAlertCircle className="w-5 h-5 text-red-600" />
+              <div className="p-2.5 bg-red-100 dark:bg-red-900/40 rounded-lg">
+                <FiAlertCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
               </div>
               <div>
-                <p className="text-xs text-slate-600">
+                <p className="text-xs text-slate-600 dark:text-slate-400">
                   {t("duplicateNames") || "Duplicate Names"}
                 </p>
                 <p
                   data-stat-number
-                  className="text-xl font-bold text-slate-900"
+                  className="text-xl font-bold text-slate-900 dark:text-slate-100"
                 >
                   0
                 </p>
@@ -207,19 +207,19 @@ const DashboardPeoplePage = () => {
         </div>
 
         {/* Search */}
-        <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4 mb-6">
+        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4 mb-6">
           <div className="relative">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 w-5 h-5" />
             <input
               type="text"
               placeholder={t("searchPeople") || "Search by name or table..."}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-main focus:border-main"
+              className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-main focus:border-main bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
 
-          <div className="mt-4 text-sm text-slate-600">
+          <div className="mt-4 text-sm text-slate-600 dark:text-slate-400">
             {filteredPeople.length}{" "}
             {filteredPeople.length === 1
               ? t("personFound") || "person found"
@@ -233,12 +233,12 @@ const DashboardPeoplePage = () => {
           className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6"
         >
           {tablesWithPeople.length === 0 ? (
-            <div className="col-span-full bg-white rounded-lg shadow-sm border border-slate-200 p-12 text-center">
-              <FiUsers className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-slate-900 mb-2">
+            <div className="col-span-full bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
+              <FiUsers className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">
                 {t("noPeopleFound") || "No people found"}
               </h3>
-              <p className="text-slate-600">
+              <p className="text-slate-600 dark:text-slate-400">
                 {t("noPeopleMessage") || "Try adjusting your search"}
               </p>
             </div>

@@ -19,15 +19,15 @@ const FormMessage = ({
 
   const styles = {
     error: {
-      container: "text-red-600",
+      container: "text-red-600 dark:text-red-400",
       icon: FiAlertCircle,
     },
     success: {
-      container: "text-green-600",
+      container: "text-green-600 dark:text-green-400",
       icon: FiCheckCircle,
     },
     info: {
-      container: "text-slate-500",
+      container: "text-slate-500 dark:text-slate-400",
       icon: FiInfo,
     },
   };

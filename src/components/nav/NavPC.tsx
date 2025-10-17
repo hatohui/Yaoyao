@@ -28,8 +28,8 @@ const NavPC = ({
                     px-1.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-sm font-medium rounded-md transition-all whitespace-nowrap
                     ${className} ${
                 isActive
-                  ? "bg-main text-white"
-                  : "text-white/80 hover:bg-white/10 hover:text-white"
+                  ? "bg-main text-white dark:bg-main dark:text-slate-900 dark:shadow-lg dark:shadow-main/30"
+                  : "text-white/80 hover:bg-white/10 hover:text-white dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-main"
               }
                   `}
             >

@@ -26,16 +26,16 @@ const TableDetailHeader = ({
   };
 
   return (
-    <div className="bg-white shadow-sm border-b border-main/20">
+    <div className="bg-white dark:bg-slate-800 shadow-sm border-b border-main/20 dark:border-slate-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
               onClick={handleback}
-              className="p-1.5 hover:bg-main/10 rounded-md transition-colors"
+              className="p-1.5 hover:bg-main/10 dark:hover:bg-slate-700 rounded-md transition-colors"
               aria-label="Go back"
             >
-              <FiArrowLeft className="w-5 h-5 text-darkest" />
+              <FiArrowLeft className="w-5 h-5 text-darkest dark:text-slate-300" />
             </button>
             {/* Order Link Generator - For Table Leaders (with param) and Yaoyao */}
             {table?.tableLeader && (isTableLeader || isVerified) && (
@@ -47,13 +47,15 @@ const TableDetailHeader = ({
               />
             )}
             <div>
-              <h1 className="text-lg font-semibold text-darkest">
+              <h1 className="text-lg font-semibold text-darkest dark:text-slate-100">
                 {table?.name || t("tableDetails")}
               </h1>
-              <p className="text-xs text-slate-500">{t("manageParty")}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                {t("manageParty")}
+              </p>
             </div>
           </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-main/30 bg-main/5">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-main/30 dark:border-slate-700 bg-main/5 dark:bg-main/10">
             <div
               className={`w-2 h-2 rounded-full ${
                 isOccupied ? "bg-main" : "bg-green-500"
@@ -61,7 +63,9 @@ const TableDetailHeader = ({
             ></div>
             <span
               className={`text-xs font-medium ${
-                isOccupied ? "text-darkest" : "text-green-700"
+                isOccupied
+                  ? "text-darkest dark:text-slate-200"
+                  : "text-green-700 dark:text-green-400"
               }`}
             >
               {isOccupied ? t("occupied") : t("available")}

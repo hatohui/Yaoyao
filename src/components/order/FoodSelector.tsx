@@ -241,12 +241,12 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="w-full bg-darkest hover:bg-darkest/90 text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 relative"
+        className="w-full bg-darkest dark:bg-slate-700 hover:bg-darkest/90 dark:hover:bg-slate-600 text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 relative"
       >
         <FiPlus className="w-5 h-5" />
         {t("orderFood")}
         {cartItemCount > 0 && (
-          <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+          <span className="absolute -top-2 -right-2 bg-red-500 dark:bg-red-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
             {cartItemCount}
           </span>
         )}
@@ -260,12 +260,12 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
         >
           <div
             ref={contentRef}
-            className="bg-white md:rounded-xl shadow-2xl w-full h-full md:max-w-6xl md:h-auto md:max-h-[90vh] overflow-hidden flex flex-col"
+            className="bg-white dark:bg-slate-800 md:rounded-xl shadow-2xl w-full h-full md:max-w-6xl md:h-auto md:max-h-[90vh] overflow-hidden flex flex-col"
           >
             {/* Header */}
-            <div className="bg-darkest px-4 md:px-6 py-4 flex items-center justify-between">
+            <div className="bg-darkest dark:bg-slate-900 px-4 md:px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2 md:gap-3">
-                <h2 className="text-base md:text-lg font-semibold text-white">
+                <h2 className="text-base md:text-lg font-semibold text-white dark:text-slate-100">
                   {t("selectFood")}
                 </h2>
                 {cartItemCount > 0 && (
@@ -277,23 +277,23 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
               </div>
               <button
                 onClick={handleCloseModal}
-                className="text-white/80 hover:text-white transition-colors p-1"
+                className="text-white/80 dark:text-slate-300 hover:text-white dark:hover:text-white transition-colors p-1"
               >
                 <FiX className="w-5 h-5 md:w-6 md:h-6" />
               </button>
             </div>
 
             {/* Search and Categories */}
-            <div className="border-b border-slate-200 p-3 md:p-4 space-y-3">
+            <div className="border-b border-slate-200 dark:border-slate-700 p-3 md:p-4 space-y-3">
               {/* Search */}
               <div className="relative">
-                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-slate-400" />
+                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-slate-400 dark:text-slate-500" />
                 <input
                   type="text"
                   placeholder={tMenu("searchPlaceholder")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 md:pl-10 pr-4 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-main/50"
+                  className="w-full pl-9 md:pl-10 pr-4 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-main/50 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
                 />
               </div>
 
@@ -304,7 +304,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                   className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium whitespace-nowrap transition-colors ${
                     selectedCategory === null
                       ? "bg-main text-white"
-                      : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                      : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
                   }`}
                 >
                   {tMenu("allCategories")}
@@ -318,7 +318,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                       className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium whitespace-nowrap transition-colors ${
                         selectedCategory === categoryKey
                           ? "bg-main text-white"
-                          : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                          : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
                       }`}
                     >
                       {cat.translation?.[0]?.name || cat.name}
@@ -331,11 +331,11 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
             {/* Food Grid and Cart Split View */}
             <div className="flex-1 overflow-hidden flex flex-col md:flex-row">
               {/* Left: Food Grid */}
-              <div className="flex-1 overflow-y-auto p-3 md:p-4 md:border-r border-slate-200">
+              <div className="flex-1 overflow-y-auto p-3 md:p-4 md:border-r border-slate-200 dark:border-slate-700">
                 {isLoading ? (
                   <div className="flex items-center justify-center py-12">
                     <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-main border-r-transparent"></div>
-                    <span className="ml-3 text-slate-600 text-sm">
+                    <span className="ml-3 text-slate-600 dark:text-slate-400 text-sm">
                       {tMenu("loading")}
                     </span>
                   </div>
@@ -364,10 +364,10 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                           disabled={!isAvailable}
                           className={`relative text-left rounded-lg border-2 overflow-hidden transition-all ${
                             isSelected
-                              ? "border-darkest shadow-lg ring-2 ring-darkest/20"
+                              ? "border-darkest dark:border-main shadow-lg ring-2 ring-darkest/20 dark:ring-main/20"
                               : isAvailable
-                              ? "border-slate-200 hover:border-darkest/30 hover:shadow-md"
-                              : "border-slate-200 opacity-50 cursor-not-allowed"
+                              ? "border-slate-200 dark:border-slate-700 hover:border-darkest/30 dark:hover:border-main/30 hover:shadow-md"
+                              : "border-slate-200 dark:border-slate-700 opacity-50 cursor-not-allowed"
                           }`}
                         >
                           {/* Cart Badge */}
@@ -377,7 +377,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                             </div>
                           )}
 
-                          <div className="relative h-28 bg-slate-100">
+                          <div className="relative h-28 bg-slate-100 dark:bg-slate-700">
                             {food.imageUrl ? (
                               <Image
                                 src={food.imageUrl}
@@ -387,25 +387,25 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                               />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center">
-                                <FiPackage className="w-8 h-8 text-slate-400" />
+                                <FiPackage className="w-8 h-8 text-slate-400 dark:text-slate-500" />
                               </div>
                             )}
                             {!isAvailable && (
                               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                                <span className="text-xs font-bold text-white px-2 py-1 bg-red-500 rounded">
+                                <span className="text-xs font-bold text-white px-2 py-1 bg-red-500 dark:bg-red-600 rounded">
                                   {tMenu("unavailable")}
                                 </span>
                               </div>
                             )}
                           </div>
-                          <div className="p-2">
-                            <h3 className="text-xs font-semibold text-slate-900 truncate">
+                          <div className="p-2 bg-white dark:bg-slate-800">
+                            <h3 className="text-xs font-semibold text-slate-900 dark:text-slate-100 truncate">
                               {translatedName}
                             </h3>
                             {food.variants && food.variants.length > 0 && (
-                              <p className="text-xs text-slate-600 mt-0.5">
+                              <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
                                 {food.variants[0].isSeasonal ? (
-                                  <span className="text-amber-600">
+                                  <span className="text-amber-600 dark:text-amber-400">
                                     (Seasonal)
                                   </span>
                                 ) : (
@@ -420,18 +420,20 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <p className="text-slate-600">{tMenu("noFoodsMessage")}</p>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      {tMenu("noFoodsMessage")}
+                    </p>
                   </div>
                 )}
               </div>
 
               {/* Right: Cart Preview - Hidden on mobile, visible on desktop */}
-              <div className="hidden md:block w-80 bg-slate-50 p-4 overflow-y-auto">
+              <div className="hidden md:block w-80 bg-slate-50 dark:bg-slate-900 p-4 overflow-y-auto">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-slate-900">
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">
                     {t("cart") || "Cart"}
                   </h3>
-                  <span className="text-sm text-slate-600">
+                  <span className="text-sm text-slate-600 dark:text-slate-400">
                     {cartItemCount}{" "}
                     {cartItemCount === 1 ? t("item") : t("items")}
                   </span>
@@ -439,8 +441,8 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
 
                 {cart.length === 0 ? (
                   <div className="text-center py-8">
-                    <FiShoppingCart className="w-12 h-12 text-slate-300 mx-auto mb-2" />
-                    <p className="text-sm text-slate-500">
+                    <FiShoppingCart className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
                       {t("emptyCart") || "Your cart is empty"}
                     </p>
                   </div>
@@ -449,11 +451,11 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                     {cart.map((item, index) => (
                       <div
                         key={index}
-                        className="bg-white rounded-lg border border-slate-200 p-3"
+                        className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-3"
                       >
                         <div className="flex gap-2">
                           {item.foodImage && (
-                            <div className="relative w-12 h-12 flex-shrink-0 rounded bg-slate-100 overflow-hidden">
+                            <div className="relative w-12 h-12 flex-shrink-0 rounded bg-slate-100 dark:bg-slate-700 overflow-hidden">
                               <Image
                                 src={item.foodImage}
                                 alt={item.foodName}
@@ -464,23 +466,23 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                           )}
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-1.5">
-                              <h4 className="text-xs font-semibold text-slate-900 truncate">
+                              <h4 className="text-xs font-semibold text-slate-900 dark:text-slate-100 truncate">
                                 {item.foodName}
                               </h4>
                               {item.isSeasonal && (
-                                <span className="flex-shrink-0 text-[9px] px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded font-semibold">
+                                <span className="flex-shrink-0 text-[9px] px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 rounded font-semibold">
                                   {tMenu("seasonal")}
                                 </span>
                               )}
                             </div>
                             {item.variantLabel && (
-                              <p className="text-xs text-slate-600">
+                              <p className="text-xs text-slate-600 dark:text-slate-400">
                                 {item.variantLabel}
                               </p>
                             )}
                             <p className="text-xs font-semibold text-main mt-1">
                               {item.isSeasonal ? (
-                                <span className="text-amber-600">
+                                <span className="text-amber-600 dark:text-amber-400">
                                   Market Price
                                 </span>
                               ) : (
@@ -495,34 +497,34 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                           </div>
                           <button
                             onClick={() => handleRemoveFromCart(index)}
-                            className="flex-shrink-0 text-red-600 hover:bg-red-50 rounded p-1 transition-colors"
+                            className="flex-shrink-0 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded p-1 transition-colors"
                           >
                             <FiX className="w-4 h-4" />
                           </button>
                         </div>
-                        <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-200">
+                        <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-200 dark:border-slate-700">
                           <div className="flex items-center gap-1">
                             <button
                               onClick={() =>
                                 handleUpdateCartQuantity(index, -1)
                               }
                               disabled={item.quantity <= 1}
-                              className="w-6 h-6 flex items-center justify-center rounded border border-slate-300 hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="w-6 h-6 flex items-center justify-center rounded border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed text-slate-700 dark:text-slate-300"
                             >
                               <FiMinus className="w-3 h-3" />
                             </button>
-                            <span className="w-8 text-center text-xs font-medium">
+                            <span className="w-8 text-center text-xs font-medium text-slate-900 dark:text-slate-100">
                               {item.quantity}
                             </span>
                             <button
                               onClick={() => handleUpdateCartQuantity(index, 1)}
-                              className="w-6 h-6 flex items-center justify-center rounded border border-slate-300 hover:bg-slate-100"
+                              className="w-6 h-6 flex items-center justify-center rounded border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300"
                             >
                               <FiPlus className="w-3 h-3" />
                             </button>
                           </div>
                           {!item.isSeasonal && (
-                            <span className="text-xs text-slate-500">
+                            <span className="text-xs text-slate-500 dark:text-slate-400">
                               {item.variantPrice.toFixed(2)} RM ×{" "}
                               {item.quantity}
                             </span>
@@ -535,9 +537,9 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
 
                 {/* Cart Total */}
                 {cart.length > 0 && (
-                  <div className="mt-4 pt-4 border-t border-slate-300">
+                  <div className="mt-4 pt-4 border-t border-slate-300 dark:border-slate-700">
                     {cart.some((item) => item.isSeasonal) && (
-                      <p className="text-xs text-amber-600 mb-2 flex items-center gap-1">
+                      <p className="text-xs text-amber-600 dark:text-amber-400 mb-2 flex items-center gap-1">
                         <span>⚠️</span>
                         <span>
                           Seasonal items priced at market rate (not included in
@@ -546,7 +548,9 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                       </p>
                     )}
                     <div className="flex items-center justify-between text-lg font-bold">
-                      <span>{t("total") || "Total"}</span>
+                      <span className="text-slate-900 dark:text-slate-100">
+                        {t("total") || "Total"}
+                      </span>
                       <span className="text-main">
                         {cartTotal.toFixed(2)} RM
                       </span>
@@ -558,9 +562,9 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
 
             {/* Variant Selection Footer (when food is selected) */}
             {selectedFood && selectedFoodData && (
-              <div className="border-t border-slate-200 p-3 md:p-4 bg-slate-50">
+              <div className="border-t border-slate-200 dark:border-slate-700 p-3 md:p-4 bg-slate-50 dark:bg-slate-900">
                 <div className="max-w-2xl mx-auto">
-                  <h3 className="text-sm font-semibold text-slate-900 mb-3">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">
                     {selectedFoodData.translations?.[0]?.name ||
                       selectedFoodData.name}
                   </h3>
@@ -569,7 +573,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                   {selectedFoodData.variants &&
                     selectedFoodData.variants.length > 0 && (
                       <div className="space-y-2">
-                        <label className="text-xs md:text-sm font-medium text-slate-700">
+                        <label className="text-xs md:text-sm font-medium text-slate-700 dark:text-slate-300">
                           {t("selectVariant")}
                         </label>
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -580,25 +584,25 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                               disabled={!variant.available}
                               className={`p-2 md:p-3 rounded-lg border-2 text-left transition-all ${
                                 selectedVariant === idx
-                                  ? "border-darkest bg-darkest/5"
+                                  ? "border-darkest dark:border-main bg-darkest/5 dark:bg-main/10"
                                   : variant.available
-                                  ? "border-slate-200 hover:border-darkest/30"
-                                  : "border-slate-200 opacity-50 cursor-not-allowed"
+                                  ? "border-slate-200 dark:border-slate-700 hover:border-darkest/30 dark:hover:border-main/30"
+                                  : "border-slate-200 dark:border-slate-700 opacity-50 cursor-not-allowed"
                               }`}
                             >
                               <div className="flex items-center gap-1.5">
-                                <div className="text-xs md:text-sm font-medium text-slate-900">
+                                <div className="text-xs md:text-sm font-medium text-slate-900 dark:text-slate-100">
                                   {variant.label}
                                 </div>
                                 {variant.isSeasonal && (
-                                  <span className="text-[8px] px-1 py-0.5 bg-amber-100 text-amber-700 rounded font-semibold whitespace-nowrap">
+                                  <span className="text-[8px] px-1 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 rounded font-semibold whitespace-nowrap">
                                     {tMenu("seasonal")}
                                   </span>
                                 )}
                               </div>
-                              <div className="text-xs md:text-sm text-darkest font-semibold mt-1">
+                              <div className="text-xs md:text-sm text-darkest dark:text-main font-semibold mt-1">
                                 {variant.isSeasonal ? (
-                                  <span className="text-amber-600">
+                                  <span className="text-amber-600 dark:text-amber-400">
                                     (Seasonal Price)
                                   </span>
                                 ) : (
@@ -606,7 +610,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                                 )}
                               </div>
                               {!variant.available && (
-                                <div className="text-xs text-red-600 mt-1">
+                                <div className="text-xs text-red-600 dark:text-red-400 mt-1">
                                   {t("notAvailable")}
                                 </div>
                               )}
@@ -618,7 +622,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
 
                   <button
                     onClick={handleAddToCart}
-                    className="w-full mt-4 bg-darkest hover:bg-darkest/90 text-white font-semibold py-3 px-4 rounded-lg transition-all text-sm md:text-base"
+                    className="w-full mt-4 bg-darkest dark:bg-slate-700 hover:bg-darkest/90 dark:hover:bg-slate-600 text-white font-semibold py-3 px-4 rounded-lg transition-all text-sm md:text-base"
                   >
                     <FiPlus className="w-4 h-4 inline mr-2" />
                     {t("addToCart") || "Add to Cart"}
@@ -629,25 +633,25 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
 
             {/* Submit Cart Footer - Mobile & Desktop */}
             {cart.length > 0 && !selectedFood && (
-              <div className="border-t border-slate-200 p-3 md:p-4 bg-white">
+              <div className="border-t border-slate-200 dark:border-slate-700 p-3 md:p-4 bg-white dark:bg-slate-800">
                 <div className="flex flex-col gap-2">
                   {/* Mobile: Cart items list (collapsible) */}
                   <div className="md:hidden">
                     <button
                       onClick={() => setShowMobileCart(!showMobileCart)}
-                      className="w-full flex items-center justify-between px-3 py-2 bg-slate-50 rounded-lg text-sm"
+                      className="w-full flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-700 rounded-lg text-sm"
                     >
-                      <span className="font-medium text-slate-700">
+                      <span className="font-medium text-slate-700 dark:text-slate-300">
                         {cartItemCount}{" "}
                         {cartItemCount === 1 ? t("item") : t("items")} in cart
                       </span>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-darkest">
+                        <span className="font-bold text-darkest dark:text-slate-100">
                           {cart.some((item) => item.isSeasonal)
                             ? "(Seasonal Price)"
                             : `${cartTotal.toFixed(2)} RM`}
                         </span>
-                        <FiShoppingCart className="w-4 h-4" />
+                        <FiShoppingCart className="w-4 h-4 text-slate-700 dark:text-slate-300" />
                       </div>
                     </button>
 
@@ -657,28 +661,28 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                         {cart.map((item, index) => (
                           <div
                             key={index}
-                            className="bg-white border border-slate-200 rounded-lg p-2"
+                            className="bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg p-2"
                           >
                             <div className="flex items-start gap-2">
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-1">
-                                  <h4 className="text-xs font-semibold text-slate-900 truncate">
+                                  <h4 className="text-xs font-semibold text-slate-900 dark:text-slate-100 truncate">
                                     {item.foodName}
                                   </h4>
                                   {item.isSeasonal && (
-                                    <span className="text-[8px] px-1 py-0.5 bg-amber-100 text-amber-700 rounded font-semibold whitespace-nowrap">
+                                    <span className="text-[8px] px-1 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 rounded font-semibold whitespace-nowrap">
                                       {tMenu("seasonal")}
                                     </span>
                                   )}
                                 </div>
                                 {item.variantLabel && (
-                                  <p className="text-xs text-slate-600">
+                                  <p className="text-xs text-slate-600 dark:text-slate-400">
                                     {item.variantLabel}
                                   </p>
                                 )}
                                 <p className="text-xs font-semibold text-main mt-0.5">
                                   {item.isSeasonal ? (
-                                    <span className="text-amber-600">
+                                    <span className="text-amber-600 dark:text-amber-400">
                                       (Seasonal Price)
                                     </span>
                                   ) : (
@@ -689,12 +693,12 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                                 </p>
                               </div>
                               <div className="flex items-center gap-1">
-                                <span className="text-xs text-slate-600">
+                                <span className="text-xs text-slate-600 dark:text-slate-400">
                                   ×{item.quantity}
                                 </span>
                                 <button
                                   onClick={() => handleRemoveFromCart(index)}
-                                  className="p-1 text-red-600 hover:bg-red-50 rounded"
+                                  className="p-1 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded"
                                 >
                                   <FiX className="w-3.5 h-3.5" />
                                 </button>

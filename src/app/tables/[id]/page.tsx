@@ -34,7 +34,7 @@ const TableDetailPage = () => {
   const isNormalMember = !isVerified && !isTableLeader;
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       {/* Compact Header */}
       <TableDetailHeader
         table={table}

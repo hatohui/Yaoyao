@@ -32,7 +32,7 @@ const TableMap = ({ searchQuery = "" }: TableMapProps) => {
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-main border-r-transparent"></div>
-          <p className="mt-4 text-slate-600 text-sm sm:text-base">
+          <p className="mt-4 text-slate-600 dark:text-slate-400 text-sm sm:text-base">
             {t("loading")}
           </p>
         </div>
@@ -43,13 +43,15 @@ const TableMap = ({ searchQuery = "" }: TableMapProps) => {
   if (!tables || tables.length === 0) {
     return (
       <div className="text-center py-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
-          <FiInbox className="w-8 h-8 text-slate-400" />
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-700 mb-4">
+          <FiInbox className="w-8 h-8 text-slate-400 dark:text-slate-500" />
         </div>
-        <h3 className="text-lg font-medium text-slate-900 mb-2">
+        <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">
           {t("noTables")}
         </h3>
-        <p className="text-slate-600">{t("noTablesMessage")}</p>
+        <p className="text-slate-600 dark:text-slate-400">
+          {t("noTablesMessage")}
+        </p>
       </div>
     );
   }
@@ -57,13 +59,13 @@ const TableMap = ({ searchQuery = "" }: TableMapProps) => {
   if (filteredTables.length === 0) {
     return (
       <div className="text-center py-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
-          <FiSearch className="w-8 h-8 text-slate-400" />
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-700 mb-4">
+          <FiSearch className="w-8 h-8 text-slate-400 dark:text-slate-500" />
         </div>
-        <h3 className="text-lg font-medium text-slate-900 mb-2">
+        <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">
           {t("noSearchResults") || "No results found"}
         </h3>
-        <p className="text-slate-600">
+        <p className="text-slate-600 dark:text-slate-400">
           {t("tryDifferentSearch") ||
             `No tables found matching "${searchQuery}"`}
         </p>
@@ -86,11 +88,11 @@ const TableMap = ({ searchQuery = "" }: TableMapProps) => {
           >
             <div
               className={`
-              relative overflow-hidden rounded-lg border transition-all duration-200 h-full flex flex-col bg-white shadow-md hover:shadow-lg
+              relative overflow-hidden rounded-lg border transition-all duration-200 h-full flex flex-col bg-white dark:bg-slate-800 shadow-md hover:shadow-lg
               ${
                 isFull
-                  ? "border-red-200 hover:border-red-300"
-                  : "border-main/10 hover:border-main/30"
+                  ? "border-red-200 dark:border-red-900/50 hover:border-red-300 dark:hover:border-red-900/70"
+                  : "border-main/10 dark:border-slate-700 hover:border-main/30 dark:hover:border-main/50"
               }
             `}
             >
@@ -112,19 +114,19 @@ const TableMap = ({ searchQuery = "" }: TableMapProps) => {
                     w-12 h-12 rounded-lg flex items-center justify-center
                     ${
                       isFull
-                        ? "bg-red-50 border border-red-200"
-                        : "bg-main/10 border border-main/20"
+                        ? "bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-900/50"
+                        : "bg-main/10 dark:bg-main/20 border border-main/20 dark:border-main/30"
                     }
                   `}
                   >
                     <FiGrid
                       className={`w-6 h-6 ${
-                        isFull ? "text-red-600" : "text-main"
+                        isFull ? "text-red-600 dark:text-red-400" : "text-main"
                       }`}
                     />
                   </div>
                   <div>
-                    <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-main transition-colors">
+                    <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-main transition-colors">
                       {table.name}
                     </h3>
                   </div>
@@ -132,22 +134,22 @@ const TableMap = ({ searchQuery = "" }: TableMapProps) => {
 
                 {/* Table Details */}
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-slate-700">
+                  <div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
                     <FiUsers
                       className={`w-4 h-4 flex-shrink-0 ${
-                        isFull ? "text-red-500" : "text-main"
+                        isFull ? "text-red-500 dark:text-red-400" : "text-main"
                       }`}
                     />
                     <span>
                       {t("capacity")}:{" "}
-                      <span className="font-semibold text-slate-900">
+                      <span className="font-semibold text-slate-900 dark:text-slate-100">
                         {peopleCount}/{table.capacity}
                       </span>
                     </span>
                   </div>
 
                   {table.tableLeader ? (
-                    <div className="pt-3 border-t border-main/10">
+                    <div className="pt-3 border-t border-main/10 dark:border-slate-700">
                       <div className="flex items-center gap-2">
                         <div
                           className={`w-8 h-8 rounded-full flex-shrink-0 ${
@@ -157,18 +159,18 @@ const TableMap = ({ searchQuery = "" }: TableMapProps) => {
                           {table.tableLeader.name.charAt(0).toUpperCase()}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs text-slate-500 uppercase tracking-wide">
+                          <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                             {t("partyLeader")}
                           </p>
-                          <p className="text-sm font-semibold text-slate-900 truncate">
+                          <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">
                             {table.tableLeader.name}
                           </p>
                         </div>
                       </div>
                     </div>
                   ) : (
-                    <div className="pt-3 border-t border-main/10">
-                      <p className="text-xs sm:text-sm text-slate-500 italic">
+                    <div className="pt-3 border-t border-main/10 dark:border-slate-700">
+                      <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 italic">
                         {t("noParty")}
                       </p>
                     </div>

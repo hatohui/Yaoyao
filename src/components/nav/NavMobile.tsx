@@ -28,7 +28,7 @@ const NavMobile = ({
     <div className="sm:hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 text-white hover:bg-white/10 rounded-md transition-colors"
+        className="p-2 text-white dark:text-slate-300 hover:bg-white/10 dark:hover:bg-slate-700 rounded-md transition-colors"
         aria-label="Toggle menu"
       >
         {isOpen ? <FiX className="w-5 h-5" /> : <FiMenu className="w-5 h-5" />}
@@ -36,7 +36,7 @@ const NavMobile = ({
 
       {/* Mobile Dropdown */}
       {isOpen && (
-        <div className="absolute top-14 left-0 right-0 bg-darkest border-t border-main/20 shadow-lg z-50">
+        <div className="absolute top-14 left-0 right-0 bg-darkest dark:bg-slate-900 border-t border-main/20 dark:border-slate-700 shadow-lg z-50">
           <div className="flex flex-col p-2">
             {filteredNavData.map((item) => {
               const isActive =
@@ -52,8 +52,8 @@ const NavMobile = ({
                       px-4 py-2.5 text-sm font-medium rounded-md transition-all
                       ${className} ${
                     isActive
-                      ? "bg-main text-white"
-                      : "text-white/80 hover:bg-white/10 hover:text-white"
+                      ? "bg-main text-white dark:bg-main/90"
+                      : "text-white/80 hover:bg-white/10 hover:text-white dark:text-slate-300 dark:hover:bg-slate-700"
                   }
                     `}
                 >
@@ -63,10 +63,10 @@ const NavMobile = ({
             })}
           </div>
           {isVerified && (
-            <div className="flex items-center justify-between gap-3 px-2 py-2 border-t border-main/20">
+            <div className="flex items-center justify-between gap-3 px-2 py-2 border-t border-main/20 dark:border-slate-700">
               <button
                 onClick={onLogout}
-                className="px-4 py-2.5 text-sm font-medium rounded-md transition-all text-white/80 hover:bg-white/10 hover:text-white"
+                className="px-4 py-2.5 text-sm font-medium rounded-md transition-all text-white/80 hover:bg-white/10 hover:text-white dark:text-slate-300 dark:hover:bg-slate-700"
               >
                 {t("logout")}
               </button>

@@ -49,17 +49,17 @@ const OrderPage = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-main/20">
+      <div className="bg-white dark:bg-slate-800 shadow-sm border-b border-main/20 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Link
                 href={`/tables/${tableId}?id=${leaderId}`}
-                className="p-1.5 hover:bg-main/10 rounded-md transition-colors"
+                className="p-1.5 hover:bg-main/10 dark:hover:bg-slate-700 rounded-md transition-colors"
               >
-                <FiArrowLeft className="w-5 h-5 text-darkest" />
+                <FiArrowLeft className="w-5 h-5 text-darkest dark:text-slate-300" />
               </Link>
               {table && (
                 <OrderLinkGenerator
@@ -71,10 +71,10 @@ const OrderPage = () => {
               )}
 
               <div>
-                <h1 className="text-lg font-semibold text-darkest">
+                <h1 className="text-lg font-semibold text-darkest dark:text-slate-100">
                   {table?.name || t("title")}
                 </h1>
-                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
                   <FiUsers className="w-3.5 h-3.5" />
                   <span>
                     {peopleCount}{" "}

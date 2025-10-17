@@ -33,21 +33,24 @@ const AuthOverLay: React.FC<{ open: boolean; onClose: () => void }> = ({
 
   return (
     <div className="fixed inset-0 z-50 h-screen w-screen flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/30" onClick={onClose} />
+      <div
+        className="absolute inset-0 bg-black/30 dark:bg-black/50"
+        onClick={onClose}
+      />
 
-      <div className="relative bg-white rounded-lg p-4 sm:p-6 w-full max-w-sm mx-auto shadow-xl">
+      <div className="relative bg-white dark:bg-slate-800 rounded-lg p-4 sm:p-6 w-full max-w-sm mx-auto shadow-xl">
         <button
           aria-label="Close"
           onClick={onClose}
-          className="absolute top-2 right-2 text-slate-600 hover:text-slate-900 text-xl sm:text-2xl"
+          className="absolute top-2 right-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 text-xl sm:text-2xl"
         >
           ✕
         </button>
 
-        <h3 className="text-base sm:text-lg font-semibold mb-2">
+        <h3 className="text-base sm:text-lg font-semibold mb-2 text-slate-900 dark:text-slate-100">
           Verify YaoYao
         </h3>
-        <p className="text-xs sm:text-sm text-slate-600 mb-4">
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-4">
           Yaoyao is a purple puppy — enter the password.
         </p>
 
@@ -60,18 +63,20 @@ const AuthOverLay: React.FC<{ open: boolean; onClose: () => void }> = ({
             if (e.key === "Enter") submit();
             if (e.key === "Backspace") setValue((s) => s.slice(0, -1));
           }}
-          className="w-full border rounded-md px-3 py-2 mb-3 text-sm sm:text-base"
+          className="w-full border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 mb-3 text-sm sm:text-base bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
           placeholder="Start typing password..."
         />
 
         {error && (
-          <div className="text-red-600 text-xs sm:text-sm mb-2">{error}</div>
+          <div className="text-red-600 dark:text-red-400 text-xs sm:text-sm mb-2">
+            {error}
+          </div>
         )}
 
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-3 py-1.5 sm:py-2 rounded-md text-sm sm:text-base hover:bg-slate-100 transition-colors"
+            className="px-3 py-1.5 sm:py-2 rounded-md text-sm sm:text-base hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-900 dark:text-slate-100"
           >
             Cancel
           </button>
