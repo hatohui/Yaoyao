@@ -90,7 +90,7 @@ const TableDetailHeader = ({
             </div>
 
             {/* Manage Orders Button - Only for table leaders (not verified or normal users) */}
-            {isTableLeader && !isVerified && table?.tableLeader && (
+            {(isTableLeader || isVerified) && (
               <Link
                 href={`/orders?${ordersLinkQuery}`}
                 className="px-3 py-1.5 bg-main/10 dark:bg-main/20 hover:bg-main/20 dark:hover:bg-main/30 rounded-lg transition-colors text-main font-medium text-sm flex items-center gap-2"
