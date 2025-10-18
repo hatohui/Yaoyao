@@ -28,9 +28,7 @@ async function getFoodDataForMetadata(
   try {
     // Use the repository directly on the server side with proper locale
     const food = await getFoodById(id, locale);
-
     if (!food) return null;
-
     // Map the response to extract translated fields
     const mappedFood = mapFoodToResponse(food as TranslatedFood);
     return mappedFood;
@@ -64,7 +62,7 @@ export async function generateMetadata({
   const priceText = firstPrice ? ` - ${firstPrice} RM` : "";
 
   return {
-    title: `${foodName}${priceText} | Yaoyao Dinner`,
+    title: `${foodName}${priceText} | ${food.available}`,
     description: foodDescription,
     openGraph: {
       title: `${foodName}${priceText}`,
