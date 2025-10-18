@@ -1,4 +1,3 @@
-import { tree } from "next/dist/build/templates/app-page";
 import { FoodData } from "../parsed_foods";
 
 export const dessertData: FoodData = {
