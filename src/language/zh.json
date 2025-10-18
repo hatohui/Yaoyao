@@ -195,7 +195,8 @@
     "lastUpdated": "最后更新",
     "manageOrders": "管理订单",
     "browseMenu": "浏览菜单",
-    "backToTable": "返回餐桌"
+    "backToTable": "返回餐桌",
+    "manageTable": "管理餐桌"
   },
   "dashboard": {
     "title": "食物管理仪表板",

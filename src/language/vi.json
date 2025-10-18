@@ -196,7 +196,8 @@
     "lastUpdated": "Cập nhật lần cuối",
     "manageOrders": "Quản lý đơn hàng",
     "browseMenu": "Xem thực đơn",
-    "backToTable": "Quay lại bàn"
+    "backToTable": "Quay lại bàn",
+    "manageTable": "Quản lý bàn"
   },
   "dashboard": {
     "title": "Bảng điều khiển quản lý thực phẩm",

@@ -187,7 +187,8 @@
     "lastUpdated": "Last updated",
     "manageOrders": "Manage Orders",
     "browseMenu": "Browse Menu",
-    "backToTable": "Back to Table"
+    "backToTable": "Back to Table",
+    "manageTable": "Manage Table"
   },
   "dashboard": {
     "title": "Food Management Dashboard",
