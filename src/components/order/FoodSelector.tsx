@@ -13,8 +13,8 @@ import {
   FiMinus,
 } from "react-icons/fi";
 import Image from "next/image";
-import axios from "@/common/axios";
 import gsap from "gsap";
+import CategorySelector from "../food/CategorySelector";
 
 type CartItem = {
   foodId: string;
@@ -39,7 +39,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFood, setSelectedFood] = useState<string | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<number | null>(null);
-  const [variantIds, setVariantIds] = useState<string[]>([]);
+  const [quantityToAdd, setQuantityToAdd] = useState(1);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showMobileCart, setShowMobileCart] = useState(false);
 
@@ -53,8 +53,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
 
   const filteredFoods = foods?.filter((food) => {
     if (!searchQuery) return true;
-    const translatedName = food.translations?.[0]?.name || food.name;
-    return translatedName.toLowerCase().includes(searchQuery.toLowerCase());
+    return food.name.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
   const selectedFoodData = foods?.find((f) => f.id === selectedFood);
@@ -88,22 +87,6 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
     }
   }, [cart.length]);
 
-  // Fetch variant IDs when a food is selected
-  useEffect(() => {
-    if (selectedFood) {
-      axios
-        .get(`/foods/${selectedFood}?lang=en`)
-        .then((res) => {
-          const variantIdsFromApi =
-            res.data.variants?.map((v: { id: string }) => v.id) || [];
-          setVariantIds(variantIdsFromApi);
-        })
-        .catch(() => {
-          setVariantIds([]);
-        });
-    }
-  }, [selectedFood]);
-
   // Add item to cart
   const handleAddToCart = () => {
     if (!selectedFood || !selectedFoodData) return;
@@ -116,18 +99,13 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
       }
     }
 
-    const translatedName =
-      selectedFoodData.translations?.[0]?.name || selectedFoodData.name;
     const variant =
       selectedFoodData.variants && selectedFoodData.variants.length > 0
         ? selectedVariant !== null
           ? selectedFoodData.variants[selectedVariant]
           : selectedFoodData.variants[0]
         : null;
-    const variantId =
-      selectedVariant !== null && selectedFoodData.variants?.length
-        ? variantIds[selectedVariant]
-        : undefined;
+    const variantId = variant?.id;
 
     const existingItemIndex = cart.findIndex(
       (item) => item.foodId === selectedFood && item.variantId === variantId
@@ -136,7 +114,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
     if (existingItemIndex >= 0) {
       // Increment quantity
       const newCart = [...cart];
-      newCart[existingItemIndex].quantity += 1;
+      newCart[existingItemIndex].quantity += quantityToAdd;
       setCart(newCart);
     } else {
       // Add new item
@@ -144,12 +122,12 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
         ...cart,
         {
           foodId: selectedFood,
-          foodName: translatedName,
+          foodName: selectedFoodData.name,
           foodImage: selectedFoodData.imageUrl,
           variantId,
           variantLabel: variant?.label,
           variantPrice: variant?.price ?? 0,
-          quantity: 1,
+          quantity: quantityToAdd,
           isSeasonal: variant?.isSeasonal ?? false,
         },
       ]);
@@ -158,7 +136,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
     // Reset selection
     setSelectedFood(null);
     setSelectedVariant(null);
-    setVariantIds([]);
+    setQuantityToAdd(1);
   };
 
   // Remove item from cart
@@ -241,7 +219,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="w-full bg-darkest dark:bg-slate-700 hover:bg-darkest/90 dark:hover:bg-slate-600 text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 relative"
+        className="w-full button flex items-center justify-center gap-2 relative"
       >
         <FiPlus className="w-5 h-5" />
         {t("orderFood")}
@@ -298,34 +276,11 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
               </div>
 
               {/* Categories */}
-              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-                <button
-                  onClick={() => setSelectedCategory(null)}
-                  className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium whitespace-nowrap transition-colors ${
-                    selectedCategory === null
-                      ? "bg-main text-white"
-                      : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
-                  }`}
-                >
-                  {tMenu("allCategories")}
-                </button>
-                {categories?.map((cat) => {
-                  const categoryKey = cat.key.split(" ")[0].toLowerCase();
-                  return (
-                    <button
-                      key={cat.id}
-                      onClick={() => setSelectedCategory(categoryKey)}
-                      className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium whitespace-nowrap transition-colors ${
-                        selectedCategory === categoryKey
-                          ? "bg-main text-white"
-                          : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
-                      }`}
-                    >
-                      {cat.translation?.[0]?.name || cat.name}
-                    </button>
-                  );
-                })}
-              </div>
+              <CategorySelector
+                categories={categories}
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+              />
             </div>
 
             {/* Food Grid and Cart Split View */}
@@ -342,15 +297,11 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                 ) : filteredFoods && filteredFoods.length > 0 ? (
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-2 md:gap-3">
                     {filteredFoods.map((food) => {
-                      const translatedName =
-                        food.translations?.[0]?.name || food.name;
                       const isSelected = selectedFood === food.id;
                       const isAvailable = food.available;
                       const inCartCount =
-                        food.variants?.reduce((sum, variant, idx) => {
-                          return (
-                            sum + getCartQuantity(food.id, variantIds[idx])
-                          );
+                        food.variants?.reduce((sum, variant) => {
+                          return sum + getCartQuantity(food.id, variant.id);
                         }, 0) || 0;
 
                       return (
@@ -359,12 +310,19 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                           onClick={() => {
                             if (!isAvailable) return;
                             setSelectedFood(food.id);
-                            setSelectedVariant(null);
+                            // Auto-select first variant if available
+                            setSelectedVariant(
+                              food.variants && food.variants.length > 0
+                                ? 0
+                                : null
+                            );
                           }}
                           disabled={!isAvailable}
                           className={`relative text-left rounded-lg border-2 overflow-hidden transition-all ${
                             isSelected
                               ? "border-darkest dark:border-main shadow-lg ring-2 ring-darkest/20 dark:ring-main/20"
+                              : inCartCount > 0
+                              ? "border-main dark:border-main shadow-md ring-2 ring-main/20 dark:ring-main/30"
                               : isAvailable
                               ? "border-slate-200 dark:border-slate-700 hover:border-darkest/30 dark:hover:border-main/30 hover:shadow-md"
                               : "border-slate-200 dark:border-slate-700 opacity-50 cursor-not-allowed"
@@ -381,7 +339,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                             {food.imageUrl ? (
                               <Image
                                 src={food.imageUrl}
-                                alt={translatedName}
+                                alt={food.name}
                                 fill
                                 className="object-cover"
                               />
@@ -399,17 +357,21 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                             )}
                           </div>
                           <div className="p-2 bg-white dark:bg-slate-800">
-                            <h3 className="text-xs font-semibold text-slate-900 dark:text-slate-100 truncate">
-                              {translatedName}
-                            </h3>
+                            <div className="bg-slate-50 dark:bg-slate-700/50 px-2 py-1.5 rounded mb-1">
+                              <h3 className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate uppercase tracking-wide">
+                                {food.name}
+                              </h3>
+                            </div>
                             {food.variants && food.variants.length > 0 && (
-                              <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                              <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5 px-1">
                                 {food.variants[0].isSeasonal ? (
-                                  <span className="text-amber-600 dark:text-amber-400">
-                                    (Seasonal)
+                                  <span className="text-amber-600 dark:text-amber-400 font-medium">
+                                    ({tMenu("seasonal")})
                                   </span>
                                 ) : (
-                                  `${food.variants[0].price?.toFixed(2)} RM`
+                                  <span className="font-semibold">{`${food.variants[0].price?.toFixed(
+                                    2
+                                  )} RM`}</span>
                                 )}
                               </p>
                             )}
@@ -542,8 +504,8 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                       <p className="text-xs text-amber-600 dark:text-amber-400 mb-2 flex items-center gap-1">
                         <span>⚠️</span>
                         <span>
-                          Seasonal items priced at market rate (not included in
-                          total)
+                          {t("seasonalWarning") ||
+                            "Seasonal items priced at market rate (not included in total)"}
                         </span>
                       </p>
                     )}
@@ -565,15 +527,14 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
               <div className="border-t border-slate-200 dark:border-slate-700 p-3 md:p-4 bg-slate-50 dark:bg-slate-900">
                 <div className="max-w-2xl mx-auto">
                   <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">
-                    {selectedFoodData.translations?.[0]?.name ||
-                      selectedFoodData.name}
+                    {selectedFoodData.name}
                   </h3>
 
                   {/* Variant Selection */}
                   {selectedFoodData.variants &&
                     selectedFoodData.variants.length > 0 && (
-                      <div className="space-y-2">
-                        <label className="text-xs md:text-sm font-medium text-slate-700 dark:text-slate-300">
+                      <div className="space-y-3">
+                        <label className="text-xs md:text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
                           {t("selectVariant")}
                         </label>
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -582,35 +543,69 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                               key={idx}
                               onClick={() => setSelectedVariant(idx)}
                               disabled={!variant.available}
-                              className={`p-2 md:p-3 rounded-lg border-2 text-left transition-all ${
+                              className={`p-3 md:p-4 rounded-lg border-2 text-left transition-all relative ${
                                 selectedVariant === idx
-                                  ? "border-darkest dark:border-main bg-darkest/5 dark:bg-main/10"
+                                  ? "border-main dark:border-main bg-main/10 dark:bg-main/20 shadow-lg ring-2 ring-main/30 dark:ring-main/40"
                                   : variant.available
-                                  ? "border-slate-200 dark:border-slate-700 hover:border-darkest/30 dark:hover:border-main/30"
+                                  ? "border-slate-300 dark:border-slate-600 hover:border-main/50 dark:hover:border-main/50 hover:bg-slate-50 dark:hover:bg-slate-700/50"
                                   : "border-slate-200 dark:border-slate-700 opacity-50 cursor-not-allowed"
                               }`}
                             >
-                              <div className="flex items-center gap-1.5">
-                                <div className="text-xs md:text-sm font-medium text-slate-900 dark:text-slate-100">
-                                  {variant.label}
+                              {/* Selected indicator checkmark */}
+                              {selectedVariant === idx && (
+                                <div className="absolute top-1 right-1 w-5 h-5 bg-main rounded-full flex items-center justify-center">
+                                  <svg
+                                    className="w-3 h-3 text-white"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={3}
+                                      d="M5 13l4 4L19 7"
+                                    />
+                                  </svg>
                                 </div>
-                                {variant.isSeasonal && (
-                                  <span className="text-[8px] px-1 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 rounded font-semibold whitespace-nowrap">
-                                    {tMenu("seasonal")}
-                                  </span>
-                                )}
-                              </div>
-                              <div className="text-xs md:text-sm text-darkest dark:text-main font-semibold mt-1">
-                                {variant.isSeasonal ? (
-                                  <span className="text-amber-600 dark:text-amber-400">
-                                    (Seasonal Price)
-                                  </span>
-                                ) : (
-                                  `${variant.price?.toFixed(2)} RM`
-                                )}
+                              )}
+
+                              <div className="flex flex-col gap-1">
+                                <div className="flex items-center gap-1.5">
+                                  <div
+                                    className={`text-sm md:text-base font-bold uppercase tracking-wide ${
+                                      selectedVariant === idx
+                                        ? "text-main dark:text-main"
+                                        : "text-slate-900 dark:text-slate-100"
+                                    }`}
+                                  >
+                                    {variant.label}
+                                  </div>
+                                  {variant.isSeasonal && (
+                                    <span className="text-[9px] px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 rounded font-semibold whitespace-nowrap">
+                                      {tMenu("seasonal")}
+                                    </span>
+                                  )}
+                                </div>
+                                <div
+                                  className={`text-xs md:text-sm font-bold ${
+                                    selectedVariant === idx
+                                      ? "text-main dark:text-main"
+                                      : "text-slate-600 dark:text-slate-400"
+                                  }`}
+                                >
+                                  {variant.isSeasonal ? (
+                                    <span className="text-amber-600 dark:text-amber-400">
+                                      ({tMenu("seasonal")}{" "}
+                                      {t("price") || "Price"})
+                                    </span>
+                                  ) : (
+                                    `${variant.price?.toFixed(2)} RM`
+                                  )}
+                                </div>
                               </div>
                               {!variant.available && (
-                                <div className="text-xs text-red-600 dark:text-red-400 mt-1">
+                                <div className="text-xs text-red-600 dark:text-red-400 mt-1 font-semibold">
                                   {t("notAvailable")}
                                 </div>
                               )}
@@ -619,6 +614,32 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                         </div>
                       </div>
                     )}
+
+                  {/* Quantity Control */}
+                  <div className="mt-4 flex items-center justify-between bg-white dark:bg-slate-800 rounded-lg p-3 border border-slate-200 dark:border-slate-700">
+                    <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                      {t("quantity") || "Quantity"}
+                    </span>
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={() =>
+                          setQuantityToAdd(Math.max(1, quantityToAdd - 1))
+                        }
+                        className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+                      >
+                        <FiMinus className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+                      </button>
+                      <span className="text-lg font-semibold text-slate-900 dark:text-slate-100 min-w-[2rem] text-center">
+                        {quantityToAdd}
+                      </span>
+                      <button
+                        onClick={() => setQuantityToAdd(quantityToAdd + 1)}
+                        className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+                      >
+                        <FiPlus className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+                      </button>
+                    </div>
+                  </div>
 
                   <button
                     onClick={handleAddToCart}
@@ -639,19 +660,34 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                   <div className="md:hidden">
                     <button
                       onClick={() => setShowMobileCart(!showMobileCart)}
-                      className="w-full flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-700 rounded-lg text-sm"
+                      className="w-full flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-700 rounded-lg text-sm hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors group"
                     >
-                      <span className="font-medium text-slate-700 dark:text-slate-300">
+                      <span className="font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                        <FiShoppingCart className="w-4 h-4" />
                         {cartItemCount}{" "}
                         {cartItemCount === 1 ? t("item") : t("items")} in cart
                       </span>
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-darkest dark:text-slate-100">
                           {cart.some((item) => item.isSeasonal)
-                            ? "(Seasonal Price)"
+                            ? `${cartTotal.toFixed(2)} RM *`
                             : `${cartTotal.toFixed(2)} RM`}
                         </span>
-                        <FiShoppingCart className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+                        <svg
+                          className={`w-4 h-4 text-slate-700 dark:text-slate-300 transition-transform ${
+                            showMobileCart ? "rotate-180" : ""
+                          }`}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
                       </div>
                     </button>
 
@@ -682,8 +718,12 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                                 )}
                                 <p className="text-xs font-semibold text-main mt-0.5">
                                   {item.isSeasonal ? (
-                                    <span className="text-amber-600 dark:text-amber-400">
-                                      (Seasonal Price)
+                                    <span className="text-amber-600 dark:text-amber-400 flex items-center gap-0.5">
+                                      {(
+                                        item.variantPrice * item.quantity
+                                      ).toFixed(2)}{" "}
+                                      RM
+                                      <span className="text-base">*</span>
                                     </span>
                                   ) : (
                                     `${(
@@ -708,12 +748,23 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                         ))}
                       </div>
                     )}
+
+                    {/* Seasonal note for mobile */}
+                    {showMobileCart && cart.some((item) => item.isSeasonal) && (
+                      <p className="text-xs text-amber-600 dark:text-amber-400 mt-2 px-2 flex items-start gap-1">
+                        <span className="text-base leading-none">*</span>
+                        <span>
+                          {t("seasonalWarning") ||
+                            "Seasonal items priced at market rate (not included in total)"}
+                        </span>
+                      </p>
+                    )}
                   </div>
 
                   <button
                     onClick={handleSubmitCart}
                     disabled={addOrderMutation.isPending}
-                    className="w-full bg-main hover:bg-main/90 text-white font-bold py-3 px-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl text-sm md:text-base"
+                    className="button w-full disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {addOrderMutation.isPending
                       ? t("ordering") || "Processing..."

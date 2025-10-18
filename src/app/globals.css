@@ -7,6 +7,8 @@
   --color-main: #be79e6;
   --color-main-light: #d399f0;
   --color-main-bright: #e0b3f7;
+  --color-main-dark: #8b5bb8;
+  --color-main-darker: #6d4a94;
   --color-darkest: #4c2e50;
   --color-available: #10b981;
 
@@ -25,6 +27,25 @@
   --color-dark-success: #34d399;
   --color-dark-warning: #fbbf24;
   --color-dark-error: #f87171;
+}
+
+@layer components {
+  .button {
+    @apply /* Base styles */
+      cursor-pointer font-medium py-3 px-4 rounded-lg
+      flex items-center justify-center gap-2 relative
+      transition-colors duration-300
+      
+      /* Light mode styles */
+      bg-darkest
+      text-white shadow-sm hover:shadow-md
+      hover:bg-dark-accent
+      
+      /* Dark mode styles */
+      dark:bg-gradient-to-r dark:from-main/20 dark:to-purple-600/20
+      dark:hover:from-main/30 dark:hover:to-purple-600/30
+      dark:border-main/40 dark:shadow-main/10;
+  }
 }
 
 /* Dark mode base styles */

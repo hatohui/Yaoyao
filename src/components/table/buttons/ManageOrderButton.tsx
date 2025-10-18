@@ -3,6 +3,8 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import React from "react";
 import { FiShoppingCart } from "react-icons/fi";
+import { useSearchParams } from "next/navigation";
+import { mergeQueryParams } from "@/utils/mergeQueryParams";
 
 const ManageOrderButton = ({
   table,
@@ -10,12 +12,15 @@ const ManageOrderButton = ({
   table: GetTableByIdResponse | undefined;
 }) => {
   const t = useTranslations("orders");
+  const searchParams = useSearchParams();
+
+  const queryString = mergeQueryParams(searchParams, {
+    table: table?.id,
+    id: table?.tableLeader?.id,
+  });
 
   return (
-    <Link
-      href={`/orders?table=${table?.id}&id=${table?.tableLeader?.id}`}
-      className="block w-full bg-darkest dark:bg-gradient-to-r dark:from-main/20 dark:to-purple-600/20 hover:bg-darkest/90 dark:hover:from-main/30 dark:hover:to-purple-600/30 text-white font-medium py-3 px-4 rounded-lg shadow-sm hover:shadow-md dark:shadow-main/10 transition-all border border-main/20 dark:border-main/40"
-    >
+    <Link href={`/orders?${queryString}`} className="block w-full button">
       <div className="flex items-center justify-center gap-2">
         <FiShoppingCart className="w-5 h-5 dark:text-main" />
         <span className="text-sm dark:text-slate-100">

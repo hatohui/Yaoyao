@@ -46,56 +46,99 @@ const TableDetailPage = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
         {isNormalMember ? (
-          /* Layout for normal members: Table Details and Members side by side */
-          <div className="grid grid-cols-1 lg:grid-cols-2 md:space-x-5 max-w-7xl mx-auto space-y-3 md:space-y-4">
-            <div
-              className={`gap-4 md:gap-6 space-y-3 md:space-y-4 items-start ${
-                hasOrders ? "" : ""
-              }`}
-            >
-              <TableDetail table={table} isloading={isLoading} />
-              <PeopleInTable
-                table={table}
-                people={people}
-                canManage={canManage}
-                tableId={id}
-                userId={userId}
-              />
-            </div>
-            {/* Orders section below for normal members */}
-            {hasOrders && (
-              <div className="space-y-3 md:space-y-4 min-h-[500px]">
-                <TableOrdersList tableId={id} />
-              </div>
+          /* Layout for normal members */
+          <div
+            className={`grid grid-cols-1 ${
+              hasOrders ? "lg:grid-cols-2" : "lg:grid-cols-3"
+            } gap-4 md:gap-6 items-start`}
+          >
+            {hasOrders ? (
+              <>
+                {/* Left Column - Table Details and Members stacked */}
+                <div className="space-y-3 md:space-y-4">
+                  <TableDetail table={table} isloading={isLoading} />
+                  <PeopleInTable
+                    table={table}
+                    people={people}
+                    canManage={canManage}
+                    tableId={id}
+                    userId={userId}
+                  />
+                </div>
+
+                {/* Right Column - Orders */}
+                <div className="space-y-3 md:space-y-4 min-h-[500px]">
+                  <TableOrdersList tableId={id} />
+                </div>
+              </>
+            ) : (
+              <>
+                {/* No orders: Table Details - Takes 1 column */}
+                <div className="lg:col-span-1">
+                  <TableDetail table={table} isloading={isLoading} />
+                </div>
+
+                {/* No orders: Members - Takes 2 columns */}
+                <div className="lg:col-span-2">
+                  <PeopleInTable
+                    table={table}
+                    people={people}
+                    canManage={canManage}
+                    tableId={id}
+                    userId={userId}
+                  />
+                </div>
+              </>
             )}
           </div>
         ) : (
-          /* Original layout for verified users and table leaders */
+          /* Layout for verified users and table leaders */
           <div
             className={`grid grid-cols-1 ${
-              hasOrders ? "lg:grid-cols-2" : "lg:grid-cols-1 max-w-2xl mx-auto"
+              hasOrders ? "lg:grid-cols-2" : "lg:grid-cols-3"
             } gap-4 md:gap-6 items-start`}
           >
-            {/* Left Column - Table Info & Management & People */}
-            <div className="space-y-3 md:space-y-4 grid">
-              <TableDetail table={table} isloading={isLoading} />
+            {hasOrders ? (
+              <>
+                {/* Left Column - Table Details and Members stacked */}
+                <div className="space-y-3 md:space-y-4">
+                  <TableDetail table={table} isloading={isLoading} />
+                  <PeopleInTable
+                    table={table}
+                    people={people}
+                    canManage={canManage}
+                    tableId={id}
+                    userId={userId}
+                  />
+                </div>
 
-              {/* People Management - Always in left column */}
-              <PeopleInTable
-                table={table}
-                people={people}
-                canManage={canManage}
-                tableId={id}
-                userId={userId}
-              />
-            </div>
+                {/* Right Column - Manage Orders Button and Orders */}
+                <div className="space-y-3 md:space-y-4 min-h-[500px]">
+                  {(isVerified || canManage) && (
+                    <ManageOrderButton table={table} />
+                  )}
+                  <TableOrdersList tableId={id} />
+                </div>
+              </>
+            ) : (
+              <>
+                {/* No orders: Table Details (1/3 width) */}
+                <div className="lg:col-span-1">
+                  <TableDetail table={table} isloading={isLoading} />
+                </div>
 
-            {/* Right Column - Table Orders (only shown when there are orders) */}
-            <div className="space-y-3 md:space-y-4 min-h-[500px]">
-              {/* Manage Orders Button - For Table Leaders and Yaoyao */}
-              {(isVerified || canManage) && <ManageOrderButton table={table} />}
-              {hasOrders && <TableOrdersList tableId={id} />}
-            </div>
+                {/* No orders: Members (2/3 width) */}
+                <div className="lg:col-span-2">
+                  <PeopleInTable
+                    table={table}
+                    people={people}
+                    canManage={canManage}
+                    tableId={id}
+                    userId={userId}
+                  />
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>
