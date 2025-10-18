@@ -59,7 +59,9 @@ export async function generateMetadata({
   const foodImage = food.imageUrl || "/default-food-image.jpg";
 
   const firstPrice = food.variants?.[0]?.price;
-  const priceText = firstPrice ? ` - ${firstPrice} RM` : "";
+  const priceText = firstPrice
+    ? ` - ${firstPrice} ${food.variants?.[0]?.currency || "RM"}`
+    : "";
 
   return {
     title: `${foodName}${priceText} | Menu`,
