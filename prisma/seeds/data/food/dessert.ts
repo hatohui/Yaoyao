@@ -226,7 +226,13 @@ export const dessertData: FoodData = {
             "轻盈绵软的蓝莓慕斯蛋糕，顶部覆盖一层毛茸茸的鲜奶油与冻干蓝莓碎。",
         },
       },
-      variants: [{ price: 67, currency: "Barks" }],
+      variants: [
+        { price: 67, currency: "barks" },
+        {
+          price: 69,
+          currency: "barks",
+        },
+      ],
     },
   ],
 };
