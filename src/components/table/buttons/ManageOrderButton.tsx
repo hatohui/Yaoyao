@@ -22,7 +22,7 @@ const ManageOrderButton = ({
   return (
     <Link href={`/orders?${queryString}`} className="block w-full button">
       <div className="flex items-center justify-center gap-2">
-        <FiShoppingCart className="w-5 h-5 dark:text-main" />
+        <FiShoppingCart className="w-5 h-5" />
         <span className="text-sm dark:text-slate-100">
           {t("manageOrders") || "Manage Orders"}
         </span>

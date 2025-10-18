@@ -8,7 +8,6 @@ import { useParams, useSearchParams } from "next/navigation";
 import TableDetailHeader from "@/components/table/TableDetailHeader";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import TableOrdersList from "@/components/order/TableOrdersList";
-import ManageOrderButton from "@/components/table/buttons/ManageOrderButton";
 
 const TableDetailPage = () => {
   const { id } = useParams() as { id: string };
@@ -50,24 +49,26 @@ const TableDetailPage = () => {
           <div
             className={`grid grid-cols-1 ${
               hasOrders ? "lg:grid-cols-2" : "lg:grid-cols-3"
-            } gap-4 md:gap-6 items-start`}
+            } gap-4 md:gap-6 items-stretch`}
           >
             {hasOrders ? (
               <>
                 {/* Left Column - Table Details and Members stacked */}
-                <div className="space-y-3 md:space-y-4">
+                <div className="space-y-3 md:space-y-4 flex flex-col">
                   <TableDetail table={table} isloading={isLoading} />
-                  <PeopleInTable
-                    table={table}
-                    people={people}
-                    canManage={canManage}
-                    tableId={id}
-                    userId={userId}
-                  />
+                  <div className="flex-1 flex flex-col min-h-0">
+                    <PeopleInTable
+                      table={table}
+                      people={people}
+                      canManage={canManage}
+                      tableId={id}
+                      userId={userId}
+                    />
+                  </div>
                 </div>
 
                 {/* Right Column - Orders */}
-                <div className="space-y-3 md:space-y-4 min-h-[500px]">
+                <div className="space-y-3 md:space-y-4 self-stretch">
                   <TableOrdersList tableId={id} />
                 </div>
               </>
@@ -96,27 +97,26 @@ const TableDetailPage = () => {
           <div
             className={`grid grid-cols-1 ${
               hasOrders ? "lg:grid-cols-2" : "lg:grid-cols-3"
-            } gap-4 md:gap-6 items-start`}
+            } gap-4 md:gap-6 items-stretch`}
           >
             {hasOrders ? (
               <>
                 {/* Left Column - Table Details and Members stacked */}
-                <div className="space-y-3 md:space-y-4">
+                <div className="space-y-3 md:space-y-4 flex flex-col">
                   <TableDetail table={table} isloading={isLoading} />
-                  <PeopleInTable
-                    table={table}
-                    people={people}
-                    canManage={canManage}
-                    tableId={id}
-                    userId={userId}
-                  />
+                  <div className="flex-1 flex flex-col min-h-0">
+                    <PeopleInTable
+                      table={table}
+                      people={people}
+                      canManage={canManage}
+                      tableId={id}
+                      userId={userId}
+                    />
+                  </div>
                 </div>
 
-                {/* Right Column - Manage Orders Button and Orders */}
-                <div className="space-y-3 md:space-y-4 min-h-[500px]">
-                  {(isVerified || canManage) && (
-                    <ManageOrderButton table={table} />
-                  )}
+                {/* Right Column - Orders */}
+                <div className="space-y-3 md:space-y-4 self-stretch">
                   <TableOrdersList tableId={id} />
                 </div>
               </>

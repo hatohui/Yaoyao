@@ -80,7 +80,14 @@
     "noSearchResults": "Không tìm thấy kết quả",
     "tryDifferentSearch": "Thử tìm kiếm khác hoặc duyệt theo danh mục",
     "searchPlaceholder": "Tìm món...",
-    "searchResults": "Kết quả tìm kiếm"
+    "searchResults": "Kết quả tìm kiếm",
+    "clickToCopyLink": "Nhấp để sao chép liên kết",
+    "linkCopied": "Đã sao chép liên kết!",
+    "shareThisDish": "Chia sẻ món này",
+    "backToMenu": "Quay lại thực đơn",
+    "foodDetails": "Chi tiết món ăn",
+    "description": "Mô tả",
+    "noDescription": "Không có mô tả"
   },
   "tables": {
     "title": "Quản lý bàn ăn",
@@ -134,7 +141,12 @@
     "confirmRemove": "Bạn có chắc chắn muốn xóa người này khỏi bàn?",
     "confirmMakeLeader": "Bạn có chắc chắn muốn đặt người này làm trưởng bàn?",
     "orderLink": "Liên kết đặt món cho bàn",
-    "copyLink": "Sao chép liên kết đặt món"
+    "copyLink": "Sao chép liên kết đặt món",
+    "copied": "Đã sao chép!",
+    "open": "Mở",
+    "qrCodeNote": "Mã QR",
+    "qrPlaceholder": "Mã QR\nSắp ra mắt",
+    "qrCodeInstructions": "Quét để truy cập trang đặt món"
   },
   "orders": {
     "title": "Đơn hàng",

@@ -1,5 +1,7 @@
+"use client";
 import Image from "next/image";
-import { FiImage } from "react-icons/fi";
+import { FiImage, FiCheck, FiLink } from "react-icons/fi";
+import { useCopyToClipboard } from "@/hooks/common/useCopyToClipboard";
 
 type FoodCardProps = {
   food: {
@@ -28,10 +30,31 @@ const FoodCard = ({
   t,
 }: FoodCardProps) => {
   const isUnavailable = !food.available;
+  const { copied, copyToClipboard } = useCopyToClipboard();
+
+  const handleCopyLink = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    const foodUrl = `${
+      typeof window !== "undefined" ? window.location.origin : ""
+    }/menu/${food.id}`;
+    await copyToClipboard(foodUrl);
+  };
 
   return (
     <div
-      className={`bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow border border-main/10 dark:border-slate-700 hover:border-main/30 dark:hover:border-main/50 ${
+      onClick={handleCopyLink}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          const syntheticEvent = {
+            preventDefault: () => {},
+          } as React.MouseEvent;
+          handleCopyLink(syntheticEvent);
+        }
+      }}
+      className={`bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all cursor-pointer border border-main/10 dark:border-slate-700 hover:border-main/30 dark:hover:border-main/50 relative group ${
         isUnavailable ? "opacity-60 grayscale" : ""
       }`}
     >
@@ -51,6 +74,27 @@ const FoodCard = ({
             <FiImage className="w-20 h-20 text-slate-300 dark:text-slate-500" />
           </div>
         )}
+
+        {/* Copy Link Indicator - Shows on hover and when copied */}
+        <div
+          className={`absolute top-2 left-2 px-3 py-1 text-white text-xs font-semibold rounded-full shadow-lg transition-all ${
+            copied
+              ? "bg-green-500 dark:bg-green-600 opacity-100"
+              : "bg-main/80 dark:bg-main/70 opacity-0 group-hover:opacity-100"
+          }`}
+        >
+          {copied ? (
+            <span className="flex items-center gap-1">
+              <FiCheck className="w-3 h-3" />
+              {t("linkCopied")}
+            </span>
+          ) : (
+            <span className="flex items-center gap-1">
+              <FiLink className="w-3 h-3" />
+              {t("clickToCopyLink")}
+            </span>
+          )}
+        </div>
 
         {/* Availability Badge */}
         {isUnavailable && (

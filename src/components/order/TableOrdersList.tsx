@@ -81,7 +81,11 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
   }
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-main/10 dark:border-slate-700 overflow-hidden">
+    <div
+      className={`bg-white ${
+        isCollapsed ? "h-auto" : "h-full"
+      } dark:bg-slate-800 rounded-lg shadow-md border border-main/10 dark:border-slate-700 overflow-hidden`}
+    >
       {/* Header */}
       <div
         className="bg-darkest dark:bg-slate-900 px-4 py-2.5 cursor-pointer hover:bg-darkest/90 dark:hover:bg-slate-900/90 transition-colors"
@@ -126,7 +130,7 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
         </div>
 
         {/* Orders List */}
-        <div className="p-4 space-y-3 max-h-[calc(100vh-16rem)] overflow-y-auto min-h-[300px]">
+        <div className="p-4 space-y-3 max-h-[calc(100vh-13rem)] overflow-y-auto min-h-[300px]">
           {orders.map((order) => (
             <OrderItem key={order.id} order={order} isEditable={false} />
           ))}

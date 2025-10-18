@@ -71,7 +71,14 @@
     "noSearchResults": "No results found",
     "tryDifferentSearch": "Try a different search or browse categories",
     "searchPlaceholder": "Search dishes...",
-    "searchResults": "Search Results"
+    "searchResults": "Search Results",
+    "clickToCopyLink": "Click to copy link",
+    "linkCopied": "Link copied!",
+    "shareThisDish": "Share this dish",
+    "backToMenu": "Back to Menu",
+    "foodDetails": "Food Details",
+    "description": "Description",
+    "noDescription": "No description available"
   },
   "tables": {
     "title": "Table Management",

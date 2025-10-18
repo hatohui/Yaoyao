@@ -79,7 +79,14 @@
     "noSearchResults": "ไม่พบผลการค้นหา",
     "tryDifferentSearch": "ลองค้นหาที่แตกต่างออกไป",
     "searchPlaceholder": "ค้นหา...",
-    "searchResults": "ผลการค้นหา"
+    "searchResults": "ผลการค้นหา",
+    "clickToCopyLink": "คลิกเพื่อคัดลอกลิงก์",
+    "linkCopied": "คัดลอกลิงก์แล้ว!",
+    "shareThisDish": "แชร์เมนูนี้",
+    "backToMenu": "กลับไปยังเมนู",
+    "foodDetails": "รายละเอียดอาหาร",
+    "description": "คำอธิบาย",
+    "noDescription": "ไม่มีคำอธิบาย"
   },
   "tables": {
     "title": "การจัดการโต๊ะอาหาร",

@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { FiCopy, FiCheck } from "react-icons/fi";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
+import { mergeQueryParams } from "@/utils/mergeQueryParams";
 
 type OrderLinkGeneratorProps = {
   tableId: string;
@@ -20,10 +22,17 @@ const OrderLinkGenerator = ({
 }: OrderLinkGeneratorProps) => {
   const t = useTranslations("tables");
   const [copied, setCopied] = useState(false);
+  const searchParams = useSearchParams();
+
+  // Generate order link with preserved query params
+  const queryString = mergeQueryParams(searchParams, {
+    table: tableId,
+    id: tableLeaderId,
+  });
 
   const orderLink = `${
     typeof window !== "undefined" ? window.location.origin : ""
-  }/orders?table=${tableId}&id=${tableLeaderId}`;
+  }/orders?${queryString}`;
 
   const handleCopy = async () => {
     try {

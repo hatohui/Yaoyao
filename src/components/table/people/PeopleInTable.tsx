@@ -110,7 +110,11 @@ const PeopleInTable = ({
   const canAddMember = canManage && !isFull;
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden border border-main/10 dark:border-slate-700">
+    <div
+      className={`bg-white ${
+        isCollapsed ? "h-auto" : "grow"
+      } dark:bg-slate-800 rounded-lg shadow-md overflow-hidden border border-main/10 dark:border-slate-700`}
+    >
       <div
         className="bg-darkest dark:bg-slate-900 px-4 py-2.5 cursor-pointer hover:bg-darkest/90 dark:hover:bg-slate-900/90 transition-colors"
         onClick={() => setIsCollapsed(!isCollapsed)}
