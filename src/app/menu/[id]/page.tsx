@@ -62,7 +62,7 @@ export async function generateMetadata({
   const priceText = firstPrice ? ` - ${firstPrice} RM` : "";
 
   return {
-    title: `${foodName}${priceText} | ${food.available}`,
+    title: `${foodName}${priceText} | Menu`,
     description: foodDescription,
     openGraph: {
       title: `${foodName}${priceText}`,

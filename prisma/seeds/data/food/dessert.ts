@@ -1,3 +1,4 @@
+import { tree } from "next/dist/build/templates/app-page";
 import { FoodData } from "../parsed_foods";
 
 export const dessertData: FoodData = {
@@ -201,6 +202,31 @@ export const dessertData: FoodData = {
         },
       },
       variants: [{ price: 8.9, currency: "RM" }],
+    },
+    {
+      name: "Blueberry Mousse Cake",
+      imageUrl:
+        "https://trello.com/1/cards/68f3821abfff4483eace1a88/attachments/68f3824c02bf58afd4d61fa5/download/photo_2025-07-22_19-30-29.jpg",
+      description:
+        "Light and airy blueberry mousse cake topped with a fluffy, 'furry' layer of whipped cream and crushed freeze-dried berries.",
+      translations: {
+        vi: {
+          name: "Bánh mousse việt quất (Furry)",
+          description:
+            "Bánh mousse việt quất nhẹ và xốp, phủ lớp kem đánh bông 'lông' cùng việt quất sấy giòn.",
+        },
+        th: {
+          name: "เค้กมูสบลูเบอร์รี (ฟาร์รี)",
+          description:
+            "เค้กมูสบลูเบอร์รีเนื้อนุ่มฟู ท็อปด้วยครีมวิปปิ้งฟูๆ และบลูเบอร์รีแห้งบด",
+        },
+        zh: {
+          name: "蓝莓慕斯蛋糕（毛茸茸）",
+          description:
+            "轻盈绵软的蓝莓慕斯蛋糕，顶部覆盖一层毛茸茸的鲜奶油与冻干蓝莓碎。",
+        },
+      },
+      variants: [{ price: 67, currency: "Barks" }],
     },
   ],
 };

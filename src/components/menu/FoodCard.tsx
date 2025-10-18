@@ -142,7 +142,7 @@ const FoodCard = ({
                 <div className="flex flex-col items-end gap-1 flex-shrink-0">
                   {variant.price && (
                     <span className="font-semibold text-main dark:text-main whitespace-nowrap">
-                      {variant.price} RM
+                      {variant.price} {variant.currency || "RM"}
                     </span>
                   )}
                   <div className="flex gap-1 flex-wrap justify-end">
