@@ -4,6 +4,7 @@ import { getFoodById } from "@/repositories/food-repo";
 import FoodDetailContent from "@/components/menu/FoodDetailContent";
 import { cookies } from "next/headers";
 import { Language, SUPPORTED_LANGS } from "@/common/language";
+import { mapFoodToResponse } from "@/utils/mapFoodToResponse";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -27,7 +28,12 @@ async function getFoodDataForMetadata(
   try {
     // Use the repository directly on the server side with proper locale
     const food = await getFoodById(id, locale);
-    return food as TranslatedFood | null;
+
+    if (!food) return null;
+
+    // Map the response to extract translated fields
+    const mappedFood = mapFoodToResponse(food as TranslatedFood);
+    return mappedFood;
   } catch (error) {
     console.error("Error fetching food data for metadata:", error);
     return null;
