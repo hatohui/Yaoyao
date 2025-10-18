@@ -10,7 +10,7 @@
     "seed": "prisma db seed",
     "migrate": "prisma migrate dev",
     "push": "prisma db push",
-    "postinstall": "npx prisma generate",
+    "postinstall": "prisma generate --no-engine",
     "reset": "prisma migrate reset --force"
   },
   "prisma": {
