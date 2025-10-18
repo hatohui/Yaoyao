@@ -15,17 +15,29 @@ const useLanguage = (serverLocale: Language = "en") => {
       .find((row) => row.startsWith("locale="))
       ?.split("=")[1] as Language | undefined;
 
+    const urlLang = params?.get("lang") as Language | undefined;
+
     if (cookie && SUPPORTED_LANGS.includes(cookie)) {
       setLocale(cookie);
+
+      if (urlLang !== cookie) {
+        const newPath = setNewParamString(params, "lang", cookie);
+        router.replace(newPath);
+      }
     } else {
       const defaultLocale =
         (navigator.language.slice(0, 2) as Language) || "en";
       if (SUPPORTED_LANGS.includes(defaultLocale)) {
         setLocale(defaultLocale);
         document.cookie = `locale=${defaultLocale}; path=/; max-age=31536000`;
+
+        if (urlLang !== defaultLocale) {
+          const newPath = setNewParamString(params, "lang", defaultLocale);
+          router.replace(newPath);
+        }
       }
     }
-  }, []);
+  }, [params, router]);
 
   const changeLanguage = (newLocale: Language) => {
     if (SUPPORTED_LANGS.includes(newLocale)) {
