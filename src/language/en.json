@@ -17,6 +17,7 @@
     "dashboard": "Dashboard",
     "orders": "Orders",
     "logout": "Logout",
+    "language": "Language",
     "error": "An error occurred",
     "notFoundMessage": "The page you are looking for doesn't exist or has been moved.",
     "success": "Success",

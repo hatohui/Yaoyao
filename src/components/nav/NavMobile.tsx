@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { FiX, FiMenu } from "react-icons/fi";
-import LanguageSelector from "../common/LanguageSelector";
+import LanguageSelectorMobile from "../common/LanguageSelectorMobile";
 import { useTranslations } from "next-intl";
 
 export interface NavProps {
@@ -37,7 +37,8 @@ const NavMobile = ({
       {/* Mobile Dropdown */}
       {isOpen && (
         <div className="absolute top-14 left-0 right-0 bg-darkest dark:bg-slate-900 border-t border-main/20 dark:border-slate-700 shadow-lg z-50">
-          <div className="flex flex-col p-2">
+          <div className="flex flex-col p-2 space-y-1">
+            {/* Navigation Links */}
             {filteredNavData.map((item) => {
               const isActive =
                 pathname === item.link ||
@@ -61,16 +62,25 @@ const NavMobile = ({
                 </Link>
               );
             })}
+
+            {/* Language Selection Section */}
+            <div className="pt-2 mt-2 border-t border-main/20 dark:border-slate-700">
+              <div className="px-4 py-2 text-xs font-semibold text-white/60 dark:text-slate-400 uppercase tracking-wider">
+                {t("language")}
+              </div>
+              <LanguageSelectorMobile
+                onLanguageChange={() => setIsOpen(false)}
+              />
+            </div>
           </div>
           {isVerified && (
             <div className="flex items-center justify-between gap-3 px-2 py-2 border-t border-main/20 dark:border-slate-700">
               <button
                 onClick={onLogout}
-                className="px-4 py-2.5 text-sm font-medium rounded-md transition-all text-white/80 hover:bg-white/10 hover:text-white dark:text-slate-300 dark:hover:bg-slate-700"
+                className="w-full px-4 py-2.5 text-sm font-medium rounded-md transition-all text-red-400 hover:bg-red-500/10 hover:text-red-300 dark:text-red-400 dark:hover:bg-red-500/20"
               >
                 {t("logout")}
               </button>
-              <LanguageSelector />
             </div>
           )}
         </div>
