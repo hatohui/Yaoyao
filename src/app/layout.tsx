@@ -21,10 +21,30 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Yaoyao dinner",
-  description: "FURUM's yaoyao dinner system (?)",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Furum after dinner by Yaoyao",
+    description: "Furum after dinner by Yaoyao",
+    openGraph: {
+      title: "Furum after dinner by Yaoyao",
+      description: "Furum after dinner by Yaoyao",
+      type: "website",
+      images: [
+        {
+          url: "/images/yaoyao.jpg",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Furum after dinner by Yaoyao",
+      description: "Furum after dinner by Yaoyao",
+      images: ["/images/yaoyao.jpg"],
+    },
+  };
+}
+
+export const metadata: Metadata = await generateMetadata();
 
 export default async function RootLayout({
   children,
