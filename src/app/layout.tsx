@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Furum after dinner by Yaoyao",
+  title: "Furum After Dinner",
   description: "Furum after dinner by Yaoyao",
   openGraph: {
     title: "Furum after dinner by Yaoyao",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Furum after dinner by Yaoyao",
+    title: "Furum After Dinner",
     description: "Furum after dinner by Yaoyao",
     images: ["/images/yaoyao.jpg"],
   },
