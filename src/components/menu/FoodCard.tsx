@@ -2,6 +2,8 @@
 import Image from "next/image";
 import { FiImage, FiCheck, FiLink } from "react-icons/fi";
 import { useCopyToClipboard } from "@/hooks/common/useCopyToClipboard";
+import { useSearchParams } from "next/navigation";
+import { mergeQueryParams } from "@/utils/mergeQueryParams";
 
 type FoodCardProps = {
   food: {
@@ -31,12 +33,17 @@ const FoodCard = ({
 }: FoodCardProps) => {
   const isUnavailable = !food.available;
   const { copied, copyToClipboard } = useCopyToClipboard();
+  const searchParams = useSearchParams();
 
   const handleCopyLink = async (e: React.MouseEvent) => {
     e.preventDefault();
+
+    // Generate URL with preserved query params (especially lang)
+    const queryString = mergeQueryParams(searchParams, {});
     const foodUrl = `${
       typeof window !== "undefined" ? window.location.origin : ""
-    }/menu/${food.id}`;
+    }/menu/${food.id}${queryString ? `?${queryString}` : ""}`;
+
     await copyToClipboard(foodUrl);
   };
 

@@ -2,19 +2,31 @@ import { Metadata } from "next";
 import { TranslatedFood } from "@/types/models/food";
 import { getFoodById } from "@/repositories/food-repo";
 import FoodDetailContent from "@/components/menu/FoodDetailContent";
+import { cookies } from "next/headers";
+import { Language, SUPPORTED_LANGS } from "@/common/language";
 
 type PageProps = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
+// Get current locale from cookies or default to 'en'
+async function getCurrentLocale(): Promise<Language> {
+  const cookieStore = await cookies();
+  const cookieLocale = cookieStore.get("locale")?.value as Language | undefined;
+  return SUPPORTED_LANGS.includes(cookieLocale as Language)
+    ? (cookieLocale as Language)
+    : "en";
+}
+
 // Fetch food data for metadata only (server-side)
 async function getFoodDataForMetadata(
-  id: string
+  id: string,
+  locale: Language
 ): Promise<TranslatedFood | null> {
   try {
-    // Use the repository directly on the server side
-    const food = await getFoodById(id, "en");
+    // Use the repository directly on the server side with proper locale
+    const food = await getFoodById(id, locale);
     return food as TranslatedFood | null;
   } catch (error) {
     console.error("Error fetching food data for metadata:", error);
@@ -27,7 +39,8 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { id } = await params;
-  const food = await getFoodDataForMetadata(id);
+  const locale = await getCurrentLocale();
+  const food = await getFoodDataForMetadata(id, locale);
 
   if (!food) {
     return {
@@ -41,7 +54,6 @@ export async function generateMetadata({
     food.description || "View this delicious dish from our menu";
   const foodImage = food.imageUrl || "/default-food-image.jpg";
 
-  // Get first variant price for display
   const firstPrice = food.variants?.[0]?.price;
   const priceText = firstPrice ? ` - ${firstPrice} RM` : "";
 

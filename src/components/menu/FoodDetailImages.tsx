@@ -8,7 +8,7 @@ type FoodDetailImagesProps = {
 
 const FoodDetailImages = ({ imageUrl, name }: FoodDetailImagesProps) => {
   return (
-    <div className="relative w-full h-64 sm:h-80 md:h-96 lg:h-[500px] bg-gradient-to-br from-slate-200 to-slate-100 dark:from-slate-700 dark:to-slate-600 rounded-lg overflow-hidden shadow-lg">
+    <div className="relative w-full h-48 sm:h-56 md:h-64 bg-gradient-to-br from-slate-200 to-slate-100 dark:from-slate-700 dark:to-slate-600 rounded-lg overflow-hidden shadow-md">
       {imageUrl ? (
         <Image
           src={imageUrl}
@@ -22,8 +22,8 @@ const FoodDetailImages = ({ imageUrl, name }: FoodDetailImagesProps) => {
         />
       ) : (
         <div className="w-full h-full flex flex-col items-center justify-center">
-          <FiImage className="w-24 h-24 sm:w-32 sm:h-32 text-slate-300 dark:text-slate-500 mb-4" />
-          <p className="text-slate-400 dark:text-slate-500 text-sm sm:text-base">
+          <FiImage className="w-16 h-16 sm:w-20 sm:h-20 text-slate-300 dark:text-slate-500 mb-2" />
+          <p className="text-slate-400 dark:text-slate-500 text-xs sm:text-sm">
             No image available
           </p>
         </div>

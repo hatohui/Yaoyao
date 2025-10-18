@@ -14,9 +14,9 @@ const useFoodById = (id: string | null) => {
       });
       return response.data;
     },
-    enabled: !!id, // Only run query if id exists
+    enabled: !!id,
     retry: 2,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 };
 
