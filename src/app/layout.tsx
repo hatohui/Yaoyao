@@ -21,28 +21,26 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
+export const metadata: Metadata = {
+  title: "Furum after dinner by Yaoyao",
+  description: "Furum after dinner by Yaoyao",
+  openGraph: {
     title: "Furum after dinner by Yaoyao",
     description: "Furum after dinner by Yaoyao",
-    openGraph: {
-      title: "Furum after dinner by Yaoyao",
-      description: "Furum after dinner by Yaoyao",
-      type: "website",
-      images: [
-        {
-          url: "/images/yaoyao.jpg",
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: "Furum after dinner by Yaoyao",
-      description: "Furum after dinner by Yaoyao",
-      images: ["/images/yaoyao.jpg"],
-    },
-  };
-}
+    type: "website",
+    images: [
+      {
+        url: "/images/yaoyao.jpg",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Furum after dinner by Yaoyao",
+    description: "Furum after dinner by Yaoyao",
+    images: ["/images/yaoyao.jpg"],
+  },
+};
 
 export default async function RootLayout({
   children,
