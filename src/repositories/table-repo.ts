@@ -1,12 +1,13 @@
 import { prisma } from "@/common/prisma";
 import { Table } from "@prisma/client";
 import { deletePeople } from "./people-repo";
+import { PostTableRequest } from "@/types/api/table/POST";
+import { GetTablesResponse } from "@/types/api/table/GET";
 
-const getTables = async (): Promise<Table[]> => {
+const getTables = async (): Promise<GetTablesResponse[]> => {
   return await prisma.table.findMany({
     include: {
       tableLeader: true,
-      people: true,
       orders: {
         include: {
           food: {
@@ -112,13 +113,15 @@ const putTableById = async (
   });
 };
 
-const updateTablePaymentStatus = async (
-  tableId: string,
-  paid: boolean
-): Promise<Table> => {
-  return await prisma.table.update({
+const removeTable = async (tableId: string) => {
+  return await prisma.table.delete({
     where: { id: tableId },
-    data: { paid },
+  });
+};
+
+const createNewTable = async (data: PostTableRequest): Promise<Table> => {
+  return await prisma.table.create({
+    data,
   });
 };
 
@@ -133,5 +136,6 @@ export {
   getTableLeaderByTableId,
   getNumberOfPeopleInTable,
   putTableById,
-  updateTablePaymentStatus,
+  createNewTable,
+  removeTable,
 };

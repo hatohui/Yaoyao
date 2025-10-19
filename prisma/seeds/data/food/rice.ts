@@ -96,5 +96,19 @@ export const riceData: FoodData = {
       },
       variants: [{ price: 18.9, currency: "RM" }],
     },
+    {
+      name: "White rice",
+      imageUrl: "",
+      description: "Steamed white rice.",
+      translations: {
+        vi: { name: "Cơm trắng", description: "Cơm trắng" },
+        th: { name: "ข้าวสวย", description: "ข้าวสวย" },
+        zh: { name: "白饭", description: "白饭" },
+      },
+      variants: [
+        { label: "SMALL", price: 1, currency: "RM" },
+        { label: "LARGE", price: 2, currency: "RM" },
+      ],
+    },
   ],
 };

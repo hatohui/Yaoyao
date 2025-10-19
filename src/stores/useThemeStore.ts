@@ -61,7 +61,6 @@ export const createThemeStore = (initState: ThemeState = defaultInitState) => {
     },
     toggleTheme: () => {
       set((state) => {
-        // Toggle between light and dark (skip system for simple toggle)
         const newTheme = state.theme === "dark" ? "light" : "dark";
         // Persist to localStorage
         if (typeof window !== "undefined") {

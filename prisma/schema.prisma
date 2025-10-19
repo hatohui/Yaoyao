@@ -10,16 +10,22 @@ datasource db {
 
 model Table {
   id            String   @id @default(uuid()) @db.Uuid
-  name          String   @unique
-  capacity      Int
-  tableLeaderId String?  @db.Uuid
-  paid          Boolean  @default(false)
+  name          String   
+  capacity      Int      @default(2)
+  tableLeaderId String?  @db.Uuid @unique
+  isStaging     Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  people      People[] @relation("TableMembers")
-  tableLeader People?  @relation("TableLeader", fields: [tableLeaderId], references: [id])
+  people      People[]    @relation("TableMembers")
+  tableLeader People?     @relation("TableLeader", fields: [tableLeaderId], references: [id])
   orders      Order[]
+  tableLink1  TableLink[] @relation("TableLinkTable1")
+  tableLink2  TableLink[] @relation("TableLinkTable2")
+  layout      Layout?
+
+  @@index([isStaging])
+  @@index([tableLeaderId])
 }
 
 model People {
@@ -29,7 +35,7 @@ model People {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  table     Table   @relation("TableMembers", fields: [tableId], references: [id])
+  table       Table   @relation("TableMembers", fields: [tableId], references: [id])
   tableLeader Table[] @relation("TableLeader")
 }
 
@@ -49,13 +55,12 @@ model Food {
   orders      Order[]
 }
 
-
 model FoodVariant {
   id        String   @id @default(uuid()) @db.Uuid
   foodId    String   @db.Uuid
   label     String   
   price     Float?   
-  currency  String?  @default("MR") 
+  currency  String?  @default("RM") 
   available Boolean  @default(true)
   isSeasonal Boolean  @default(false)
 
@@ -114,3 +119,34 @@ model Order {
   @@index([tableId])
   @@index([foodId])
 }
+
+model Feedback {
+  id        String   @id @default(uuid()) @db.Uuid
+  by        String 
+  content   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TableLink {
+  id       String    @id @default(uuid()) @db.Uuid
+  tableId   String   @db.Uuid 
+  table2Id String    @db.Uuid 
+
+  @@unique([tableId, table2Id])
+  table    Table    @relation("TableLinkTable1", fields: [tableId], references: [id], onDelete: Cascade)
+  table2   Table    @relation("TableLinkTable2", fields: [table2Id], references: [id], onDelete: Cascade)
+}
+
+model Layout {
+  id        String   @id @default(uuid()) @db.Uuid
+  slotName  String   @unique // e.g., "A1", "B3", "VIP-1"
+  positionX Float    // Absolute X coordinate on the fixed layout image
+  positionY Float    // Absolute Y coordinate on the fixed layout image
+  tableId   String?  @db.Uuid @unique // Table assigned to this slot (nullable)
+  isLocked  Boolean  @default(false) // When true, only Yaoyao can reassign tables
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  table Table? @relation(fields: [tableId], references: [id], onDelete: SetNull) 
+} 

@@ -99,5 +99,17 @@ export const noodleData: FoodData = {
       },
       variants: [{ price: 18.9, currency: "RM" }],
     },
+    {
+      name: "Singapore Fried Noodle",
+      imageUrl:
+        "https://trello.com/1/cards/68e68c45abe043aace9189a3/attachments/68e68d62bbf5517f5d1f4f5e/download/page29_img7.png",
+      description: "Singapore fried noodle.",
+      translations: {
+        vi: { name: "Mì xào Singapore", description: "Mì xào Singapore" },
+        th: { name: "บะหมี่ผัดสิงคโปร์", description: "บะหมี่ผัดสิงคโปร์" },
+        zh: { name: "星洲炒米粉", description: "星洲炒米粉" },
+      },
+      variants: [{ price: 16.9, currency: "RM" }],
+    },
   ],
 };

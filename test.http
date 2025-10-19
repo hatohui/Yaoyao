@@ -1,0 +1,28 @@
+POST http://localhost:3000/api/tables
+Content-Type: application/json
+
+{
+  "name": "Table 6",
+  "capacity": 4
+}
+
+###
+POST http://localhost:3000/api/layouts
+Content-Type: application/json
+
+{
+  "tableId": "610c0f50-e201-4c9d-ac93-b8ee38e02f83",
+  "content": "Hello world 3"
+}
+
+###
+DELETE http://localhost:3000/api/layouts/2
+
+###
+PUT http://localhost:3000/api/layouts/1
+Content-Type: application/json
+
+{
+  "tableId": "f5c7f595-2ea6-421c-9aff-1cf5c4669ab8",
+  "content": "Hello world"
+}
