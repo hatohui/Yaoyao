@@ -50,7 +50,7 @@ Allows Yaoyao to create and manage a staging environment for table planning. Thi
 
 #### Visual Differentiation
 
-- [ ] As Yaoyao, I want staging tables to have a clear visual indicator (badge, color, icon) so I never confuse them with production
+- [ ] As Yaoyao, I want staging tables to have a clear visual indicator (badge, color, sgv from icon libraries) so I never confuse them with production
 
 ### Table Leader Stories
 

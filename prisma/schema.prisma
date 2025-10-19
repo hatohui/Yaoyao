@@ -13,7 +13,7 @@ model Table {
   name          String   
   capacity      Int      @default(2)
   tableLeaderId String?  @db.Uuid @unique
-  isStaging     Boolean  @default(false)
+  referenceId   String   @db.Uuid
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -23,8 +23,9 @@ model Table {
   tableLink1  TableLink[] @relation("TableLinkTable1")
   tableLink2  TableLink[] @relation("TableLinkTable2")
   layout      Layout?
+  reference   Table     @relation("TableReference", fields: [referenceId], references: [id])
+  referencedBy Table[]   @relation("TableReference")
 
-  @@index([isStaging])
   @@index([tableLeaderId])
 }
 
@@ -140,13 +141,9 @@ model TableLink {
 
 model Layout {
   id        String   @id @default(uuid()) @db.Uuid
-  slotName  String   @unique // e.g., "A1", "B3", "VIP-1"
   positionX Float    // Absolute X coordinate on the fixed layout image
   positionY Float    // Absolute Y coordinate on the fixed layout image
   tableId   String?  @db.Uuid @unique // Table assigned to this slot (nullable)
-  isLocked  Boolean  @default(false) // When true, only Yaoyao can reassign tables
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   table Table? @relation(fields: [tableId], references: [id], onDelete: SetNull) 
 } 
