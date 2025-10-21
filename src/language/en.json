@@ -23,7 +23,8 @@
     "success": "Success",
     "paid": "Paid",
     "unpaid": "Unpaid",
-    "copied": "Copied!"
+    "copied": "Copied!",
+    "landingSubtitle": "Website created by <hatoLink>Hato</hatoLink> with a neck bite mark"
   },
   "success": {
     "success": "Operation completed successfully!",

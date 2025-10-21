@@ -32,7 +32,8 @@
     "notFoundMessage": "Trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển.",
     "success": "Thành công",
     "paid": "Đã thanh toán",
-    "unpaid": "Chưa thanh toán"
+    "unpaid": "Chưa thanh toán",
+    "landingSubtitle": "Website được tạo bởi <hatoLink>Hato</hatoLink> với dấu răng trên cổ"
   },
   "success": {
     "success": "Hoạt động hoàn thành thành công!",

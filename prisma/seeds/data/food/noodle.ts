@@ -102,7 +102,7 @@ export const noodleData: FoodData = {
     {
       name: "Singapore Fried Noodle",
       imageUrl:
-        "https://trello.com/1/cards/68e68c45abe043aace9189a3/attachments/68e68d62bbf5517f5d1f4f5e/download/page29_img7.png",
+        "https://trello.com/1/cards/68f3821abfff4483eace1a88/attachments/68f81491198993d51bae602d/download/Hato01.png",
       description: "Singapore fried noodle.",
       translations: {
         vi: { name: "Mì xào Singapore", description: "Mì xào Singapore" },

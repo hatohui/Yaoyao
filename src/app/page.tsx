@@ -19,7 +19,18 @@ const HomePage = () => {
           {t("welcome")}
         </h1>
         <p className="text-sm sm:text-base lg:text-lg text-main-bright dark:text-main font-medium">
-          Welcome to Yao Yao Restaurant
+          {t.rich("landingSubtitle", {
+            hatoLink: (chunks) => (
+              <a
+                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-main"
+              >
+                {chunks}
+              </a>
+            ),
+          })}
         </p>
       </div>
       <RestaurantVideo />
