@@ -2,9 +2,8 @@ import { prisma } from "@/common/prisma";
 import { Table } from "@prisma/client";
 import { deletePeople } from "./people-repo";
 import { PostTableRequest } from "@/types/api/table/POST";
-import { GetTablesResponse } from "@/types/api/table/GET";
 
-const getTables = async (): Promise<GetTablesResponse[]> => {
+const getTables = async () => {
   return await prisma.table.findMany({
     include: {
       tableLeader: true,
@@ -26,6 +25,15 @@ const getTables = async (): Promise<GetTablesResponse[]> => {
   });
 };
 
+const getTablesWithPeople = async () => {
+  return await prisma.table.findMany({
+    include: {
+      tableLeader: true,
+      people: true,
+    },
+  });
+};
+
 const getTableById = async (id: string): Promise<Table | null> => {
   return await prisma.table.findUnique({
     where: { id },
@@ -33,14 +41,9 @@ const getTableById = async (id: string): Promise<Table | null> => {
   });
 };
 
-const addPeopleToTable = async (tableId: string, peopleId: string) => {
-  return await prisma.table.update({
-    where: { id: tableId },
-    data: {
-      people: {
-        connect: { id: peopleId },
-      },
-    },
+const addPeopleToTable = async (tableId: string, name: string) => {
+  return await prisma.people.create({
+    data: { name, tableId },
   });
 };
 
@@ -127,6 +130,7 @@ const createNewTable = async (data: PostTableRequest): Promise<Table> => {
 
 export {
   getTables,
+  getTablesWithPeople,
   getTableById,
   addPeopleToTable,
   removePeopleFromTable,

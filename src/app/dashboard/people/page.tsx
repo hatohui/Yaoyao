@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useMemo } from "react";
-import useTables from "@/hooks/table/useTables";
+import useTablesWithPeople from "@/hooks/table/useTableWithPeople";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import { useTranslations } from "next-intl";
 import { notFound } from "next/navigation";
@@ -15,12 +15,12 @@ import {
 } from "@/hooks/common/useAnimations";
 
 const DashboardPeoplePage = () => {
-  const { isVerified } = useYaoAuth();
+  const { isYaoyao } = useYaoAuth();
   const t = useTranslations("dashboard");
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { data: tables, isLoading } = useTables();
+  const { data: tables, isLoading } = useTablesWithPeople();
 
   // Collect all people from all tables
   const allPeople = useMemo(() => {
@@ -31,7 +31,7 @@ const DashboardPeoplePage = () => {
     > = [];
 
     tables.forEach((table) => {
-      table.people?.forEach((person) => {
+      table?.people?.forEach((person) => {
         peopleList.push({
           ...person,
           tableName: table.name,
@@ -107,7 +107,7 @@ const DashboardPeoplePage = () => {
   const cardsRef = useCardStaggerAnimation([tablesWithPeople]);
 
   // Security: Only Yaoyao can access dashboard
-  if (!isVerified) {
+  if (!isYaoyao) {
     return notFound();
   }
 

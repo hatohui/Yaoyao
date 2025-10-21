@@ -17,7 +17,7 @@ Simple feedback collection system allowing any user (Yaoyao, Table Leaders, Gues
 - 🆕 Submit feedback (name + optional comment)
 - 🆕 Access feedback form from footer link
 
-### Yaoyao (isVerified: true)
+### Yaoyao (isYaoyao: true)
 
 - 🆕 View all submitted feedback
 - 🆕 Filter/search feedback by name or date
@@ -120,7 +120,7 @@ model Feedback {
     - [ ] Return success message
     - [ ] Optional: Rate limiting (max 5 submissions per IP per hour)
   - [ ] GET: Get all feedback
-    - [ ] Auth check: `isVerified === true` (Yaoyao only)
+    - [ ] Auth check: `isYaoyao === true` (Yaoyao only)
     - [ ] Query params: `?page=1&limit=20&search=query`
     - [ ] Call `getAllFeedback()` with filters
     - [ ] Return paginated list
@@ -128,16 +128,16 @@ model Feedback {
 - [ ] Create `pages/api/feedback/[id].ts`
 
   - [ ] GET: Get single feedback
-    - [ ] Auth check: `isVerified === true`
+    - [ ] Auth check: `isYaoyao === true`
     - [ ] Call `getFeedbackById()`
   - [ ] DELETE: Delete feedback
-    - [ ] Auth check: `isVerified === true`
+    - [ ] Auth check: `isYaoyao === true`
     - [ ] Call `deleteFeedback()`
     - [ ] Return success message
 
 - [ ] Create `pages/api/feedback/count.ts`
   - [ ] GET: Get feedback count
-    - [ ] Auth check: `isVerified === true`
+    - [ ] Auth check: `isYaoyao === true`
     - [ ] Call `getFeedbackCount()`
     - [ ] Return { count: number }
 
@@ -238,7 +238,7 @@ model Feedback {
 
 - [ ] Create `src/app/dashboard/feedback/page.tsx`
   - [ ] Yaoyao-only feedback dashboard
-  - [ ] Auth guard: redirect if not `isVerified`
+  - [ ] Auth guard: redirect if not `isYaoyao`
   - [ ] Contains:
     - [ ] `<FeedbackStats>` at top
     - [ ] `<FeedbackSearch>` for filtering
@@ -260,7 +260,7 @@ model Feedback {
 - [ ] Update dashboard navigation
   - [ ] Add "Feedback" link in Yaoyao sidebar
   - [ ] Badge showing unread count (optional)
-  - [ ] Only visible if `isVerified === true`
+  - [ ] Only visible if `isYaoyao === true`
 
 **Reference**: Check existing navigation components
 
@@ -447,7 +447,7 @@ Show friendly message when no feedback:
 
 ### Test: View Feedback Dashboard (Yaoyao)
 
-1. Set `isVerified: true` in `useAuthStore`
+1. Set `isYaoyao: true` in `useAuthStore`
 2. Navigate to `/dashboard/feedback`
 3. Verify can see all submitted feedbacks
 4. Verify sorted by date (newest first)
@@ -487,7 +487,7 @@ Show friendly message when no feedback:
 
 ### Test: Permissions
 
-1. Set `isVerified: false` (guest mode)
+1. Set `isYaoyao: false` (guest mode)
 2. Try to access `/dashboard/feedback` - verify redirect or 403
 3. Try to access `/api/feedback` GET - verify 403
 4. Try to access `/feedback` (public form) - verify accessible

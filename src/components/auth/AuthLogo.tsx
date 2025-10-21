@@ -12,7 +12,7 @@ export interface YaoLogoProps {
 const YaoLogo = ({ className }: YaoLogoProps) => {
   const [count, setCount] = useState(0);
   const [open, setOpen] = useState(false);
-  const isVerified = useAuthStore((s: AuthState) => s.isVerified);
+  const isYaoyao = useAuthStore((s: AuthState) => s.isYaoyao);
   const pawRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLAnchorElement>(null);
 
@@ -23,13 +23,12 @@ const YaoLogo = ({ className }: YaoLogoProps) => {
   }, [count]);
 
   const handleLogoClick = () => {
-    if (!isVerified) {
+    if (!isYaoyao) {
       const next = count + 1;
       setCount(next);
 
-      // Shake animation with intensity based on click count
       if (pawRef.current) {
-        const intensity = Math.min(next * 3, 15); // Max 15px shake
+        const intensity = Math.min(next * 3, 15);
         gsap.to(pawRef.current, {
           x: intensity,
           duration: 0.1,
@@ -60,7 +59,6 @@ const YaoLogo = ({ className }: YaoLogoProps) => {
       }
 
       if (next >= 5) {
-        // Trigger animation - Big pop effect
         if (pawRef.current && buttonRef.current) {
           gsap
             .timeline()
@@ -79,7 +77,6 @@ const YaoLogo = ({ className }: YaoLogoProps) => {
               ease: "elastic.out(1, 0.3)",
             });
 
-          // Button pulse
           gsap.to(buttonRef.current, {
             scale: 1.1,
             duration: 0.2,

@@ -14,7 +14,6 @@ const LanguageSelectorMobile = ({
 }: LanguageSelectorMobileProps) => {
   const { locale, changeLanguage } = useLanguage();
 
-  // Language labels with flags
   const languageOptions: { value: Language; label: string; flag: string }[] = [
     { value: "en", label: "English", flag: "🇬🇧" },
     { value: "zh", label: "中文", flag: "🇨🇳" },

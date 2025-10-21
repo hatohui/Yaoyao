@@ -76,7 +76,7 @@ const TableMap = ({ searchQuery = "" }: TableMapProps) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
       {filteredTables?.map((table) => {
-        const peopleCount = table._count?.people || 0;
+        const peopleCount = table.peopleCount || 0;
         const isFull = peopleCount >= table.capacity;
         const statusText = isFull ? t("full") : t("available");
 

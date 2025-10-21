@@ -3,7 +3,7 @@ import React from "react";
 import useAuthStore, { AuthState } from "@/stores/useAuthStore";
 
 const AuthHydrator = () => {
-  void useAuthStore((s: AuthState) => s.isVerified);
+  void useAuthStore((s: AuthState) => s.isYaoyao);
   return <></>;
 };
 

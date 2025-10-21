@@ -21,7 +21,7 @@ The baseline people management system is already implemented. This feature focus
 
 ## User Roles & Permissions
 
-### Yaoyao (isVerified: true)
+### Yaoyao (isYaoyao: true)
 
 - ✅ Add/remove people to/from any table
 - ✅ View all people across all tables
@@ -154,7 +154,7 @@ position  Int?     // For manual ordering within table
 - [ ] Create API: `pages/api/people/bulk-import.ts`
 
   - [ ] POST: Upload CSV file
-  - [ ] Auth check: `isVerified === true` (Yaoyao only)
+  - [ ] Auth check: `isYaoyao === true` (Yaoyao only)
   - [ ] Parse CSV
   - [ ] Validate data
   - [ ] Call `bulkCreatePeople()`

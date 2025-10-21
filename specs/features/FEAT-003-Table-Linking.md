@@ -31,7 +31,7 @@ Allows Yaoyao to create logical links between tables for large parties split acr
 
 ## User Roles & Permissions
 
-### Yaoyao (isVerified: true)
+### Yaoyao (isYaoyao: true)
 
 - ⚠️ Link multiple tables together
 - ⚠️ Unlink tables
@@ -162,7 +162,7 @@ model TableLink {
     - [ ] Call `getTableLinks(tableId)`
     - [ ] Return array of linked Table objects
   - [ ] POST: Link this table to another table
-    - [ ] Auth check: `isVerified === true` (Yaoyao only)
+    - [ ] Auth check: `isYaoyao === true` (Yaoyao only)
     - [ ] Body: `{ table2Id }`
     - [ ] Call `linkTables(tableId, table2Id)`
     - [ ] Return success message
@@ -170,13 +170,13 @@ model TableLink {
 - [ ] Create `pages/api/tables/[id]/links/[linkId].ts`
 
   - [ ] DELETE: Unlink this table from another table
-    - [ ] Auth check: `isVerified === true`
+    - [ ] Auth check: `isYaoyao === true`
     - [ ] Call `unlinkTables(tableId, linkId)`
     - [ ] Return success message
 
 - [ ] Create `pages/api/tables/links/bulk.ts`
   - [ ] POST: Link multiple tables together
-    - [ ] Auth check: `isVerified === true`
+    - [ ] Auth check: `isYaoyao === true`
     - [ ] Body: `{ tableIds: string[] }`
     - [ ] Create links between all pairs (full mesh)
     - [ ] Return success count
@@ -448,7 +448,7 @@ If deck stack is too complex:
 
 ### Setup
 
-1. Set `isVerified: true` in `useAuthStore`
+1. Set `isYaoyao: true` in `useAuthStore`
 2. Create 5 production tables
 3. Navigate to `/dashboard/tables`
 
@@ -500,7 +500,7 @@ If deck stack is too complex:
 
 ### Test: Permissions
 
-1. Set `isVerified: false` (guest mode)
+1. Set `isYaoyao: false` (guest mode)
 2. View tables page
 3. Verify can see linked tables (deck stack)
 4. Verify no "Link" or "Unlink" buttons visible

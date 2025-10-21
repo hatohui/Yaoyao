@@ -7,7 +7,7 @@ const AuthOverLay: React.FC<{ open: boolean; onClose: () => void }> = ({
   open,
   onClose,
 }) => {
-  const { setIsVerified } = useYaoAuth();
+  const { setisYaoyao } = useYaoAuth();
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -22,7 +22,7 @@ const AuthOverLay: React.FC<{ open: boolean; onClose: () => void }> = ({
 
   const submit = () => {
     if (value === PASSWORD) {
-      setIsVerified(true);
+      setisYaoyao(true);
       onClose();
     } else {
       setError("Incorrect password");

@@ -24,11 +24,12 @@ const handler: NextApiHandler = async (req, res) => {
     case "POST":
       const request = req.body as PostLayoutRequest;
 
-      if (!request) {
+      if (!request || !request.tableId) {
         return BadRequest("Invalid body");
       }
 
       const existing = await getLayoutByTableId(request.tableId);
+
       if (existing) return BadRequest("Layout for table already exists");
 
       const id = await getNewLayoutId();

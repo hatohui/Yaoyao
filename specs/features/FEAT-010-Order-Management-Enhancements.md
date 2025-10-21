@@ -22,7 +22,7 @@ The baseline order management system is already implemented. This feature focuse
 
 ## User Roles & Permissions
 
-### Yaoyao (isVerified: true)
+### Yaoyao (isYaoyao: true)
 
 - ✅ View all orders across all tables
 - ✅ Add/modify/delete orders for any table

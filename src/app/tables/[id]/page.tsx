@@ -4,42 +4,32 @@ import TableDetail from "@/components/table/TableDetail";
 import usePeopleInTable from "@/hooks/table/usePeopleInTable";
 import useTableDetail from "@/hooks/table/useTableDetail";
 import useTableOrders from "@/hooks/order/useTableOrders";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import TableDetailHeader from "@/components/table/TableDetailHeader";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import TableOrdersList from "@/components/order/TableOrdersList";
 
 const TableDetailPage = () => {
   const { id } = useParams() as { id: string };
-  const searchParams = useSearchParams();
-  const userId = searchParams?.get("id");
 
   const { data: table, isLoading: isLoadingTable } = useTableDetail(id);
   const { data: people, isLoading: isLoadingPeople } = usePeopleInTable(
     table?.id ?? ""
   );
+  const { isYaoyao, canManage, isTableLeader, userId } = useYaoAuth();
+
   const { data: orders } = useTableOrders(id);
-  const { isVerified } = useYaoAuth();
-
   const isLoading = isLoadingTable || isLoadingPeople;
-  const isOccupied = !!table?.tableLeader;
-  const isTableLeader = table?.tableLeader?.id === userId;
-  const canManage = isVerified || isTableLeader;
-
-  // Check if there are any orders
   const hasOrders = orders && orders.length > 0;
-
-  // Check if user is a normal member (not verified and not table leader)
-  const isNormalMember = !isVerified && !isTableLeader;
+  const isNormalMember = !canManage;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="nav-spacer bg-slate-50 dark:bg-slate-900">
       {/* Compact Header */}
       <TableDetailHeader
         table={table}
-        isOccupied={isOccupied}
         isTableLeader={isTableLeader}
-        isVerified={isVerified}
+        isYaoyao={isYaoyao}
       />
 
       {/* Main Content */}

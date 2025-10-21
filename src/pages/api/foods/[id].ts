@@ -4,7 +4,7 @@ import { getFoodById, updateFoodAvailability } from "@/repositories/food-repo";
 import { GetFoodByIdResponse } from "@/types/api/food/GET";
 import { TranslatedFood } from "@/types/models/food";
 import { isValidId } from "@/utils/idValidation";
-import { mapFoodToResponse } from "@/utils/mapFoodToResponse";
+import { mapFoodToResponse } from "@/utils/mappers/mapFoodToResponse";
 import { NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {

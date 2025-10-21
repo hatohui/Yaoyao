@@ -71,6 +71,7 @@ const FoodCard = ({
             src={food.imageUrl}
             alt={translatedName}
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className={`object-cover ${isUnavailable ? "opacity-50" : ""}`}
             onError={(e) => {
               e.currentTarget.style.display = "none";

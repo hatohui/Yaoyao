@@ -2,17 +2,14 @@ import axios from "@/common/axios";
 import { People } from "@prisma/client";
 import { useQueryClient } from "@tanstack/react-query";
 import useMutationWithError from "../common/useMutationWithError";
-import useYaoAuth from "../auth/useYaoAuth";
 
 const usePeopleInTableMutation = () => {
   const client = useQueryClient();
-  const { isVerified } = useYaoAuth();
 
   const addPeople = useMutationWithError({
     mutationFn: (data: { tableId: string; name: string; userId?: string }) =>
-      axios.post<People>(`/tables/${data.tableId}`, {
+      axios.post<People>(`/tables/${data.tableId}/people`, {
         name: data.name,
-        id: data.userId || (isVerified ? "yaoyao" : undefined),
       }),
     successMessageKey: "personAdded",
     onSuccessCallback: () => {

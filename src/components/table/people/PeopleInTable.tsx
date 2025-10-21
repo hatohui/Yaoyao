@@ -31,7 +31,7 @@ const PeopleInTable = ({
   const { removePeople, assignLeader, removeLeader, addPeople } =
     usePeopleInTableMutation();
   const t = useTranslations("tables");
-  const { isVerified } = useYaoAuth();
+  const { isYaoyao } = useYaoAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [newMemberName, setNewMemberName] = useState("");
   const [isAddingMember, setIsAddingMember] = useState(false);
@@ -193,14 +193,14 @@ const PeopleInTable = ({
                     </div>
                     {canManage && (
                       <div className="flex items-center gap-1.5">
-                        {isVerified && !isLeader && (
+                        {isYaoyao && !isLeader && (
                           <MakeLeaderButton
                             isLeader={isLeader}
                             handleMakeLeader={handleMakeLeader}
                             person={person}
                           />
                         )}
-                        {isVerified && isLeader && (
+                        {isYaoyao && isLeader && (
                           <button
                             onClick={handleDemoteLeader}
                             title={t("demoteLeader")}
@@ -209,7 +209,7 @@ const PeopleInTable = ({
                             <FiUsers className="w-3.5 h-3.5" />
                           </button>
                         )}
-                        {(isVerified || (canManage && !isLeader)) && (
+                        {(isYaoyao || (canManage && !isLeader)) && (
                           <DeleteButton
                             handleDelete={handleDelete}
                             person={person}

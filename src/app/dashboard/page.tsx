@@ -10,7 +10,7 @@ import Loading from "@/components/common/Loading";
 import FoodRow from "@/components/dashboard/FoodRow";
 
 const DashboardPage = () => {
-  const { isVerified } = useYaoAuth();
+  const { isYaoyao } = useYaoAuth();
   const t = useTranslations("menu");
   const tDashboard = useTranslations("dashboard");
 
@@ -32,7 +32,7 @@ const DashboardPage = () => {
   });
 
   // Security: Only Yaoyao can access dashboard
-  if (!isVerified) {
+  if (!isYaoyao) {
     return notFound();
   }
 

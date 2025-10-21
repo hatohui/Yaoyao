@@ -55,7 +55,7 @@ const OrderPage = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="nav-spacer bg-slate-50 dark:bg-slate-900">
       {/* Header */}
       <div className="bg-white dark:bg-slate-800 shadow-sm border-b border-main/20 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">

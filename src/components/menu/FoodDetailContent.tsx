@@ -26,7 +26,7 @@ const FoodDetailContent = ({ foodId }: FoodDetailContentProps) => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="nav-spacer bg-slate-50 dark:bg-slate-900">
       {/* Compact Header */}
       <FoodDetailHeader name={food.name} available={food.available} />
 

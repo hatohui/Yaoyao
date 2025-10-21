@@ -12,7 +12,7 @@ Basic table management system allowing Yaoyao to create, read, update, and delet
 
 ## User Roles & Permissions
 
-### Yaoyao (isVerified: true)
+### Yaoyao (isYaoyao: true)
 
 - ✅ Full CRUD access on all tables
 - ✅ Can assign table leaders
@@ -158,7 +158,7 @@ model Table {
 
 ## QA Testing Steps
 
-### As Yaoyao (isVerified: true)
+### As Yaoyao (isYaoyao: true)
 
 1. ✅ Navigate to `/dashboard/tables`
 2. ✅ Click "Create Table" button
@@ -181,7 +181,7 @@ model Table {
 
 ### As Guest
 
-1. ✅ Set `useAuthStore` with isVerified=false, no tableLeaderId
+1. ✅ Set `useAuthStore` with isYaoyao=false, no tableLeaderId
 2. ✅ Navigate to tables page
 3. ✅ Verify can view all tables (read-only)
 4. ✅ Verify no edit/delete buttons visible

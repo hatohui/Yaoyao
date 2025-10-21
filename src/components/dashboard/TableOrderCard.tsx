@@ -3,18 +3,11 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import axios from "@/common/axios";
-import { FiCheckCircle, FiXCircle, FiDollarSign } from "react-icons/fi";
+import { FiDollarSign } from "react-icons/fi";
+import { GetTablesResponse } from "@/types/api/table/GET";
 
 type TableOrderCardProps = {
-  table: {
-    id: string;
-    name: string;
-    paid: boolean;
-    tableLeader: {
-      id: string;
-      name: string;
-    } | null;
-  };
+  table: GetTablesResponse;
 };
 
 const TableOrderCard = ({ table }: TableOrderCardProps) => {
@@ -72,17 +65,6 @@ const TableOrderCard = ({ table }: TableOrderCardProps) => {
             {table.tableLeader?.name}
           </p>
         </div>
-        {table.paid ? (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 text-sm font-medium rounded-full">
-            <FiCheckCircle className="w-4 h-4" />
-            {tOrder("paid")}
-          </span>
-        ) : (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 text-sm font-medium rounded-full">
-            <FiXCircle className="w-4 h-4" />
-            {tOrder("unpaid")}
-          </span>
-        )}
       </div>
 
       {isLoading ? (

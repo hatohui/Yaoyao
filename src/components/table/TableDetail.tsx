@@ -6,6 +6,7 @@ import { FiGrid, FiUsers, FiUser, FiEdit2 } from "react-icons/fi";
 import useTableMutation from "@/hooks/table/useTableMutation";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import CapacityForm from "./forms/CapacityForm";
+import TableNameForm from "./forms/TableNameForm";
 
 export type TableDetailProps = {
   className?: string;
@@ -21,9 +22,10 @@ const TableDetail = ({
   compact = false,
 }: TableDetailProps) => {
   const t = useTranslations("tables");
-  const { isVerified } = useYaoAuth();
-  const { changeCapacity } = useTableMutation();
+  const { isYaoyao } = useYaoAuth();
+  const { changeCapacity, changeName } = useTableMutation();
   const [isEditingCapacity, setIsEditingCapacity] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(false);
 
   const handleSubmit = (capacity: number) => {
     changeCapacity.mutate(
@@ -45,6 +47,28 @@ const TableDetail = ({
 
   const handleEdit = () => {
     setIsEditingCapacity(true);
+  };
+
+  const handleNameSubmit = (name: string) => {
+    changeName.mutate(
+      {
+        newName: name,
+        tableId: table?.id ?? "",
+      },
+      {
+        onSuccess: () => {
+          setIsEditingName(false);
+        },
+      }
+    );
+  };
+
+  const handleNameCancel = () => {
+    setIsEditingName(false);
+  };
+
+  const handleNameEdit = () => {
+    setIsEditingName(true);
   };
 
   if (isloading) {
@@ -79,22 +103,56 @@ const TableDetail = ({
             <div className="w-8 h-8 rounded-md bg-main/10 dark:bg-main/20 flex items-center justify-center flex-shrink-0">
               <FiGrid className="w-4 h-4 text-main" />
             </div>
-            <div>
+            <div className="flex-1">
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 {t("tableName")}
               </p>
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                {table?.name}
-              </p>
+              {isYaoyao ? (
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                    {table?.name}
+                  </p>
+                  <button
+                    onClick={handleNameEdit}
+                    disabled={isEditingName}
+                    className="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors disabled:opacity-50"
+                    title={t("changeTableName")}
+                  >
+                    <FiEdit2 className="w-3.5 h-3.5 text-main" />
+                  </button>
+                </div>
+              ) : (
+                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  {table?.name}
+                </p>
+              )}
             </div>
           </div>
+
+          {/* Table Name Edit Form */}
+          {isYaoyao && isEditingName && (
+            <div className="py-2 border-b border-main/10 dark:border-slate-700">
+              <TableNameForm
+                key={table?.name ?? ""}
+                currentName={table?.name ?? ""}
+                onSubmit={handleNameSubmit}
+                onCancel={handleNameCancel}
+                onEdit={handleNameEdit}
+                isPending={changeName.isPending}
+                isEditing={isEditingName}
+                formError={changeName.formError}
+                formSuccess={changeName.formSuccess}
+                clearError={changeName.clearError}
+              />
+            </div>
+          )}
 
           <div className="flex items-center justify-between py-2 border-b border-main/10 dark:border-slate-700">
             <div className="flex items-center gap-1.5 text-darkest dark:text-slate-300">
               <FiUsers className="w-4 h-4" />
               <span className="text-xs font-medium">{t("capacity")}</span>
             </div>
-            {isVerified ? (
+            {isYaoyao ? (
               <div className="flex items-center gap-2">
                 <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                   {table?.capacity} {t("people")}
@@ -116,7 +174,7 @@ const TableDetail = ({
           </div>
 
           {/* Capacity Edit Form */}
-          {isVerified && isEditingCapacity && (
+          {isYaoyao && isEditingCapacity && (
             <div className="py-2 border-b border-main/10 dark:border-slate-700">
               <CapacityForm
                 key={table?.capacity ?? 0}

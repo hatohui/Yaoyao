@@ -12,7 +12,7 @@ const useFilteredTables = (
     const query = searchQuery.toLowerCase().trim();
     return tables.filter((table) => {
       const nameMatch = table.name.toLowerCase().includes(query);
-      const leaderMatch = table.tableLeader?.name.toLowerCase().includes(query);
+      const leaderMatch = table?.name.toLowerCase().includes(query);
 
       return nameMatch || leaderMatch;
     });

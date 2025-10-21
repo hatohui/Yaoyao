@@ -21,14 +21,13 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { isVerified } = useYaoAuth();
+  const { isYaoyao } = useYaoAuth();
   const pathname = usePathname();
   const t = useTranslations("dashboard");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // Security: Only Yaoyao can access dashboard
-  if (!isVerified) {
+  if (!isYaoyao) {
     return notFound();
   }
 

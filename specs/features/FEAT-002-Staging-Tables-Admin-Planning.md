@@ -14,7 +14,7 @@ Allows Yaoyao to create and manage a staging environment for table planning. Thi
 
 ## User Roles & Permissions
 
-### Yaoyao (isVerified: true)
+### Yaoyao (isYaoyao: true)
 
 - ⚠️ Access dedicated staging page (`/dashboard/staging`)
 - ⚠️ Full CRUD on staging tables
@@ -62,7 +62,7 @@ Allows Yaoyao to create and manage a staging environment for table planning. Thi
 
 ## Acceptance Criteria
 
-- [ ] Staging page requires `isVerified: true` authentication
+- [ ] Staging page requires `isYaoyao: true` authentication
 - [ ] Staging tables have `isStaging: true` flag
 - [ ] Copy operation creates new UUIDs for all duplicated records
 - [ ] Clear staging operation is irreversible with confirmation dialog
@@ -152,7 +152,7 @@ model Table {
 - [ ] Create `pages/api/tables/staging/copy-from-production.ts`
 
   - [ ] POST endpoint
-  - [ ] Auth check: `isVerified === true`
+  - [ ] Auth check: `isYaoyao === true`
   - [ ] Call `copyProductionToStaging()`
   - [ ] Return success/count of copied tables
   - [ ] Error handling (500, 403)
@@ -160,7 +160,7 @@ model Table {
 - [ ] Create `pages/api/tables/staging/clear.ts`
 
   - [ ] DELETE endpoint
-  - [ ] Auth check: `isVerified === true`
+  - [ ] Auth check: `isYaoyao === true`
   - [ ] Call `clearAllStaging()`
   - [ ] Return success/count of deleted tables
   - [ ] Error handling
@@ -168,7 +168,7 @@ model Table {
 - [ ] Create `pages/api/tables/staging/commit.ts`
 
   - [ ] POST endpoint
-  - [ ] Auth check: `isVerified === true`
+  - [ ] Auth check: `isYaoyao === true`
   - [ ] Call `commitStagingToProduction()`
   - [ ] Return success message
   - [ ] Error handling (transaction rollback on failure)
@@ -247,12 +247,12 @@ model Table {
   - [ ] Use `useStagingTables()` hook
   - [ ] Add `<StagingControls>` toolbar at top
   - [ ] Display staging tables in grid (reuse TableCard)
-  - [ ] Auth guard: redirect if not `isVerified`
+  - [ ] Auth guard: redirect if not `isYaoyao`
   - [ ] Show drift warning if detected (from `useStagingStatus()`)
 
 - [ ] Update `src/app/dashboard/layout.tsx` or navigation
   - [ ] Add "Staging" link in Yaoyao-only sidebar
-  - [ ] Only visible if `isVerified === true`
+  - [ ] Only visible if `isYaoyao === true`
 
 **Reference**: Follow `src/app/dashboard/tables/page.tsx` structure
 

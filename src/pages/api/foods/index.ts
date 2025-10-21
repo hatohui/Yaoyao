@@ -3,7 +3,7 @@ import Status from "@/common/status";
 import { getCategoryByName } from "@/repositories/category-repo";
 import { getFoods, getFoodsByCategory } from "@/repositories/food-repo";
 import { GetFoodsResponse } from "@/types/api/food/GET";
-import { mapFoodToResponse } from "@/utils/mapFoodToResponse";
+import { mapFoodToResponse } from "@/utils/mappers/mapFoodToResponse";
 import { NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {

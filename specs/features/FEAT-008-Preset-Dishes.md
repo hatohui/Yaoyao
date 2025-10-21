@@ -16,7 +16,7 @@ Allows Yaoyao to define preset orders (e.g., "Welcome Drink", "Appetizer Sampler
 
 ## User Roles & Permissions
 
-### Yaoyao (isVerified: true)
+### Yaoyao (isYaoyao: true)
 
 - 🆕 Create/manage preset orders
 - 🆕 Add preset to all tables at once
@@ -186,7 +186,7 @@ model PresetItem {
 - [ ] Create `pages/api/orders/preset/add-to-all.ts`
 
   - [ ] POST: Add preset to all production tables
-    - [ ] Auth check: `isVerified === true` (Yaoyao only)
+    - [ ] Auth check: `isYaoyao === true` (Yaoyao only)
     - [ ] Body: `{ foodId, variantId, quantity }`
     - [ ] Call `addPresetToAllTables()`
     - [ ] Return count of added vs skipped tables
@@ -195,13 +195,13 @@ model PresetItem {
 - [ ] Create `pages/api/orders/preset/add-to-tables.ts`
 
   - [ ] POST: Add preset to specific tables
-    - [ ] Auth check: `isVerified === true`
+    - [ ] Auth check: `isYaoyao === true`
     - [ ] Body: `{ tableIds, foodId, variantId, quantity }`
     - [ ] Call `addPresetToTables()`
 
 - [ ] Create `pages/api/orders/preset/remove-from-all.ts`
   - [ ] DELETE: Remove preset from all tables
-    - [ ] Auth check: `isVerified === true`
+    - [ ] Auth check: `isYaoyao === true`
     - [ ] Body: `{ foodId, variantId }`
     - [ ] Call `removePresetFromAllTables()`
 
@@ -455,7 +455,7 @@ Suggested colors:
 
 ### Setup
 
-1. Set `isVerified: true` in `useAuthStore`
+1. Set `isYaoyao: true` in `useAuthStore`
 2. Create 5+ tables
 3. Ensure food items exist
 
@@ -527,7 +527,7 @@ Suggested colors:
 
 ### Test: Permissions
 
-1. Set `isVerified: false` (guest mode)
+1. Set `isYaoyao: false` (guest mode)
 2. Verify cannot see "Add Preset" button
 3. Try to access preset API directly - verify 403
 

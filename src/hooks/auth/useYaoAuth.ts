@@ -1,57 +1,19 @@
-import { PASSWORD } from "@/config/app";
-import { useEffect, useRef } from "react";
+"use client";
+
 import useAuthStore, { AuthState } from "@/stores/useAuthStore";
+import { GetTableByIdResponse } from "@/types/api/table/GET";
+import { useSearchParams } from "next/navigation";
 
-const useYaoAuth = () => {
-  const isVerified = useAuthStore((s: AuthState) => s.isVerified);
-  const setIsVerified = useAuthStore((s: AuthState) => s.setVerified);
-  const secret = useRef("");
+const useYaoAuth = (table?: GetTableByIdResponse | undefined) => {
+  const isYaoyao = useAuthStore((s: AuthState) => s.isYaoyao);
+  const setisYaoyao = useAuthStore((s: AuthState) => s.setVerified);
+  const searchParams = useSearchParams();
+  const userId = searchParams?.get("id");
 
-  useEffect(() => {
-    if (isVerified) return;
+  const isTableLeader = !!table && table?.tableLeader?.id === userId;
+  const canManage = isYaoyao || isTableLeader;
 
-    const keyTracker = (e: KeyboardEvent) => {
-      const key = typeof e.key === "string" ? e.key : undefined;
-
-      if (key === "Enter") {
-        if (secret.current === PASSWORD) {
-          setIsVerified(true);
-          document.removeEventListener("keydown", keyTracker);
-        }
-        secret.current = "";
-        return;
-      }
-      if (key === "Backspace") {
-        secret.current = secret.current.slice(0, -1);
-        return;
-      }
-
-      // Only handle single-character printable keys
-      if (key && key.length === 1) {
-        const nextSecret = secret.current + key;
-        if (secret.current.length === 0) {
-          if (key === PASSWORD[0]) {
-            secret.current = key;
-          } else {
-            secret.current = "";
-          }
-        } else {
-          if (PASSWORD.startsWith(nextSecret)) {
-            secret.current = nextSecret;
-          } else {
-            secret.current = "";
-          }
-        }
-      }
-    };
-
-    document.addEventListener("keydown", keyTracker);
-    return () => {
-      document.removeEventListener("keydown", keyTracker);
-    };
-  }, [isVerified, setIsVerified]);
-
-  return { isVerified, setIsVerified };
+  return { isYaoyao, isTableLeader, canManage, setisYaoyao, userId };
 };
 
 export default useYaoAuth;

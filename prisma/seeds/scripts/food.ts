@@ -17,8 +17,6 @@ import { soupData } from "../data/food/soup";
 import { squidData } from "../data/food/squid";
 import { vegetablesData } from "../data/food/vegetables";
 
-import type { FoodData } from "../data/parsed_foods";
-
 const prisma = new PrismaClient();
 
 const SUPPORTED_TRANSLATIONS = ["vi", "zh", "th"]; // en is default stored on Food
@@ -134,3 +132,24 @@ export async function seedFoods() {
     console.log(`✅ Seeded ${seeded} items for category: ${categoryName}`);
   }
 }
+
+export type FoodData = {
+  key: string;
+  items: {
+    name: string;
+    imageUrl: string;
+    description: string;
+    translations: {
+      [key: string]: {
+        name: string;
+        description?: string;
+      };
+    };
+    variants: {
+      label?: string | undefined;
+      price?: number;
+      currency?: string;
+      isSeasonal?: boolean | undefined;
+    }[];
+  }[];
+};

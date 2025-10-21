@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Inter } from "next/font/google";
+import { Geist_Mono, Inter, Montserrat } from "next/font/google";
 import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import NavBar from "@/components/nav/NavBar";
@@ -21,12 +21,20 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
-  title: "Furum After Dinner",
-  description: "Furum after dinner by Yaoyao",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+  ),
+  title: "Yaoyao After Dinner",
+  description: "Yaoyao after dinner by Yaoyao",
   openGraph: {
-    title: "Furum after dinner by Yaoyao",
-    description: "Furum after dinner by Yaoyao",
+    title: "Yaoyao after dinner by Yaoyao",
+    description: "Yaoyao after dinner by Yaoyao",
     type: "website",
     images: [
       {
@@ -36,8 +44,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Furum After Dinner",
-    description: "Furum after dinner by Yaoyao",
+    title: "Yaoyao After Dinner",
+    description: "Yaoyao after dinner by Yaoyao",
     images: ["/images/yaoyao.jpg"],
   },
 };
@@ -54,14 +62,14 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${geistMono.variable} antialiased bg-white dark:bg-dark-bg text-slate-900 dark:text-dark-text`}
+        className={`${inter.variable} ${montserrat.variable} ${geistMono.variable} antialiased bg-white dark:bg-dark-bg text-slate-900 dark:text-dark-text`}
       >
         <ThemeProvider>
           <TanstackProvider>
             <NextIntlClientProvider locale={locale} messages={messages}>
               <NavBar />
+              <main>{children}</main>
               <AuthHydrator />
-              {children}
             </NextIntlClientProvider>
           </TanstackProvider>
         </ThemeProvider>

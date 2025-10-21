@@ -1,16 +1,20 @@
 import { People, Table, Order, Food, FoodVariant } from "@prisma/client";
 
-export type GetTablesResponse = Table & {
+export type GetTablesResponse = Omit<Table, "tableLeaderId"> & {
   orders: (Order & {
     food: (Food & { variants: FoodVariant[] }) | null;
   })[];
-  _count: {
-    people: number;
-  };
+  peopleCount: number;
+  tableLeader: People | null;
 };
 
 export type TablesDTO = Omit<GetTableByIdResponse, "_count"> & {
-  numberOfPeople: number;
+  peopleCount: number;
+};
+
+export type GetTablesWithPeopleResponse = Omit<Table, "tableLeaderId"> & {
+  people: People[];
+  tableLeader: People | null;
 };
 
 export type GetTableByIdResponse = Omit<

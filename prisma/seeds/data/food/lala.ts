@@ -114,4 +114,4 @@ export const lalaData: FoodData = {
   ],
 };
 
-import { FoodData } from "../parsed_foods";
+import { FoodData } from "../../scripts/food";

@@ -8,7 +8,7 @@
 
 ### 1. Yaoyao (Verified Admin)
 
-- **Authentication**: `isVerified: true` in `useAuthStore`
+- **Authentication**: `isYaoyao: true` in `useAuthStore`
 - **Permissions**: Full CRUD on all resources (tables, orders, foods, layouts, people)
 - **Primary Use Cases**:
   - Restaurant owner/manager preparing for dinner party events
@@ -121,7 +121,7 @@
 
 **Acceptance Criteria**:
 
-- Staging page requires `isVerified: true` authentication
+- Staging page requires `isYaoyao: true` authentication
 - Staging tables have `isStaging: true` flag
 - Copy operation creates new UUIDs for all duplicated records
 - Clear staging operation is irreversible with confirmation dialog
@@ -316,7 +316,7 @@ The restaurant has a **FIXED** physical layout (see `specs/layout.png`). This fe
 
 - **Component Structure**:
 
-  - `LayoutManager.tsx` - Main container (Yaoyao only, checks `isVerified`)
+  - `LayoutManager.tsx` - Main container (Yaoyao only, checks `isYaoyao`)
   - `LayoutCanvas.tsx` - Fixed background image with slot markers
   - `LayoutSlot.tsx` - Individual slot component (droppable zone)
   - `TableListSidebar.tsx` - List of available/assigned tables (draggable)
@@ -607,8 +607,8 @@ The restaurant has a **FIXED** physical layout (see `specs/layout.png`). This fe
 
 ### Authentication & Authorization
 
-- `useAuthStore`: Manages `isVerified` state (persisted in localStorage)
-- Route protection: Pages for Yaoyao require `isVerified` check
+- `useAuthStore`: Manages `isYaoyao` state (persisted in localStorage)
+- Route protection: Pages for Yaoyao require `isYaoyao` check
 - Table leader auth: Compare user ID (to be implemented) with `table.tableLeaderId`
 - Consider adding actual user model and JWT if scaling beyond simple boolean
 
@@ -669,7 +669,7 @@ The restaurant has a **FIXED** physical layout (see `specs/layout.png`). This fe
 
 ## Notes for AI Agent
 
-- Always check `isVerified` for admin features
+- Always check `isYaoyao` for admin features
 - Use transactions for multi-step operations (copy, commit, delete cascades)
 - Follow repository pattern - no direct Prisma calls in API routes
 - Use TanStack Query hooks for all data fetching

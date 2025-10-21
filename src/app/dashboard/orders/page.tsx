@@ -9,7 +9,7 @@ import Loading from "@/components/common/Loading";
 import TableOrderCard from "@/components/dashboard/TableOrderCard";
 
 const DashboardOrdersPage = () => {
-  const { isVerified } = useYaoAuth();
+  const { isYaoyao } = useYaoAuth();
   const t = useTranslations("dashboard");
   const tOrder = useTranslations("orders");
 
@@ -19,20 +19,10 @@ const DashboardOrdersPage = () => {
 
   const { data: tables, isLoading } = useTables();
 
-  // Security: Only Yaoyao can access dashboard
-  if (!isVerified) {
+  if (!isYaoyao) {
     return notFound();
   }
-
-  // Filter tables based on payment status
-  const filteredTables = tables?.filter((table) => {
-    if (paymentFilter === "paid") return table.paid;
-    if (paymentFilter === "unpaid") return !table.paid;
-    return true;
-  });
-
-  // Only show occupied tables (with table leader)
-  const occupiedTables = filteredTables?.filter((table) => table.tableLeader);
+  const occupiedTables = tables?.filter((table) => table.tableLeader);
 
   if (isLoading) {
     return <Loading />;

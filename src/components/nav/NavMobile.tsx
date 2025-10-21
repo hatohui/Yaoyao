@@ -9,7 +9,7 @@ export interface NavProps {
   pathname: string | null;
   buildUrlWithParams: (link: string) => string;
   className?: string;
-  isVerified: boolean;
+  isYaoyao: boolean;
   onLogout?: () => void;
 }
 
@@ -18,7 +18,7 @@ const NavMobile = ({
   pathname,
   buildUrlWithParams,
   className,
-  isVerified,
+  isYaoyao,
   onLogout,
 }: NavProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -73,7 +73,7 @@ const NavMobile = ({
               />
             </div>
           </div>
-          {isVerified && (
+          {isYaoyao && (
             <div className="flex items-center justify-between gap-3 px-2 py-2 border-t border-main/20 dark:border-slate-700">
               <button
                 onClick={onLogout}

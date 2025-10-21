@@ -6,40 +6,25 @@ import { useTranslations } from "next-intl";
 import { notFound } from "next/navigation";
 import Loading from "@/components/common/Loading";
 import { FiUsers, FiSearch } from "react-icons/fi";
-import TableCard from "@/components/dashboard/TableCard";
 import {
   usePageAnimation,
   useCardStaggerAnimation,
 } from "@/hooks/common/useAnimations";
+import useFilteredTables from "@/hooks/table/useFilteredTables";
 
 const DashboardTablesPage = () => {
-  const { isVerified } = useYaoAuth();
+  const { isYaoyao } = useYaoAuth();
   const t = useTranslations("dashboard");
   const tTables = useTranslations("tables");
   const [searchQuery, setSearchQuery] = useState("");
   const { data: tables, isLoading } = useTables();
 
-  // Filter tables based on payment status and search query
-  const filteredTables = tables?.filter((table) => {
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      const matchesName = table.name.toLowerCase().includes(query);
-      const matchesLeader = table.tableLeader?.name
-        ?.toLowerCase()
-        .includes(query);
-      const matchesPeople = table.people?.some((person) =>
-        person.name.toLowerCase().includes(query)
-      );
-      return matchesName || matchesLeader || matchesPeople;
-    }
-    return true;
-  });
+  const filteredTables = useFilteredTables(tables, searchQuery);
 
-  // Animation refs
   const pageRef = usePageAnimation();
   const cardsRef = useCardStaggerAnimation([filteredTables]);
 
-  if (!isVerified) {
+  if (!isYaoyao) {
     return notFound();
   }
 
@@ -81,9 +66,7 @@ const DashboardTablesPage = () => {
         {/* Tables Grid */}
         <div ref={cardsRef} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredTables?.map((table) => (
-            <div key={table.id} data-animate-card>
-              <TableCard table={table} />
-            </div>
+            <div key={table.id} data-animate-card></div>
           ))}
         </div>
 

@@ -4,7 +4,7 @@ import { getFoodById } from "@/repositories/food-repo";
 import FoodDetailContent from "@/components/menu/FoodDetailContent";
 import { cookies } from "next/headers";
 import { Language, SUPPORTED_LANGS } from "@/common/language";
-import { mapFoodToResponse } from "@/utils/mapFoodToResponse";
+import { mapFoodToResponse } from "@/utils/mappers/mapFoodToResponse";
 
 type PageProps = {
   params: Promise<{ id: string }>;

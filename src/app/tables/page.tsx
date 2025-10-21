@@ -7,18 +7,18 @@ import { useTranslations } from "next-intl";
 import React from "react";
 import useSearch from "@/hooks/common/useSearch";
 
-const TablePage = () => {
+const TableStagingPage = () => {
   const t = useTranslations("tables");
-  const { isVerified } = useYaoAuth();
+  const { isYaoyao } = useYaoAuth();
   const { searchQuery } = useSearch();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
+    <div className="nav-spacer bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
       {/* Header Section */}
       <TableHeader />
 
       {/* Main Content */}
-      {TABLE_PUBLIC_ENABLED || isVerified ? (
+      {TABLE_PUBLIC_ENABLED || isYaoyao ? (
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
           <TableMap searchQuery={searchQuery} />
         </div>
@@ -33,4 +33,4 @@ const TablePage = () => {
   );
 };
 
-export default TablePage;
+export default TableStagingPage;

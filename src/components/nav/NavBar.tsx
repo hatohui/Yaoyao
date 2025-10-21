@@ -15,7 +15,7 @@ const NavBar = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const t = useTranslations("common");
-  const { isVerified } = useYaoAuth();
+  const { isYaoyao } = useYaoAuth();
   const setVerified = useAuthStore((s: AuthState) => s.setVerified);
 
   const navData = [
@@ -31,14 +31,14 @@ const NavBar = () => {
     return params ? `${link}?${params}` : link;
   };
 
-  const filteredNavData = navData.filter((item) => item.public || isVerified);
+  const filteredNavData = navData.filter((item) => item.public || isYaoyao);
 
   const handleLogout = () => {
     setVerified(false);
   };
 
   return (
-    <nav className="bg-darkest dark:bg-slate-900 shadow-lg border-b border-main/20 dark:border-main/40">
+    <nav className="fixed z-40 top-0 inset-0 nav-height w-screen bg-darkest dark:bg-slate-900 shadow-lg border-b border-main/20 dark:border-main/40">
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16">
           <YaoLogo />
@@ -46,12 +46,12 @@ const NavBar = () => {
             <NavPc
               buildUrlWithParams={buildUrlWithParams}
               filteredNavData={filteredNavData}
-              isVerified={isVerified}
+              isYaoyao={isYaoyao}
               pathname={pathname}
             />
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
-            {isVerified && <YaoTag />}
+            {isYaoyao && <YaoTag />}
             <DarkModeToggle />
             <div className="sm:flex hidden">
               <LanguageSelector />
@@ -60,7 +60,7 @@ const NavBar = () => {
           <NavMobile
             buildUrlWithParams={buildUrlWithParams}
             filteredNavData={filteredNavData}
-            isVerified={isVerified}
+            isYaoyao={isYaoyao}
             pathname={pathname}
             onLogout={handleLogout}
           />

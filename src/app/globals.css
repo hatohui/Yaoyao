@@ -46,6 +46,22 @@
       dark:hover:from-main/30 dark:hover:to-purple-600/30
       dark:border-main/40 dark:shadow-main/10;
   }
+
+  .nav-spacer {
+    @apply pt-16 min-h-screen;
+  }
+
+  .nav-height {
+    @apply h-16;
+  }
+
+  .font-times {
+    font-family: "Times New Roman", Times, serif;
+  }
+
+  .font-mon {
+    font-family: "Montserrat", sans-serif;
+  }
 }
 
 /* Dark mode base styles */

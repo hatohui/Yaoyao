@@ -25,7 +25,7 @@ See `specs/layout.png` for the fixed restaurant layout image.
 
 ## User Roles & Permissions
 
-### Yaoyao (isVerified: true)
+### Yaoyao (isYaoyao: true)
 
 - 🆕 Create/edit/delete layout slots
 - 🆕 Assign tables to slots (drag & drop)
@@ -230,7 +230,7 @@ model Layout {
     - [ ] Call `getSlots()`
     - [ ] Return array of slots with table data
   - [ ] POST: Create new slot
-    - [ ] Auth check: `isVerified === true` (Yaoyao only)
+    - [ ] Auth check: `isYaoyao === true` (Yaoyao only)
     - [ ] Body: `{ slotName, positionX, positionY }`
     - [ ] Call `createSlot()`
     - [ ] Return created slot
@@ -239,37 +239,37 @@ model Layout {
 
   - [ ] GET: Get single slot
   - [ ] PUT: Update slot position
-    - [ ] Auth check: `isVerified === true`
+    - [ ] Auth check: `isYaoyao === true`
     - [ ] Body: `{ positionX, positionY }`
     - [ ] Check if slot is locked - reject if locked
     - [ ] Call `updateSlotPosition()`
   - [ ] DELETE: Delete slot
-    - [ ] Auth check: `isVerified === true`
+    - [ ] Auth check: `isYaoyao === true`
     - [ ] Check if slot is locked - reject if locked
     - [ ] Call `deleteSlot()`
 
 - [ ] Create `pages/api/layouts/[id]/assign.ts`
 
   - [ ] POST: Assign table to slot
-    - [ ] Auth check: `isVerified === true`
+    - [ ] Auth check: `isYaoyao === true`
     - [ ] Body: `{ tableId }`
     - [ ] Validation: table must exist, table not already assigned
     - [ ] Call `assignTableToSlot()`
   - [ ] DELETE: Unassign table from slot
-    - [ ] Auth check: `isVerified === true`
+    - [ ] Auth check: `isYaoyao === true`
     - [ ] Call `unassignTableFromSlot()`
 
 - [ ] Create `pages/api/layouts/swap.ts`
 
   - [ ] POST: Swap tables between two slots
-    - [ ] Auth check: `isVerified === true`
+    - [ ] Auth check: `isYaoyao === true`
     - [ ] Body: `{ slot1Id, slot2Id }`
     - [ ] Check neither slot is locked
     - [ ] Call `swapTablesBetweenSlots()` (atomic transaction)
 
 - [ ] Create `pages/api/layouts/[id]/lock.ts`
   - [ ] POST: Toggle lock status
-    - [ ] Auth check: `isVerified === true`
+    - [ ] Auth check: `isYaoyao === true`
     - [ ] Call `toggleSlotLock()`
 
 **🚨 CHECKPOINT**: Show API route structure, ask for approval
@@ -668,7 +668,7 @@ await prisma.$transaction([
 
 ### Setup
 
-1. Set `isVerified: true` in `useAuthStore`
+1. Set `isYaoyao: true` in `useAuthStore`
 2. Ensure `specs/layout.png` is available
 3. Create 5-10 tables via FEAT-001
 4. Navigate to `/dashboard/layout`
@@ -751,7 +751,7 @@ await prisma.$transaction([
 
 ### Test: Read-Only View (Guest)
 
-1. Set Guest auth (isVerified = false, no tableLeaderId)
+1. Set Guest auth (isYaoyao = false, no tableLeaderId)
 2. Navigate to `/layout-view`
 3. Verify can see layout
 4. Verify no tables highlighted

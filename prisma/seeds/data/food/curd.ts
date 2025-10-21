@@ -424,4 +424,4 @@ export const beanCurdData: FoodData = {
   ],
 };
 
-import { FoodData } from "../parsed_foods";
+import { FoodData } from "../../scripts/food";

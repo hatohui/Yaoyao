@@ -4,7 +4,7 @@ import { getCategoryById } from "@/repositories/category-repo";
 import { GetCategoryByIdResponse } from "@/types/api/category/GET";
 import { NextApiHandler } from "next";
 import { z } from "zod/mini";
-import mapCategoryToResponse from "@/utils/mapCategoryToResponse";
+import mapCategoryToResponse from "@/utils/mappers/mapCategoryToResponse";
 
 const handler: NextApiHandler = async (req, res) => {
   const method = req.method;

@@ -1,4 +1,4 @@
-import { FoodData } from "../parsed_foods";
+import { FoodData } from "../../scripts/food";
 
 export const fishData: FoodData = {
   key: "Fish",

@@ -16,7 +16,7 @@ Export all production data to a formatted Excel file for Yaoyao to share with ki
 
 ## User Roles & Permissions
 
-### Yaoyao (isVerified: true)
+### Yaoyao (isYaoyao: true)
 
 - 🆕 Export data to Excel
 - 🆕 Select export language (en, th, vi, zh)
@@ -184,7 +184,7 @@ Export all production data to a formatted Excel file for Yaoyao to share with ki
 
 - [ ] Create `pages/api/export/excel.ts`
   - [ ] GET endpoint with query param `?lang=en`
-  - [ ] Auth check: `isVerified === true` (Yaoyao only)
+  - [ ] Auth check: `isYaoyao === true` (Yaoyao only)
   - [ ] Validation: language must be one of ['en', 'th', 'vi', 'zh']
   - [ ] Call `getExportData()` from export-repo
   - [ ] Call `generateExcelWorkbook(data, language)` from utils
@@ -242,7 +242,7 @@ a.click();
 - [ ] Create `src/components/export/ExportButton.tsx`
 
   - [ ] Button component: "Export to Excel"
-  - [ ] Only visible if `isVerified === true`
+  - [ ] Only visible if `isYaoyao === true`
   - [ ] Click opens `<LanguageSelectorDialog>`
 
 - [ ] Create `src/components/export/LanguageSelectorDialog.tsx`
@@ -468,7 +468,7 @@ a.click();
 
 ### Setup
 
-1. Set `isVerified: true` in `useAuthStore`
+1. Set `isYaoyao: true` in `useAuthStore`
 2. Create 5+ tables with people and orders
 3. Navigate to `/dashboard`
 
@@ -536,7 +536,7 @@ a.click();
 
 ### Test: Permissions
 
-1. Set `isVerified: false`
+1. Set `isYaoyao: false`
 2. Verify export button not visible in dashboard
 3. Try to access `/api/export/excel` directly - verify 403
 

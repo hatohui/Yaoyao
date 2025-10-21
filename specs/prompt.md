@@ -33,7 +33,7 @@ You are an autonomous Full-Stack Development Agent (AI-DLC) tasked with building
 
 **User Roles:**
 
-1. **Yaoyao (isVerified: true)**: Restaurant owner/admin - full CRUD access
+1. **Yaoyao (isYaoyao: true)**: Restaurant owner/admin - full CRUD access
 2. **Table Leader**: Coordinator for their assigned table - edit their table only
 3. **Guest**: Public users - read-only access
 
