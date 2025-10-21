@@ -27,6 +27,11 @@ const LanguageSelector = ({ className }: LanguageSelectorProps) => {
     <div className="relative inline-block">
       <select
         value={locale}
+        id="language-selector"
+        name="language"
+        aria-label="Select language"
+        title="Select language"
+        autoComplete="language"
         onChange={handleChange}
         className={`
           appearance-none cursor-pointer
