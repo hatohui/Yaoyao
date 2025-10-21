@@ -1,6 +1,7 @@
 "use client";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { SEARCH_DEBOUNCE_DELAY } from "@/config/app";
 
 const useSearch = () => {
   const searchParams = useSearchParams();
@@ -8,46 +9,73 @@ const useSearch = () => {
   const pathname = usePathname() || "/";
   const searchQuery = searchParams?.get("search") || "";
   const [searchInput, setSearchInput] = useState(searchQuery);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Update search input when URL changes
   useEffect(() => {
     setSearchInput(searchQuery);
   }, [searchQuery]);
 
+  // Debounced URL update function
+  const updateSearchInUrl = useCallback(
+    (value: string) => {
+      const params = new URLSearchParams();
+
+      searchParams?.forEach((v, key) => {
+        if (key !== "search" && key !== "page") {
+          params.set(key, v);
+        }
+      });
+
+      if (value.trim()) {
+        params.set("search", value.trim());
+      }
+
+      const queryString = params.toString();
+      router.replace(queryString ? `${pathname}?${queryString}` : pathname, {
+        scroll: false,
+      });
+    },
+    [searchParams, router, pathname]
+  );
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setSearchInput(newValue);
 
-    // Update URL immediately for client-side filtering
-    const params = new URLSearchParams();
-
-    searchParams?.forEach((value, key) => {
-      if (key !== "search") {
-        params.set(key, value);
-      }
-    });
-
-    if (newValue.trim()) {
-      params.set("search", newValue.trim());
+    // Clear existing timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
     }
 
-    const queryString = params.toString();
-    router.replace(queryString ? `${pathname}?${queryString}` : pathname, {
-      scroll: false,
-    });
+    // Set new timer for debounced update
+    debounceTimerRef.current = setTimeout(() => {
+      updateSearchInUrl(newValue);
+    }, SEARCH_DEBOUNCE_DELAY);
   };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // No need to do anything on submit since we're filtering on change
+
+    // Clear debounce timer and update immediately on submit
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+    updateSearchInUrl(searchInput);
   };
 
   const handleClearSearch = () => {
     setSearchInput("");
+
+    // Clear debounce timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
     const params = new URLSearchParams();
 
     searchParams?.forEach((value, key) => {
-      if (key !== "search") {
+      if (key !== "search" && key !== "page") {
         params.set(key, value);
       }
     });
@@ -57,6 +85,15 @@ const useSearch = () => {
       scroll: false,
     });
   };
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
 
   return {
     searchQuery,

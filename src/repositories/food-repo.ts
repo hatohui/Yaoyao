@@ -48,84 +48,171 @@ const getFoodById = async (
 };
 
 const getFoods = async (
-  lang?: Language
-): Promise<TranslatedFood[] | Food[] | null> => {
-  if (lang && lang !== "en") {
-    return await prisma.food.findMany({
-      include: {
-        translations: {
-          where: { language: lang },
-          select: { name: true, description: true },
-        },
-        variants: {
-          select: {
-            id: true,
-            label: true,
-            price: true,
-            currency: true,
-            isSeasonal: true,
-            available: true,
+  lang?: Language,
+  page?: number,
+  count?: number,
+  search?: string
+): Promise<{ foods: TranslatedFood[] | Food[]; total: number }> => {
+  const skip = page && count ? (page - 1) * count : undefined;
+  const take = count;
+
+  const whereClause = search
+    ? {
+        OR: [
+          { name: { contains: search, mode: "insensitive" as const } },
+          {
+            description: { contains: search, mode: "insensitive" as const },
           },
-        },
-      },
-    });
-  } else
-    return await prisma.food.findMany({
-      include: {
-        variants: {
-          select: {
-            id: true,
-            label: true,
-            price: true,
-            currency: true,
-            isSeasonal: true,
-            available: true,
+          {
+            translations: {
+              some: {
+                OR: [
+                  { name: { contains: search, mode: "insensitive" as const } },
+                  {
+                    description: {
+                      contains: search,
+                      mode: "insensitive" as const,
+                    },
+                  },
+                ],
+              },
+            },
           },
-        },
-      },
-    });
+        ],
+      }
+    : {};
+
+  const [foods, total] = await Promise.all([
+    lang && lang !== "en"
+      ? prisma.food.findMany({
+          where: whereClause,
+          skip,
+          take,
+          include: {
+            translations: {
+              where: { language: lang },
+              select: { name: true, description: true },
+            },
+            variants: {
+              select: {
+                id: true,
+                label: true,
+                price: true,
+                currency: true,
+                isSeasonal: true,
+                available: true,
+              },
+            },
+          },
+        })
+      : prisma.food.findMany({
+          where: whereClause,
+          skip,
+          take,
+          include: {
+            variants: {
+              select: {
+                id: true,
+                label: true,
+                price: true,
+                currency: true,
+                isSeasonal: true,
+                available: true,
+              },
+            },
+          },
+        }),
+    prisma.food.count({ where: whereClause }),
+  ]);
+
+  return { foods, total };
 };
 
 const getFoodsByCategory = async (
   categoryId: string,
-  lang?: Language
-): Promise<TranslatedFood[] | Food[] | null> => {
-  if (lang && lang !== "en") {
-    return await prisma.food.findMany({
-      where: { categoryId },
-      include: {
-        translations: {
-          where: { language: lang },
-          select: { name: true, description: true },
-        },
-        variants: {
-          select: {
-            id: true,
-            label: true,
-            price: true,
-            currency: true,
-            isSeasonal: true,
-            available: true,
+  lang?: Language,
+  page?: number,
+  count?: number,
+  search?: string
+): Promise<{ foods: TranslatedFood[] | Food[]; total: number }> => {
+  const skip = page && count ? (page - 1) * count : undefined;
+  const take = count;
+
+  const whereClause = {
+    categoryId,
+    ...(search
+      ? {
+          OR: [
+            { name: { contains: search, mode: "insensitive" as const } },
+            {
+              description: { contains: search, mode: "insensitive" as const },
+            },
+            {
+              translations: {
+                some: {
+                  OR: [
+                    {
+                      name: { contains: search, mode: "insensitive" as const },
+                    },
+                    {
+                      description: {
+                        contains: search,
+                        mode: "insensitive" as const,
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+        }
+      : {}),
+  };
+
+  const [foods, total] = await Promise.all([
+    lang && lang !== "en"
+      ? prisma.food.findMany({
+          where: whereClause,
+          skip,
+          take,
+          include: {
+            translations: {
+              where: { language: lang },
+              select: { name: true, description: true },
+            },
+            variants: {
+              select: {
+                id: true,
+                label: true,
+                price: true,
+                currency: true,
+                isSeasonal: true,
+                available: true,
+              },
+            },
           },
-        },
-      },
-    });
-  } else
-    return await prisma.food.findMany({
-      where: { categoryId },
-      include: {
-        variants: {
-          select: {
-            id: true,
-            label: true,
-            price: true,
-            currency: true,
-            isSeasonal: true,
-            available: true,
+        })
+      : prisma.food.findMany({
+          where: whereClause,
+          skip,
+          take,
+          include: {
+            variants: {
+              select: {
+                id: true,
+                label: true,
+                price: true,
+                currency: true,
+                isSeasonal: true,
+                available: true,
+              },
+            },
           },
-        },
-      },
-    });
+        }),
+    prisma.food.count({ where: whereClause }),
+  ]);
+
+  return { foods, total };
 };
 
 const createFood = async (data: PostFoodRequest) => {

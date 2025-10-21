@@ -1,9 +1,9 @@
 "use client";
 import useCategories from "@/hooks/food/useCategories";
-import { setNewParamString } from "@/utils/setParams";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React from "react";
+import { setParamAndResetPage, resetPageInParams } from "@/utils/pageParams";
 
 const Categories = ({ className }: { className?: string }) => {
   const { data: categories, isLoading } = useCategories();
@@ -23,11 +23,15 @@ const Categories = ({ className }: { className?: string }) => {
 
   const handleCategoryClick = (category: string) => {
     const query = category.split(" ")[0].toLowerCase();
-    router.push(setNewParamString(params, "category", query));
+    const newParams = setParamAndResetPage(params, "category", query);
+    router.push(`/menu?${newParams.toString()}`);
   };
 
   const handleShowAll = () => {
-    router.push("/menu");
+    const newParams = resetPageInParams(params);
+    newParams.delete("category");
+    const queryString = newParams.toString();
+    router.push(`/menu${queryString ? `?${queryString}` : ""}`);
   };
 
   return (

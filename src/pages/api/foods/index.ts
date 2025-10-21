@@ -1,5 +1,6 @@
 import { Language, SUPPORTED_LANGS } from "@/common/language";
 import Status from "@/common/status";
+import { MENU_PAGINATION_SIZE } from "@/config/app";
 import { getCategoryByName } from "@/repositories/category-repo";
 import { getFoods, getFoodsByCategory } from "@/repositories/food-repo";
 import { GetFoodsResponse } from "@/types/api/food/GET";
@@ -8,11 +9,14 @@ import { NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {
   const method = req.method;
-  const { lang, category } = req.query as {
+  const { lang, category, page, count, search } = req.query as {
     lang?: Language;
     category?: string;
+    page?: string;
+    count?: string;
+    search?: string;
   };
-  const { NotAllowed, Ok, BadRequest, NotFound } = Status(res);
+  const { NotAllowed, Ok, BadRequest } = Status(res);
 
   switch (method) {
     case "GET":
@@ -21,22 +25,56 @@ const handler: NextApiHandler = async (req, res) => {
           "lang is required and must be one of " + SUPPORTED_LANGS.join(", ")
         );
 
-      let foods;
+      const pageNum = page ? parseInt(page, 10) : 1;
+      const countNum = count ? parseInt(count, 10) : MENU_PAGINATION_SIZE;
+
+      if (pageNum < 1 || countNum < 1) {
+        return BadRequest("page and count must be positive integers");
+      }
+
+      let result;
 
       if (category) {
         const categoryData = await getCategoryByName(category);
 
         if (categoryData) {
-          foods = await getFoodsByCategory(categoryData.id, lang);
+          result = await getFoodsByCategory(
+            categoryData.id,
+            lang,
+            pageNum,
+            countNum,
+            search
+          );
         } else {
           return BadRequest("Invalid category");
         }
-      } else foods = await getFoods(lang);
+      } else {
+        result = await getFoods(lang, pageNum, countNum, search);
+      }
 
-      if (foods === null || foods.length === 0)
-        return NotFound("No food found");
+      if (!result || result.foods.length === 0) {
+        return Ok({
+          foods: [],
+          pagination: {
+            page: pageNum,
+            count: countNum,
+            total: 0,
+            totalPages: 0,
+          },
+        });
+      }
 
-      const response: GetFoodsResponse = foods.map(mapFoodToResponse);
+      const totalPages = Math.ceil(result.total / countNum);
+
+      const response: GetFoodsResponse = {
+        foods: result.foods.map(mapFoodToResponse),
+        pagination: {
+          page: pageNum,
+          count: countNum,
+          total: result.total,
+          totalPages,
+        },
+      };
 
       return Ok(response);
     case "POST":

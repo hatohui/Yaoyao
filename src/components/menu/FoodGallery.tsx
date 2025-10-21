@@ -1,10 +1,14 @@
-import useFoodFilter from "@/hooks/food/useFoodFilter";
 import useFoods from "@/hooks/food/useFoods";
+import usePagination from "@/hooks/common/usePagination";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { FiInbox, FiSearch } from "react-icons/fi";
-import FoodCard from "./FoodCard";
+import FoodGalleryHeader from "./FoodGalleryHeader";
+import FoodGalleryGrid from "./FoodGalleryGrid";
+import FoodGalleryLoading from "./FoodGalleryLoading";
+import FoodGalleryEmpty from "./FoodGalleryEmpty";
+import Pagination from "../common/Pagination";
 
 export type FoodGalleryProps = {
   className?: string;
@@ -14,92 +18,77 @@ const FoodGallery = ({ className }: FoodGalleryProps) => {
   const searchParams = useSearchParams();
   const category = searchParams?.get("category");
   const searchQuery = searchParams?.get("search") || "";
-
-  const { data: foods, isLoading } = useFoods(category);
   const t = useTranslations("menu");
-  const filteredFoods = useFoodFilter(foods, searchQuery);
+
+  const { currentPage, goToPage, resetPage } = usePagination();
+
+  const { data, isLoading } = useFoods({
+    category,
+    page: currentPage,
+    search: searchQuery,
+  });
+
+  // Reset to page 1 when category or search changes
+  useEffect(() => {
+    if (currentPage !== 1) {
+      resetPage();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category, searchQuery]);
 
   if (isLoading) {
+    return <FoodGalleryLoading message={t("loading")} />;
+  }
+
+  if (!data || data.foods.length === 0) {
+    if (searchQuery) {
+      return (
+        <FoodGalleryEmpty
+          icon={FiSearch}
+          title={t("noSearchResults") || "No results found"}
+          message={
+            t("tryDifferentSearch") ||
+            `No dishes found matching "${searchQuery}"`
+          }
+        />
+      );
+    }
+
     return (
-      <div className="flex items-center justify-center py-12">
-        <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-main border-r-transparent"></div>
-          <p className="mt-4 text-slate-600 dark:text-slate-400 text-sm sm:text-base">
-            {t("loading")}
-          </p>
-        </div>
-      </div>
+      <FoodGalleryEmpty
+        icon={FiInbox}
+        title={t("noFoodsTitle")}
+        message={t("noFoodsMessage")}
+      />
     );
   }
 
-  if (!foods || foods.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-700 mb-4">
-          <FiInbox className="w-8 h-8 text-slate-400 dark:text-slate-500" />
-        </div>
-        <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">
-          {t("noFoodsTitle")}
-        </h3>
-        <p className="text-slate-600 dark:text-slate-400">
-          {t("noFoodsMessage")}
-        </p>
-      </div>
-    );
-  }
+  const { foods, pagination } = data;
+  const headerTitle = searchQuery
+    ? `${t("searchResults") || "Search Results"} (${pagination.total})`
+    : category
+    ? t("categoryMenu")
+    : t("allMenu");
 
-  if (filteredFoods.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-700 mb-4">
-          <FiSearch className="w-8 h-8 text-slate-400 dark:text-slate-500" />
-        </div>
-        <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">
-          {t("noSearchResults") || "No results found"}
-        </h3>
-        <p className="text-slate-600 dark:text-slate-400">
-          {t("tryDifferentSearch") ||
-            `No dishes found matching "${searchQuery}"`}
-        </p>
-      </div>
-    );
-  }
+  const itemLabel = pagination.total === 1 ? t("dish") : t("dishes");
 
   return (
     <div className={className}>
-      <div className="flex items-center justify-between mb-4 sm:mb-6">
-        <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-darkest dark:text-slate-100">
-          {searchQuery
-            ? `${t("searchResults") || "Search Results"} (${
-                filteredFoods.length
-              })`
-            : category
-            ? t("categoryMenu")
-            : t("allMenu")}
-        </h2>
-        <span className="text-xs sm:text-sm text-main dark:text-main font-medium">
-          {filteredFoods.length}{" "}
-          {filteredFoods.length === 1 ? t("dish") : t("dishes")}
-        </span>
-      </div>
+      <FoodGalleryHeader
+        title={headerTitle}
+        itemCount={pagination.total}
+        itemLabel={itemLabel}
+        className="mb-4 sm:mb-6"
+      />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-        {filteredFoods.map((food) => {
-          const translatedName = food.translations?.[0]?.name || food.name;
-          const translatedDescription =
-            food.translations?.[0]?.description || food.description;
+      <FoodGalleryGrid foods={foods} t={t} />
 
-          return (
-            <FoodCard
-              key={food.id}
-              food={food}
-              translatedName={translatedName}
-              translatedDescription={translatedDescription}
-              t={t}
-            />
-          );
-        })}
-      </div>
+      <Pagination
+        currentPage={pagination.page}
+        totalPages={pagination.totalPages}
+        onPageChange={goToPage}
+        className="mt-6"
+      />
     </div>
   );
 };
