@@ -14,6 +14,7 @@ model Table {
   capacity      Int      @default(2)
   tableLeaderId String?  @db.Uuid @unique
   referenceId   String?  @db.Uuid
+  isStaging     Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -28,6 +29,7 @@ model Table {
 
   @@index([tableLeaderId])
   @@index([referenceId])
+  @@index([isStaging])
 }
 
 model People {

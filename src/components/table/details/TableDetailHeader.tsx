@@ -3,9 +3,9 @@ import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { FiArrowLeft, FiShoppingCart } from "react-icons/fi";
-import OrderLinkGenerator from "./OrderLinkGenerator";
 import Link from "next/link";
 import { mergeQueryParams } from "@/utils/params/mergeQueryParams";
+import OrderLinkGenerator from "@/components/order/OrderLinkGenerator";
 
 export type TableHeaderProps = {
   table: GetTableByIdResponse | undefined;
@@ -37,9 +37,7 @@ const TableDetailHeader = ({
     <div className="bg-white dark:bg-slate-800 shadow-sm border-b border-main/20 dark:border-slate-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <div className="flex items-center justify-between">
-          {/* Left Side - Back button and title */}
           <div className="flex items-center gap-3">
-            {/* Show back button only for verified users and normal members (not table leaders) */}
             {(isYaoyao || !isTableLeader) && (
               <button
                 onClick={handleback}
@@ -49,7 +47,6 @@ const TableDetailHeader = ({
                 <FiArrowLeft className="w-5 h-5 text-darkest dark:text-slate-300" />
               </button>
             )}
-            {/* Order Link Generator - For Table Leaders (with param) and Yaoyao */}
             {table?.tableLeader && (isTableLeader || isYaoyao) && (
               <OrderLinkGenerator
                 tableId={table.id}

@@ -1,36 +1,63 @@
 "use client";
-import TableHeader from "@/components/table/TableHeader";
-import TableMap from "@/components/table/TableMap";
-import { TABLE_PUBLIC_ENABLED } from "@/config/app";
-import useYaoAuth from "@/hooks/auth/useYaoAuth";
-import { useTranslations } from "next-intl";
 import React from "react";
-import useSearch from "@/hooks/common/useSearch";
+import useStagingTables from "@/hooks/staging/useStagingTables";
+import useYaoAuth from "@/hooks/auth/useYaoAuth";
+import { notFound } from "next/navigation";
+import Loading from "@/components/common/Loading";
+import { usePageAnimation } from "@/hooks/common/useAnimations";
+import StagingControls from "@/components/staging/StagingControls";
+import StagingHeader from "@/components/staging/StagingHeader";
+import StagingEmpty from "@/components/staging/StagingEmpty";
+import StagingGrid from "@/components/staging/StagingGrid";
+import useStagingFilters from "@/hooks/staging/useStagingFilters";
 
-const TableStagingPage = () => {
-  const t = useTranslations("tables");
+const StagingPage = () => {
   const { isYaoyao } = useYaoAuth();
-  const { searchQuery } = useSearch();
+  const { data, isLoading } = useStagingTables({ count: 100 });
+  const { filteredTables, searchQuery, hasSearchQuery } = useStagingFilters(
+    data?.tables
+  );
+
+  const pageRef = usePageAnimation();
+
+  if (!isYaoyao) {
+    return notFound();
+  }
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
-    <div className="nav-spacer bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
-      {/* Header Section */}
-      <TableHeader />
+    <div
+      ref={pageRef}
+      className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950"
+    >
+      <StagingHeader />
 
-      {/* Main Content */}
-      {TABLE_PUBLIC_ENABLED || isYaoyao ? (
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
-          <TableMap searchQuery={searchQuery} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <StagingControls />
+
+        <div className="mt-6">
+          {filteredTables.length > 0 ? (
+            <>
+              <p className="text-sm text-slate-600 dark:text-dark-text-secondary mb-4">
+                {filteredTables.length}{" "}
+                {filteredTables.length === 1 ? "table" : "tables"}
+                {hasSearchQuery && " (filtered)"}
+              </p>
+              <StagingGrid tables={filteredTables} />
+            </>
+          ) : (
+            <StagingEmpty
+              hasSearchQuery={hasSearchQuery}
+              searchQuery={searchQuery}
+            />
+          )}
         </div>
-      ) : (
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
-          <p className="text-center text-gray-500 dark:text-slate-400 text-sm sm:text-base">
-            {t("noTables")}
-          </p>
-        </div>
-      )}
+      </div>
     </div>
   );
 };
 
-export default TableStagingPage;
+export default StagingPage;

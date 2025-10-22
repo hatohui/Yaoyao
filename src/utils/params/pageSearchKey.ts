@@ -24,9 +24,9 @@ export const savePageSearch = (pathname: string, query: string): void => {
   if (typeof window === "undefined") return;
   const key = getPageSearchStorageKey(pathname);
   if (query.trim()) {
-    localStorage.setItem(key, query);
+    sessionStorage.setItem(key, query);
   } else {
-    localStorage.removeItem(key);
+    sessionStorage.removeItem(key);
   }
 };
 
@@ -36,7 +36,7 @@ export const savePageSearch = (pathname: string, query: string): void => {
 export const getPageSearch = (pathname: string): string => {
   if (typeof window === "undefined") return "";
   const key = getPageSearchStorageKey(pathname);
-  return localStorage.getItem(key) || "";
+  return sessionStorage.getItem(key) || "";
 };
 
 /**
@@ -45,7 +45,7 @@ export const getPageSearch = (pathname: string): string => {
 export const clearPageSearch = (pathname: string): void => {
   if (typeof window === "undefined") return;
   const key = getPageSearchStorageKey(pathname);
-  localStorage.removeItem(key);
+  sessionStorage.removeItem(key);
 };
 
 /**

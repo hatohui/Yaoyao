@@ -242,5 +242,32 @@
     "peopleFound": "people found",
     "noPeopleFound": "No people found",
     "noPeopleMessage": "Try adjusting your search"
+  },
+  "staging": {
+    "title": "Staging Environment",
+    "subtitle": "Plan and test table arrangements before committing to production",
+    "staging": "Staging",
+    "copyProduction": "Copy from Production",
+    "clearStaging": "Clear Staging",
+    "commitToProduction": "Commit to Production",
+    "copy": "Copy",
+    "clear": "Clear",
+    "commit": "Commit",
+    "copyConfirmTitle": "Copy Production to Staging?",
+    "copyConfirmMessage": "This will replace all staging tables with copies from production. Any existing staging data will be lost.",
+    "clearConfirmTitle": "Clear All Staging?",
+    "clearConfirmMessage": "This will permanently delete all staging tables. This action cannot be undone.",
+    "commitConfirmTitle": "Commit to Production?",
+    "commitConfirmMessage": "This will replace all production tables with staging tables. Current production data will be permanently deleted. This action cannot be undone.",
+    "warningTitle": "Staging Environment",
+    "warningMessage": "Changes in staging do not affect production until you commit. Always review staging tables before committing to production.",
+    "copySuccess": "Successfully copied production tables to staging",
+    "clearSuccess": "Successfully cleared all staging tables",
+    "commitSuccess": "Successfully committed staging to production",
+    "searchPlaceholder": "Search staging tables...",
+    "noStagingTables": "No staging tables",
+    "noStagingTablesMessage": "Copy from production to start planning",
+    "noSearchResults": "No staging tables found",
+    "noSearchResultsMessage": "Try adjusting your search query"
   }
 }

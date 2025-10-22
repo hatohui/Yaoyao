@@ -1,13 +1,13 @@
 "use client";
 import PeopleInTable from "@/components/table/people/PeopleInTable";
-import TableDetail from "@/components/table/TableDetail";
 import usePeopleInTable from "@/hooks/table/usePeopleInTable";
 import useTableDetail from "@/hooks/table/useTableDetail";
 import useTableOrders from "@/hooks/order/useTableOrders";
 import { useParams } from "next/navigation";
-import TableDetailHeader from "@/components/table/TableDetailHeader";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import TableOrdersList from "@/components/order/TableOrdersList";
+import TableDetail from "@/components/table/details/TableDetail";
+import TableDetailHeader from "@/components/table/details/TableDetailHeader";
 
 const TableDetailPage = () => {
   const { id } = useParams() as { id: string };

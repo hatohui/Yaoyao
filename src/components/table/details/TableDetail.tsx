@@ -5,8 +5,8 @@ import { useTranslations } from "next-intl";
 import { FiGrid, FiUsers, FiUser, FiEdit2 } from "react-icons/fi";
 import useTableMutation from "@/hooks/table/useTableMutation";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
-import CapacityForm from "./forms/CapacityForm";
-import TableNameForm from "./forms/TableNameForm";
+import TableNameForm from "../forms/TableNameForm";
+import CapacityForm from "../forms/CapacityForm";
 
 export type TableDetailProps = {
   className?: string;

@@ -13,6 +13,7 @@ import {
   FiX,
   FiChevronLeft,
   FiChevronRight,
+  FiClock,
 } from "react-icons/fi";
 import { MdRestaurantMenu } from "react-icons/md";
 
@@ -56,6 +57,12 @@ export default function DashboardLayout({
       icon: FiUsers,
       description: t("peopleManagementDesc") || "Manage all guests",
     },
+    {
+      title: t("stagingManagement") || "Staging",
+      href: "/dashboard/staging",
+      icon: FiClock,
+      description: t("stagingManagementDesc") || "Plan table arrangements",
+    },
   ];
 
   const isActive = (href: string) => {
@@ -79,7 +86,7 @@ export default function DashboardLayout({
       <aside
         className={`
           fixed lg:sticky top-0 left-0 h-screen
-          bg-darkest text-white
+          bg-darkest dark:bg-dark-surface text-white
           transform transition-all duration-300 ease-in-out
           z-50 lg:z-auto
           ${
@@ -93,13 +100,13 @@ export default function DashboardLayout({
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="p-6 border-b border-main/20">
+          <div className="p-6 border-b border-main/20 dark:border-slate-700">
             <div className="flex items-center justify-between">
               <div className={`${isCollapsed ? "hidden" : "block"}`}>
-                <h2 className="text-xl font-bold text-white">
+                <h2 className="text-xl font-bold text-white dark:text-dark-text">
                   {t("dashboard") || "Dashboard"}
                 </h2>
-                <p className="text-sm text-white/70 mt-1">
+                <p className="text-sm text-white/70 dark:text-dark-text-secondary mt-1">
                   {t("managementPanel") || "Management Panel"}
                 </p>
               </div>
@@ -149,8 +156,8 @@ export default function DashboardLayout({
                       transition-all duration-200
                       ${
                         active
-                          ? "bg-main text-white shadow-lg"
-                          : "text-white/80 hover:bg-white/10 hover:text-white"
+                          ? "bg-main dark:bg-dark-main/20 dark:border dark:border-main/40 text-white dark:text-dark-text shadow-lg"
+                          : "text-white/80 dark:text-dark-text-secondary hover:bg-white/10 dark:hover:bg-slate-700/50 hover:text-white dark:hover:text-dark-text"
                       }
                       ${isCollapsed ? "justify-center" : ""}
                     `}
@@ -171,11 +178,11 @@ export default function DashboardLayout({
           </nav>
 
           {/* Back to Home Link */}
-          <div className="p-4 border-t border-main/20">
+          <div className="p-4 border-t border-main/20 dark:border-slate-700">
             <Link
               href="/"
               title={isCollapsed ? "Back to Home" : undefined}
-              className={`flex items-center gap-2 px-4 py-3 rounded-lg text-white/80 hover:bg-white/10 hover:text-white transition-colors text-sm ${
+              className={`flex items-center gap-2 px-4 py-3 rounded-lg text-white/80 dark:text-dark-text-secondary hover:bg-white/10 dark:hover:bg-slate-700/50 hover:text-white dark:hover:text-dark-text transition-colors text-sm ${
                 isCollapsed ? "justify-center" : ""
               }`}
             >
@@ -189,15 +196,15 @@ export default function DashboardLayout({
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile Header */}
-        <div className="lg:hidden sticky top-0 z-30 bg-darkest border-b border-main/20">
+        <div className="lg:hidden sticky top-0 z-30 bg-darkest dark:bg-dark-surface border-b border-main/20 dark:border-slate-700">
           <div className="flex items-center justify-between px-4 py-3">
             <button
               onClick={() => setIsSidebarOpen(true)}
-              className="p-2 text-white hover:bg-white/10 rounded-md transition-colors"
+              className="p-2 text-white dark:text-dark-text hover:bg-white/10 dark:hover:bg-slate-700/50 rounded-md transition-colors"
             >
               <FiMenu className="w-6 h-6" />
             </button>
-            <h1 className="text-lg font-bold text-white">
+            <h1 className="text-lg font-bold text-white dark:text-dark-text">
               {t("dashboard") || "Dashboard"}
             </h1>
             <div className="w-10" /> {/* Spacer for centering */}

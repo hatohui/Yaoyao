@@ -78,21 +78,16 @@ Allows Yaoyao to create and manage a staging environment for table planning. Thi
 ```prisma
 model Table {
   id            String   @id @default(uuid())
-  name          String
-  capacity      Int      @default(2)
-  tableLeaderId String?
-  isStaging     Boolean  @default(false) // ✅ Already exists
-
-  // Relations cascade to People and Order
-  people        People[]
-  orders        Order[]
-
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  referenceId   String?  @db.Uuid
+  isStaging     Boolean  @default(false)
+  // isStaging = true: This is a staging table
+  // isStaging = false: This is a production table
+  // referenceId: If staging table was copied from production, points to original production table
+  // referenceId allows tracking which production table a staging table originated from
 }
 ```
 
-**Note**: Schema already supports `isStaging` field. No migration needed.
+**Note**: Schema supports both `isStaging` (required) and `referenceId` (optional reference to original). Migration needed.
 
 ## Implementation Checklist
 
