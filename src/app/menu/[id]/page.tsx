@@ -11,7 +11,6 @@ type PageProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-// Get current locale from cookies or default to 'en'
 async function getCurrentLocale(): Promise<Language> {
   const cookieStore = await cookies();
   const cookieLocale = cookieStore.get("locale")?.value as Language | undefined;
@@ -20,16 +19,13 @@ async function getCurrentLocale(): Promise<Language> {
     : "en";
 }
 
-// Fetch food data for metadata only (server-side)
 async function getFoodDataForMetadata(
   id: string,
   locale: Language
 ): Promise<TranslatedFood | null> {
   try {
-    // Use the repository directly on the server side with proper locale
     const food = await getFoodById(id, locale);
     if (!food) return null;
-    // Map the response to extract translated fields
     const mappedFood = mapFoodToResponse(food as TranslatedFood);
     return mappedFood;
   } catch (error) {
@@ -38,7 +34,6 @@ async function getFoodDataForMetadata(
   }
 }
 
-// Generate metadata for Open Graph tags (server-side only)
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
@@ -64,6 +59,9 @@ export async function generateMetadata({
     : "";
 
   return {
+    metadataBase: new URL(
+      process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+    ),
     title: `${foodName}${priceText} | Menu`,
     description: foodDescription,
     openGraph: {
@@ -88,10 +86,8 @@ export async function generateMetadata({
   };
 }
 
-// Main page component (server component for metadata)
 export default async function FoodDetailPage({ params }: PageProps) {
   const { id } = await params;
 
-  // Pass the ID to the client component
   return <FoodDetailContent foodId={id} />;
 }
