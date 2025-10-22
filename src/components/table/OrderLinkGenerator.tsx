@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FiCopy, FiCheck } from "react-icons/fi";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import { mergeQueryParams } from "@/utils/mergeQueryParams";
+import { mergeQueryParams } from "@/utils/params/mergeQueryParams";
 
 type OrderLinkGeneratorProps = {
   tableId: string;

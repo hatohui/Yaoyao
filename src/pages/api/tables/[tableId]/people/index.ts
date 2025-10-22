@@ -1,7 +1,7 @@
 import Status from "@/common/status";
 import { addPeopleToTable, getPeopleInTable } from "@/repositories/table-repo";
 import { PostPeopleRequest } from "@/types/api/people/POST";
-import { isValidId } from "@/utils/idValidation";
+import { isValidId } from "@/utils/validation/idValidation";
 import { NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {

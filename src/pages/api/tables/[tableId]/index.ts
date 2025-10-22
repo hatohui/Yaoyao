@@ -5,7 +5,7 @@ import {
   removeTable,
 } from "@/repositories/table-repo";
 import { PutTableRequest } from "@/types/api/table/PUT";
-import { isValidId } from "@/utils/idValidation";
+import { isValidId } from "@/utils/validation/idValidation";
 import { NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {

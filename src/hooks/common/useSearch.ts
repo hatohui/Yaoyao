@@ -6,7 +6,7 @@ import {
   getPageSearch,
   savePageSearch,
   clearPageSearch,
-} from "@/utils/pageSearchKey";
+} from "@/utils/params/pageSearchKey";
 
 const useSearch = () => {
   const searchParams = useSearchParams();

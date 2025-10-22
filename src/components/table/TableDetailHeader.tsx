@@ -5,7 +5,7 @@ import React from "react";
 import { FiArrowLeft, FiShoppingCart } from "react-icons/fi";
 import OrderLinkGenerator from "./OrderLinkGenerator";
 import Link from "next/link";
-import { mergeQueryParams } from "@/utils/mergeQueryParams";
+import { mergeQueryParams } from "@/utils/params/mergeQueryParams";
 
 export type TableHeaderProps = {
   table: GetTableByIdResponse | undefined;

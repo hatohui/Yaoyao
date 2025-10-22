@@ -2,7 +2,7 @@ import Status from "@/common/status";
 import { getTableById } from "@/repositories/table-repo";
 import { createOrder, getOrdersByTableId } from "@/repositories/order-repo";
 import { getFoodWithVariantsForOrder } from "@/repositories/food-repo";
-import { isValidId } from "@/utils/idValidation";
+import { isValidId } from "@/utils/validation/idValidation";
 import { PostOrderRequest } from "@/types/api/order/POST";
 import { NextApiHandler } from "next";
 

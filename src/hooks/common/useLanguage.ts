@@ -1,6 +1,6 @@
 "use client";
 import { Language, SUPPORTED_LANGS } from "@/common/language";
-import { setNewParamString } from "@/utils/setParams";
+import { setNewParamString } from "@/utils/params/setParams";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 

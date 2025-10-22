@@ -10,9 +10,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { FiPlus, FiX } from "react-icons/fi";
 import gsap from "gsap";
 import CategorySelector from "../../food/CategorySelector";
-import FoodSelectorSearch from "./FoodSelectorSearch";
 import FoodCardSelector from "./FoodCardSelector";
 import CartPreview from "../cart/CartPreview";
+import FoodSelectorSearch from "./FoodSelectorSearch";
 import VariantSelector from "./VariantSelector";
 
 type FoodSelectorProps = {

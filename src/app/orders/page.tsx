@@ -14,7 +14,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { FiUsers, FiGrid } from "react-icons/fi";
 import OrderLinkGenerator from "@/components/table/OrderLinkGenerator";
-import { mergeQueryParams } from "@/utils/mergeQueryParams";
+import { mergeQueryParams } from "@/utils/params/mergeQueryParams";
 
 const OrderPage = () => {
   const t = useTranslations("orders");

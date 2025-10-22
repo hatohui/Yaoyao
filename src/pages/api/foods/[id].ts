@@ -3,7 +3,7 @@ import { Status } from "@/common/status";
 import { getFoodById, updateFoodAvailability } from "@/repositories/food-repo";
 import { GetFoodByIdResponse } from "@/types/api/food/GET";
 import { TranslatedFood } from "@/types/models/food";
-import { isValidId } from "@/utils/idValidation";
+import { isValidId } from "@/utils/validation/idValidation";
 import { mapFoodToResponse } from "@/utils/mappers/mapFoodToResponse";
 import { NextApiHandler } from "next";
 

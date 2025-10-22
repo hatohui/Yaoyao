@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 import { FiShoppingCart } from "react-icons/fi";
 import { useSearchParams } from "next/navigation";
-import { mergeQueryParams } from "@/utils/mergeQueryParams";
+import { mergeQueryParams } from "@/utils/params/mergeQueryParams";
 
 const ManageOrderButton = ({
   table,

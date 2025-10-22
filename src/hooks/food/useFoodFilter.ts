@@ -10,7 +10,7 @@ const useFoodFilter = (
     if (!searchQuery?.trim()) return foods;
 
     const query = searchQuery.toLowerCase().trim();
-    return foods.filter((food) => {
+    return foods.foods.filter((food) => {
       const translatedName = food.translations?.[0]?.name || food.name;
       const translatedDescription =
         food.translations?.[0]?.description || food.description;

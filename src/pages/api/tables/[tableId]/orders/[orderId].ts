@@ -5,7 +5,7 @@ import {
   deleteOrder,
   verifyOrderOwnership,
 } from "@/repositories/order-repo";
-import { isValidId } from "@/utils/idValidation";
+import { isValidId } from "@/utils/validation/idValidation";
 import { PatchOrderRequest } from "@/types/api/order/PATCH";
 import { NextApiHandler } from "next";
 

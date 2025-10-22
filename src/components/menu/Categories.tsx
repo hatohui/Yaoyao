@@ -3,7 +3,10 @@ import useCategories from "@/hooks/food/useCategories";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React from "react";
-import { setParamAndResetPage, resetPageInParams } from "@/utils/pageParams";
+import {
+  setParamAndResetPage,
+  resetPageInParams,
+} from "@/utils/params/pageParams";
 
 const Categories = ({ className }: { className?: string }) => {
   const { data: categories, isLoading } = useCategories();
