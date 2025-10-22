@@ -17,10 +17,16 @@ const TablesViewToggle = ({ isStaging, onToggle }: TablesViewToggleProps) => {
         <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
           {t("tablesManagement") || "Tables Management"}
         </h2>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-          {isStaging
-            ? t("stagingMode") || "Viewing staging tables"
-            : t("productionMode") || "Viewing production tables"}
+        <p className="text-sm mt-1">
+          {isStaging ? (
+            <span className="text-yellow-600 dark:text-yellow-400 font-medium">
+              {t("stagingMode") || "Viewing staging tables"}
+            </span>
+          ) : (
+            <span className="text-green-600 dark:text-green-400 font-medium">
+              {t("productionMode") || "Viewing production tables"}
+            </span>
+          )}
         </p>
       </div>
       <ToggleSwitch

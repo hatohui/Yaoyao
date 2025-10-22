@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import { GetTablesWithPeopleResponse } from "@/types/api/table/GET";
 import { useTranslations } from "next-intl";
 import usePeopleInTableMutation from "@/hooks/table/usePeopleInTableMutation";
-import TableCardHeader from "./table-card/TableCardHeader";
-import TableCardEmpty from "./table-card/TableCardEmpty";
-import TableCardPeopleList from "./table-card/TableCardPeopleList";
-import TableCardAddMember from "./table-card/TableCardAddMember";
+import useTableMutation from "@/hooks/table/useTableMutation";
+import TableCardAddMember from "../table-card/TableCardAddMember";
+import TableCardEmpty from "../table-card/TableCardEmpty";
+import TableCardHeader from "../table-card/TableCardHeader";
+import TableCardPeopleList from "../table-card/TableCardPeopleList";
 
 type DashboardTableCardProps = {
   table: GetTablesWithPeopleResponse;
@@ -18,7 +19,9 @@ const DashboardTableCard = ({
   isStaging = false,
 }: DashboardTableCardProps) => {
   const t = useTranslations("tables");
-  const { addPeople, removePeople } = usePeopleInTableMutation();
+  const { addPeople, removePeople, assignLeader, removeLeader } =
+    usePeopleInTableMutation();
+  const { changeName } = useTableMutation();
   const [isAddingMember, setIsAddingMember] = useState(false);
   const [newMemberName, setNewMemberName] = useState("");
 
@@ -53,12 +56,24 @@ const DashboardTableCard = ({
   };
 
   const handleDelete = (personId: string) => {
-    // No confirmation dialog - directly remove
     removePeople.mutate({ tableId: table.id, personId });
   };
 
+  const handleMakeLeader = (personId: string) => {
+    assignLeader.mutate({ tableId: table.id, personId });
+  };
+
+  const handleDemoteLeader = () => {
+    removeLeader.mutate({ tableId: table.id });
+  };
+
+  const handleChangeName = (newName: string) => {
+    if (!newName.trim() || newName === table.name) return;
+    changeName.mutate({ tableId: table.id, newName: newName.trim() });
+  };
+
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-slate-200 dark:border-slate-700 overflow-hidden transition-all hover:shadow-lg hover:border-main/30 dark:hover:border-main/40">
+    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-main/30 dark:border-main/40 overflow-hidden transition-all hover:shadow-lg hover:border-main/50 dark:hover:border-main/60">
       <TableCardHeader
         tableName={table.name}
         peopleCount={peopleCount}
@@ -67,6 +82,7 @@ const DashboardTableCard = ({
         occupancyPercentage={occupancyPercentage}
         isStaging={isStaging}
         referenceId={table.referenceId}
+        onChangeName={handleChangeName}
       />
 
       <div className="p-4">
@@ -82,6 +98,8 @@ const DashboardTableCard = ({
                 people={people}
                 tableLeaderId={table.tableLeader?.id}
                 onDelete={handleDelete}
+                onMakeLeader={handleMakeLeader}
+                onDemoteLeader={handleDemoteLeader}
               />
 
               <TableCardAddMember

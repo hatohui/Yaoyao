@@ -7,7 +7,7 @@ const StagingBadge = () => {
   const t = useTranslations("staging");
 
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-white/20 dark:bg-slate-950/50 text-white dark:text-dark-text border border-white/30 dark:border-main/30">
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300 border border-yellow-300 dark:border-yellow-700">
       <FiClock className="w-3 h-3" />
       {t("staging") || "Staging"}
     </span>

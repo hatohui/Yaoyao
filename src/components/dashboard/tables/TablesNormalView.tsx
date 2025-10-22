@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import { FiUsers, FiPlus } from "react-icons/fi";
 import { useCardStaggerAnimation } from "@/hooks/common/useAnimations";
-import DashboardTableCard from "../DashboardTableCard";
 import Pagination from "@/components/common/Pagination";
 import { GetTablesWithPeopleResponse } from "@/types/api/table/GET";
 import useTableMutation from "@/hooks/table/useTableMutation";
+import DashboardTableCard from "./DashboardTableCard";
 
 type TablesNormalViewProps = {
   tables?: GetTablesWithPeopleResponse[];
@@ -106,6 +106,12 @@ const TablesNormalView = ({
 
   return (
     <>
+      {/* Table count */}
+      <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+        {pagination?.total || tables.length}{" "}
+        {(pagination?.total || tables.length) === 1 ? "table" : "tables"}
+      </p>
+
       <div
         ref={cardsRef}
         className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6"

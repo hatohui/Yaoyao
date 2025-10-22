@@ -3,6 +3,7 @@ import { addNewPeople } from "@/repositories/people-repo";
 import {
   assignTableLeader,
   getTableLeaderByTableId,
+  removeTableLeader,
 } from "@/repositories/table-repo";
 import { PostPeopleRequest } from "@/types/api/people/POST";
 import { isValidId } from "@/utils/validation/idValidation";
@@ -51,6 +52,11 @@ const handler: NextApiHandler = async (req, res) => {
 
       return Ok(updatedLeader);
     case "DELETE":
+      const result = await removeTableLeader(tableId);
+
+      if (!result) return BadRequest("Failed to remove leader");
+
+      return Ok({ message: "Leader removed successfully" });
     default:
       return NotAllowed();
   }

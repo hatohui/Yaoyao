@@ -149,6 +149,15 @@ const assignTableLeader = async (tableId: string, peopleId: string) => {
   });
 };
 
+const removeTableLeader = async (tableId: string) => {
+  return await prisma.table.update({
+    where: { id: tableId },
+    data: {
+      tableLeaderId: null,
+    },
+  });
+};
+
 const getPeopleInTableById = async (tableId: string, peopleId: string) => {
   const table = await prisma.table.findUnique({
     where: { id: tableId },
@@ -453,6 +462,7 @@ export {
   removePeopleFromTable,
   getPeopleInTable,
   assignTableLeader,
+  removeTableLeader,
   getPeopleInTableById,
   getTableLeaderByTableId,
   getNumberOfPeopleInTable,

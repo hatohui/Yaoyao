@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import {
-  FiUsers,
   FiStar,
   FiAlertCircle,
   FiPlus,
   FiTrash2,
+  FiUsers,
 } from "react-icons/fi";
 import { People } from "@prisma/client";
 import { useTranslations } from "next-intl";
@@ -15,6 +15,8 @@ type StagingTableCardPeopleProps = {
   isFull: boolean;
   tableId: string;
   capacity: number;
+  onMakeLeader?: (personId: string) => void;
+  onDemoteLeader?: () => void;
 };
 
 const StagingTableCardPeople = ({
@@ -22,6 +24,8 @@ const StagingTableCardPeople = ({
   isFull,
   tableId,
   capacity,
+  onMakeLeader,
+  onDemoteLeader,
 }: StagingTableCardPeopleProps) => {
   const tTables = useTranslations("tables");
   const { addPeople, removePeople } = usePeopleInTableMutation();
@@ -52,20 +56,19 @@ const StagingTableCardPeople = ({
   };
 
   const handleDelete = (personId: string) => {
-    if (window.confirm(tTables("confirmRemove"))) {
-      removePeople.mutate({ tableId, personId });
-    }
+    // No confirmation dialog - directly remove (matches normal view)
+    removePeople.mutate({ tableId, personId });
   };
 
   const canAddMember = !isFull;
 
   if (people.length === 0 && !isAddingMember) {
     return (
-      <div className="text-center py-4">
-        <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700 mb-2">
+      <div className="text-center py-4 space-y-2 min-h-[160px] flex flex-col items-center justify-center">
+        <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700">
           <FiUsers className="w-5 h-5 text-slate-400 dark:text-slate-500" />
         </div>
-        <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
+        <p className="text-xs text-slate-600 dark:text-slate-400">
           {tTables("noGuests") || "No guests yet"}
         </p>
         {canAddMember && (
@@ -83,19 +86,19 @@ const StagingTableCardPeople = ({
 
   return (
     <>
-      <div className="space-y-1.5">
+      <div className="space-y-2 min-h-[160px]">
         {people.map((person) => (
           <div
             key={person.id}
-            className={`flex items-center justify-between px-3 py-2 rounded-md ${
+            className={`flex items-center justify-between px-3 py-2 rounded-md transition-colors ${
               person.isLeader
-                ? "bg-main/10 dark:bg-main/20 border border-main/30 dark:border-main/40"
-                : "bg-slate-50 dark:bg-slate-700/50"
+                ? "bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-300 dark:border-yellow-900/50"
+                : "bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700"
             }`}
           >
             <div className="flex items-center gap-2 min-w-0 flex-1">
               {person.isLeader && (
-                <FiStar className="w-3.5 h-3.5 text-main dark:text-dark-main flex-shrink-0" />
+                <FiStar className="w-3.5 h-3.5 text-yellow-500 flex-shrink-0" />
               )}
               <span className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">
                 {person.name}
@@ -107,17 +110,37 @@ const StagingTableCardPeople = ({
                 />
               )}
             </div>
-            <button
-              onClick={() => handleDelete(person.id)}
-              className="p-1 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors"
-              title={tTables("remove")}
-            >
-              <FiTrash2 className="w-3.5 h-3.5" />
-            </button>
+            <div className="flex items-center gap-1.5">
+              {onMakeLeader && !person.isLeader && (
+                <button
+                  onClick={() => onMakeLeader(person.id)}
+                  title={tTables("makeLeader")}
+                  className="p-1 text-yellow-500 hover:text-yellow-600 hover:bg-yellow-100 dark:text-yellow-400 dark:hover:text-yellow-300 dark:hover:bg-yellow-900/30 rounded transition-all cursor-pointer"
+                >
+                  <FiStar className="w-3.5 h-3.5" />
+                </button>
+              )}
+              {onDemoteLeader && person.isLeader && (
+                <button
+                  onClick={onDemoteLeader}
+                  title={tTables("demoteLeader")}
+                  className="p-1 text-yellow-500 hover:text-yellow-600 hover:bg-yellow-100 dark:text-yellow-400 dark:hover:text-yellow-300 dark:hover:bg-yellow-900/30 rounded transition-all cursor-pointer"
+                >
+                  <FiUsers className="w-3.5 h-3.5" />
+                </button>
+              )}
+              <button
+                onClick={() => handleDelete(person.id)}
+                className="p-1 text-red-500 hover:text-red-700 hover:bg-red-100 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/30 rounded transition-all cursor-pointer"
+                title={tTables("remove")}
+              >
+                <FiTrash2 className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
         ))}
 
-        {/* Add Member Input */}
+        {/* Add Member Input - with dotted lines and loading logic like normal view */}
         {isAddingMember && (
           <div className="flex items-center gap-2 p-2 rounded-md border-2 border-dashed border-main/50 dark:border-main/40 bg-main/5 dark:bg-main/10">
             <div className="flex items-center justify-center w-6 h-6 rounded-full bg-main/20 dark:bg-main/30 flex-shrink-0">
@@ -144,7 +167,7 @@ const StagingTableCardPeople = ({
           </div>
         )}
 
-        {/* Add Member Button */}
+        {/* Add Member Button - with dotted lines and hover effects like normal view */}
         {canAddMember && !isAddingMember && (
           <button
             onClick={() => setIsAddingMember(true)}
