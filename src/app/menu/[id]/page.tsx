@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { TranslatedFood } from "@/types/models/food";
 import { getFoodById } from "@/repositories/food-repo";
-import FoodDetailContent from "@/components/menu/FoodDetailContent";
+import FoodDetailContent from "@/components/menu/food-details/FoodDetailContent";
 import { cookies } from "next/headers";
 import { Language, SUPPORTED_LANGS } from "@/common/language";
 import { mapFoodToResponse } from "@/utils/mappers/mapFoodToResponse";

@@ -2,23 +2,45 @@
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { SEARCH_DEBOUNCE_DELAY } from "@/config/app";
+import {
+  getPageSearch,
+  savePageSearch,
+  clearPageSearch,
+} from "@/utils/pageSearchKey";
 
 const useSearch = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname() || "/";
-  const searchQuery = searchParams?.get("search") || "";
-  const [searchInput, setSearchInput] = useState(searchQuery);
+
+  // Get search from URL first, then localStorage as fallback
+  const urlSearch = searchParams?.get("search") || "";
+  const storedSearch = getPageSearch(pathname);
+  const initialSearch = urlSearch || storedSearch;
+
+  const [searchInput, setSearchInput] = useState(initialSearch);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const searchQuery = searchInput;
 
-  // Update search input when URL changes
+  // Load search from localStorage on mount/pathname change
   useEffect(() => {
-    setSearchInput(searchQuery);
-  }, [searchQuery]);
+    const saved = getPageSearch(pathname);
+    if (saved && !urlSearch) {
+      setSearchInput(saved);
+    } else if (urlSearch) {
+      setSearchInput(urlSearch);
+      // Sync URL search to localStorage
+      savePageSearch(pathname, urlSearch);
+    }
+  }, [pathname, urlSearch]);
 
-  // Debounced URL update function
-  const updateSearchInUrl = useCallback(
+  // Debounced update function that saves to localStorage
+  const updateSearch = useCallback(
     (value: string) => {
+      // Save to localStorage for this page
+      savePageSearch(pathname, value);
+
+      // Update URL with search param
       const params = new URLSearchParams();
 
       searchParams?.forEach((v, key) => {
@@ -50,7 +72,7 @@ const useSearch = () => {
 
     // Set new timer for debounced update
     debounceTimerRef.current = setTimeout(() => {
-      updateSearchInUrl(newValue);
+      updateSearch(newValue);
     }, SEARCH_DEBOUNCE_DELAY);
   };
 
@@ -61,11 +83,14 @@ const useSearch = () => {
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
-    updateSearchInUrl(searchInput);
+    updateSearch(searchInput);
   };
 
   const handleClearSearch = () => {
     setSearchInput("");
+
+    // Clear from localStorage
+    clearPageSearch(pathname);
 
     // Clear debounce timer
     if (debounceTimerRef.current) {

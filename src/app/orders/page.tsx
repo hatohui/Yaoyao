@@ -7,7 +7,7 @@ import useTableLeaderAuth from "@/hooks/auth/useTableLeaderAuth";
 import { notFound, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import Loading from "@/components/common/Loading";
-import FoodSelector from "@/components/order/FoodSelector";
+import FoodSelector from "@/components/order/food-selector/FoodSelector";
 import OrderList from "@/components/order/OrderList";
 import OrderSummary from "@/components/order/OrderSummary";
 import { useTranslations } from "next-intl";

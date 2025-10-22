@@ -9,10 +9,10 @@ import { useTranslations } from "next-intl";
 import React, { useState, useRef, useEffect } from "react";
 import { FiPlus, FiX } from "react-icons/fi";
 import gsap from "gsap";
-import CategorySelector from "../food/CategorySelector";
+import CategorySelector from "../../food/CategorySelector";
 import FoodSelectorSearch from "./FoodSelectorSearch";
-import FoodCardSelector from "./food-selector/FoodCardSelector";
-import CartPreview from "./cart/CartPreview";
+import FoodCardSelector from "./FoodCardSelector";
+import CartPreview from "../cart/CartPreview";
 import VariantSelector from "./VariantSelector";
 
 type FoodSelectorProps = {

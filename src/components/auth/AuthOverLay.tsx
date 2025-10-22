@@ -2,12 +2,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import { PASSWORD } from "@/config/app";
+import { useRouter } from "next/navigation";
 
-const AuthOverLay: React.FC<{ open: boolean; onClose: () => void }> = ({
-  open,
-  onClose,
-}) => {
+const AuthOverLay: React.FC<{
+  open: boolean;
+  onClose: () => void;
+  redirectPath?: string | null;
+}> = ({ open, onClose, redirectPath }) => {
   const { setisYaoyao } = useYaoAuth();
+  const router = useRouter();
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -24,6 +27,11 @@ const AuthOverLay: React.FC<{ open: boolean; onClose: () => void }> = ({
     if (value === PASSWORD) {
       setisYaoyao(true);
       onClose();
+
+      // Redirect back to the previous page if provided
+      if (redirectPath) {
+        router.push(redirectPath);
+      }
     } else {
       setError("Incorrect password");
     }

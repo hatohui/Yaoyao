@@ -1,5 +1,5 @@
 import React from "react";
-import FoodCard from "./FoodCard";
+import FoodCard from "../FoodCard";
 import { TranslatedFood } from "@/types/models/food";
 
 type FoodGalleryGridProps = {

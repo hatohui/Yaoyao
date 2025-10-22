@@ -18,7 +18,10 @@ const DashboardPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const { data: categories } = useCategories();
-  const { data: foods, isLoading } = useFoods(selectedCategory);
+  const { data: foodsData, isLoading } = useFoods({
+    category: selectedCategory,
+  });
+  const foods = foodsData?.foods;
 
   const filteredFoods = foods?.filter((food) => {
     if (!searchQuery) return true;

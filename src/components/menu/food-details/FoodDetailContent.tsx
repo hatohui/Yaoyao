@@ -1,8 +1,8 @@
 "use client";
 import { notFound } from "next/navigation";
-import FoodDetailHeader from "@/components/menu/FoodDetailHeader";
-import FoodDetailImages from "@/components/menu/FoodDetailImages";
-import FoodDetailInfo from "@/components/menu/FoodDetailInfo";
+import FoodDetailHeader from "@/components/menu/food-details/FoodDetailHeader";
+import FoodDetailImages from "@/components/menu/food-details/FoodDetailImages";
+import FoodDetailInfo from "@/components/menu/food-details/FoodDetailInfo";
 import Loading from "@/components/common/Loading";
 import useFoodById from "@/hooks/food/useFoodById";
 

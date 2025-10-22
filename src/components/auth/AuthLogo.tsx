@@ -4,6 +4,7 @@ import AuthOverLay from "./AuthOverLay";
 import useAuthStore, { AuthState } from "@/stores/useAuthStore";
 import gsap from "gsap";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export interface YaoLogoProps {
   className?: string;
@@ -12,9 +13,11 @@ export interface YaoLogoProps {
 const YaoLogo = ({ className }: YaoLogoProps) => {
   const [count, setCount] = useState(0);
   const [open, setOpen] = useState(false);
+  const [redirectPath, setRedirectPath] = useState<string | null>(null);
   const isYaoyao = useAuthStore((s: AuthState) => s.isYaoyao);
   const pawRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLAnchorElement>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (count === 0) return;
@@ -22,7 +25,12 @@ const YaoLogo = ({ className }: YaoLogoProps) => {
     return () => clearTimeout(t);
   }, [count]);
 
-  const handleLogoClick = () => {
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // Prevent navigation if already on home page
+    if (pathname === "/") {
+      e.preventDefault();
+    }
+
     if (!isYaoyao) {
       const next = count + 1;
       setCount(next);
@@ -85,6 +93,11 @@ const YaoLogo = ({ className }: YaoLogoProps) => {
           });
         }
 
+        // Store current path if not on home page
+        if (pathname !== "/") {
+          setRedirectPath(pathname);
+        }
+
         setOpen(true);
         setCount(0);
       }
@@ -106,7 +119,14 @@ const YaoLogo = ({ className }: YaoLogoProps) => {
         <span className="hidden xs:inline sm:hidden md:inline">Yao Yao</span>
       </Link>
 
-      <AuthOverLay open={open} onClose={() => setOpen(false)} />
+      <AuthOverLay
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          setRedirectPath(null);
+        }}
+        redirectPath={redirectPath}
+      />
     </div>
   );
 };

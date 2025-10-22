@@ -1,6 +1,6 @@
 "use client";
 import Categories from "@/components/menu/Categories";
-import FoodGallery from "@/components/menu/FoodGallery";
+import FoodGallery from "@/components/menu/gallery/FoodGallery";
 import React from "react";
 
 import { useTranslations } from "next-intl";

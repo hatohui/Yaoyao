@@ -8,7 +8,7 @@ import FoodGalleryHeader from "./FoodGalleryHeader";
 import FoodGalleryGrid from "./FoodGalleryGrid";
 import FoodGalleryLoading from "./FoodGalleryLoading";
 import FoodGalleryEmpty from "./FoodGalleryEmpty";
-import Pagination from "../common/Pagination";
+import Pagination from "../../common/Pagination";
 
 export type FoodGalleryProps = {
   className?: string;
