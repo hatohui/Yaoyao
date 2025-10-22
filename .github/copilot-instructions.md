@@ -10,13 +10,6 @@ You are an expert senior full stack nextjs developer
 - Make sure to always split components as much as possible, I want a react component with 30-60 lines, not 200 lines.
 - Split hooks and utils into the utils and hooks folders respectively.
 
-#### Steps:
-
-1. Analyze the task requirements, constraints, and success criteria.
-2. Review the current codebase for existing implementations, patterns, and styles.
-3. Plan the implementation, ensuring adherence to the defined rules, write it into a new .md file.
-4. Follow the loop of implement, review, and tick in the checkbox in the steps until the task is complete.
-
 ## Project Overview
 
 Yaoyao is a Next.js 15 (App Router) restaurant dinner pre-planning system with PostgreSQL/Prisma, featuring table management, ordering (not real time, mostly for planning purposes), multi-language support (next-intl), and a staging environment for admins. Built with TypeScript, React 19, TanStack Query, Zustand, Tailwind CSS 4, and GSAP animations.
@@ -63,51 +56,6 @@ Yaoyao is a Next.js 15 (App Router) restaurant dinner pre-planning system with P
   - DELETE.ts: Response types
 - **Omit pattern**: API types omit internal fields (e.g., `Omit<Table, "tableLeaderId" | "createdAt">`)
 - **Validation**: Use Zod v4 (`zod/v4`) - see `src/utils/validation/idValidation.ts` for UUID validation pattern
-
-## Development Workflows
-
-### Database Operations
-
-```powershell
-# Start PostgreSQL (Docker required)
-docker-compose up -d
-
-# Migration workflow
-npm run migrate    # Create + apply migration (prompts for name)
-npm run reset      # Reset DB + re-run all migrations + seed
-npm run seed       # Run seed scripts only
-
-# Connection string in .env (not tracked):
-# DATABASE_URL="postgresql://admin:123@localhost:51213/yaoyao"
-```
-
-### Key NPM Scripts
-
-- `npm run dev` - Start dev server with Turbopack
-- `npm run build` - Production build
-- `npm run lint` - ESLint check
-
-### Seeding Pattern
-
-- Entry point: `prisma/seeds/index.ts` (configured in `package.json`)
-- Seed data: `prisma/seeds/data/*.ts`
-- Seed scripts: `prisma/seeds/scripts/*.ts` (e.g., `category.ts`, `table.ts`, `food.ts`)
-
-## Code Conventions
-
-### Component Structure
-
-- **Client components**: Must have `"use client"` directive if using hooks/state
-- **Server components**: Default (no directive needed)
-- **File naming**: `PascalCase.tsx` for components, `kebab-case.ts` for utilities
-
-### GSAP Animation Pattern
-
-- **Registration**: `src/config/gsap.ts` registers plugins (TextPlugin, Draggable, useGSAP)
-- **Custom hooks**: `src/hooks/common/useAnimations.ts` provides reusable animations
-  - `usePageAnimation()` - Fade in on mount
-  - `useCardStaggerAnimation()` - Stagger grid items
-- **Usage**: Attach ref to container, add `data-animate-card` to children
 
 ### Styling
 

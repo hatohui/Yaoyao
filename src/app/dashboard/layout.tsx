@@ -67,7 +67,7 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 nav-spacer dark:bg-slate-900 flex">
+    <div className="max-h-screen bg-slate-50 nav-spacer dark:bg-slate-900 flex">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div
@@ -79,7 +79,7 @@ export default function DashboardLayout({
       {/* Sidebar */}
       <aside
         className={`
-          fixed lg:sticky top-0 left-0 h-screen
+          fixed lg:sticky top-0 left-0
           bg-darkest dark:bg-dark-surface text-white
           transform transition-all duration-300 ease-in-out
           z-50 lg:z-auto
@@ -92,7 +92,7 @@ export default function DashboardLayout({
           w-72
         `}
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col max-h-screen h-full">
           <DashboardSidebarHeader
             isCollapsed={isCollapsed}
             setIsCollapsed={setIsCollapsed}
@@ -109,9 +109,9 @@ export default function DashboardLayout({
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 max-h-screen flex flex-col min-w-0">
         <DashboardMobileHeader setIsSidebarOpen={setIsSidebarOpen} />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
     </div>
   );

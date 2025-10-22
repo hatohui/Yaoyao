@@ -5,41 +5,71 @@ import {
   getTables,
   getTablesWithPeople,
 } from "@/repositories/table-repo";
-import {
-  GetTablesWithPaginationResponse,
-  GetTablesWithPeopleResponse,
-} from "@/types/api/table/GET";
+import { GetTablesWithPaginationResponse } from "@/types/api/table/GET";
 import { PostTableRequest } from "@/types/api/table/POST";
 import { NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {
   const method = req.method;
-  const { NotAllowed, Ok, NotFound, BadRequest, Created, InternalError } =
-    Status(res);
+  const { NotAllowed, Ok, BadRequest, Created, InternalError } = Status(res);
 
   switch (method) {
     case "GET":
-      const { people, page, count, search } = req.query;
+      const { people, page, count, search, isStaging } = req.query;
 
-      // If people=true, return tables with people included
+      // If people=true, return tables with people included (with pagination)
       if (people === "true") {
-        const tablesWithPeople = await getTablesWithPeople();
+        const isStagingMode = isStaging === "true";
+        const pageNum = page ? parseInt(page as string, 10) : 1;
+        const countNum = count
+          ? parseInt(count as string, 10)
+          : TABLE_PAGINATION_SIZE;
 
-        if (!tablesWithPeople || tablesWithPeople.length === 0)
-          return NotFound();
+        if (pageNum < 1 || countNum < 1) {
+          return BadRequest("page and count must be positive integers");
+        }
 
-        const response: GetTablesWithPeopleResponse[] = tablesWithPeople.map(
-          (table) => ({
+        const tablesWithPeople = await getTablesWithPeople(
+          isStagingMode,
+          search as string,
+          pageNum,
+          countNum
+        );
+
+        if (!tablesWithPeople || tablesWithPeople.tables.length === 0) {
+          const emptyResponse = {
+            tables: [],
+            pagination: {
+              page: pageNum,
+              count: countNum,
+              total: 0,
+              totalPages: 0,
+            },
+          };
+          return Ok(emptyResponse);
+        }
+
+        const totalPages = Math.ceil(tablesWithPeople.total / countNum);
+
+        const response = {
+          tables: tablesWithPeople.tables.map((table) => ({
             id: table.id,
             name: table.name,
             capacity: table.capacity,
             tableLeader: table.tableLeader,
             referenceId: table.referenceId,
+            isStaging: table.isStaging,
             createdAt: table.createdAt,
             updatedAt: table.updatedAt,
             people: table.people,
-          })
-        );
+          })),
+          pagination: {
+            page: pageNum,
+            count: countNum,
+            total: tablesWithPeople.total,
+            totalPages,
+          },
+        };
 
         return Ok(response);
       }
@@ -49,12 +79,18 @@ const handler: NextApiHandler = async (req, res) => {
       const countNum = count
         ? parseInt(count as string, 10)
         : TABLE_PAGINATION_SIZE;
+      const isStagingMode = isStaging === "true";
 
       if (pageNum < 1 || countNum < 1) {
         return BadRequest("page and count must be positive integers");
       }
 
-      const result = await getTables(pageNum, countNum, search as string);
+      const result = await getTables(
+        pageNum,
+        countNum,
+        search as string,
+        isStagingMode
+      );
 
       if (!result || result.tables.length === 0) {
         const emptyResponse: GetTablesWithPaginationResponse = {
@@ -78,6 +114,7 @@ const handler: NextApiHandler = async (req, res) => {
           capacity: table.capacity,
           tableLeader: table.tableLeader,
           referenceId: table.referenceId,
+          isStaging: table.isStaging,
           createdAt: table.createdAt,
           updatedAt: table.updatedAt,
           peopleCount: table._count.people,

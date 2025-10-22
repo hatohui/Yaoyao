@@ -12,6 +12,7 @@ const useNotify = () => {
   const tErrors = useTranslations("errors");
   const tCommon = useTranslations("common");
   const tSuccess = useTranslations("success");
+  const tStaging = useTranslations("staging");
   const [message, setMessage] = useState<FormMessage | null>(null);
 
   const setFormMessage = useCallback(
@@ -27,18 +28,33 @@ const useNotify = () => {
 
       let translatedMessage = fallbackMessage || tCommon("error");
       if (code) {
-        if (type === "error") {
-          translatedMessage = tErrors(code);
-        } else if (type === "success") {
-          translatedMessage = tSuccess(code);
+        // Handle namespaced keys (e.g., "staging.copySuccess")
+        if (code.includes(".")) {
+          const [namespace, key] = code.split(".");
+          if (namespace === "staging") {
+            translatedMessage = tStaging(key);
+          } else if (namespace === "success") {
+            translatedMessage = tSuccess(key);
+          } else if (namespace === "errors") {
+            translatedMessage = tErrors(key);
+          } else {
+            translatedMessage = tCommon(key);
+          }
         } else {
-          translatedMessage = tCommon(code);
+          // Handle non-namespaced keys (backward compatibility)
+          if (type === "error") {
+            translatedMessage = tErrors(code);
+          } else if (type === "success") {
+            translatedMessage = tSuccess(code);
+          } else {
+            translatedMessage = tCommon(code);
+          }
         }
       }
 
       setMessage({ message: translatedMessage, code, type });
     },
-    [tErrors, tCommon, tSuccess]
+    [tErrors, tCommon, tSuccess, tStaging]
   );
 
   const setError = useCallback(

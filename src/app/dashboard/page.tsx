@@ -4,11 +4,14 @@ import useCategories from "@/hooks/food/useCategories";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import { useTranslations } from "next-intl";
 import { notFound, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiFilter } from "react-icons/fi";
 import Loading from "@/components/common/Loading";
 import FoodRow from "@/components/dashboard/FoodRow";
+import FoodCardMobile from "@/components/dashboard/FoodCardMobile";
 import SearchBar from "@/components/common/SearchBar";
+import Pagination from "@/components/common/Pagination";
+import usePagination from "@/hooks/common/usePagination";
 
 const DashboardPage = () => {
   const { isYaoyao } = useYaoAuth();
@@ -16,25 +19,26 @@ const DashboardPage = () => {
   const tDashboard = useTranslations("dashboard");
   const searchParams = useSearchParams();
   const searchQuery = searchParams?.get("search") || "";
+  const { currentPage, goToPage, resetPage } = usePagination();
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const { data: categories } = useCategories();
   const { data: foodsData, isLoading } = useFoods({
     category: selectedCategory,
+    page: currentPage,
+    search: searchQuery,
   });
   const foods = foodsData?.foods;
+  const pagination = foodsData?.pagination;
 
-  const filteredFoods = foods?.filter((food) => {
-    if (!searchQuery) return true;
-    const translatedName = food.translations?.[0]?.name || food.name;
-    const translatedDesc =
-      food.translations?.[0]?.description || food.description || "";
-    return (
-      translatedName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      translatedDesc.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  });
+  // Reset to page 1 when search or category changes
+  useEffect(() => {
+    if (currentPage !== 1) {
+      resetPage();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery, selectedCategory]);
 
   // Security: Only Yaoyao can access dashboard
   if (!isYaoyao) {
@@ -46,7 +50,7 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
+    <div className="max-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
         <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4 mb-6">
           <div className="flex flex-col sm:flex-row gap-4">
@@ -80,17 +84,37 @@ const DashboardPage = () => {
           </div>
 
           {/* Results count */}
-          <div className="mt-4 text-sm text-slate-600 dark:text-slate-400">
-            {filteredFoods?.length || 0} {t("dishes")}{" "}
-            {tDashboard("found") || "found"}
-          </div>
+          {pagination && (
+            <div className="mt-4 text-sm text-slate-600 dark:text-slate-400">
+              {pagination.total} {t("dishes")} {tDashboard("found") || "found"}
+            </div>
+          )}
         </div>
 
-        {/* Foods Table */}
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+        {/* Mobile Card View */}
+        <div className="md:hidden space-y-4 mb-6">
+          {foods?.map((food) => {
+            const translatedName = food.translations?.[0]?.name || food.name;
+            const category = categories?.find((c) => c.id === food.categoryId);
+            const categoryName =
+              category?.translation?.[0]?.name || category?.name || "-";
+
+            return (
+              <FoodCardMobile
+                key={food.id}
+                food={food}
+                translatedName={translatedName}
+                categoryName={categoryName}
+              />
+            );
+          })}
+        </div>
+
+        {/* Desktop Table View */}
+        <div className="hidden md:block bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden mb-6">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-slate-50 dark:bg-slate-700 border-b border-slate-200 dark:border-slate-600">
+              <thead className="bg-slate-50 dark:bg-slate-700/50 border-b border-slate-200 dark:border-slate-600">
                 <tr>
                   <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-300">
                     {tDashboard("foodName") || "Food Name"}
@@ -110,7 +134,7 @@ const DashboardPage = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                {filteredFoods?.map((food) => {
+                {foods?.map((food) => {
                   const translatedName =
                     food.translations?.[0]?.name || food.name;
                   const category = categories?.find(
@@ -132,16 +156,25 @@ const DashboardPage = () => {
               </tbody>
             </table>
           </div>
-
-          {/* Empty State */}
-          {(!filteredFoods || filteredFoods.length === 0) && (
-            <div className="py-12 text-center">
-              <p className="text-slate-500 dark:text-slate-400">
-                {t("noFoodsMessage") || "No foods found"}
-              </p>
-            </div>
-          )}
         </div>
+
+        {/* Empty State */}
+        {(!foods || foods.length === 0) && !isLoading && (
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 py-12 text-center">
+            <p className="text-slate-500 dark:text-slate-400">
+              {t("noFoodsMessage") || "No foods found"}
+            </p>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {pagination && pagination.totalPages > 1 && (
+          <Pagination
+            currentPage={pagination.page}
+            totalPages={pagination.totalPages}
+            onPageChange={goToPage}
+          />
+        )}
       </div>
     </div>
   );

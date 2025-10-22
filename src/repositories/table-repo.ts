@@ -6,13 +6,14 @@ import { PostTableRequest } from "@/types/api/table/POST";
 const getTables = async (
   page: number = 1,
   count: number = 12,
-  search?: string
+  search?: string,
+  isStaging: boolean = false
 ) => {
   const skip = (page - 1) * count;
 
   const where = search
     ? {
-        isStaging: false, // Only production tables
+        isStaging,
         OR: [
           { name: { contains: search, mode: "insensitive" as const } },
           {
@@ -22,7 +23,7 @@ const getTables = async (
           },
         ],
       }
-    : { isStaging: false }; // Only production tables
+    : { isStaging };
 
   const [tables, total] = await Promise.all([
     prisma.table.findMany({
@@ -53,13 +54,49 @@ const getTables = async (
   return { tables, total };
 };
 
-const getTablesWithPeople = async () => {
-  return await prisma.table.findMany({
-    include: {
-      tableLeader: true,
-      people: true,
-    },
-  });
+const getTablesWithPeople = async (
+  isStaging: boolean = false,
+  search?: string,
+  page: number = 1,
+  count: number = 12
+) => {
+  const skip = (page - 1) * count;
+
+  const where = search
+    ? {
+        isStaging,
+        OR: [
+          { name: { contains: search, mode: "insensitive" as const } },
+          {
+            tableLeader: {
+              name: { contains: search, mode: "insensitive" as const },
+            },
+          },
+          {
+            people: {
+              some: {
+                name: { contains: search, mode: "insensitive" as const },
+              },
+            },
+          },
+        ],
+      }
+    : { isStaging };
+
+  const [tables, total] = await Promise.all([
+    prisma.table.findMany({
+      where,
+      skip,
+      take: count,
+      include: {
+        tableLeader: true,
+        people: true,
+      },
+    }),
+    prisma.table.count({ where }),
+  ]);
+
+  return { tables, total };
 };
 
 const getTableById = async (id: string): Promise<Table | null> => {
