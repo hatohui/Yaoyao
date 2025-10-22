@@ -30,23 +30,53 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
   ),
-  title: "Yaoyao After Dinner",
-  description: "Yaoyao after dinner by Yaoyao",
+  title: "Yaoyao After Dinner - Post Furum Restaurant",
+  description:
+    "Welcome to Yaoyao After Dinner! 🐾✨ Join us post Furum for a delightful culinary experience hosted by Yaoyao. Discover authentic flavors, cozy ambiance, and heartwarming dishes that make every evening special. Come hungry, leave happy! 💜",
+  keywords: [
+    "Yaoyao Restaurant",
+    "Post Furum",
+    "After Dinner",
+    "Restaurant",
+    "Dining",
+    "Food",
+    "Yaoyao",
+  ],
+  authors: [{ name: "Yaoyao" }],
   openGraph: {
-    title: "Yaoyao after dinner by Yaoyao",
-    description: "Yaoyao after dinner by Yaoyao",
+    title: "Yaoyao After Dinner - Post Furum Restaurant",
+    description:
+      "Welcome to Yaoyao After Dinner! 🐾✨ Join us post Furum for a delightful culinary experience. Discover authentic flavors, cozy ambiance, and heartwarming dishes that make every evening special.",
     type: "website",
+    siteName: "Yaoyao After Dinner",
+    locale: "en_US",
     images: [
       {
         url: "/images/yaoyao.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Yaoyao After Dinner Restaurant",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Yaoyao After Dinner",
-    description: "Yaoyao after dinner by Yaoyao",
+    title: "Yaoyao After Dinner - Post Furum Restaurant",
+    description:
+      "Welcome to Yaoyao After Dinner! 🐾✨ Join us at Post Furum for a delightful culinary experience. Cozy ambiance, authentic flavors, and heartwarming dishes await!",
     images: ["/images/yaoyao.jpg"],
+    creator: "@Yaoyao",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
