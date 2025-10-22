@@ -50,13 +50,13 @@ const StagingTableCardHeader = ({
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2 flex-1 min-w-0">
           {isEditingName ? (
-            <div className="flex items-center gap-2 flex-1">
+            <div className="flex items-center gap-2 flex-1 font-serif">
               <input
                 type="text"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
                 onKeyDown={handleKeyPress}
-                className="flex-1 px-2 py-1 text-lg font-semibold bg-white dark:bg-slate-800 border border-main rounded text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-main"
+                className="flex-1 px-2 py-1 text-lg font-semibold bg-white dark:bg-slate-800 border-2 border-main rounded text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-main/50"
                 autoFocus
               />
               <button
@@ -76,7 +76,7 @@ const StagingTableCardHeader = ({
             </div>
           ) : (
             <>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 truncate">
+              <h3 className="text-lg font-serif font-semibold text-slate-900 dark:text-slate-100 truncate">
                 {tableName}
               </h3>
               {onChangeName && (

@@ -59,7 +59,7 @@ const TableCardHeader = ({
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
                 onKeyDown={handleKeyPress}
-                className="flex-1 px-2 py-1 text-lg font-semibold bg-white dark:bg-slate-800 border border-main rounded text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-main"
+                className="flex-1 px-2 py-1 text-lg font-semibold bg-white dark:bg-slate-800 border-2 border-main rounded text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-main/50"
                 autoFocus
               />
               <button

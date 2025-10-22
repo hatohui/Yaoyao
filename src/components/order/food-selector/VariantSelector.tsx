@@ -151,7 +151,7 @@ const VariantSelector = ({
 
         <button
           onClick={onAddToCart}
-          className="w-full mt-4 bg-darkest dark:bg-slate-700 hover:bg-darkest/90 dark:hover:bg-slate-600 text-white font-semibold py-3 px-4 rounded-lg transition-all text-sm md:text-base"
+          className="w-full mt-4 button text-sm md:text-base"
         >
           <FiPlus className="w-4 h-4 inline mr-2" />
           {addToCartText}

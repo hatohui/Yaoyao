@@ -161,8 +161,11 @@
     "qrCodeInstructions": "扫描以访问点餐页面",
     "addTable": "添加餐桌",
     "create": "创建",
+    "createNewTable": "创建新餐桌",
     "cancel": "取消",
-    "addStagingTable": "添加暂存表"
+    "addStagingTable": "添加暂存表",
+    "editName": "编辑名称",
+    "save": "保存"
   },
   "orders": {
     "title": "订单",
@@ -178,6 +181,8 @@
     "quantity": "数量",
     "total": "总计",
     "totalPrice": "总价",
+    "price": "价格",
+    "seasonalWarning": "时令菜按市场价计价（不计入总价）",
     "pricePerPerson": "人均价格",
     "items": "项",
     "item": "项",

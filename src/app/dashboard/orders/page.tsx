@@ -17,7 +17,7 @@ const DashboardOrdersPage = () => {
     "all"
   );
 
-  const { data, isLoading } = useTables({ count: 100 }); // Get all tables for dashboard
+  const { data, isLoading } = useTables();
 
   if (!isYaoyao) {
     return notFound();
@@ -26,90 +26,77 @@ const DashboardOrdersPage = () => {
   const occupiedTables = data?.tables?.filter((table) => table.tableLeader);
 
   return (
-    <div className="h-full flex flex-col bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col flex-1 overflow-hidden">
-          {/* Filter Header */}
-          <div className="mb-6 flex-shrink-0">
-            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
-              <div className="p-4">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                  <FiFilter className="text-slate-400 dark:text-slate-500 w-5 h-5 flex-shrink-0" />
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      onClick={() => setPaymentFilter("all")}
-                      className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
-                        paymentFilter === "all"
-                          ? "bg-main text-white"
-                          : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
-                      }`}
-                    >
-                      {t("allTables") || "All Tables"}
-                    </button>
-                    <button
-                      onClick={() => setPaymentFilter("paid")}
-                      className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
-                        paymentFilter === "paid"
-                          ? "bg-green-500 text-white"
-                          : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
-                      }`}
-                    >
-                      {t("paidOnly") || "Paid Only"}
-                    </button>
-                    <button
-                      onClick={() => setPaymentFilter("unpaid")}
-                      className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
-                        paymentFilter === "unpaid"
-                          ? "bg-amber-500 text-white"
-                          : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
-                      }`}
-                    >
-                      {t("unpaidOnly") || "Unpaid Only"}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Results count */}
-                <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
-                  <p className="text-sm text-slate-600 dark:text-slate-400">
-                    <span className="font-semibold text-slate-900 dark:text-slate-100">
-                      {occupiedTables?.length || 0}
-                    </span>{" "}
-                    {t("tableColumn")} {t("found") || "found"}
-                  </p>
-                </div>
-              </div>
+    <div className="h-full bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
+        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4 mb-6">
+          <div className="flex items-center gap-4">
+            <FiFilter className="text-slate-400 dark:text-slate-500 w-5 h-5" />
+            <div className="flex gap-2">
+              <button
+                onClick={() => setPaymentFilter("all")}
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                  paymentFilter === "all"
+                    ? "bg-main text-white"
+                    : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
+                }`}
+              >
+                {t("allTables") || "All Tables"}
+              </button>
+              <button
+                onClick={() => setPaymentFilter("paid")}
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                  paymentFilter === "paid"
+                    ? "bg-green-500 text-white"
+                    : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
+                }`}
+              >
+                {t("paidOnly") || "Paid Only"}
+              </button>
+              <button
+                onClick={() => setPaymentFilter("unpaid")}
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                  paymentFilter === "unpaid"
+                    ? "bg-amber-500 text-white"
+                    : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
+                }`}
+              >
+                {t("unpaidOnly") || "Unpaid Only"}
+              </button>
             </div>
           </div>
 
-          {/* Content Area - Scrollable */}
-          <div className="flex-1 overflow-y-auto">
-            {isLoading ? (
-              <div className="flex items-center justify-center h-full min-h-[400px]">
-                <Loading />
-              </div>
-            ) : (
-              <div className="pb-6">
-                {/* Tables Grid */}
-                {occupiedTables && occupiedTables.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {occupiedTables.map((table) => (
-                      <TableOrderCard key={table.id} table={table} />
-                    ))}
-                  </div>
-                ) : (
-                  /* Empty State */
-                  <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 py-12 text-center">
-                    <FiShoppingBag className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-                    <p className="text-slate-500 dark:text-slate-400">
-                      {tOrder("noOrders") || "No tables with orders"}
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
+          {/* Results count */}
+          <div className="mt-4 text-sm text-slate-600 dark:text-slate-400">
+            {occupiedTables?.length || 0} {t("tableColumn")}{" "}
+            {t("found") || "found"}
           </div>
         </div>
+
+        {/* Content Area with Loading State */}
+        {isLoading ? (
+          <div className="min-h-[400px] flex items-center justify-center">
+            <Loading />
+          </div>
+        ) : (
+          <>
+            {/* Tables Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {occupiedTables?.map((table) => (
+                <TableOrderCard key={table.id} table={table} />
+              ))}
+            </div>
+
+            {/* Empty State */}
+            {(!occupiedTables || occupiedTables.length === 0) && (
+              <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 py-12 text-center">
+                <FiShoppingBag className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+                <p className="text-slate-500 dark:text-slate-400">
+                  {tOrder("noOrders") || "No tables with orders"}
+                </p>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

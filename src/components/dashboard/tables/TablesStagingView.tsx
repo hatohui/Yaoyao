@@ -9,9 +9,13 @@ import StagingEmpty from "@/components/staging/StagingEmpty";
 
 type TablesStagingViewProps = {
   searchQuery: string;
+  onSwitchToProduction?: () => void;
 };
 
-const TablesStagingView = ({ searchQuery }: TablesStagingViewProps) => {
+const TablesStagingView = ({
+  searchQuery,
+  onSwitchToProduction,
+}: TablesStagingViewProps) => {
   const { data, isLoading } = useStagingTables({ count: 100 });
   const { filteredTables, hasSearchQuery } = useStagingFilters(data?.tables);
 
@@ -21,7 +25,7 @@ const TablesStagingView = ({ searchQuery }: TablesStagingViewProps) => {
 
   return (
     <div>
-      <StagingControls />
+      <StagingControls onSwitchToProduction={onSwitchToProduction} />
 
       <div className="mt-6">
         {filteredTables.length > 0 ? (

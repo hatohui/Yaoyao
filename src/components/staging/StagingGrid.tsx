@@ -2,6 +2,7 @@
 import React from "react";
 import { useCardStaggerAnimation } from "@/hooks/common/useAnimations";
 import StagingTableCard from "./StagingTableCard";
+import AddTableCard from "@/components/dashboard/tables/AddTableCard";
 import { GetStagingTablesResponse } from "@/types/api/staging/GET";
 
 type StagingGridProps = {
@@ -32,6 +33,11 @@ const StagingGrid = ({ tables }: StagingGridProps) => {
           </div>
         );
       })}
+
+      {/* Add Table Card */}
+      <div data-animate-card>
+        <AddTableCard isStaging={true} />
+      </div>
     </div>
   );
 };

@@ -162,8 +162,11 @@
     "qrCodeInstructions": "Quét để truy cập trang đặt món",
     "addTable": "Thêm bàn",
     "create": "Tạo",
+    "createNewTable": "Tạo bàn mới",
     "cancel": "Hủy",
-    "addStagingTable": "Thêm bàn Staging"
+    "addStagingTable": "Thêm bàn Staging",
+    "editName": "Chỉnh sửa tên",
+    "save": "Lưu"
   },
   "orders": {
     "title": "Đơn hàng",
@@ -179,7 +182,8 @@
     "quantity": "Số lượng",
     "total": "Tổng",
     "totalPrice": "Tổng giá",
-    "pricePerPerson": "Giá mỗi người",
+    "price": "Giá",
+    "seasonalWarning": "Món theo mùa định giá theo thị trường (không bao gồm trong tổng)",
     "items": "món",
     "item": "món",
     "addToOrder": "Thêm vào đơn hàng",

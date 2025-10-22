@@ -153,8 +153,11 @@
     "qrCodeInstructions": "Scan to access order page",
     "addTable": "Add Table",
     "create": "Create",
+    "createNewTable": "Create New Table",
     "cancel": "Cancel",
-    "addStagingTable": "Add Staging Table"
+    "addStagingTable": "Add Staging Table",
+    "editName": "Edit Name",
+    "save": "Save"
   },
   "orders": {
     "title": "Orders",
@@ -194,6 +197,8 @@
     "updating": "Updating...",
     "removing": "Removing...",
     "notAvailable": "Not Available",
+    "price": "Price",
+    "seasonalWarning": "Seasonal items priced at market rate (not included in total)",
     "selectVariantPrompt": "Please select a variant",
     "foodUnavailable": "This food is currently unavailable",
     "variantUnavailable": "This variant is currently unavailable",

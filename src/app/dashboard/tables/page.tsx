@@ -71,7 +71,10 @@ const DashboardTablesPage = () => {
           {/* Content - Scrollable */}
           <div className="flex-1 overflow-y-auto">
             {isStaging ? (
-              <TablesStagingView searchQuery={searchQuery} />
+              <TablesStagingView
+                searchQuery={searchQuery}
+                onSwitchToProduction={() => setIsStaging(false)}
+              />
             ) : (
               <>
                 {isLoading ? (

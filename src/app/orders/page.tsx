@@ -3,9 +3,8 @@
 import useTableDetail from "@/hooks/table/useTableDetail";
 import usePeopleInTable from "@/hooks/table/usePeopleInTable";
 import useTableOrders from "@/hooks/order/useTableOrders";
-import useTableLeaderAuth from "@/hooks/auth/useTableLeaderAuth";
-import { notFound, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import React from "react";
 import Loading from "@/components/common/Loading";
 import FoodSelector from "@/components/order/food-selector/FoodSelector";
 import OrderList from "@/components/order/OrderList";
@@ -21,7 +20,7 @@ const OrderPage = () => {
   const tTable = useTranslations("tables");
   const params = useSearchParams();
   const tableId = params?.get("table");
-  const leaderId = params?.get("id");
+  // const leaderId = params?.get("id");
 
   const { data: table, isLoading: isLoadingTable } = useTableDetail(
     tableId || ""
@@ -33,16 +32,15 @@ const OrderPage = () => {
     table?.id ?? ""
   );
 
-  // Security: Validate table leader authorization
-  const { isValid } = useTableLeaderAuth(table?.tableLeader?.id, leaderId);
+  // const { isValid } = useTableLeaderAuth(table?.tableLeader?.id, leaderId);
 
-  useEffect(() => {
-    if (isLoadingTable) return;
+  // useEffect(() => {
+  //   if (isLoadingTable) return;
 
-    if (!tableId || !leaderId || !table || !isValid) {
-      notFound();
-    }
-  }, [table, tableId, leaderId, isValid, isLoadingTable]);
+  //   if (!tableId || !leaderId || !table || !isValid) {
+  //     notFound();
+  //   }
+  // }, [table, tableId, leaderId, isValid, isLoadingTable]);
 
   const peopleCount = people?.length ?? 0;
   const isLoading = isLoadingTable || isLoadingPeople;

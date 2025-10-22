@@ -1,12 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { FiCheckCircle } from "react-icons/fi";
 import useStagingMutations from "@/hooks/staging/useStagingMutations";
 import ConfirmDialog from "./ConfirmDialog";
 import StagingActionButtons from "./StagingActionButtons";
 import StagingWarningBanner from "./StagingWarningBanner";
 
-const StagingControls = () => {
+type StagingControlsProps = {
+  onSwitchToProduction?: () => void;
+};
+
+const StagingControls = ({ onSwitchToProduction }: StagingControlsProps) => {
   const t = useTranslations("staging");
   const { copyProductionToStaging, clearStaging, commitStagingToProduction } =
     useStagingMutations();
@@ -14,6 +19,33 @@ const StagingControls = () => {
   const [copyDialog, setCopyDialog] = useState(false);
   const [clearDialog, setClearDialog] = useState(false);
   const [commitDialog, setCommitDialog] = useState(false);
+  const [showSuccessBanner, setShowSuccessBanner] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  // Show success banner when mutations succeed
+  useEffect(() => {
+    if (copyProductionToStaging.isSuccess) {
+      setSuccessMessage(t("copySuccess"));
+      setShowSuccessBanner(true);
+      setTimeout(() => setShowSuccessBanner(false), 3000);
+    }
+  }, [copyProductionToStaging.isSuccess, t]);
+
+  useEffect(() => {
+    if (clearStaging.isSuccess) {
+      setSuccessMessage(t("clearSuccess"));
+      setShowSuccessBanner(true);
+      setTimeout(() => setShowSuccessBanner(false), 3000);
+    }
+  }, [clearStaging.isSuccess, t]);
+
+  useEffect(() => {
+    if (commitStagingToProduction.isSuccess) {
+      setSuccessMessage(t("commitSuccess"));
+      setShowSuccessBanner(true);
+      setTimeout(() => setShowSuccessBanner(false), 3000);
+    }
+  }, [commitStagingToProduction.isSuccess, t]);
 
   const handleCopy = () => {
     copyProductionToStaging.mutate();
@@ -21,13 +53,21 @@ const StagingControls = () => {
   };
 
   const handleClear = () => {
-    clearStaging.mutate();
     setClearDialog(false);
+    clearStaging.mutate();
+    // Switch back to production view after clearing
+    if (onSwitchToProduction) {
+      setTimeout(() => onSwitchToProduction(), 1000);
+    }
   };
 
   const handleCommit = () => {
-    commitStagingToProduction.mutate();
     setCommitDialog(false);
+    commitStagingToProduction.mutate();
+    // Switch back to production view after committing
+    if (onSwitchToProduction) {
+      setTimeout(() => onSwitchToProduction(), 1000);
+    }
   };
 
   const isLoading =
@@ -37,6 +77,16 @@ const StagingControls = () => {
 
   return (
     <>
+      {/* Success Banner */}
+      {showSuccessBanner && (
+        <div className="mb-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+          <FiCheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" />
+          <p className="text-sm font-medium text-green-800 dark:text-green-200">
+            {successMessage}
+          </p>
+        </div>
+      )}
+
       <StagingActionButtons
         isLoading={isLoading}
         onCopy={() => setCopyDialog(true)}

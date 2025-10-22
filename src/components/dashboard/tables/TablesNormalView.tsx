@@ -7,6 +7,7 @@ import Pagination from "@/components/common/Pagination";
 import { GetTablesWithPeopleResponse } from "@/types/api/table/GET";
 import useTableMutation from "@/hooks/table/useTableMutation";
 import DashboardTableCard from "./DashboardTableCard";
+import AddTableCard from "./AddTableCard";
 
 type TablesNormalViewProps = {
   tables?: GetTablesWithPeopleResponse[];
@@ -121,6 +122,11 @@ const TablesNormalView = ({
             <DashboardTableCard table={table} isStaging={false} />
           </div>
         ))}
+
+        {/* Add Table Card */}
+        <div data-animate-card>
+          <AddTableCard isStaging={false} />
+        </div>
       </div>
 
       {pagination && pagination.totalPages > 1 && onPageChange && (

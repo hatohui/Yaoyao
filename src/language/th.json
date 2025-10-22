@@ -162,8 +162,11 @@
     "qrCodeInstructions": "สแกนเพื่อเข้าสู่หน้าสั่งอาหาร",
     "addTable": "เพิ่มโต๊ะ",
     "create": "สร้าง",
+    "createNewTable": "สร้างโต๊ะใหม่",
     "cancel": "ยกเลิก",
-    "addStagingTable": "เพิ่มโต๊ะ Staging"
+    "addStagingTable": "เพิ่มโต๊ะ Staging",
+    "editName": "แก้ไขชื่อ",
+    "save": "บันทึก"
   },
   "orders": {
     "title": "รายการสั่งอาหาร",
@@ -179,7 +182,8 @@
     "quantity": "จำนวน",
     "total": "รวม",
     "totalPrice": "ราคารวม",
-    "pricePerPerson": "ราคาต่อคน",
+    "price": "ราคา",
+    "seasonalWarning": "เมนูตามฤดูกาล ราคาตามตลาด (ไม่รวมในยอดรวม)",
     "items": "รายการ",
     "item": "รายการ",
     "addToOrder": "เพิ่มในรายการสั่งอาหาร",
