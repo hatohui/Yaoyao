@@ -28,7 +28,7 @@ const useTablesWithPeople = ({
   count = TABLE_PAGINATION_SIZE,
 }: UseTablesWithPeopleParams = {}) => {
   return useQuery<TablesWithPeoplePaginatedResponse, Error>({
-    queryKey: ["tables-with-people", isStaging, search, page, count],
+    queryKey: ["tables", isStaging, search, page, count],
     queryFn: () =>
       axios
         .get<TablesWithPeoplePaginatedResponse>("/tables", {

@@ -328,10 +328,51 @@ const copyProductionToStaging = async () => {
  * Clear all staging tables (delete tables with isStaging = true)
  */
 const clearStaging = async () => {
-  const result = await prisma.table.deleteMany({
-    where: { isStaging: true },
+  return await prisma.$transaction(async (tx) => {
+    // 1. Get all staging table IDs
+    const stagingTables = await tx.table.findMany({
+      where: { isStaging: true },
+      select: { id: true },
+    });
+
+    const stagingTableIds = stagingTables.map((t) => t.id);
+
+    if (stagingTableIds.length === 0) {
+      return { count: 0 };
+    }
+
+    // 2. Delete all people in staging tables first (to avoid foreign key constraint)
+    await tx.people.deleteMany({
+      where: {
+        tableId: { in: stagingTableIds },
+      },
+    });
+
+    // 3. Delete all layouts associated with staging tables
+    await tx.layout.deleteMany({
+      where: {
+        tableId: { in: stagingTableIds },
+      },
+    });
+
+    // 4. Delete all table links where either table is a staging table
+    await tx.tableLink.deleteMany({
+      where: {
+        OR: [
+          { tableId: { in: stagingTableIds } },
+          { table2Id: { in: stagingTableIds } },
+        ],
+      },
+    });
+
+    // 5. Orders and other cascade deletes will be handled automatically
+    // Now delete the staging tables themselves
+    const result = await tx.table.deleteMany({
+      where: { isStaging: true },
+    });
+
+    return result;
   });
-  return result;
 };
 
 /**

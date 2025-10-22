@@ -16,6 +16,7 @@ const usePeopleInTableMutation = () => {
       client.invalidateQueries({
         queryKey: ["tables"],
       });
+      client.invalidateQueries({ queryKey: ["staging-tables"] });
     },
   });
 
@@ -26,6 +27,7 @@ const usePeopleInTableMutation = () => {
       client.invalidateQueries({
         queryKey: ["tables"],
       });
+      client.invalidateQueries({ queryKey: ["staging-tables"] });
     },
   });
 
@@ -38,6 +40,7 @@ const usePeopleInTableMutation = () => {
       client.invalidateQueries({
         queryKey: ["tables"],
       });
+      client.invalidateQueries({ queryKey: ["staging-tables"] });
     },
   });
 
@@ -46,6 +49,7 @@ const usePeopleInTableMutation = () => {
       axios.delete(`/tables/${data.tableId}/leader`),
     onSuccessCallback: () => {
       client.invalidateQueries({ queryKey: ["tables"] });
+      client.invalidateQueries({ queryKey: ["staging-tables"] });
     },
   });
 

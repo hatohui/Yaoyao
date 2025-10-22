@@ -20,6 +20,12 @@ const handler: NextApiHandler = async (req, res) => {
         return Ok(response);
       } catch (error) {
         console.error("Error clearing staging:", error);
+        // Log the full error details for debugging
+        if (error instanceof Error) {
+          console.error("Error name:", error.name);
+          console.error("Error message:", error.message);
+          console.error("Error stack:", error.stack);
+        }
         return InternalError("Failed to clear staging tables");
       }
     default:

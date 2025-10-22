@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 /**
  * Custom hook for common GSAP animations
@@ -208,10 +209,10 @@ export const usePageAnimation = () => {
 /**
  * Hook for card grid stagger animation on mount
  */
-export const useCardStaggerAnimation = (deps: unknown[] = []) => {
+export const useCardStaggerAnimation = () => {
   const cardsRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (cardsRef.current) {
       const cards = cardsRef.current.querySelectorAll("[data-animate-card]");
       if (cards.length > 0) {
@@ -229,8 +230,7 @@ export const useCardStaggerAnimation = (deps: unknown[] = []) => {
         );
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps);
+  }, []);
 
   return cardsRef;
 };

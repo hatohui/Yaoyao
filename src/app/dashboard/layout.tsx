@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import { notFound } from "next/navigation";
-import { FiTable, FiShoppingBag, FiUsers, FiClock } from "react-icons/fi";
+import { FiTable, FiShoppingBag, FiUsers } from "react-icons/fi";
 import { MdRestaurantMenu } from "react-icons/md";
 import DashboardSidebarHeader from "@/components/dashboard/sidenav/DashboardSidebarHeader";
 import DashboardSidebarNav from "@/components/dashboard/sidenav/DashboardSidebarNav";
@@ -50,12 +50,6 @@ export default function DashboardLayout({
       href: "/dashboard/people",
       icon: FiUsers,
       description: t("peopleManagementDesc") || "Manage all guests",
-    },
-    {
-      title: t("stagingManagement") || "Staging",
-      href: "/dashboard/staging",
-      icon: FiClock,
-      description: t("stagingManagementDesc") || "Plan table arrangements",
     },
   ];
 

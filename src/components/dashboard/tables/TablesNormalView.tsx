@@ -24,7 +24,7 @@ const TablesNormalView = ({
   onPageChange,
 }: TablesNormalViewProps) => {
   const t = useTranslations("tables");
-  const cardsRef = useCardStaggerAnimation([tables]);
+  const cardsRef = useCardStaggerAnimation();
 
   if (!tables || tables.length === 0) {
     return (
