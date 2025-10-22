@@ -18,7 +18,7 @@ const DashboardSidebarHeader = ({
   const t = useTranslations("dashboard");
 
   return (
-    <div className="p-6 border-b border-main/20 dark:border-slate-700">
+    <div className="p-6 border-b border-main/20 truncate text-nowrap dark:border-slate-700">
       <div className="flex items-center justify-between">
         <div className={`${isCollapsed ? "hidden" : "block"}`}>
           <h2 className="text-xl font-bold text-white dark:text-dark-text">

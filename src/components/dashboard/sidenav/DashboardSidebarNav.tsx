@@ -35,7 +35,7 @@ const DashboardSidebarNav = ({
               title={isCollapsed ? item.title : undefined}
               className={`
                 flex items-start gap-3 px-4 py-3 rounded-lg
-                transition-all duration-200
+                transition-all duration-200 truncate text-nowrap
                 ${
                   active
                     ? "bg-main dark:bg-dark-main/20 dark:border dark:border-main/40 text-white dark:text-dark-text shadow-lg"

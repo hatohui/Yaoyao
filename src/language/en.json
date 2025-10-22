@@ -74,6 +74,8 @@
     "seasonal": "Seasonal",
     "unavailable": "Unavailable",
     "available": "Available",
+    "hideItem": "Hide Item",
+    "showItem": "Show Item",
     "variants": "Variants",
     "noSearchResults": "No results found",
     "tryDifferentSearch": "Try a different search or browse categories",
@@ -148,7 +150,11 @@
     "open": "Open",
     "qrCodeNote": "QR Code",
     "qrPlaceholder": "QR Code\nComing Soon",
-    "qrCodeInstructions": "Scan to access order page"
+    "qrCodeInstructions": "Scan to access order page",
+    "addTable": "Add Table",
+    "create": "Create",
+    "cancel": "Cancel",
+    "addstagingTable": "Add Staging Table"
   },
   "orders": {
     "title": "Orders",

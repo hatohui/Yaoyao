@@ -6,10 +6,8 @@ import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import { notFound } from "next/navigation";
 import { FiTable, FiShoppingBag, FiUsers } from "react-icons/fi";
 import { MdRestaurantMenu } from "react-icons/md";
-import DashboardSidebarHeader from "@/components/dashboard/sidenav/DashboardSidebarHeader";
-import DashboardSidebarNav from "@/components/dashboard/sidenav/DashboardSidebarNav";
-import DashboardSidebarFooter from "@/components/dashboard/sidenav/DashboardSidebarFooter";
-import DashboardMobileHeader from "@/components/dashboard/DashboardMobileHeader";
+import DashboardSidebar from "@/components/dashboard/sidenav/DashboardSidebar";
+import DashboardSwipeDetector from "@/components/dashboard/sidenav/DashboardSwipeDetector";
 
 export default function DashboardLayout({
   children,
@@ -61,50 +59,23 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="max-h-screen bg-slate-50 nav-spacer dark:bg-slate-900 flex">
-      {/* Mobile Sidebar Overlay */}
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
+    <div className="nav-spacer h-screen flex overflow-hidden bg-slate-50 dark:bg-slate-900">
+      <DashboardSwipeDetector
+        isOpen={isSidebarOpen}
+        onSwipeRight={() => setIsSidebarOpen(true)}
+        onSwipeLeft={() => setIsSidebarOpen(false)}
+      />
 
-      {/* Sidebar */}
-      <aside
-        className={`
-          fixed lg:sticky top-0 left-0
-          bg-darkest dark:bg-dark-surface text-white
-          transform transition-all duration-300 ease-in-out
-          z-50 lg:z-auto
-          ${
-            isSidebarOpen
-              ? "translate-x-0"
-              : "-translate-x-full lg:translate-x-0"
-          }
-          ${isCollapsed ? "lg:w-20" : "lg:w-72"}
-          w-72
-        `}
-      >
-        <div className="flex flex-col max-h-screen h-full">
-          <DashboardSidebarHeader
-            isCollapsed={isCollapsed}
-            setIsCollapsed={setIsCollapsed}
-            setIsSidebarOpen={setIsSidebarOpen}
-          />
-          <DashboardSidebarNav
-            navItems={navItems}
-            isActive={isActive}
-            isCollapsed={isCollapsed}
-            setIsSidebarOpen={setIsSidebarOpen}
-          />
-          <DashboardSidebarFooter isCollapsed={isCollapsed} />
-        </div>
-      </aside>
+      <DashboardSidebar
+        isOpen={isSidebarOpen}
+        isCollapsed={isCollapsed}
+        navItems={navItems}
+        isActive={isActive}
+        setIsCollapsed={setIsCollapsed}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
 
-      {/* Main Content */}
-      <div className="flex-1 max-h-screen flex flex-col min-w-0">
-        <DashboardMobileHeader setIsSidebarOpen={setIsSidebarOpen} />
+      <div className="flex-1 anti-nav flex flex-col min-w-0 overflow-hidden">
         <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
     </div>

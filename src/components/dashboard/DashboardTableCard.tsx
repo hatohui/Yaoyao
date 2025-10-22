@@ -53,9 +53,8 @@ const DashboardTableCard = ({
   };
 
   const handleDelete = (personId: string) => {
-    if (window.confirm(t("confirmRemove"))) {
-      removePeople.mutate({ tableId: table.id, personId });
-    }
+    // No confirmation dialog - directly remove
+    removePeople.mutate({ tableId: table.id, personId });
   };
 
   return (

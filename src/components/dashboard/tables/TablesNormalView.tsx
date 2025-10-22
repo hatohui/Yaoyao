@@ -1,11 +1,12 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslations } from "next-intl";
-import { FiUsers } from "react-icons/fi";
+import { FiUsers, FiPlus } from "react-icons/fi";
 import { useCardStaggerAnimation } from "@/hooks/common/useAnimations";
 import DashboardTableCard from "../DashboardTableCard";
 import Pagination from "@/components/common/Pagination";
 import { GetTablesWithPeopleResponse } from "@/types/api/table/GET";
+import useTableMutation from "@/hooks/table/useTableMutation";
 
 type TablesNormalViewProps = {
   tables?: GetTablesWithPeopleResponse[];
@@ -25,6 +26,23 @@ const TablesNormalView = ({
 }: TablesNormalViewProps) => {
   const t = useTranslations("tables");
   const cardsRef = useCardStaggerAnimation();
+  const { createTable } = useTableMutation();
+  const [isCreating, setIsCreating] = useState(false);
+  const [newTableName, setNewTableName] = useState("");
+
+  const handleCreateTable = () => {
+    if (!newTableName.trim()) return;
+
+    createTable.mutate(
+      { name: newTableName.trim(), capacity: 2, isStaging: false },
+      {
+        onSuccess: () => {
+          setNewTableName("");
+          setIsCreating(false);
+        },
+      }
+    );
+  };
 
   if (!tables || tables.length === 0) {
     return (
@@ -33,9 +51,55 @@ const TablesNormalView = ({
         <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">
           {t("noTables") || "No tables found"}
         </h3>
-        <p className="text-slate-600 dark:text-slate-400">
+        <p className="text-slate-600 dark:text-slate-400 mb-6">
           {t("noTablesMessage") || "No tables match the selected filter"}
         </p>
+
+        {isCreating ? (
+          <div className="max-w-sm mx-auto">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={newTableName}
+                onChange={(e) => setNewTableName(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") handleCreateTable();
+                  if (e.key === "Escape") {
+                    setIsCreating(false);
+                    setNewTableName("");
+                  }
+                }}
+                placeholder={t("tableName") || "Table name"}
+                className="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-main"
+                autoFocus
+              />
+              <button
+                onClick={handleCreateTable}
+                disabled={!newTableName.trim() || createTable.isPending}
+                className="px-4 py-2 bg-main hover:bg-main-dark disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+              >
+                {t("create") || "Create"}
+              </button>
+              <button
+                onClick={() => {
+                  setIsCreating(false);
+                  setNewTableName("");
+                }}
+                className="px-4 py-2 border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg transition-colors"
+              >
+                {t("cancel") || "Cancel"}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button
+            onClick={() => setIsCreating(true)}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-main hover:bg-main-dark text-white rounded-lg transition-colors shadow-md hover:shadow-lg"
+          >
+            <FiPlus className="w-5 h-5" />
+            {t("addTable") || "Add Table"}
+          </button>
+        )}
       </div>
     );
   }

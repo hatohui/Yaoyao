@@ -82,6 +82,8 @@
     "seasonal": "时令",
     "unavailable": "暂不可用",
     "available": "可用",
+    "hideItem": "隐藏菜品",
+    "showItem": "显示菜品",
     "variants": "变种",
     "noSearchResults": "未找到结果",
     "tryDifferentSearch": "尝试不同的搜索或浏览分类",
@@ -156,7 +158,11 @@
     "open": "打开",
     "qrCodeNote": "二维码",
     "qrPlaceholder": "二维码\n即将推出",
-    "qrCodeInstructions": "扫描以访问点餐页面"
+    "qrCodeInstructions": "扫描以访问点餐页面",
+    "addTable": "添加餐桌",
+    "create": "创建",
+    "cancel": "取消",
+    "addstagingTable": "添加暂存表"
   },
   "orders": {
     "title": "订单",

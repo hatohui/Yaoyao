@@ -48,11 +48,15 @@
   }
 
   .nav-spacer {
-    @apply pt-16 min-h-screen;
+    @apply pt-16;
   }
 
   .nav-height {
     @apply h-16;
+  }
+
+  .anti-nav {
+    @apply h-[calc(100vh-4rem)];
   }
 
   .font-times {

@@ -96,105 +96,123 @@ const DashboardPeoplePage = () => {
     return notFound();
   }
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
-    <div className="h-full bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
-      {/* Stats & Search */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-          {/* Total People */}
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-3">
-            <div className="flex items-center gap-2.5">
-              <div className="p-2.5 bg-main/10 dark:bg-main/20 rounded-lg">
-                <FiUsers className="w-5 h-5 text-main" />
+    <div className="h-full flex flex-col bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col flex-1 overflow-hidden">
+          {/* Stats - Fixed at top */}
+          <div className="mb-6 flex-shrink-0">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+              {/* Total People */}
+              <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-main/10 dark:bg-main/20 rounded-lg">
+                    <FiUsers className="w-5 h-5 text-main" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                      {t("totalPeople") || "Total People"}
+                    </p>
+                    <p className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                      {allPeople.length}
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div>
-                <p className="text-xs text-slate-600 dark:text-slate-400">
-                  {t("totalPeople") || "Total People"}
-                </p>
-                <p className="text-xl font-bold text-slate-900 dark:text-slate-100">
-                  {allPeople.length}
-                </p>
+
+              {/* Table Leaders */}
+              <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-yellow-100 dark:bg-yellow-900/40 rounded-lg">
+                    <FiStar className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                      {t("tableLeaders") || "Table Leaders"}
+                    </p>
+                    <p className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                      {allPeople.filter((p) => p.isLeader).length}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Duplicates */}
+              <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-red-100 dark:bg-red-900/40 rounded-lg">
+                    <FiAlertCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                      {t("duplicateNames") || "Duplicate Names"}
+                    </p>
+                    <p className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                      {duplicateNames.size}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Table Leaders */}
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-3">
-            <div className="flex items-center gap-2.5">
-              <div className="p-2.5 bg-yellow-100 dark:bg-yellow-900/40 rounded-lg">
-                <FiStar className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
-              </div>
-              <div>
-                <p className="text-xs text-slate-600 dark:text-slate-400">
-                  {t("tableLeaders") || "Table Leaders"}
-                </p>
-                <p className="text-xl font-bold text-slate-900 dark:text-slate-100">
-                  {allPeople.filter((p) => p.isLeader).length}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Duplicates */}
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-3">
-            <div className="flex items-center gap-2.5">
-              <div className="p-2.5 bg-red-100 dark:bg-red-900/40 rounded-lg">
-                <FiAlertCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
-              </div>
-              <div>
-                <p className="text-xs text-slate-600 dark:text-slate-400">
-                  {t("duplicateNames") || "Duplicate Names"}
-                </p>
-                <p className="text-xl font-bold text-slate-900 dark:text-slate-100">
-                  {duplicateNames.size}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Search */}
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4 mb-6">
-          <SearchBar
-            placeholder={t("searchPeople") || "Search by name or table..."}
-          />
-
-          <div className="mt-4 text-sm text-slate-600 dark:text-slate-400">
-            {filteredPeople.length}{" "}
-            {filteredPeople.length === 1
-              ? t("personFound") || "person found"
-              : t("peopleFound") || "people found"}
-          </div>
-        </div>
-
-        {/* People List by Table */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          {tablesWithPeople.length === 0 ? (
-            <div className="col-span-full bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
-              <FiUsers className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">
-                {t("noPeopleFound") || "No people found"}
-              </h3>
-              <p className="text-slate-600 dark:text-slate-400">
-                {t("noPeopleMessage") || "Try adjusting your search"}
-              </p>
-            </div>
-          ) : (
-            tablesWithPeople.map((table) => (
-              <div key={table.id}>
-                <PeopleTableCard
-                  tableId={table.id}
-                  tableName={table.name}
-                  capacity={table.capacity}
-                  people={table.people}
+            {/* Search */}
+            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
+              <div className="p-4">
+                <SearchBar
+                  placeholder={
+                    t("searchPeople") || "Search by name or table..."
+                  }
                 />
+
+                <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    <span className="font-semibold text-slate-900 dark:text-slate-100">
+                      {filteredPeople.length}
+                    </span>{" "}
+                    {filteredPeople.length === 1
+                      ? t("personFound") || "person found"
+                      : t("peopleFound") || "people found"}
+                  </p>
+                </div>
               </div>
-            ))
-          )}
+            </div>
+          </div>
+
+          {/* People List - Scrollable */}
+          <div className="flex-1 overflow-y-auto">
+            {isLoading ? (
+              <div className="flex items-center justify-center h-full min-h-[400px]">
+                <Loading />
+              </div>
+            ) : (
+              <div className="pb-6">
+                {tablesWithPeople.length === 0 ? (
+                  <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 py-12 text-center">
+                    <FiUsers className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">
+                      {t("noPeopleFound") || "No people found"}
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      {t("noPeopleMessage") || "Try adjusting your search"}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {tablesWithPeople.map((table) => (
+                      <div key={table.id}>
+                        <PeopleTableCard
+                          tableId={table.id}
+                          tableName={table.name}
+                          capacity={table.capacity}
+                          people={table.people}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

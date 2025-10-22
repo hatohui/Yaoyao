@@ -377,22 +377,58 @@ const clearStaging = async () => {
 
 /**
  * Commit staging to production
- * 1. Delete all production tables
+ * 1. Delete all production tables (with their dependencies)
  * 2. Convert staging tables to production (set isStaging to false)
  */
 const commitStagingToProduction = async () => {
   return await prisma.$transaction(async (tx) => {
-    // 1. Delete all production tables (isStaging is false)
-    await tx.table.deleteMany({
+    // 1. Get all production table IDs first
+    const productionTables = await tx.table.findMany({
       where: { isStaging: false },
+      select: { id: true },
     });
 
-    // 2. Get all staging tables
+    const productionTableIds = productionTables.map((t) => t.id);
+
+    // 2. Delete all dependencies of production tables (same as clearStaging logic)
+    if (productionTableIds.length > 0) {
+      // Delete people in production tables
+      await tx.people.deleteMany({
+        where: {
+          tableId: { in: productionTableIds },
+        },
+      });
+
+      // Delete layouts associated with production tables
+      await tx.layout.deleteMany({
+        where: {
+          tableId: { in: productionTableIds },
+        },
+      });
+
+      // Delete table links where either table is a production table
+      await tx.tableLink.deleteMany({
+        where: {
+          OR: [
+            { tableId: { in: productionTableIds } },
+            { table2Id: { in: productionTableIds } },
+          ],
+        },
+      });
+
+      // Now delete the production tables themselves
+      // Orders will cascade delete automatically
+      await tx.table.deleteMany({
+        where: { isStaging: false },
+      });
+    }
+
+    // 3. Get all staging tables
     const stagingTables = await tx.table.findMany({
       where: { isStaging: true },
     });
 
-    // 3. Update staging tables to production (set isStaging to false, clear referenceId)
+    // 4. Update staging tables to production (set isStaging to false, clear referenceId)
     const updatedTables = await Promise.all(
       stagingTables.map(async (table) => {
         return await tx.table.update({

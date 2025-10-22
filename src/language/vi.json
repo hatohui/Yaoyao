@@ -83,6 +83,8 @@
     "seasonal": "Theo mùa",
     "unavailable": "Không có sẵn",
     "available": "Có sẵn",
+    "hideItem": "Ẩn món",
+    "showItem": "Hiện món",
     "variants": "Biến thể",
     "noSearchResults": "Không tìm thấy kết quả",
     "tryDifferentSearch": "Thử tìm kiếm khác hoặc duyệt theo danh mục",
@@ -157,7 +159,11 @@
     "open": "Mở",
     "qrCodeNote": "Mã QR",
     "qrPlaceholder": "Mã QR\nSắp ra mắt",
-    "qrCodeInstructions": "Quét để truy cập trang đặt món"
+    "qrCodeInstructions": "Quét để truy cập trang đặt món",
+    "addTable": "Thêm bàn",
+    "create": "Tạo",
+    "cancel": "Hủy",
+    "addstagingTable": "Thêm bàn Staging"
   },
   "orders": {
     "title": "Đơn hàng",

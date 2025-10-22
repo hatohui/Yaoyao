@@ -82,6 +82,8 @@
     "seasonal": "ตามฤดูกาล",
     "unavailable": "ไม่พร้อมให้บริการ",
     "available": "พร้อมให้บริการ",
+    "hideItem": "ซ่อนรายการ",
+    "showItem": "แสดงรายการ",
     "variants": "รูปแบบ",
     "noSearchResults": "ไม่พบผลการค้นหา",
     "tryDifferentSearch": "ลองค้นหาที่แตกต่างออกไป",
@@ -157,7 +159,11 @@
     "open": "เปิด",
     "qrCodeNote": "คิวอาร์โค้ด",
     "qrPlaceholder": "คิวอาร์โค้ด\nเร็วๆ นี้",
-    "qrCodeInstructions": "สแกนเพื่อเข้าสู่หน้าสั่งอาหาร"
+    "qrCodeInstructions": "สแกนเพื่อเข้าสู่หน้าสั่งอาหาร",
+    "addTable": "เพิ่มโต๊ะ",
+    "create": "สร้าง",
+    "cancel": "ยกเลิก",
+    "addstagingTable": "เพิ่มโต๊ะ Staging"
   },
   "orders": {
     "title": "รายการสั่งอาหาร",

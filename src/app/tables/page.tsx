@@ -26,7 +26,7 @@ const TableStagingPage = () => {
   }, [searchQuery]);
 
   return (
-    <div className="nav-spacer bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
+    <div className="nav-spacer min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
       {/* Header Section */}
       <TableHeader />
 
