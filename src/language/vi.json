@@ -163,7 +163,7 @@
     "addTable": "Thêm bàn",
     "create": "Tạo",
     "cancel": "Hủy",
-    "addstagingTable": "Thêm bàn Staging"
+    "addStagingTable": "Thêm bàn Staging"
   },
   "orders": {
     "title": "Đơn hàng",

@@ -162,7 +162,7 @@
     "addTable": "添加餐桌",
     "create": "创建",
     "cancel": "取消",
-    "addstagingTable": "添加暂存表"
+    "addStagingTable": "添加暂存表"
   },
   "orders": {
     "title": "订单",

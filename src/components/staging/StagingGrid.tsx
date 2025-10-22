@@ -9,12 +9,11 @@ type StagingGridProps = {
 };
 
 const StagingGrid = ({ tables }: StagingGridProps) => {
-  const cardsRef = useCardStaggerAnimation([tables]);
+  const cardsRef = useCardStaggerAnimation();
 
   return (
     <div ref={cardsRef} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {tables.map((table) => {
-        // Map people with leader information
         const peopleWithInfo = (table.people || []).map((person) => ({
           ...person,
           isLeader: table.tableLeader?.id === person.id,

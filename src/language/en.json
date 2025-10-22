@@ -154,7 +154,7 @@
     "addTable": "Add Table",
     "create": "Create",
     "cancel": "Cancel",
-    "addstagingTable": "Add Staging Table"
+    "addStagingTable": "Add Staging Table"
   },
   "orders": {
     "title": "Orders",

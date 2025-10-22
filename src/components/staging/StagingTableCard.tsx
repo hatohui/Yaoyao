@@ -1,7 +1,6 @@
 "use client";
 import React, { useRef } from "react";
 import { People } from "@prisma/client";
-import { useAnimations } from "@/hooks/common/useAnimations";
 import StagingTableCardHeader from "./StagingTableCardHeader";
 import StagingTableCardPeople from "./StagingTableCardPeople";
 
@@ -21,7 +20,6 @@ const StagingTableCard = ({
   referenceId,
 }: StagingTableCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const animations = useAnimations();
 
   const peopleCount = people.length;
   const isFull = peopleCount >= capacity;
@@ -30,8 +28,6 @@ const StagingTableCard = ({
   return (
     <div
       ref={cardRef}
-      onMouseEnter={() => animations.hoverScale(cardRef.current, 1.02)}
-      onMouseLeave={() => animations.hoverScaleReset(cardRef.current)}
       className="bg-white dark:bg-slate-800 rounded-lg shadow-md border-2 border-main/30 dark:border-main/40 overflow-hidden transition-all hover:shadow-lg"
     >
       <StagingTableCardHeader

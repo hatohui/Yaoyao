@@ -163,7 +163,7 @@
     "addTable": "เพิ่มโต๊ะ",
     "create": "สร้าง",
     "cancel": "ยกเลิก",
-    "addstagingTable": "เพิ่มโต๊ะ Staging"
+    "addStagingTable": "เพิ่มโต๊ะ Staging"
   },
   "orders": {
     "title": "รายการสั่งอาหาร",
