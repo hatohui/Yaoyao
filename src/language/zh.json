@@ -249,6 +249,35 @@
     "personFound": "找到的人",
     "peopleFound": "找到的人",
     "noPeopleFound": "未找到人员",
-    "noPeopleMessage": "尝试调整搜索条件"
+    "noPeopleMessage": "尝试调整搜索条件",
+    "stagingManagement": "预演管理",
+    "stagingManagementDesc": "规划餐桌布置"
+  },
+  "staging": {
+    "title": "预演环境",
+    "subtitle": "在应用到生产环境之前规划和测试餐桌布置",
+    "staging": "预演",
+    "copyProduction": "从生产环境复制",
+    "clearStaging": "清除预演",
+    "commitToProduction": "应用到生产环境",
+    "copy": "复制",
+    "clear": "清除",
+    "commit": "应用",
+    "copyConfirmTitle": "将生产环境复制到预演?",
+    "copyConfirmMessage": "此操作将用生产环境的副本替换所有预演餐桌。现有的预演数据将丢失。",
+    "clearConfirmTitle": "清除所有预演?",
+    "clearConfirmMessage": "此操作将永久删除所有预演餐桌。此操作无法撤销。",
+    "commitConfirmTitle": "应用到生产环境?",
+    "commitConfirmMessage": "此操作将用预演餐桌替换所有生产环境餐桌。当前的生产环境数据将被永久删除。此操作无法撤销。",
+    "warningTitle": "预演环境",
+    "warningMessage": "预演中的更改在您应用之前不会影响生产环境。在应用到生产环境之前，请始终检查预演餐桌。",
+    "copySuccess": "成功将生产环境餐桌复制到预演",
+    "clearSuccess": "成功清除所有预演餐桌",
+    "commitSuccess": "成功将预演应用到生产环境",
+    "searchPlaceholder": "搜索预演餐桌...",
+    "noStagingTables": "没有预演餐桌",
+    "noStagingTablesMessage": "从生产环境复制以开始规划",
+    "noSearchResults": "未找到预演餐桌",
+    "noSearchResultsMessage": "尝试调整搜索条件"
   }
 }

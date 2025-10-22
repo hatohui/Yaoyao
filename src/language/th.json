@@ -249,6 +249,35 @@
     "personFound": "คนที่พบ",
     "peopleFound": "คนที่พบ",
     "noPeopleFound": "ไม่พบคน",
-    "noPeopleMessage": "ลองปรับการค้นหาของคุณ"
+    "noPeopleMessage": "ลองปรับการค้นหาของคุณ",
+    "stagingManagement": "การจัดการ Staging",
+    "stagingManagementDesc": "วางแผนการจัดโต๊ะ"
+  },
+  "staging": {
+    "title": "สภาพแวดล้อม Staging",
+    "subtitle": "วางแผนและทดสอบการจัดโต๊ะก่อนนำไปใช้จริง",
+    "staging": "Staging",
+    "copyProduction": "คัดลอกจาก Production",
+    "clearStaging": "ล้าง Staging",
+    "commitToProduction": "นำไปใช้ใน Production",
+    "copy": "คัดลอก",
+    "clear": "ล้าง",
+    "commit": "นำไปใช้",
+    "copyConfirmTitle": "คัดลอกจาก Production ไปยัง Staging?",
+    "copyConfirmMessage": "การดำเนินการนี้จะแทนที่โต๊ะ staging ทั้งหมดด้วยสำเนาจาก production ข้อมูล staging ที่มีอยู่จะสูญหาย",
+    "clearConfirmTitle": "ล้าง Staging ทั้งหมด?",
+    "clearConfirmMessage": "การดำเนินการนี้จะลบโต๊ะ staging ทั้งหมดอย่างถาวร ไม่สามารถยกเลิกได้",
+    "commitConfirmTitle": "นำไปใช้ใน Production?",
+    "commitConfirmMessage": "การดำเนินการนี้จะแทนที่โต๊ะ production ทั้งหมดด้วยโต๊ะ staging ข้อมูล production ปัจจุบันจะถูกลบอย่างถาวร ไม่สามารถยกเลิกได้",
+    "warningTitle": "สภาพแวดล้อม Staging",
+    "warningMessage": "การเปลี่ยนแปลงใน staging จะไม่ส่งผลต่อ production จนกว่าคุณจะนำไปใช้ ตรวจสอบโต๊ะ staging ก่อนนำไปใช้ใน production เสมอ",
+    "copySuccess": "คัดลอกโต๊ะ production ไปยัง staging สำเร็จ",
+    "clearSuccess": "ล้างโต๊ะ staging ทั้งหมดสำเร็จ",
+    "commitSuccess": "นำ staging ไปใช้ใน production สำเร็จ",
+    "searchPlaceholder": "ค้นหาโต๊ะ staging...",
+    "noStagingTables": "ไม่มีโต๊ะ staging",
+    "noStagingTablesMessage": "คัดลอกจาก production เพื่อเริ่มวางแผน",
+    "noSearchResults": "ไม่พบโต๊ะ staging",
+    "noSearchResultsMessage": "ลองปรับคำค้นหาของคุณ"
   }
 }

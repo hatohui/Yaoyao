@@ -15,7 +15,6 @@ import SearchBar from "@/components/common/SearchBar";
 
 const DashboardTablesPage = () => {
   const { isYaoyao } = useYaoAuth();
-  const t = useTranslations("dashboard");
   const tTables = useTranslations("tables");
   const searchParams = useSearchParams();
   const searchQuery = searchParams?.get("search") || "";
@@ -36,27 +35,17 @@ const DashboardTablesPage = () => {
   }
 
   return (
-    <div ref={pageRef} className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      {/* Header */}
-      <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <h1 className="text-xl font-bold text-darkest dark:text-slate-100">
-            {t("tablesManagement") || "Tables Management"}
-          </h1>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mt-0.5">
-            {t("tablesManagementDesc") ||
-              "Manage all table details, orders, and payments"}
-          </p>
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div
+      ref={pageRef}
+      className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950"
+    >
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Search Bar */}
         <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4 mb-4">
           <SearchBar
             placeholder={
-              t("searchTables") || "Search tables, leaders, or guests..."
+              tTables("searchPlaceholder") ||
+              "Search tables, leaders, or guests..."
             }
           />
         </div>

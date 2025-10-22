@@ -15,6 +15,7 @@ type StagingTableCardProps = {
 
 const StagingTableCard = ({
   tableName,
+  tableId,
   people,
   capacity,
   referenceId,
@@ -43,7 +44,12 @@ const StagingTableCard = ({
       />
 
       <div className="p-3">
-        <StagingTableCardPeople people={people} isFull={isFull} />
+        <StagingTableCardPeople
+          people={people}
+          isFull={isFull}
+          tableId={tableId}
+          capacity={capacity}
+        />
       </div>
     </div>
   );

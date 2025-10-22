@@ -250,6 +250,35 @@
     "personFound": "người tìm thấy",
     "peopleFound": "người tìm thấy",
     "noPeopleFound": "Không tìm thấy người",
-    "noPeopleMessage": "Thử điều chỉnh tìm kiếm của bạn"
+    "noPeopleMessage": "Thử điều chỉnh tìm kiếm của bạn",
+    "stagingManagement": "Quản lý Staging",
+    "stagingManagementDesc": "Lập kế hoạch bố trí bàn"
+  },
+  "staging": {
+    "title": "Môi trường Staging",
+    "subtitle": "Lập kế hoạch và kiểm tra bố trí bàn trước khi áp dụng vào production",
+    "staging": "Staging",
+    "copyProduction": "Sao chép từ Production",
+    "clearStaging": "Xóa Staging",
+    "commitToProduction": "Áp dụng vào Production",
+    "copy": "Sao chép",
+    "clear": "Xóa",
+    "commit": "Áp dụng",
+    "copyConfirmTitle": "Sao chép Production sang Staging?",
+    "copyConfirmMessage": "Thao tác này sẽ thay thế tất cả bàn staging bằng bản sao từ production. Dữ liệu staging hiện tại sẽ bị mất.",
+    "clearConfirmTitle": "Xóa tất cả Staging?",
+    "clearConfirmMessage": "Thao tác này sẽ xóa vĩnh viễn tất cả bàn staging. Hành động này không thể hoàn tác.",
+    "commitConfirmTitle": "Áp dụng vào Production?",
+    "commitConfirmMessage": "Thao tác này sẽ thay thế tất cả bàn production bằng bàn staging. Dữ liệu production hiện tại sẽ bị xóa vĩnh viễn. Hành động này không thể hoàn tác.",
+    "warningTitle": "Môi trường Staging",
+    "warningMessage": "Thay đổi trong staging không ảnh hưởng đến production cho đến khi bạn áp dụng. Luôn kiểm tra bàn staging trước khi áp dụng vào production.",
+    "copySuccess": "Đã sao chép thành công bàn production sang staging",
+    "clearSuccess": "Đã xóa thành công tất cả bàn staging",
+    "commitSuccess": "Đã áp dụng thành công staging vào production",
+    "searchPlaceholder": "Tìm bàn staging...",
+    "noStagingTables": "Không có bàn staging",
+    "noStagingTablesMessage": "Sao chép từ production để bắt đầu lập kế hoạch",
+    "noSearchResults": "Không tìm thấy bàn staging",
+    "noSearchResultsMessage": "Thử điều chỉnh truy vấn tìm kiếm của bạn"
   }
 }
