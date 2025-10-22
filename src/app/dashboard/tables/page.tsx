@@ -1,24 +1,27 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import useTables from "@/hooks/table/useTables";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import { useTranslations } from "next-intl";
-import { notFound } from "next/navigation";
+import { notFound, useSearchParams } from "next/navigation";
 import Loading from "@/components/common/Loading";
-import { FiUsers, FiSearch } from "react-icons/fi";
+import { FiUsers } from "react-icons/fi";
 import {
   usePageAnimation,
   useCardStaggerAnimation,
 } from "@/hooks/common/useAnimations";
 import useFilteredTables from "@/hooks/table/useFilteredTables";
+import SearchBar from "@/components/common/SearchBar";
 
 const DashboardTablesPage = () => {
   const { isYaoyao } = useYaoAuth();
   const t = useTranslations("dashboard");
   const tTables = useTranslations("tables");
-  const [searchQuery, setSearchQuery] = useState("");
-  const { data: tables, isLoading } = useTables();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams?.get("search") || "";
+  const { data, isLoading } = useTables({ count: 100 }); // Get all tables for dashboard
 
+  const tables = data?.tables;
   const filteredTables = useFilteredTables(tables, searchQuery);
 
   const pageRef = usePageAnimation();
@@ -51,16 +54,11 @@ const DashboardTablesPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Search Bar */}
         <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4 mb-4">
-          <div className="relative">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 w-4 h-4" />
-            <input
-              type="text"
-              placeholder="Search tables, leaders, or guests..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-main focus:border-main outline-none bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
-            />
-          </div>
+          <SearchBar
+            placeholder={
+              t("searchTables") || "Search tables, leaders, or guests..."
+            }
+          />
         </div>
 
         {/* Tables Grid */}

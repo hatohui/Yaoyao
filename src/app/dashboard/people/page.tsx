@@ -1,13 +1,14 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import useTablesWithPeople from "@/hooks/table/useTableWithPeople";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import { useTranslations } from "next-intl";
-import { notFound } from "next/navigation";
+import { notFound, useSearchParams } from "next/navigation";
 import Loading from "@/components/common/Loading";
-import { FiUsers, FiAlertCircle, FiSearch, FiStar } from "react-icons/fi";
+import { FiUsers, FiAlertCircle, FiStar } from "react-icons/fi";
 import { People } from "@prisma/client";
 import PeopleTableCard from "@/components/dashboard/PeopleTableCard";
+import SearchBar from "@/components/common/SearchBar";
 import {
   usePageAnimation,
   useCardStaggerAnimation,
@@ -17,8 +18,8 @@ import {
 const DashboardPeoplePage = () => {
   const { isYaoyao } = useYaoAuth();
   const t = useTranslations("dashboard");
-
-  const [searchQuery, setSearchQuery] = useState("");
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams?.get("search") || "";
 
   const { data: tables, isLoading } = useTablesWithPeople();
 
@@ -208,16 +209,9 @@ const DashboardPeoplePage = () => {
 
         {/* Search */}
         <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4 mb-6">
-          <div className="relative">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 w-5 h-5" />
-            <input
-              type="text"
-              placeholder={t("searchPeople") || "Search by name or table..."}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-main focus:border-main bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
-            />
-          </div>
+          <SearchBar
+            placeholder={t("searchPeople") || "Search by name or table..."}
+          />
 
           <div className="mt-4 text-sm text-slate-600 dark:text-slate-400">
             {filteredPeople.length}{" "}

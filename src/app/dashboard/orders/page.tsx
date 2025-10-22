@@ -17,12 +17,12 @@ const DashboardOrdersPage = () => {
     "all"
   );
 
-  const { data: tables, isLoading } = useTables();
+  const { data, isLoading } = useTables({ count: 100 }); // Get all tables for dashboard
 
   if (!isYaoyao) {
     return notFound();
   }
-  const occupiedTables = tables?.filter((table) => table.tableLeader);
+  const occupiedTables = data?.tables?.filter((table) => table.tableLeader);
 
   if (isLoading) {
     return <Loading />;

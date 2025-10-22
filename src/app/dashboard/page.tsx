@@ -3,19 +3,21 @@ import useFoods from "@/hooks/food/useFoods";
 import useCategories from "@/hooks/food/useCategories";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import { useTranslations } from "next-intl";
-import { notFound } from "next/navigation";
+import { notFound, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { FiFilter, FiSearch } from "react-icons/fi";
+import { FiFilter } from "react-icons/fi";
 import Loading from "@/components/common/Loading";
 import FoodRow from "@/components/dashboard/FoodRow";
+import SearchBar from "@/components/common/SearchBar";
 
 const DashboardPage = () => {
   const { isYaoyao } = useYaoAuth();
   const t = useTranslations("menu");
   const tDashboard = useTranslations("dashboard");
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams?.get("search") || "";
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
 
   const { data: categories } = useCategories();
   const { data: foodsData, isLoading } = useFoods({
@@ -64,16 +66,9 @@ const DashboardPage = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             {/* Search */}
             <div className="flex-1">
-              <div className="relative">
-                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 w-5 h-5" />
-                <input
-                  type="text"
-                  placeholder={t("searchPlaceholder") || "Search dishes..."}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-main focus:border-main bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-                />
-              </div>
+              <SearchBar
+                placeholder={t("searchPlaceholder") || "Search dishes..."}
+              />
             </div>
 
             {/* Category Filter */}

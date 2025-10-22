@@ -10,6 +10,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import NavMobile from "./NavMobile";
 import NavPc from "./NavPC";
 import useAuthStore, { AuthState } from "@/stores/useAuthStore";
+import { buildUrlWithParams } from "@/utils/params/buildUrlWithParams";
 
 const NavBar = () => {
   const pathname = usePathname();
@@ -25,10 +26,9 @@ const NavBar = () => {
     { title: t("dashboard"), link: "/dashboard", public: false },
   ];
 
-  // Function to build URL with preserved search params
-  const buildUrlWithParams = (link: string) => {
-    const params = searchParams?.toString();
-    return params ? `${link}?${params}` : link;
+  // Function to build URL with only lang param preserved
+  const buildNavUrl = (link: string) => {
+    return buildUrlWithParams(link, searchParams);
   };
 
   const filteredNavData = navData.filter((item) => item.public || isYaoyao);
@@ -44,7 +44,7 @@ const NavBar = () => {
           <YaoLogo />
           <div className="flex-1 flex justify-center sm:justify-center">
             <NavPc
-              buildUrlWithParams={buildUrlWithParams}
+              buildUrlWithParams={buildNavUrl}
               filteredNavData={filteredNavData}
               isYaoyao={isYaoyao}
               pathname={pathname}
@@ -58,7 +58,7 @@ const NavBar = () => {
             </div>
           </div>
           <NavMobile
-            buildUrlWithParams={buildUrlWithParams}
+            buildUrlWithParams={buildNavUrl}
             filteredNavData={filteredNavData}
             isYaoyao={isYaoyao}
             pathname={pathname}

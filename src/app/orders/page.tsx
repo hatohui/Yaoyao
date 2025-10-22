@@ -13,7 +13,7 @@ import OrderSummary from "@/components/order/OrderSummary";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { FiUsers, FiGrid } from "react-icons/fi";
-import OrderLinkGenerator from "@/components/table/OrderLinkGenerator";
+import OrderLinkGenerator from "@/components/order/OrderLinkGenerator";
 import { mergeQueryParams } from "@/utils/params/mergeQueryParams";
 
 const OrderPage = () => {

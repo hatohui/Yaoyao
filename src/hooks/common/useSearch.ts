@@ -20,27 +20,38 @@ const useSearch = () => {
 
   const [searchInput, setSearchInput] = useState(initialSearch);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const searchQuery = searchInput;
 
-  // Load search from localStorage on mount/pathname change
+  const searchQuery = urlSearch || "";
+
   useEffect(() => {
     const saved = getPageSearch(pathname);
-    if (saved && !urlSearch) {
-      setSearchInput(saved);
-    } else if (urlSearch) {
-      setSearchInput(urlSearch);
-      // Sync URL search to localStorage
-      savePageSearch(pathname, urlSearch);
-    }
-  }, [pathname, urlSearch]);
+    const currentUrlSearch = searchParams?.get("search") || "";
 
-  // Debounced update function that saves to localStorage
+    if (saved && !currentUrlSearch) {
+      setSearchInput(saved);
+
+      const params = new URLSearchParams();
+      searchParams?.forEach((v, key) => {
+        if (key !== "search" && key !== "page") {
+          params.set(key, v);
+        }
+      });
+      params.set("search", saved);
+
+      const queryString = params.toString();
+      router.replace(`${pathname}?${queryString}`, { scroll: false });
+    } else if (currentUrlSearch) {
+      setSearchInput(currentUrlSearch);
+      savePageSearch(pathname, currentUrlSearch);
+    } else if (!saved && !currentUrlSearch) {
+      setSearchInput("");
+    }
+  }, [pathname, searchParams, router]);
+
   const updateSearch = useCallback(
     (value: string) => {
-      // Save to localStorage for this page
       savePageSearch(pathname, value);
 
-      // Update URL with search param
       const params = new URLSearchParams();
 
       searchParams?.forEach((v, key) => {
@@ -65,12 +76,10 @@ const useSearch = () => {
     const newValue = e.target.value;
     setSearchInput(newValue);
 
-    // Clear existing timer
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
 
-    // Set new timer for debounced update
     debounceTimerRef.current = setTimeout(() => {
       updateSearch(newValue);
     }, SEARCH_DEBOUNCE_DELAY);
@@ -79,7 +88,6 @@ const useSearch = () => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Clear debounce timer and update immediately on submit
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
@@ -89,10 +97,8 @@ const useSearch = () => {
   const handleClearSearch = () => {
     setSearchInput("");
 
-    // Clear from localStorage
     clearPageSearch(pathname);
 
-    // Clear debounce timer
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
@@ -111,7 +117,6 @@ const useSearch = () => {
     });
   };
 
-  // Cleanup timer on unmount
   useEffect(() => {
     return () => {
       if (debounceTimerRef.current) {

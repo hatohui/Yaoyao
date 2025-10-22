@@ -8,6 +8,16 @@ export type GetTablesResponse = Omit<Table, "tableLeaderId"> & {
   tableLeader: People | null;
 };
 
+export type GetTablesWithPaginationResponse = {
+  tables: GetTablesResponse[];
+  pagination: {
+    page: number;
+    count: number;
+    total: number;
+    totalPages: number;
+  };
+};
+
 export type TablesDTO = Omit<GetTableByIdResponse, "_count"> & {
   peopleCount: number;
 };

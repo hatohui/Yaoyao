@@ -3,26 +3,53 @@ import { Table } from "@prisma/client";
 import { deletePeople } from "./people-repo";
 import { PostTableRequest } from "@/types/api/table/POST";
 
-const getTables = async () => {
-  return await prisma.table.findMany({
-    include: {
-      tableLeader: true,
-      orders: {
-        include: {
-          food: {
-            include: {
-              variants: true,
+const getTables = async (
+  page: number = 1,
+  count: number = 12,
+  search?: string
+) => {
+  const skip = (page - 1) * count;
+
+  const where = search
+    ? {
+        OR: [
+          { name: { contains: search, mode: "insensitive" as const } },
+          {
+            tableLeader: {
+              name: { contains: search, mode: "insensitive" as const },
+            },
+          },
+        ],
+      }
+    : {};
+
+  const [tables, total] = await Promise.all([
+    prisma.table.findMany({
+      where,
+      skip,
+      take: count,
+      include: {
+        tableLeader: true,
+        orders: {
+          include: {
+            food: {
+              include: {
+                variants: true,
+              },
             },
           },
         },
-      },
-      _count: {
-        select: {
-          people: true,
+        _count: {
+          select: {
+            people: true,
+          },
         },
       },
-    },
-  });
+    }),
+    prisma.table.count({ where }),
+  ]);
+
+  return { tables, total };
 };
 
 const getTablesWithPeople = async () => {
