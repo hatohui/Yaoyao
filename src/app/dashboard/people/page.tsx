@@ -9,11 +9,6 @@ import { FiUsers, FiAlertCircle, FiStar } from "react-icons/fi";
 import { People } from "@prisma/client";
 import PeopleTableCard from "@/components/dashboard/PeopleTableCard";
 import SearchBar from "@/components/common/SearchBar";
-import {
-  usePageAnimation,
-  useCardStaggerAnimation,
-  useStatCardsAnimation,
-} from "@/hooks/common/useAnimations";
 
 const DashboardPeoplePage = () => {
   const { isYaoyao } = useYaoAuth();
@@ -68,13 +63,11 @@ const DashboardPeoplePage = () => {
     );
   }, [allPeople, searchQuery]);
 
-  // Prepare tables with filtered people and duplicate info
   const tablesWithPeople = useMemo(() => {
     if (!tables) return [];
 
     return tables
       .map((table) => {
-        // Filter people for this table based on search
         const tablePeople = table.people
           ?.filter((person) =>
             searchQuery
@@ -95,17 +88,8 @@ const DashboardPeoplePage = () => {
           people: tablePeople || [],
         };
       })
-      .filter((table) => table.people.length > 0 || !searchQuery); // Show all tables when no search
+      .filter((table) => table.people.length > 0 || !searchQuery);
   }, [tables, searchQuery, duplicateNames]);
-
-  // Animation refs
-  const pageRef = usePageAnimation();
-  const statsRef = useStatCardsAnimation([
-    allPeople.length,
-    allPeople.filter((p) => p.isLeader).length,
-    duplicateNames.size,
-  ]);
-  const cardsRef = useCardStaggerAnimation([tablesWithPeople]);
 
   // Security: Only Yaoyao can access dashboard
   if (!isYaoyao) {
@@ -117,21 +101,12 @@ const DashboardPeoplePage = () => {
   }
 
   return (
-    <div
-      ref={pageRef}
-      className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950"
-    >
+    <div className="h-full bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
       {/* Stats & Search */}
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
-        <div
-          ref={statsRef}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6"
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           {/* Total People */}
-          <div
-            data-stat-card
-            className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-3"
-          >
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-3">
             <div className="flex items-center gap-2.5">
               <div className="p-2.5 bg-main/10 dark:bg-main/20 rounded-lg">
                 <FiUsers className="w-5 h-5 text-main" />
@@ -140,21 +115,15 @@ const DashboardPeoplePage = () => {
                 <p className="text-xs text-slate-600 dark:text-slate-400">
                   {t("totalPeople") || "Total People"}
                 </p>
-                <p
-                  data-stat-number
-                  className="text-xl font-bold text-slate-900 dark:text-slate-100"
-                >
-                  0
+                <p className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                  {allPeople.length}
                 </p>
               </div>
             </div>
           </div>
 
           {/* Table Leaders */}
-          <div
-            data-stat-card
-            className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-3"
-          >
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-3">
             <div className="flex items-center gap-2.5">
               <div className="p-2.5 bg-yellow-100 dark:bg-yellow-900/40 rounded-lg">
                 <FiStar className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
@@ -163,21 +132,15 @@ const DashboardPeoplePage = () => {
                 <p className="text-xs text-slate-600 dark:text-slate-400">
                   {t("tableLeaders") || "Table Leaders"}
                 </p>
-                <p
-                  data-stat-number
-                  className="text-xl font-bold text-slate-900 dark:text-slate-100"
-                >
-                  0
+                <p className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                  {allPeople.filter((p) => p.isLeader).length}
                 </p>
               </div>
             </div>
           </div>
 
           {/* Duplicates */}
-          <div
-            data-stat-card
-            className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-3"
-          >
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-3">
             <div className="flex items-center gap-2.5">
               <div className="p-2.5 bg-red-100 dark:bg-red-900/40 rounded-lg">
                 <FiAlertCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
@@ -186,11 +149,8 @@ const DashboardPeoplePage = () => {
                 <p className="text-xs text-slate-600 dark:text-slate-400">
                   {t("duplicateNames") || "Duplicate Names"}
                 </p>
-                <p
-                  data-stat-number
-                  className="text-xl font-bold text-slate-900 dark:text-slate-100"
-                >
-                  0
+                <p className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                  {duplicateNames.size}
                 </p>
               </div>
             </div>
@@ -212,10 +172,7 @@ const DashboardPeoplePage = () => {
         </div>
 
         {/* People List by Table */}
-        <div
-          ref={cardsRef}
-          className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6"
-        >
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {tablesWithPeople.length === 0 ? (
             <div className="col-span-full bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
               <FiUsers className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
@@ -228,7 +185,7 @@ const DashboardPeoplePage = () => {
             </div>
           ) : (
             tablesWithPeople.map((table) => (
-              <div key={table.id} data-animate-card>
+              <div key={table.id}>
                 <PeopleTableCard
                   tableId={table.id}
                   tableName={table.name}

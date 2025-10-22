@@ -141,6 +141,7 @@
     "confirmDemoteLeader": "Are you sure you want to demote this table leader to a regular member?",
     "confirmRemove": "Are you sure you want to remove this person from the table?",
     "confirmMakeLeader": "Are you sure you want to make this person the table leader?",
+    "remove": "Remove",
     "orderLink": "Order Link for",
     "copyLink": "Copy Link",
     "copied": "Copied!",

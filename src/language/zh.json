@@ -149,6 +149,7 @@
     "confirmDemoteLeader": "您确定要将该餐桌领队降为普通成员吗？",
     "confirmRemove": "您确定要从餐桌中移除此人吗？",
     "confirmMakeLeader": "您确定要将此人设为餐桌领队吗？",
+    "remove": "移除",
     "orderLink": "餐桌点餐链接",
     "copyLink": "复制点餐链接",
     "copied": "已复制！",

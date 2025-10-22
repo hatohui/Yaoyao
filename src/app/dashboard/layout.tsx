@@ -6,9 +6,9 @@ import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import { notFound } from "next/navigation";
 import { FiTable, FiShoppingBag, FiUsers, FiClock } from "react-icons/fi";
 import { MdRestaurantMenu } from "react-icons/md";
-import DashboardSidebarHeader from "@/components/dashboard/DashboardSidebarHeader";
-import DashboardSidebarNav from "@/components/dashboard/DashboardSidebarNav";
-import DashboardSidebarFooter from "@/components/dashboard/DashboardSidebarFooter";
+import DashboardSidebarHeader from "@/components/dashboard/sidenav/DashboardSidebarHeader";
+import DashboardSidebarNav from "@/components/dashboard/sidenav/DashboardSidebarNav";
+import DashboardSidebarFooter from "@/components/dashboard/sidenav/DashboardSidebarFooter";
 import DashboardMobileHeader from "@/components/dashboard/DashboardMobileHeader";
 
 export default function DashboardLayout({

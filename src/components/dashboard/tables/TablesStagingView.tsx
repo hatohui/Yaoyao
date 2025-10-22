@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { useTranslations } from "next-intl";
 import useStagingTables from "@/hooks/staging/useStagingTables";
 import useStagingFilters from "@/hooks/staging/useStagingFilters";
 import Loading from "@/components/common/Loading";
@@ -13,7 +12,6 @@ type TablesStagingViewProps = {
 };
 
 const TablesStagingView = ({ searchQuery }: TablesStagingViewProps) => {
-  const t = useTranslations("staging");
   const { data, isLoading } = useStagingTables({ count: 100 });
   const { filteredTables, hasSearchQuery } = useStagingFilters(data?.tables);
 

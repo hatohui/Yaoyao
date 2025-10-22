@@ -1,5 +1,3 @@
-# Yaoyao Restaurant Management System - AI Agent Instructions
-
 You are an expert senior full stack nextjs developer
 
 #### Rules:
@@ -9,20 +7,6 @@ You are an expert senior full stack nextjs developer
 - Make sure to make the UI looks good and stay inside the screen, use max-height-screen for this. And the UI should be able to control light/dark mode.
 - Make sure to always split components as much as possible, I want a react component with 30-60 lines, not 200 lines.
 - Split hooks and utils into the utils and hooks folders respectively.
-
-## Project Overview
-
-Yaoyao is a Next.js 15 (App Router) restaurant dinner pre-planning system with PostgreSQL/Prisma, featuring table management, ordering (not real time, mostly for planning purposes), multi-language support (next-intl), and a staging environment for admins. Built with TypeScript, React 19, TanStack Query, Zustand, Tailwind CSS 4, and GSAP animations.
-
-## Architecture & Key Concepts
-
-### Authentication Pattern
-
-- **Role-based access**: Uses `isYaoyao` boolean (stored in Zustand + localStorage via persist middleware)
-  - Located in: `src/stores/useAuthStore.ts`
-  - Password-based auth constant: `PASSWORD` in `src/config/app.ts`
-  - Hook: `useYaoAuth()` for accessing auth state in components
-  - Protected routes: Check `isYaoyao` in page components, return `notFound()` if unauthorized
 
 ### Data Layer Architecture
 
@@ -38,15 +22,6 @@ Yaoyao is a Next.js 15 (App Router) restaurant dinner pre-planning system with P
    - Use `axios` instance from `src/common/axios.ts` (baseURL: `/api`)
    - Pattern: `useQuery/useMutation` with queryKey like `["tables", page, search]`
 
-### Internationalization (i18n)
-
-- **Library**: next-intl (integrated via plugin in `next.config.ts`)
-- **Config**: `src/config/language.ts` (reads from cookies, fallback to "en")
-- **Supported locales**: en, th, vi, zh (defined in `src/common/language.ts`)
-- **Translation files**: `src/language/{locale}.json`
-- **Usage**: `const t = useTranslations("namespace");` then `t("key")`
-- **Pattern**: Always namespace translations (e.g., "dashboard.tablesManagement")
-
 ### Type System Patterns
 
 - **API Types**: Organized by entity in `src/types/api/{entity}/{METHOD}.ts`
@@ -56,12 +31,6 @@ Yaoyao is a Next.js 15 (App Router) restaurant dinner pre-planning system with P
   - DELETE.ts: Response types
 - **Omit pattern**: API types omit internal fields (e.g., `Omit<Table, "tableLeaderId" | "createdAt">`)
 - **Validation**: Use Zod v4 (`zod/v4`) - see `src/utils/validation/idValidation.ts` for UUID validation pattern
-
-### Styling
-
-- **Tailwind CSS 4** with PostCSS
-- **Dark mode**: Theme stored in Zustand (`useThemeStore`), applied via `ThemeProvider` wrapper
-- **Classes**: Use semantic color tokens (e.g., `text-darkest dark:text-slate-100`)
 
 ### Pagination & Search
 
@@ -81,11 +50,3 @@ Yaoyao is a Next.js 15 (App Router) restaurant dinner pre-planning system with P
 ## Feature Flag
 
 - `TABLE_PUBLIC_ENABLED` in `src/config/app.ts` - Controls public table viewing (currently `true`)
-
-## Key Files for Reference
-
-- **Table CRUD**: `src/repositories/table-repo.ts` (includes staging functions)
-- **API Pattern**: `src/pages/api/tables/index.ts` (pagination + filtering example)
-- **Protected Page**: `src/app/dashboard/tables/page.tsx` (auth check, animations, search)
-- **Hook Pattern**: `src/hooks/table/useTables.ts` (TanStack Query wrapper)
-- **Prisma Schema**: `prisma/schema.prisma` (full data model with staging support)

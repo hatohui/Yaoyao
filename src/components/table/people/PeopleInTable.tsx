@@ -104,7 +104,7 @@ const PeopleInTable = ({
 
   const currentCount = people?.length ?? 0;
   const capacity = table?.capacity ?? 0;
-  const isFull = currentCount >= capacity;
+  const isFull = currentCount >= capacity && capacity > 0;
   const occupancyPercentage =
     capacity > 0 ? (currentCount / capacity) * 100 : 0;
   const canAddMember = canManage && !isFull;
