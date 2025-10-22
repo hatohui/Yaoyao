@@ -13,7 +13,10 @@ const StagingGrid = ({ tables }: StagingGridProps) => {
   const cardsRef = useCardStaggerAnimation();
 
   return (
-    <div ref={cardsRef} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div
+      ref={cardsRef}
+      className="grid grid-cols-1 lg:grid-cols-2 gap-6 overflow-hidden"
+    >
       {tables.map((table) => {
         const peopleWithInfo = (table.people || []).map((person) => ({
           ...person,
@@ -22,7 +25,7 @@ const StagingGrid = ({ tables }: StagingGridProps) => {
         }));
 
         return (
-          <div key={table.id} data-animate-card>
+          <div key={table.id} data-animate-card className="min-w-0">
             <StagingTableCard
               tableName={table.name}
               tableId={table.id}
@@ -35,7 +38,7 @@ const StagingGrid = ({ tables }: StagingGridProps) => {
       })}
 
       {/* Add Table Card */}
-      <div data-animate-card>
+      <div data-animate-card className="min-w-0">
         <AddTableCard isStaging={true} />
       </div>
     </div>

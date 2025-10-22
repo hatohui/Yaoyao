@@ -115,26 +115,30 @@ const TablesNormalView = ({
 
       <div
         ref={cardsRef}
-        className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6"
+        className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 overflow-hidden"
       >
         {tables.map((table) => (
-          <div key={table.id} data-animate-card>
+          <div key={table.id} data-animate-card className="min-w-0">
             <DashboardTableCard table={table} isStaging={false} />
           </div>
         ))}
 
         {/* Add Table Card */}
-        <div data-animate-card>
+        <div data-animate-card className="min-w-0">
           <AddTableCard isStaging={false} />
         </div>
       </div>
 
+      {/* Pagination Controls */}
       {pagination && pagination.totalPages > 1 && onPageChange && (
-        <Pagination
-          currentPage={pagination.page}
-          totalPages={pagination.totalPages}
-          onPageChange={onPageChange}
-        />
+        <div className="mt-auto pt-4 pb-2">
+          <Pagination
+            currentPage={pagination.page}
+            totalPages={pagination.totalPages}
+            onPageChange={onPageChange}
+            className="border-t border-slate-200 dark:border-slate-700"
+          />
+        </div>
       )}
     </>
   );

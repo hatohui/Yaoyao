@@ -6,36 +6,62 @@ import Loading from "@/components/common/Loading";
 import StagingControls from "@/components/staging/StagingControls";
 import StagingGrid from "@/components/staging/StagingGrid";
 import StagingEmpty from "@/components/staging/StagingEmpty";
+import Pagination from "@/components/common/Pagination";
 
 type TablesStagingViewProps = {
   searchQuery: string;
+  currentPage?: number;
+  onPageChange?: (page: number) => void;
   onSwitchToProduction?: () => void;
 };
 
 const TablesStagingView = ({
   searchQuery,
+  currentPage = 1,
+  onPageChange,
   onSwitchToProduction,
 }: TablesStagingViewProps) => {
-  const { data, isLoading } = useStagingTables({ count: 100 });
+  const { data, isLoading } = useStagingTables({
+    page: currentPage,
+    search: searchQuery,
+  });
   const { filteredTables, hasSearchQuery } = useStagingFilters(data?.tables);
 
   if (isLoading) {
     return <Loading />;
   }
 
+  const pagination = data?.pagination;
+
   return (
-    <div>
+    <div className="flex flex-col h-full">
       <StagingControls onSwitchToProduction={onSwitchToProduction} />
 
-      <div className="mt-6">
+      <div className="mt-6 flex-1 flex flex-col">
         {filteredTables.length > 0 ? (
           <>
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-              {filteredTables.length}{" "}
-              {filteredTables.length === 1 ? "table" : "tables"}
+              {pagination?.total || filteredTables.length}{" "}
+              {(pagination?.total || filteredTables.length) === 1
+                ? "table"
+                : "tables"}
               {hasSearchQuery && " (filtered)"}
             </p>
-            <StagingGrid tables={filteredTables} />
+            <div className="flex-1">
+              <StagingGrid tables={filteredTables} />
+            </div>
+
+            {/* Pagination Controls */}
+            {pagination && pagination.totalPages > 1 && onPageChange && (
+              <div className="mt-auto pt-4 pb-2">
+                <Pagination
+                  currentPage={pagination.page}
+                  totalPages={pagination.totalPages}
+                  onPageChange={onPageChange}
+                  className="border-t border-slate-200 dark:border-slate-700"
+                />
+              </div>
+            )}
           </>
         ) : (
           <StagingEmpty

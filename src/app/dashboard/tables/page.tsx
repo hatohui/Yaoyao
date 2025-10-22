@@ -69,10 +69,12 @@ const DashboardTablesPage = () => {
           </div>
 
           {/* Content - Scrollable */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
             {isStaging ? (
               <TablesStagingView
                 searchQuery={searchQuery}
+                currentPage={currentPage}
+                onPageChange={goToPage}
                 onSwitchToProduction={() => setIsStaging(false)}
               />
             ) : (

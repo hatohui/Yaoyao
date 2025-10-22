@@ -21,7 +21,7 @@ const DashboardTableCard = ({
   const t = useTranslations("tables");
   const { addPeople, removePeople, assignLeader, removeLeader } =
     usePeopleInTableMutation();
-  const { changeName } = useTableMutation();
+  const { changeName, changeCapacity, deleteTable } = useTableMutation();
   const [isAddingMember, setIsAddingMember] = useState(false);
   const [newMemberName, setNewMemberName] = useState("");
 
@@ -72,6 +72,15 @@ const DashboardTableCard = ({
     changeName.mutate({ tableId: table.id, newName: newName.trim() });
   };
 
+  const handleChangeCapacity = (newCapacity: number) => {
+    if (newCapacity === capacity || newCapacity < 1) return;
+    changeCapacity.mutate({ tableId: table.id, newCapacity });
+  };
+
+  const handleDeleteTable = () => {
+    deleteTable.mutate({ tableId: table.id });
+  };
+
   return (
     <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-main/30 dark:border-main/40 overflow-hidden transition-all hover:shadow-lg hover:border-main/50 dark:hover:border-main/60">
       <TableCardHeader
@@ -83,6 +92,8 @@ const DashboardTableCard = ({
         isStaging={isStaging}
         referenceId={table.referenceId}
         onChangeName={handleChangeName}
+        onChangeCapacity={handleChangeCapacity}
+        onDelete={handleDeleteTable}
       />
 
       <div className="p-4">

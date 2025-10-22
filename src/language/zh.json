@@ -165,7 +165,13 @@
     "cancel": "取消",
     "addStagingTable": "添加暂存表",
     "editName": "编辑名称",
-    "save": "保存"
+    "save": "保存",
+    "editCapacity": "修改容量",
+    "deleteTable": "删除餐桌",
+    "confirmDeleteProduction": "您确定要删除此餐桌吗？此操作将永久删除该餐桌及其所有数据。",
+    "confirmDeleteStaging": "删除此暂存表？",
+    "deleteSuccess": "删除成功",
+    "delete": "删除"
   },
   "orders": {
     "title": "订单",

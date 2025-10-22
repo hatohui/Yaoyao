@@ -23,7 +23,7 @@ const StagingTableCard = ({
 }: StagingTableCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const { assignLeader, removeLeader } = usePeopleInTableMutation();
-  const { changeName } = useTableMutation();
+  const { changeName, changeCapacity, deleteTable } = useTableMutation();
 
   const peopleCount = people.length;
   const isFull = peopleCount >= capacity;
@@ -44,6 +44,16 @@ const StagingTableCard = ({
     changeName.mutate({ tableId, newName: newName.trim() });
   };
 
+  const handleChangeCapacity = (newCapacity: number) => {
+    if (newCapacity === capacity || newCapacity < 1) return;
+    changeCapacity.mutate({ tableId, newCapacity });
+  };
+
+  const handleDeleteTable = () => {
+    // No confirmation for staging tables
+    deleteTable.mutate({ tableId });
+  };
+
   return (
     <div
       ref={cardRef}
@@ -57,6 +67,8 @@ const StagingTableCard = ({
         isFull={isFull}
         referenceId={referenceId}
         onChangeName={handleChangeName}
+        onChangeCapacity={handleChangeCapacity}
+        onDelete={handleDeleteTable}
       />
 
       <div className="p-3">

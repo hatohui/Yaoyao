@@ -166,7 +166,13 @@
     "cancel": "ยกเลิก",
     "addStagingTable": "เพิ่มโต๊ะ Staging",
     "editName": "แก้ไขชื่อ",
-    "save": "บันทึก"
+    "save": "บันทึก",
+    "editCapacity": "แก้ไขความจุ",
+    "deleteTable": "ลบโต๊ะ",
+    "confirmDeleteProduction": "คุณแน่ใจหรือไม่ว่าต้องการลบโต๊ะนี้? การกระทำนี้จะลบโต๊ะและข้อมูลทั้งหมดอย่างถาวร",
+    "confirmDeleteStaging": "ลบโต๊ะ staging นี้?",
+    "deleteSuccess": "ลบโต๊ะสำเร็จ",
+    "delete": "ลบ"
   },
   "orders": {
     "title": "รายการสั่งอาหาร",

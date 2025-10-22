@@ -9,8 +9,9 @@ type StagingEmptyProps = {
   searchQuery?: string;
 };
 
-const StagingEmpty = ({ hasSearchQuery, searchQuery }: StagingEmptyProps) => {
-  const t = useTranslations("tables");
+const StagingEmpty = ({ hasSearchQuery }: StagingEmptyProps) => {
+  const t = useTranslations("staging");
+  const tTables = useTranslations("tables");
   const { createTable } = useTableMutation();
   const [isCreating, setIsCreating] = useState(false);
   const [newTableName, setNewTableName] = useState("");
@@ -36,13 +37,10 @@ const StagingEmpty = ({ hasSearchQuery, searchQuery }: StagingEmptyProps) => {
           <FiSearch className="w-8 h-8 text-slate-400 dark:text-slate-500" />
         </div>
         <h3 className="text-lg font-medium text-slate-900 dark:text-dark-text mb-2">
-          No staging tables found
+          {t("noSearchResults")}
         </h3>
         <p className="text-slate-600 dark:text-dark-text-secondary mb-4">
-          No tables matching &quot;{searchQuery}&quot;
-        </p>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
-          Try adjusting your search query
+          {t("noSearchResultsMessage")}
         </p>
       </div>
     );
@@ -54,10 +52,10 @@ const StagingEmpty = ({ hasSearchQuery, searchQuery }: StagingEmptyProps) => {
         <FiClock className="w-8 h-8 text-main dark:text-dark-main" />
       </div>
       <h3 className="text-lg font-medium text-slate-900 dark:text-dark-text mb-2">
-        No staging tables
+        {t("noStagingTables")}
       </h3>
       <p className="text-slate-600 dark:text-dark-text-secondary mb-6">
-        Copy from production to start planning or create a new staging table
+        {t("noStagingTablesMessage")}
       </p>
 
       {isCreating ? (
@@ -74,7 +72,7 @@ const StagingEmpty = ({ hasSearchQuery, searchQuery }: StagingEmptyProps) => {
                   setNewTableName("");
                 }
               }}
-              placeholder={t("tableName") || "Table name"}
+              placeholder={tTables("tableName")}
               className="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-main"
               autoFocus
             />
@@ -83,7 +81,7 @@ const StagingEmpty = ({ hasSearchQuery, searchQuery }: StagingEmptyProps) => {
               disabled={!newTableName.trim() || createTable.isPending}
               className="px-4 py-2 bg-main hover:bg-main-dark disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
             >
-              {t("create") || "Create"}
+              {tTables("create")}
             </button>
             <button
               onClick={() => {
@@ -92,7 +90,7 @@ const StagingEmpty = ({ hasSearchQuery, searchQuery }: StagingEmptyProps) => {
               }}
               className="px-4 py-2 border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg transition-colors"
             >
-              {t("cancel") || "Cancel"}
+              {tTables("cancel")}
             </button>
           </div>
         </div>

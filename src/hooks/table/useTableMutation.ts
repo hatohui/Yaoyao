@@ -38,6 +38,7 @@ const useTableMutation = () => {
     successMessageKey: "success",
     onSuccessCallback: () => {
       client.invalidateQueries({ queryKey: ["tables"] });
+      client.invalidateQueries({ queryKey: ["staging-tables"] });
     },
   });
 
@@ -51,10 +52,21 @@ const useTableMutation = () => {
     successMessageKey: "success",
     onSuccessCallback: () => {
       client.invalidateQueries({ queryKey: ["tables"] });
+      client.invalidateQueries({ queryKey: ["staging-tables"] });
     },
   });
 
-  return { createTable, changeCapacity, changeName };
+  const deleteTable = useMutationWithError({
+    mutationFn: (data: { tableId: string }) =>
+      axios.delete(`/tables/${data.tableId}`).then((res) => res.data),
+    successMessageKey: "success",
+    onSuccessCallback: () => {
+      client.invalidateQueries({ queryKey: ["tables"] });
+      client.invalidateQueries({ queryKey: ["staging-tables"] });
+    },
+  });
+
+  return { createTable, changeCapacity, changeName, deleteTable };
 };
 
 export default useTableMutation;

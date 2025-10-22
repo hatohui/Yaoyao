@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
-import { FiEdit2, FiCheck, FiX } from "react-icons/fi";
+import { FiEdit2, FiCheck, FiX, FiTrash2 } from "react-icons/fi";
+import ConfirmDialog from "@/components/staging/ConfirmDialog";
 
 type TableCardHeaderProps = {
   tableName: string;
@@ -12,6 +13,8 @@ type TableCardHeaderProps = {
   isStaging?: boolean;
   referenceId?: string | null;
   onChangeName?: (newName: string) => void;
+  onChangeCapacity?: (newCapacity: number) => void;
+  onDelete?: () => void;
 };
 
 const TableCardHeader = ({
@@ -23,10 +26,16 @@ const TableCardHeader = ({
   isStaging,
   referenceId,
   onChangeName,
+  onChangeCapacity,
+  onDelete,
 }: TableCardHeaderProps) => {
   const t = useTranslations("tables");
+  const tCommon = useTranslations("common");
   const [isEditingName, setIsEditingName] = useState(false);
+  const [isEditingCapacity, setIsEditingCapacity] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [newName, setNewName] = useState(tableName);
+  const [newCapacity, setNewCapacity] = useState(capacity.toString());
 
   const handleSaveName = () => {
     if (onChangeName && newName.trim() && newName !== tableName) {
@@ -40,11 +49,38 @@ const TableCardHeader = ({
     setIsEditingName(false);
   };
 
+  const handleSaveCapacity = () => {
+    const parsedCapacity = parseInt(newCapacity, 10);
+    if (
+      onChangeCapacity &&
+      !isNaN(parsedCapacity) &&
+      parsedCapacity > 0 &&
+      parsedCapacity !== capacity
+    ) {
+      onChangeCapacity(parsedCapacity);
+    }
+    setIsEditingCapacity(false);
+    setNewCapacity(capacity.toString());
+  };
+
+  const handleCancelCapacityEdit = () => {
+    setNewCapacity(capacity.toString());
+    setIsEditingCapacity(false);
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       handleSaveName();
     } else if (e.key === "Escape") {
       handleCancelEdit();
+    }
+  };
+
+  const handleCapacityKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSaveCapacity();
+    } else if (e.key === "Escape") {
+      handleCancelCapacityEdit();
     }
   };
 
@@ -91,21 +127,69 @@ const TableCardHeader = ({
                   <FiEdit2 className="w-3.5 h-3.5" />
                 </button>
               )}
+              {onDelete && (
+                <button
+                  onClick={() => setShowDeleteConfirm(true)}
+                  className="p-1 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:text-slate-500 dark:hover:text-red-400 dark:hover:bg-red-900/30 rounded transition-all cursor-pointer"
+                  title={t("deleteTable")}
+                >
+                  <FiTrash2 className="w-3.5 h-3.5" />
+                </button>
+              )}
             </>
           )}
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
-          <span
-            className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
-              isFull
-                ? "bg-red-500 dark:bg-red-600 text-white"
-                : occupancyPercentage > 75
-                ? "bg-amber-500 dark:bg-amber-600 text-white"
-                : "bg-available dark:bg-dark-success text-white"
-            }`}
-          >
-            {peopleCount} / {capacity}
-          </span>
+          {isEditingCapacity ? (
+            <div className="flex items-center gap-1">
+              <input
+                type="number"
+                value={newCapacity}
+                onChange={(e) => setNewCapacity(e.target.value)}
+                onKeyDown={handleCapacityKeyPress}
+                min="1"
+                className="w-16 px-2 py-0.5 text-xs font-semibold bg-white dark:bg-slate-800 border-2 border-main rounded text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-main/50"
+                autoFocus
+              />
+              <button
+                onClick={handleSaveCapacity}
+                className="p-1 text-green-600 hover:text-green-700 hover:bg-green-100 dark:text-green-400 dark:hover:text-green-300 dark:hover:bg-green-900/30 rounded transition-all cursor-pointer"
+                title={t("save")}
+              >
+                <FiCheck className="w-3 h-3" />
+              </button>
+              <button
+                onClick={handleCancelCapacityEdit}
+                className="p-1 text-red-600 hover:text-red-700 hover:bg-red-100 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/30 rounded transition-all cursor-pointer"
+                title={t("cancel")}
+              >
+                <FiX className="w-3 h-3" />
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1">
+              <span
+                className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
+                  isFull
+                    ? "bg-red-500 dark:bg-red-600 text-white"
+                    : occupancyPercentage > 75
+                    ? "bg-amber-500 dark:bg-amber-600 text-white"
+                    : "bg-available dark:bg-dark-success text-white"
+                }`}
+              >
+                {peopleCount} / {capacity}
+              </span>
+              {onChangeCapacity && (
+                <button
+                  onClick={() => setIsEditingCapacity(true)}
+                  className="p-1 text-slate-400 hover:text-main hover:bg-slate-100 dark:text-slate-500 dark:hover:text-main dark:hover:bg-slate-700 rounded transition-all cursor-pointer"
+                  title={t("editCapacity") || "Edit capacity"}
+                >
+                  <FiEdit2 className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -128,6 +212,22 @@ const TableCardHeader = ({
         <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
           {t("reference")}: {referenceId}
         </p>
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      {!isStaging && (
+        <ConfirmDialog
+          isOpen={showDeleteConfirm}
+          onClose={() => setShowDeleteConfirm(false)}
+          onConfirm={() => {
+            onDelete?.();
+            setShowDeleteConfirm(false);
+          }}
+          title={t("deleteTable")}
+          message={t("confirmDeleteProduction")}
+          confirmText={tCommon("delete")}
+          isDanger={true}
+        />
       )}
     </div>
   );
