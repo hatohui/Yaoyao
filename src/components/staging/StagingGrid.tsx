@@ -8,9 +8,14 @@ import { GetStagingTablesResponse } from "@/types/api/staging/GET";
 type StagingGridProps = {
   tables: GetStagingTablesResponse[];
   isLastPage?: boolean;
+  isFetching?: boolean;
 };
 
-const StagingGrid = ({ tables, isLastPage }: StagingGridProps) => {
+const StagingGrid = ({
+  tables,
+  isLastPage,
+  isFetching = false,
+}: StagingGridProps) => {
   const cardsRef = useCardStaggerAnimation();
 
   const shouldSpan = tables.length % 2 === 0;
@@ -35,6 +40,7 @@ const StagingGrid = ({ tables, isLastPage }: StagingGridProps) => {
               people={peopleWithInfo}
               capacity={table.capacity}
               referenceId={table.referenceId}
+              isFetching={isFetching}
             />
           </div>
         );

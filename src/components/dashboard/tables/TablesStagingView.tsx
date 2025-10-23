@@ -26,7 +26,7 @@ const TablesStagingView = ({
   sortDirection: externalSortDirection,
   onSortChange,
 }: TablesStagingViewProps) => {
-  const { data, isLoading } = useStagingTables({
+  const { data, isLoading, isFetching } = useStagingTables({
     page: currentPage,
     search: searchQuery,
     direction: externalSortDirection,
@@ -35,6 +35,7 @@ const TablesStagingView = ({
 
   const isSorted = !!externalSortDirection;
   const sortDirection = externalSortDirection || "asc";
+  const isRefetching = isFetching && !isLoading;
 
   const handleSort = () => {
     if (!onSortChange) return;
@@ -80,7 +81,11 @@ const TablesStagingView = ({
               />
             </div>
             <div className="flex-1">
-              <StagingGrid tables={filteredTables} isLastPage={isLastPage} />
+              <StagingGrid
+                tables={filteredTables}
+                isLastPage={isLastPage}
+                isFetching={isRefetching}
+              />
             </div>
 
             {/* Pagination Controls */}

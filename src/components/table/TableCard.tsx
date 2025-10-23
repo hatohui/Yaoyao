@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { FiGrid, FiUsers } from "react-icons/fi";
+import { FiGrid, FiUsers, FiLoader } from "react-icons/fi";
 import { useTranslations } from "next-intl";
 import { GetTablesResponse } from "@/types/api/table/GET";
 
@@ -12,12 +12,22 @@ type TableCardProps = {
 
 const TableCard = ({ table, buildUrlWithParams }: TableCardProps) => {
   const t = useTranslations("tables");
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const peopleCount = table.peopleCount || 0;
   const isFull = peopleCount >= table.capacity;
 
+  const handleClick = () => {
+    setIsNavigating(true);
+    // Navigation will happen automatically via Link
+  };
+
   return (
-    <Link href={buildUrlWithParams(table.id)} className="group block h-full">
+    <Link
+      href={buildUrlWithParams(table.id)}
+      className="group block h-full"
+      onClick={handleClick}
+    >
       <div
         data-table-card
         className={`
@@ -27,8 +37,14 @@ const TableCard = ({ table, buildUrlWithParams }: TableCardProps) => {
               ? "border-red-200 dark:border-red-900/50 hover:shadow-red-200/50 dark:hover:shadow-red-900/30"
               : "border-main/10 dark:border-slate-700 hover:shadow-main/20 dark:hover:shadow-main/10"
           }
+          ${isNavigating ? "opacity-75 pointer-events-none" : ""}
         `}
       >
+        {isNavigating && (
+          <div className="absolute inset-0 bg-white/50 dark:bg-slate-800/50 flex items-center justify-center z-10">
+            <FiLoader className="w-8 h-8 text-main animate-spin" />
+          </div>
+        )}
         <div className="p-3 sm:p-4 flex-1">
           {/* Table Icon & Name */}
           <div className="flex items-center gap-3 mb-3">

@@ -12,6 +12,7 @@ type StagingTableCardProps = {
   people: Array<People & { isLeader: boolean; isDuplicate: boolean }>;
   capacity: number;
   referenceId?: string | null;
+  isFetching?: boolean;
 };
 
 const StagingTableCard = ({
@@ -20,6 +21,7 @@ const StagingTableCard = ({
   people,
   capacity,
   referenceId,
+  isFetching = false,
 }: StagingTableCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const { assignLeader, removeLeader } = usePeopleInTableMutation();
@@ -72,6 +74,7 @@ const StagingTableCard = ({
         isChangingName={changeName.isPending}
         isChangingCapacity={changeCapacity.isPending}
         isDeleting={deleteTable.isPending}
+        isFetching={isFetching}
       />
 
       <div className="p-3">

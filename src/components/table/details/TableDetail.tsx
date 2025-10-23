@@ -13,6 +13,7 @@ export type TableDetailProps = {
   table: GetTableByIdResponse | undefined;
   isloading: boolean;
   compact?: boolean;
+  isFetching?: boolean;
 };
 
 const TableDetail = ({
@@ -20,12 +21,15 @@ const TableDetail = ({
   table,
   isloading,
   compact = false,
+  isFetching = false,
 }: TableDetailProps) => {
   const t = useTranslations("tables");
   const { isYaoyao } = useYaoAuth();
   const { changeCapacity, changeName } = useTableMutation();
   const [isEditingCapacity, setIsEditingCapacity] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
+
+  const isRefetching = isFetching && !isloading;
 
   const handleSubmit = (capacity: number) => {
     changeCapacity.mutate(
@@ -109,7 +113,15 @@ const TableDetail = ({
               </p>
               {isYaoyao ? (
                 <div className="flex items-center gap-2">
-                  <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  <p
+                    className={`text-sm font-semibold text-slate-900 dark:text-slate-100 ${
+                      changeName.isPending ||
+                      changeCapacity.isPending ||
+                      isRefetching
+                        ? "animate-pulse"
+                        : ""
+                    }`}
+                  >
                     {table?.name}
                   </p>
                   <button
@@ -122,7 +134,11 @@ const TableDetail = ({
                   </button>
                 </div>
               ) : (
-                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                <p
+                  className={`text-sm font-semibold text-slate-900 dark:text-slate-100 ${
+                    isRefetching ? "animate-pulse" : ""
+                  }`}
+                >
                   {table?.name}
                 </p>
               )}

@@ -32,12 +32,11 @@ const DashboardTablesPage = () => {
 
   const { currentPage, goToPage, resetPage } = usePagination();
 
-  // Persist isStaging to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem(STAGING_MODE_KEY, String(isStaging));
   }, [isStaging]);
 
-  const { data, isLoading } = useTablesWithPeople({
+  const { data, isLoading, isFetching } = useTablesWithPeople({
     isStaging: false,
     search: searchQuery,
     page: currentPage,
@@ -46,7 +45,6 @@ const DashboardTablesPage = () => {
 
   const pageRef = usePageAnimation();
 
-  // Reset to page 1 when search changes
   useEffect(() => {
     if (currentPage !== 1) {
       resetPage();
@@ -97,6 +95,7 @@ const DashboardTablesPage = () => {
                     onPageChange={goToPage}
                     sortDirection={sortDirection}
                     onSortChange={setSortDirection}
+                    isFetching={isFetching && !isLoading}
                   />
                 )}
               </>

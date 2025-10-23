@@ -12,11 +12,13 @@ import TableCardPeopleList from "../table-card/TableCardPeopleList";
 type DashboardTableCardProps = {
   table: GetTablesWithPeopleResponse;
   isStaging?: boolean;
+  isFetching?: boolean;
 };
 
 const DashboardTableCard = ({
   table,
   isStaging = false,
+  isFetching = false,
 }: DashboardTableCardProps) => {
   const t = useTranslations("tables");
   const { addPeople, removePeople, assignLeader, removeLeader } =
@@ -94,6 +96,10 @@ const DashboardTableCard = ({
         onChangeName={handleChangeName}
         onChangeCapacity={handleChangeCapacity}
         onDelete={handleDeleteTable}
+        isChangingName={changeName.isPending}
+        isChangingCapacity={changeCapacity.isPending}
+        isDeleting={deleteTable.isPending}
+        isFetching={isFetching}
       />
 
       <div className="p-4">
@@ -111,6 +117,9 @@ const DashboardTableCard = ({
                 onDelete={handleDelete}
                 onMakeLeader={handleMakeLeader}
                 onDemoteLeader={handleDemoteLeader}
+                isAssigningLeader={assignLeader.isPending}
+                isRemovingLeader={removeLeader.isPending}
+                isDeleting={removePeople.isPending}
               />
 
               <TableCardAddMember

@@ -21,6 +21,7 @@ type TablesNormalViewProps = {
   onPageChange?: (page: number) => void;
   sortDirection?: "asc" | "desc";
   onSortChange?: (direction: "asc" | "desc" | undefined) => void;
+  isFetching?: boolean;
 };
 
 const TablesNormalView = ({
@@ -29,6 +30,7 @@ const TablesNormalView = ({
   onPageChange,
   sortDirection: externalSortDirection,
   onSortChange,
+  isFetching = false,
 }: TablesNormalViewProps) => {
   const t = useTranslations("tables");
   const cardsRef = useCardStaggerAnimation();
@@ -160,7 +162,11 @@ const TablesNormalView = ({
       >
         {tables.map((table) => (
           <div key={table.id} data-animate-card className="min-w-0">
-            <DashboardTableCard table={table} isStaging={false} />
+            <DashboardTableCard
+              table={table}
+              isStaging={false}
+              isFetching={isFetching}
+            />
           </div>
         ))}
 

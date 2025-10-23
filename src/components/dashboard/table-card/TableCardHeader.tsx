@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
-import { FiEdit2, FiCheck, FiX, FiTrash2 } from "react-icons/fi";
+import { FiEdit2, FiCheck, FiX, FiTrash2, FiLoader } from "react-icons/fi";
 import ConfirmDialog from "@/components/staging/ConfirmDialog";
 
 type TableCardHeaderProps = {
@@ -15,6 +15,10 @@ type TableCardHeaderProps = {
   onChangeName?: (newName: string) => void;
   onChangeCapacity?: (newCapacity: number) => void;
   onDelete?: () => void;
+  isChangingName?: boolean;
+  isChangingCapacity?: boolean;
+  isDeleting?: boolean;
+  isFetching?: boolean;
 };
 
 const TableCardHeader = ({
@@ -28,6 +32,10 @@ const TableCardHeader = ({
   onChangeName,
   onChangeCapacity,
   onDelete,
+  isChangingName,
+  isChangingCapacity,
+  isDeleting,
+  isFetching = false,
 }: TableCardHeaderProps) => {
   const t = useTranslations("tables");
   const tCommon = useTranslations("common");
@@ -36,6 +44,8 @@ const TableCardHeader = ({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [newName, setNewName] = useState(tableName);
   const [newCapacity, setNewCapacity] = useState(capacity.toString());
+
+  const isRefetching = isFetching && !isChangingName && !isChangingCapacity;
 
   const handleSaveName = () => {
     if (onChangeName && newName.trim() && newName !== tableName) {
@@ -115,25 +125,41 @@ const TableCardHeader = ({
             </div>
           ) : (
             <>
-              <h3 className="text-lg font-serif font-semibold text-slate-900 dark:text-slate-100 truncate">
+              <h3
+                className={`text-lg font-serif font-semibold text-slate-900 dark:text-slate-100 truncate ${
+                  isChangingName || isChangingCapacity || isRefetching
+                    ? "animate-pulse"
+                    : ""
+                }`}
+              >
                 {tableName}
               </h3>
               {onChangeName && (
                 <button
                   onClick={() => setIsEditingName(true)}
-                  className="p-1 text-slate-400 hover:text-main hover:bg-slate-100 dark:text-slate-500 dark:hover:text-main dark:hover:bg-slate-700 rounded transition-all cursor-pointer"
+                  disabled={isChangingName}
+                  className="p-1 text-slate-400 hover:text-main hover:bg-slate-100 dark:text-slate-500 dark:hover:text-main dark:hover:bg-slate-700 rounded transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   title={t("editName")}
                 >
-                  <FiEdit2 className="w-3.5 h-3.5" />
+                  {isChangingName ? (
+                    <FiLoader className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <FiEdit2 className="w-3.5 h-3.5" />
+                  )}
                 </button>
               )}
               {onDelete && (
                 <button
                   onClick={() => setShowDeleteConfirm(true)}
-                  className="p-1 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:text-slate-500 dark:hover:text-red-400 dark:hover:bg-red-900/30 rounded transition-all cursor-pointer"
+                  disabled={isDeleting}
+                  className="p-1 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:text-slate-500 dark:hover:text-red-400 dark:hover:bg-red-900/30 rounded transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   title={t("deleteTable")}
                 >
-                  <FiTrash2 className="w-3.5 h-3.5" />
+                  {isDeleting ? (
+                    <FiLoader className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <FiTrash2 className="w-3.5 h-3.5" />
+                  )}
                 </button>
               )}
             </>
@@ -182,10 +208,15 @@ const TableCardHeader = ({
               {onChangeCapacity && (
                 <button
                   onClick={() => setIsEditingCapacity(true)}
-                  className="p-1 text-slate-400 hover:text-main hover:bg-slate-100 dark:text-slate-500 dark:hover:text-main dark:hover:bg-slate-700 rounded transition-all cursor-pointer"
+                  disabled={isChangingCapacity}
+                  className="p-1 text-slate-400 hover:text-main hover:bg-slate-100 dark:text-slate-500 dark:hover:text-main dark:hover:bg-slate-700 rounded transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   title={t("editCapacity") || "Edit capacity"}
                 >
-                  <FiEdit2 className="w-3 h-3" />
+                  {isChangingCapacity ? (
+                    <FiLoader className="w-3 h-3 animate-spin" />
+                  ) : (
+                    <FiEdit2 className="w-3 h-3" />
+                  )}
                 </button>
               )}
             </div>

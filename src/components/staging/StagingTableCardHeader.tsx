@@ -16,6 +16,7 @@ type StagingTableCardHeaderProps = {
   isChangingName?: boolean;
   isChangingCapacity?: boolean;
   isDeleting?: boolean;
+  isFetching?: boolean;
 };
 
 const StagingTableCardHeader = ({
@@ -31,8 +32,11 @@ const StagingTableCardHeader = ({
   isChangingName,
   isChangingCapacity,
   isDeleting,
+  isFetching = false,
 }: StagingTableCardHeaderProps) => {
   const t = useTranslations("tables");
+
+  const isRefetching = isFetching && !isChangingName && !isChangingCapacity;
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingCapacity, setIsEditingCapacity] = useState(false);
   const [newName, setNewName] = useState(tableName);
@@ -115,7 +119,13 @@ const StagingTableCardHeader = ({
             </div>
           ) : (
             <>
-              <h3 className="text-lg font-serif font-semibold text-slate-900 dark:text-slate-100 truncate">
+              <h3
+                className={`text-lg font-serif font-semibold text-slate-900 dark:text-slate-100 truncate ${
+                  isChangingName || isChangingCapacity || isRefetching
+                    ? "animate-pulse"
+                    : ""
+                }`}
+              >
                 {tableName}
               </h3>
               {onChangeName && (

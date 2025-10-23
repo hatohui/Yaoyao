@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { FiStar, FiTrash2, FiUsers } from "react-icons/fi";
+import { FiStar, FiTrash2, FiUsers, FiLoader } from "react-icons/fi";
 import { People } from "@prisma/client";
 import { useTranslations } from "next-intl";
 
@@ -10,6 +10,9 @@ type TableCardPeopleListProps = {
   onDelete: (personId: string) => void;
   onMakeLeader?: (personId: string) => void;
   onDemoteLeader?: () => void;
+  isAssigningLeader?: boolean;
+  isRemovingLeader?: boolean;
+  isDeleting?: boolean;
 };
 
 const TableCardPeopleList = ({
@@ -18,6 +21,9 @@ const TableCardPeopleList = ({
   onDelete,
   onMakeLeader,
   onDemoteLeader,
+  isAssigningLeader = false,
+  isRemovingLeader = false,
+  isDeleting = false,
 }: TableCardPeopleListProps) => {
   const t = useTranslations("tables");
 
@@ -46,27 +52,42 @@ const TableCardPeopleList = ({
               {onMakeLeader && !isLeader && (
                 <button
                   onClick={() => onMakeLeader(person.id)}
+                  disabled={isAssigningLeader || isRemovingLeader}
                   title={t("makeLeader")}
-                  className="p-1 text-yellow-500 hover:text-yellow-600 hover:bg-yellow-100 dark:text-yellow-400 dark:hover:text-yellow-300 dark:hover:bg-yellow-900/30 rounded transition-all cursor-pointer"
+                  className="p-1 text-yellow-500 hover:text-yellow-600 hover:bg-yellow-100 dark:text-yellow-400 dark:hover:text-yellow-300 dark:hover:bg-yellow-900/30 rounded transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <FiStar className="w-3.5 h-3.5" />
+                  {isAssigningLeader ? (
+                    <FiLoader className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <FiStar className="w-3.5 h-3.5" />
+                  )}
                 </button>
               )}
               {onDemoteLeader && isLeader && (
                 <button
                   onClick={onDemoteLeader}
+                  disabled={isAssigningLeader || isRemovingLeader}
                   title={t("demoteLeader")}
-                  className="p-1 text-yellow-500 hover:text-yellow-600 hover:bg-yellow-100 dark:text-yellow-400 dark:hover:text-yellow-300 dark:hover:bg-yellow-900/30 rounded transition-all cursor-pointer"
+                  className="p-1 text-yellow-500 hover:text-yellow-600 hover:bg-yellow-100 dark:text-yellow-400 dark:hover:text-yellow-300 dark:hover:bg-yellow-900/30 rounded transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <FiUsers className="w-3.5 h-3.5" />
+                  {isRemovingLeader ? (
+                    <FiLoader className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <FiUsers className="w-3.5 h-3.5" />
+                  )}
                 </button>
               )}
               <button
                 onClick={() => onDelete(person.id)}
-                className="p-1 text-red-500 hover:text-red-700 hover:bg-red-100 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/30 rounded transition-all cursor-pointer"
+                disabled={isDeleting}
+                className="p-1 text-red-500 hover:text-red-700 hover:bg-red-100 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/30 rounded transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 title={t("remove")}
               >
-                <FiTrash2 className="w-3.5 h-3.5" />
+                {isDeleting ? (
+                  <FiLoader className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <FiTrash2 className="w-3.5 h-3.5" />
+                )}
               </button>
             </div>
           </div>

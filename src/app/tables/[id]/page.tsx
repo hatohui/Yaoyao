@@ -12,10 +12,16 @@ import TableDetailHeader from "@/components/table/details/TableDetailHeader";
 const TableDetailPage = () => {
   const { id } = useParams() as { id: string };
 
-  const { data: table, isLoading: isLoadingTable } = useTableDetail(id);
-  const { data: people, isLoading: isLoadingPeople } = usePeopleInTable(
-    table?.id ?? ""
-  );
+  const {
+    data: table,
+    isLoading: isLoadingTable,
+    isFetching: isFetchingTable,
+  } = useTableDetail(id);
+  const {
+    data: people,
+    isLoading: isLoadingPeople,
+    isFetching: isFetchingPeople,
+  } = usePeopleInTable(table?.id ?? "");
   const { isYaoyao, canManage, isTableLeader, userId } = useYaoAuth();
 
   const { data: orders } = useTableOrders(id);
@@ -45,7 +51,11 @@ const TableDetailPage = () => {
               <>
                 {/* Left Column - Table Details and Members stacked */}
                 <div className="space-y-3 md:space-y-4 flex flex-col">
-                  <TableDetail table={table} isloading={isLoading} />
+                  <TableDetail
+                    table={table}
+                    isloading={isLoading}
+                    isFetching={isFetchingTable}
+                  />
                   <div className="flex-1 flex flex-col min-h-0">
                     <PeopleInTable
                       table={table}
@@ -53,6 +63,8 @@ const TableDetailPage = () => {
                       canManage={canManage}
                       tableId={id}
                       userId={userId}
+                      isLoading={isLoadingPeople}
+                      isFetching={isFetchingPeople}
                     />
                   </div>
                 </div>
@@ -66,7 +78,11 @@ const TableDetailPage = () => {
               <>
                 {/* No orders: Table Details - Takes 1 column */}
                 <div className="lg:col-span-1">
-                  <TableDetail table={table} isloading={isLoading} />
+                  <TableDetail
+                    table={table}
+                    isloading={isLoading}
+                    isFetching={isFetchingTable}
+                  />
                 </div>
 
                 {/* No orders: Members - Takes 2 columns */}
@@ -77,6 +93,8 @@ const TableDetailPage = () => {
                     canManage={canManage}
                     tableId={id}
                     userId={userId}
+                    isLoading={isLoadingPeople}
+                    isFetching={isFetchingPeople}
                   />
                 </div>
               </>
@@ -93,7 +111,11 @@ const TableDetailPage = () => {
               <>
                 {/* Left Column - Table Details and Members stacked */}
                 <div className="space-y-3 md:space-y-4 flex flex-col">
-                  <TableDetail table={table} isloading={isLoading} />
+                  <TableDetail
+                    table={table}
+                    isloading={isLoading}
+                    isFetching={isFetchingTable}
+                  />
                   <div className="flex-1 flex flex-col min-h-0">
                     <PeopleInTable
                       table={table}
@@ -101,6 +123,8 @@ const TableDetailPage = () => {
                       canManage={canManage}
                       tableId={id}
                       userId={userId}
+                      isLoading={isLoadingPeople}
+                      isFetching={isFetchingPeople}
                     />
                   </div>
                 </div>
@@ -114,7 +138,11 @@ const TableDetailPage = () => {
               <>
                 {/* No orders: Table Details (1/3 width) */}
                 <div className="lg:col-span-1">
-                  <TableDetail table={table} isloading={isLoading} />
+                  <TableDetail
+                    table={table}
+                    isloading={isLoading}
+                    isFetching={isFetchingTable}
+                  />
                 </div>
 
                 {/* No orders: Members (2/3 width) */}
@@ -125,6 +153,8 @@ const TableDetailPage = () => {
                     canManage={canManage}
                     tableId={id}
                     userId={userId}
+                    isLoading={isLoadingPeople}
+                    isFetching={isFetchingPeople}
                   />
                 </div>
               </>
