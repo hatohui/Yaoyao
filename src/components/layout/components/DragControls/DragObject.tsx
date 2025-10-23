@@ -164,9 +164,7 @@ const DragObject = ({
           }
         },
         onDragEnd: function () {
-          // Final collision check
           if (hasCollision && checkCollision()) {
-            // Snap back to last valid position
             gsap.to(objectRef.current, {
               x: lastValidPosition.current.x,
               y: lastValidPosition.current.y,
@@ -189,7 +187,7 @@ const DragObject = ({
         },
       });
 
-      gsap.set(objectRef.current, { x, y });
+      gsap.set(objectRef.current, { x: state.x, y: state.y });
     },
     {
       dependencies: [
@@ -198,8 +196,8 @@ const DragObject = ({
         handleDragStart,
         checkCollision,
         hasCollision,
-        x,
-        y,
+        state.x,
+        state.y,
         id,
         onPositionChange,
       ],
