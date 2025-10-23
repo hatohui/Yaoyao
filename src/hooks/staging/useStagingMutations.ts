@@ -38,9 +38,9 @@ const useStagingMutations = () => {
         .delete<DeleteClearStagingResponse>("/tables/staging/clear")
         .then((res) => res.data),
     successMessageKey: "staging.clearSuccess",
-    onSuccessCallback: async () => {
-      await client.invalidateQueries({ queryKey: ["staging-tables"] });
-      await client.invalidateQueries({ queryKey: ["tables"] });
+    onSuccessCallback: () => {
+      client.invalidateQueries({ queryKey: ["staging-tables"] });
+      client.invalidateQueries({ queryKey: ["tables"] });
     },
   });
 
@@ -54,9 +54,9 @@ const useStagingMutations = () => {
         .post<PostCommitStagingResponse>("/tables/staging/commit")
         .then((res) => res.data),
     successMessageKey: "staging.commitSuccess",
-    onSuccessCallback: async () => {
-      await client.invalidateQueries({ queryKey: ["tables"] });
-      await client.invalidateQueries({ queryKey: ["staging-tables"] });
+    onSuccessCallback: () => {
+      client.invalidateQueries({ queryKey: ["tables"] });
+      client.invalidateQueries({ queryKey: ["staging-tables"] });
     },
   });
 

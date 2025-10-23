@@ -36,7 +36,7 @@ export default function DashboardSidebar({
         fixed lg:sticky top-0 left-0 anti-nav
         bg-darkest dark:bg-dark-surface text-white
         transform transition-all duration-300 ease-in-out
-        z-50 lg:z-auto h-screen
+        z-50 lg:z-auto lg:h-[calc(100vh-4rem)] h-screen
         ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         ${isCollapsed ? "lg:w-20" : "lg:w-72"}
         w-72

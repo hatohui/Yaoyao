@@ -9,24 +9,6 @@ export type CollisionConfig = {
   enabled?: boolean;
 };
 
-/**
- * Hook to register a static collision object (like walls, obstacles)
- * that other draggable objects should not overlap with.
- *
- * @example
- * ```tsx
- * const Wall = ({ id, x, y, width, height }) => {
- *   const ref = useCollision({ id, width, height });
- *   return (
- *     <div
- *       ref={ref}
- *       className="absolute bg-gray-800"
- *       style={{ left: x, top: y, width, height }}
- *     />
- *   );
- * };
- * ```
- */
 export const useCollision = ({
   id,
   width,

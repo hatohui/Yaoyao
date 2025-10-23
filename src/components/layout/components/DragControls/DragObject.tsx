@@ -20,7 +20,7 @@ type DragObjectProps = {
   width?: number;
   height?: number;
   enabled?: boolean;
-  hasCollision?: boolean; // Whether this object should check for collisions
+  hasCollision?: boolean;
   onPositionChange?: (id: string, x: number, y: number) => void;
   onDragEnd?: (id: string, x: number, y: number) => void;
   children?: React.ReactNode;

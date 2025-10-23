@@ -38,6 +38,7 @@ const TablesNormalView = ({
 
   const isSorted = !!externalSortDirection;
   const sortDirection = externalSortDirection || "asc";
+  const shouldSpan = tables ? tables.length % 2 === 0 : false;
 
   const handleSort = () => {
     if (!onSortChange) return;
@@ -160,7 +161,12 @@ const TablesNormalView = ({
 
         {/* Add Table Card */}
         {isLastPage && (
-          <div data-animate-card className="min-w-0">
+          <div
+            data-animate-card
+            className={`min-w-0 ${
+              shouldSpan ? "lg:col-span-2 col-span-1" : ""
+            }`}
+          >
             <AddTableCard isStaging={false} />
           </div>
         )}

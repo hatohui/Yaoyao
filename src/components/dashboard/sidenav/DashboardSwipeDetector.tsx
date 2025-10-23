@@ -59,6 +59,7 @@ export default function DashboardSwipeDetector({
           className="fixed left-0 top-0 h-screen w-16 z-20 lg:hidden flex items-center pointer-events-auto"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
+          onClick={onSwipeRight}
           aria-label="Swipe right to open menu"
         >
           {/* Visual indicator */}

@@ -22,7 +22,6 @@ const StagingControls = ({ onSwitchToProduction }: StagingControlsProps) => {
   const [showSuccessBanner, setShowSuccessBanner] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
-  // Show success banner when mutations succeed
   useEffect(() => {
     if (copyProductionToStaging.isSuccess) {
       setSuccessMessage(t("copySuccess"));
@@ -55,16 +54,11 @@ const StagingControls = ({ onSwitchToProduction }: StagingControlsProps) => {
   const handleClear = () => {
     setClearDialog(false);
     clearStaging.mutate();
-    // Switch back to production view after clearing
-    if (onSwitchToProduction) {
-      setTimeout(() => onSwitchToProduction(), 1000);
-    }
   };
 
   const handleCommit = () => {
     setCommitDialog(false);
     commitStagingToProduction.mutate();
-    // Switch back to production view after committing
     if (onSwitchToProduction) {
       setTimeout(() => onSwitchToProduction(), 1000);
     }

@@ -53,6 +53,7 @@ const useTables = <T extends boolean = false>({
           },
         })
         .then((res) => res.data),
+    retry: false,
   });
 };
 

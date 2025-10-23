@@ -57,7 +57,7 @@ const StagingTableCard = ({
   return (
     <div
       ref={cardRef}
-      className="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-main/30 dark:border-main/40 overflow-hidden transition-all hover:shadow-lg hover:border-main/50 dark:hover:border-main/60"
+      className="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-main/30 dark:border-main/40 overflow-hidden transition-all hover:shadow-lg hover:border-main/50 w-full dark:hover:border-main/60"
     >
       <StagingTableCardHeader
         tableName={tableName}

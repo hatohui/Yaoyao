@@ -13,6 +13,8 @@ type StagingGridProps = {
 const StagingGrid = ({ tables, isLastPage }: StagingGridProps) => {
   const cardsRef = useCardStaggerAnimation();
 
+  const shouldSpan = tables.length % 2 === 0;
+
   return (
     <div
       ref={cardsRef}
@@ -22,7 +24,7 @@ const StagingGrid = ({ tables, isLastPage }: StagingGridProps) => {
         const peopleWithInfo = (table.people || []).map((person) => ({
           ...person,
           isLeader: table.tableLeader?.id === person.id,
-          isDuplicate: false, // Can implement duplicate detection if needed
+          isDuplicate: false,
         }));
 
         return (
@@ -40,7 +42,10 @@ const StagingGrid = ({ tables, isLastPage }: StagingGridProps) => {
 
       {/* Add Table Card */}
       {isLastPage && (
-        <div data-animate-card className="min-w-0">
+        <div
+          data-animate-card
+          className={`min-w-0 ${shouldSpan ? "lg:col-span-2 col-span-1" : ""}`}
+        >
           <AddTableCard isStaging={true} />
         </div>
       )}
