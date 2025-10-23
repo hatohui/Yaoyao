@@ -6,11 +6,11 @@ import TableControl from "./TableControl";
 import DragObject from "./DragAndDropKit/DragControls/DragObject";
 import useLayoutMutations from "@/hooks/layout/useLayoutMutations";
 
-type TableProps = {
-  table: TableObject;
+type LayoutSlotProps = {
+  slot: TableObject;
 };
 
-const Table = ({ table }: TableProps) => {
+const LayoutSlot = ({ slot }: LayoutSlotProps) => {
   const [isLocked, setIsLocked] = useState(false);
   const isHoveringRef = useRef(false);
   const isDraggingRef = useRef(false);
@@ -71,9 +71,9 @@ const Table = ({ table }: TableProps) => {
 
   return (
     <DragObject
-      id={String(table.id) ?? ""}
-      x={table.positionX}
-      y={table.positionY}
+      id={String(slot.id) ?? ""}
+      x={slot.positionX}
+      y={slot.positionY}
       enabled={!isLocked}
       onDragEnd={onDragEnd}
       onDragStart={onDragStart}
@@ -93,15 +93,15 @@ const Table = ({ table }: TableProps) => {
             onDeleteTable={handleDeleteTable}
           />
         </div>
-        <p>Table {table.id}</p>
+        <p>Index {slot.id}</p>
         <p>{isLocked ? "Locked" : "Unlocked"}</p>
         <p>
-          Position: ({table.positionX}, {table.positionY})
+          Position: ({slot.positionX}, {slot.positionY})
         </p>
-        <p>TableId: {table.id} </p>
+        <p>Table: {slot.table.name} </p>
       </div>
     </DragObject>
   );
 };
 
-export default Table;
+export default LayoutSlot;

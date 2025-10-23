@@ -1,3 +1,3 @@
-import { Layout } from "@prisma/client";
+import { GetLayouts } from "../api/layout/GET";
 
-export type TableObject = Layout;
+export type TableObject = GetLayouts[number];

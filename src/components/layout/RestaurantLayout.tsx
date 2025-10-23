@@ -3,17 +3,17 @@ import React from "react";
 import Area from "./DragAndDropKit/Area";
 import DragZone from "./DragAndDropKit/DragControls/DragZone";
 import "./style.css";
-import Table from "./Table";
+import LayoutSlot from "./LayoutSlot";
 import { useLayouts } from "@/hooks/layout/useLayouts";
 
 const RestaurantLayout = () => {
-  const { data: tables, isLoading } = useLayouts();
+  const { data: slots, isLoading } = useLayouts();
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  if (!tables) {
+  if (!slots) {
     return <div>No layout data available.</div>;
   }
 
@@ -34,8 +34,8 @@ const RestaurantLayout = () => {
         height={700}
         responsive
       >
-        {tables.map((table) => (
-          <Table key={table.id} table={table} />
+        {slots.map((slot) => (
+          <LayoutSlot key={slot.id} slot={slot} />
         ))}
       </DragZone>
     </div>

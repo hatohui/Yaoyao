@@ -3,7 +3,11 @@ import { PostLayoutRequest } from "@/types/api/layout/POST";
 import { PutLayoutRequest } from "@/types/api/layout/PUT";
 
 const getLayouts = async () => {
-  return await prisma.layout.findMany();
+  return await prisma.layout.findMany({
+    include: {
+      table: true,
+    },
+  });
 };
 
 const createLayout = async (data: PostLayoutRequest) => {
