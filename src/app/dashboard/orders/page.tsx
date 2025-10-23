@@ -17,7 +17,7 @@ const DashboardOrdersPage = () => {
     "all"
   );
 
-  const { data, isLoading } = useTables();
+  const { data, isLoading } = useTables({});
 
   if (!isYaoyao) {
     return notFound();
