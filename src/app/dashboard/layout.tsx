@@ -34,9 +34,11 @@ export default function DashboardLayout({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-  if (!isYaoyao) {
-    return notFound();
-  }
+  useEffect(() => {
+    if (!isYaoyao) {
+      return notFound();
+    }
+  }, [isYaoyao]);
 
   const navItems = [
     {

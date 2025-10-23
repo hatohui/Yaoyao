@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   FiStar,
   FiAlertCircle,
@@ -36,6 +36,8 @@ const StagingTableCardPeople = ({
   const { addPeople, removePeople } = usePeopleInTableMutation();
   const [isAddingMember, setIsAddingMember] = useState(false);
   const [newMemberName, setNewMemberName] = useState("");
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [shouldFocus, setShouldFocus] = useState(false);
 
   const handleAddMember = () => {
     if (!newMemberName.trim()) return;
@@ -45,13 +47,14 @@ const StagingTableCardPeople = ({
       {
         onSuccess: () => {
           setNewMemberName("");
-          setIsAddingMember(false);
+          // keep the input open and request focus after DOM updates
+          setShouldFocus(true);
         },
       }
     );
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleAddMember();
     } else if (e.key === "Escape") {
@@ -66,6 +69,15 @@ const StagingTableCardPeople = ({
   };
 
   const canAddMember = !isFull;
+
+  // If table becomes full while the add input is open, close it and clear the input
+  React.useEffect(() => {
+    if (isFull && isAddingMember) {
+      setIsAddingMember(false);
+      setNewMemberName("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFull]);
 
   if (people.length === 0 && !isAddingMember) {
     return (
@@ -179,12 +191,21 @@ const StagingTableCardPeople = ({
               placeholder={tTables("addMemberPlaceholder")}
               className="flex-1 text-sm bg-transparent border-none outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500 text-slate-900 dark:text-slate-100"
               autoFocus
+              ref={inputRef}
               disabled={addPeople.isPending}
             />
             {addPeople.isPending && (
               <div className="w-4 h-4 border-2 border-main border-t-transparent rounded-full animate-spin" />
             )}
           </div>
+        )}
+
+        {/* focus sync: wait for DOM updates then focus input if requested */}
+        {shouldFocus && (
+          <FocusHelper
+            inputRef={inputRef}
+            onDone={() => setShouldFocus(false)}
+          />
         )}
 
         {/* Add Member Button - with dotted lines and hover effects like normal view */}
@@ -216,3 +237,25 @@ const StagingTableCardPeople = ({
 };
 
 export default StagingTableCardPeople;
+
+// Small helper component that focuses the provided inputRef on the next animation frame
+// then calls onDone. Kept local to avoid adding files.
+function FocusHelper({
+  inputRef,
+  onDone,
+}: {
+  inputRef: React.RefObject<HTMLInputElement | null>;
+  onDone: () => void;
+}) {
+  React.useEffect(() => {
+    const raf = requestAnimationFrame(() => {
+      inputRef.current?.focus();
+      onDone();
+    });
+
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return null;
+}

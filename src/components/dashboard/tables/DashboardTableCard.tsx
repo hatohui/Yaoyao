@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { GetTablesWithPeopleResponse } from "@/types/api/table/GET";
 import { useTranslations } from "next-intl";
 import usePeopleInTableMutation from "@/hooks/table/usePeopleInTableMutation";
@@ -43,6 +43,9 @@ const DashboardTableCard = ({
     changeCapacity.isPending ||
     deleteTable.isPending;
 
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [shouldFocus, setShouldFocus] = useState(false);
+
   const handleAddMember = () => {
     if (!newMemberName.trim()) return;
 
@@ -51,13 +54,31 @@ const DashboardTableCard = ({
       {
         onSuccess: () => {
           setNewMemberName("");
-          setIsAddingMember(false);
+          setShouldFocus(true);
         },
       }
     );
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  useEffect(() => {
+    if (!shouldFocus) return;
+    const raf = requestAnimationFrame(() => {
+      inputRef.current?.focus();
+      setShouldFocus(false);
+    });
+
+    return () => cancelAnimationFrame(raf);
+  }, [shouldFocus]);
+
+  // If table becomes full while the add input is open, close it and clear the input
+  useEffect(() => {
+    if (isFull && isAddingMember) {
+      setIsAddingMember(false);
+      setNewMemberName("");
+    }
+  }, [isFull, isAddingMember]);
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleAddMember();
     } else if (e.key === "Escape") {
@@ -136,6 +157,8 @@ const DashboardTableCard = ({
                 isAddingMember={isAddingMember}
                 newMemberName={newMemberName}
                 onNameChange={setNewMemberName}
+                // pass the stable ref and new simplified key handler
+                inputRef={inputRef}
                 onKeyPress={handleKeyPress}
                 onBlur={() => {
                   if (!newMemberName.trim()) {

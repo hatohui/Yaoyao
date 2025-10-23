@@ -7,7 +7,8 @@ type TableCardAddMemberProps = {
   isAddingMember: boolean;
   newMemberName: string;
   onNameChange: (value: string) => void;
-  onKeyPress: (e: React.KeyboardEvent) => void;
+  onKeyPress: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  inputRef?: React.RefObject<HTMLInputElement | null>;
   onBlur: () => void;
   onAddClick: () => void;
   isPending: boolean;
@@ -19,6 +20,7 @@ const TableCardAddMember = ({
   newMemberName,
   onNameChange,
   onKeyPress,
+  inputRef,
   onBlur,
   onAddClick,
   isPending,
@@ -41,6 +43,7 @@ const TableCardAddMember = ({
           placeholder={t("addMemberPlaceholder")}
           className="flex-1 text-sm bg-transparent border-none outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500 text-slate-900 dark:text-slate-100"
           autoFocus
+          ref={inputRef}
           disabled={isPending}
         />
         {isPending && (
