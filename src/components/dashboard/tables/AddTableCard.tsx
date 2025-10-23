@@ -39,7 +39,7 @@ const AddTableCard = ({ isStaging = false }: AddTableCardProps) => {
 
   if (isCreating) {
     return (
-      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-main/30 dark:border-main/40 overflow-hidden transition-all hover:shadow-lg hover:border-main/50 dark:hover:border-main/60 min-h-[280px] flex items-center justify-center">
+      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-main/30 dark:border-main/40 overflow-hidden transition-all hover:shadow-lg hover:border-main/50 dark:hover:border-main/60 flex items-center justify-center">
         <div className="p-4 w-full">
           <div className="flex items-center gap-2 p-3 rounded-md border-2 border-dashed border-main/50 dark:border-main/40 bg-main/5 dark:bg-main/10">
             <div className="flex items-center justify-center w-8 h-8 rounded-full bg-main/20 dark:bg-main/30 flex-shrink-0">
@@ -72,7 +72,7 @@ const AddTableCard = ({ isStaging = false }: AddTableCardProps) => {
   return (
     <button
       onClick={() => setIsCreating(true)}
-      className="w-full bg-white dark:bg-slate-800 rounded-lg shadow-md border border-dashed border-slate-300 dark:border-slate-600 overflow-hidden transition-all hover:border-main hover:shadow-lg hover:bg-main/5 dark:hover:bg-main/10 min-h-[280px] flex flex-col items-center justify-center gap-3 group cursor-pointer"
+      className="w-full min-h-[160px] bg-white dark:bg-slate-800 rounded-lg shadow-md border border-dashed border-slate-300 dark:border-slate-600 overflow-hidden transition-all hover:border-main hover:shadow-lg hover:bg-main/5 h-full dark:hover:bg-main/10  flex flex-col items-center justify-center gap-3 group cursor-pointer"
     >
       <div className="flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-700 group-hover:bg-main/20 dark:group-hover:bg-main/30 transition-all">
         <FiPlus className="w-8 h-8 text-slate-400 dark:text-slate-500 group-hover:text-main transition-colors" />

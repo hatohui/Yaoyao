@@ -7,9 +7,10 @@ import { GetStagingTablesResponse } from "@/types/api/staging/GET";
 
 type StagingGridProps = {
   tables: GetStagingTablesResponse[];
+  isLastPage?: boolean;
 };
 
-const StagingGrid = ({ tables }: StagingGridProps) => {
+const StagingGrid = ({ tables, isLastPage }: StagingGridProps) => {
   const cardsRef = useCardStaggerAnimation();
 
   return (
@@ -38,9 +39,11 @@ const StagingGrid = ({ tables }: StagingGridProps) => {
       })}
 
       {/* Add Table Card */}
-      <div data-animate-card className="min-w-0">
-        <AddTableCard isStaging={true} />
-      </div>
+      {isLastPage && (
+        <div data-animate-card className="min-w-0">
+          <AddTableCard isStaging={true} />
+        </div>
+      )}
     </div>
   );
 };

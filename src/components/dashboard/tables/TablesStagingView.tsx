@@ -32,6 +32,7 @@ const TablesStagingView = ({
   }
 
   const pagination = data?.pagination;
+  const isLastPage = pagination ? currentPage >= pagination.totalPages : false;
 
   return (
     <div className="flex flex-col h-full">
@@ -48,7 +49,7 @@ const TablesStagingView = ({
               {hasSearchQuery && " (filtered)"}
             </p>
             <div className="flex-1">
-              <StagingGrid tables={filteredTables} />
+              <StagingGrid tables={filteredTables} isLastPage={isLastPage} />
             </div>
 
             {/* Pagination Controls */}

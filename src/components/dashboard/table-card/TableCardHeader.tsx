@@ -95,7 +95,7 @@ const TableCardHeader = ({
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
                 onKeyDown={handleKeyPress}
-                className="flex-1 px-2 py-1 text-lg font-semibold bg-white dark:bg-slate-800 border-2 border-main rounded text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-main/50"
+                className="flex-1 px-2 py-1 font-serif text-lg font-semibold bg-white dark:bg-slate-800 border-2 border-main rounded text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-main/50"
                 autoFocus
               />
               <button
@@ -115,7 +115,7 @@ const TableCardHeader = ({
             </div>
           ) : (
             <>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 truncate">
+              <h3 className="text-lg font-serif font-semibold text-slate-900 dark:text-slate-100 truncate">
                 {tableName}
               </h3>
               {onChangeName && (

@@ -31,6 +31,10 @@ const TablesNormalView = ({
   const [isCreating, setIsCreating] = useState(false);
   const [newTableName, setNewTableName] = useState("");
 
+  const isLastPage = pagination
+    ? pagination.page >= pagination.totalPages
+    : false;
+
   const handleCreateTable = () => {
     if (!newTableName.trim()) return;
 
@@ -63,7 +67,7 @@ const TablesNormalView = ({
                 type="text"
                 value={newTableName}
                 onChange={(e) => setNewTableName(e.target.value)}
-                onKeyPress={(e) => {
+                onKeyDown={(e) => {
                   if (e.key === "Enter") handleCreateTable();
                   if (e.key === "Escape") {
                     setIsCreating(false);
@@ -124,9 +128,11 @@ const TablesNormalView = ({
         ))}
 
         {/* Add Table Card */}
-        <div data-animate-card className="min-w-0">
-          <AddTableCard isStaging={false} />
-        </div>
+        {isLastPage && (
+          <div data-animate-card className="min-w-0">
+            <AddTableCard isStaging={false} />
+          </div>
+        )}
       </div>
 
       {/* Pagination Controls */}
