@@ -5,6 +5,7 @@ import {
   FiPlus,
   FiTrash2,
   FiUsers,
+  FiLoader,
 } from "react-icons/fi";
 import { People } from "@prisma/client";
 import { useTranslations } from "next-intl";
@@ -17,6 +18,8 @@ type StagingTableCardPeopleProps = {
   capacity: number;
   onMakeLeader?: (personId: string) => void;
   onDemoteLeader?: () => void;
+  isAssigningLeader?: boolean;
+  isRemovingLeader?: boolean;
 };
 
 const StagingTableCardPeople = ({
@@ -26,6 +29,8 @@ const StagingTableCardPeople = ({
   capacity,
   onMakeLeader,
   onDemoteLeader,
+  isAssigningLeader,
+  isRemovingLeader,
 }: StagingTableCardPeopleProps) => {
   const tTables = useTranslations("tables");
   const { addPeople, removePeople } = usePeopleInTableMutation();
@@ -114,27 +119,42 @@ const StagingTableCardPeople = ({
               {onMakeLeader && !person.isLeader && (
                 <button
                   onClick={() => onMakeLeader(person.id)}
+                  disabled={isAssigningLeader || isRemovingLeader}
                   title={tTables("makeLeader")}
-                  className="p-1 text-yellow-500 hover:text-yellow-600 hover:bg-yellow-100 dark:text-yellow-400 dark:hover:text-yellow-300 dark:hover:bg-yellow-900/30 rounded transition-all cursor-pointer"
+                  className="p-1 text-yellow-500 hover:text-yellow-600 hover:bg-yellow-100 dark:text-yellow-400 dark:hover:text-yellow-300 dark:hover:bg-yellow-900/30 rounded transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <FiStar className="w-3.5 h-3.5" />
+                  {isAssigningLeader ? (
+                    <FiLoader className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <FiStar className="w-3.5 h-3.5" />
+                  )}
                 </button>
               )}
               {onDemoteLeader && person.isLeader && (
                 <button
                   onClick={onDemoteLeader}
+                  disabled={isAssigningLeader || isRemovingLeader}
                   title={tTables("demoteLeader")}
-                  className="p-1 text-yellow-500 hover:text-yellow-600 hover:bg-yellow-100 dark:text-yellow-400 dark:hover:text-yellow-300 dark:hover:bg-yellow-900/30 rounded transition-all cursor-pointer"
+                  className="p-1 text-yellow-500 hover:text-yellow-600 hover:bg-yellow-100 dark:text-yellow-400 dark:hover:text-yellow-300 dark:hover:bg-yellow-900/30 rounded transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <FiUsers className="w-3.5 h-3.5" />
+                  {isRemovingLeader ? (
+                    <FiLoader className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <FiUsers className="w-3.5 h-3.5" />
+                  )}
                 </button>
               )}
               <button
                 onClick={() => handleDelete(person.id)}
-                className="p-1 text-red-500 hover:text-red-700 hover:bg-red-100 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/30 rounded transition-all cursor-pointer"
+                disabled={removePeople.isPending}
+                className="p-1 text-red-500 hover:text-red-700 hover:bg-red-100 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/30 rounded transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 title={tTables("remove")}
               >
-                <FiTrash2 className="w-3.5 h-3.5" />
+                {removePeople.isPending ? (
+                  <FiLoader className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <FiTrash2 className="w-3.5 h-3.5" />
+                )}
               </button>
             </div>
           </div>

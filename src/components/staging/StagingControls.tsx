@@ -64,11 +64,6 @@ const StagingControls = ({ onSwitchToProduction }: StagingControlsProps) => {
     }
   };
 
-  const isLoading =
-    copyProductionToStaging.isPending ||
-    clearStaging.isPending ||
-    commitStagingToProduction.isPending;
-
   return (
     <>
       {/* Success Banner */}
@@ -82,7 +77,9 @@ const StagingControls = ({ onSwitchToProduction }: StagingControlsProps) => {
       )}
 
       <StagingActionButtons
-        isLoading={isLoading}
+        isCopyLoading={copyProductionToStaging.isPending}
+        isClearLoading={clearStaging.isPending}
+        isCommitLoading={commitStagingToProduction.isPending}
         onCopy={() => setCopyDialog(true)}
         onClear={() => setClearDialog(true)}
         onCommit={() => setCommitDialog(true)}

@@ -69,6 +69,9 @@ const StagingTableCard = ({
         onChangeName={handleChangeName}
         onChangeCapacity={handleChangeCapacity}
         onDelete={handleDeleteTable}
+        isChangingName={changeName.isPending}
+        isChangingCapacity={changeCapacity.isPending}
+        isDeleting={deleteTable.isPending}
       />
 
       <div className="p-3">
@@ -79,6 +82,8 @@ const StagingTableCard = ({
           capacity={capacity}
           onMakeLeader={handleMakeLeader}
           onDemoteLeader={handleDemoteLeader}
+          isAssigningLeader={assignLeader.isPending}
+          isRemovingLeader={removeLeader.isPending}
         />
       </div>
     </div>
