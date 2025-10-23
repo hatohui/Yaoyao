@@ -1,9 +1,7 @@
 "use client";
 import React from "react";
 
-type PeopleInTableLoadingProps = {};
-
-const PeopleInTableLoading = ({}: PeopleInTableLoadingProps) => {
+const PeopleInTableLoading = () => {
   return (
     <div className="space-y-2">
       {[...Array(3)].map((_, index) => (
