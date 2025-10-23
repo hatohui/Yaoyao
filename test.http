@@ -11,8 +11,28 @@ POST http://localhost:3000/api/layouts
 Content-Type: application/json
 
 {
-  "tableId": "610c0f50-e201-4c9d-ac93-b8ee38e02f83",
-  "content": "Hello world 3"
+  "tableId": "34b53011-81c1-4fad-b35a-086a91795f36",
+  "positionX": 100,
+  "positionY": 150
+}
+
+###
+POST http://localhost:3000/api/layouts
+Content-Type: application/json
+
+{
+  "tableId": "5049e5ce-c6af-4bf7-90e4-4db1dd92c50c",
+  "positionX": 200,
+  "positionY": 250
+}
+
+###
+POST http://localhost:3000/api/layouts
+Content-Type: application/json
+
+{
+  "positionX": 120,
+  "positionY": 90
 }
 
 ###

@@ -6,44 +6,52 @@ import {
   getNewLayoutId,
 } from "@/repositories/layout-repo";
 import { PostLayoutRequest } from "@/types/api/layout/POST";
+import layoutSchema from "@/utils/validation/layout";
 import { NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {
   const method = req.method;
   const { NotAllowed, Ok, BadRequest, NotFound } = Status(res);
 
-  switch (method) {
-    case "GET":
-      const results = await getLayouts();
+  try {
+    switch (method) {
+      case "GET":
+        const results = await getLayouts();
 
-      if (!results) {
-        return NotFound("No layouts found");
-      }
+        if (!results) {
+          return NotFound("No layouts found");
+        }
 
-      return Ok(results);
-    case "POST":
-      const request = req.body as PostLayoutRequest;
+        return Ok(results);
+      case "POST":
+        const request = req.body as PostLayoutRequest;
 
-      if (!request || !request.tableId) {
-        return BadRequest("Invalid body");
-      }
+        const validation = layoutSchema.parse(request);
 
-      const existing = await getLayoutByTableId(request.tableId);
+        if (!validation || !validation.tableId) {
+          return BadRequest("Invalid layout data");
+        }
 
-      if (existing) return BadRequest("Layout for table already exists");
+        const existing = await getLayoutByTableId(validation.tableId);
 
-      const id = await getNewLayoutId();
+        if (existing) return BadRequest("Layout for table already exists");
 
-      const newLayout = {
-        ...request,
-        id,
-      };
+        const id = await getNewLayoutId();
 
-      const createdLayout = await createLayout(newLayout);
+        const newLayout = {
+          ...request,
+          id,
+        };
 
-      return Ok(createdLayout);
-    default:
-      return NotAllowed();
+        const createdLayout = await createLayout(newLayout);
+
+        return Ok(createdLayout);
+      default:
+        return NotAllowed();
+    }
+  } catch (error) {
+    console.error("Error handling layout request:", error);
+    return BadRequest("Error handling layout request");
   }
 };
 

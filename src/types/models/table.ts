@@ -1,5 +1,3 @@
-export type TableObject = {
-  id: string;
-  x: number;
-  y: number;
-};
+import { Layout } from "@prisma/client";
+
+export type TableObject = Layout;

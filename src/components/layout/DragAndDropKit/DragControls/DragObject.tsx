@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Draggable } from "gsap/Draggable";
@@ -43,8 +43,10 @@ type DragObjectProps = {
   hasCollision?: boolean;
   onPositionChange?: (id: string, x: number, y: number) => void;
   onDragEnd?: (id: string, x: number, y: number) => void;
+  onDragStart?: () => void;
   children?: React.ReactNode;
   className?: string;
+  lockedClassName?: string;
 };
 
 const DragObject = ({
@@ -56,9 +58,11 @@ const DragObject = ({
   enabled = true,
   children,
   className = "",
+  lockedClassName = "",
   hasCollision = false,
   onPositionChange,
   onDragEnd,
+  onDragStart,
 }: DragObjectProps) => {
   const {
     containerRef,
@@ -77,6 +81,10 @@ const DragObject = ({
     enabled,
   });
 
+  useEffect(() => {
+    setState((prev) => ({ ...prev, enabled }));
+  }, [enabled]);
+
   const [isDragging, setIsDragging] = useState(false);
 
   const handleDragEnd = useCallback(
@@ -91,6 +99,9 @@ const DragObject = ({
   const handleDragStart = useCallback(() => {
     setIsDragging(true);
     lastValidPosition.current = { x: state.x, y: state.y };
+    onDragStart?.();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.x, state.y]);
 
   // Collision detection helper
@@ -214,7 +225,7 @@ const DragObject = ({
         onPositionChange,
       ],
       revertOnUpdate: true,
-      scope: containerRef,
+      scope: containerRef?.current ? containerRef : undefined,
     }
   );
 
@@ -237,9 +248,7 @@ const DragObject = ({
     <div
       ref={objectRef}
       className={`absolute select-none ${className} ${
-        state.enabled
-          ? "cursor-grab active:cursor-grabbing"
-          : "cursor-not-allowed opacity-60"
+        state.enabled ? "cursor-grab active:cursor-grabbing" : lockedClassName
       }`}
       style={{
         touchAction: state.enabled ? "none" : "auto",
