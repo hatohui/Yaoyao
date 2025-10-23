@@ -6,7 +6,6 @@ import NavBar from "@/components/nav/NavBar";
 import TanstackProvider from "@/config/TanstackProvider";
 import ThemeProvider from "@/components/common/ThemeProvider";
 import dynamic from "next/dynamic";
-import enableGsapPlugins from "@/config/gsap";
 import "./globals.css";
 
 const AuthHydrator = dynamic(() => import("@/components/auth/AuthHydrator"));
@@ -87,7 +86,6 @@ export default async function RootLayout({
 }>) {
   const messages = await getMessages();
   const locale = await getLocale();
-  enableGsapPlugins();
 
   return (
     <html lang={locale} suppressHydrationWarning>

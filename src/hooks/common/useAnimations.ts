@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import gsap from "@/common/gsap";
 import { useGSAP } from "@gsap/react";
 
 /**
@@ -44,7 +44,6 @@ export const useAnimations = () => {
       );
     },
 
-    // Slide in from side
     slideInFromLeft: (element: HTMLElement | null, delay = 0) => {
       if (!element) return;
       gsap.fromTo(
