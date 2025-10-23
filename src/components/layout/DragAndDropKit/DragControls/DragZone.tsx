@@ -16,6 +16,7 @@ type DragZoneProps = {
   width?: number; // Container width and base coordinate system width (px)
   height?: number; // Container height and base coordinate system height (px)
   responsive?: boolean;
+  noBorder?: boolean;
 };
 
 /**
@@ -30,6 +31,7 @@ type DragZoneProps = {
  * @property {number} [width=1400] - Base container width in px.
  * @property {number} [height=700] - Base container height in px.
  * @property {boolean} [responsive] - When true the content
+ * @property {boolean} [noBorder] - When true, the border around the DragZone is not displayed.
  *   is scaled down to fit smaller viewports while keeping aspect ratio.
  */
 const DragZone = ({
@@ -38,6 +40,7 @@ const DragZone = ({
   className = "",
   width = 1400,
   height = 700,
+  noBorder = false,
   responsive = false,
 }: DragZoneProps) => {
   return (
@@ -47,6 +50,7 @@ const DragZone = ({
         className={className}
         width={width}
         height={height}
+        noBorder={noBorder}
         enableResponsiveScaling={responsive}
       >
         {children}
@@ -61,8 +65,17 @@ const DragZoneContent: React.FC<{
   width: number;
   height: number;
   enableResponsiveScaling: boolean;
+  noBorder?: boolean;
   children?: React.ReactNode;
-}> = ({ id, className, width, height, enableResponsiveScaling, children }) => {
+}> = ({
+  id,
+  className,
+  width,
+  height,
+  enableResponsiveScaling,
+  noBorder = false,
+  children,
+}) => {
   const { containerRef } = useDragContainer();
   const wrapperRef = React.useRef<HTMLDivElement>(null);
   const [scale, setScale] = React.useState(1);
@@ -111,7 +124,11 @@ const DragZoneContent: React.FC<{
     <div
       ref={wrapperRef}
       id={id}
-      className={`relative border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-800/50 overflow-hidden ${className}`}
+      className={`relative ${
+        noBorder
+          ? ""
+          : "border-2 border-dashed border-slate-300 dark:border-slate-600"
+      } rounded-lg overflow-hidden ${className}`}
     >
       <div ref={containerRef} style={innerStyle}>
         {children}
