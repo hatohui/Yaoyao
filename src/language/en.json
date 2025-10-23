@@ -291,6 +291,7 @@
     "noStagingTables": "No staging tables",
     "noStagingTablesMessage": "Copy from production to start planning",
     "noSearchResults": "No staging tables found",
-    "noSearchResultsMessage": "Try adjusting your search query"
+    "noSearchResultsMessage": "Try adjusting your search query",
+    "addStagingTable": "Add staging table"
   }
 }

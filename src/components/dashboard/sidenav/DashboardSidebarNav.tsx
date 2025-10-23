@@ -13,6 +13,7 @@ type DashboardSidebarNavProps = {
   isActive: (href: string) => boolean;
   isCollapsed: boolean;
   setIsSidebarOpen: (value: boolean) => void;
+  handleOnClick: () => void;
 };
 
 const DashboardSidebarNav = ({
@@ -20,7 +21,19 @@ const DashboardSidebarNav = ({
   isActive,
   isCollapsed,
   setIsSidebarOpen,
+  handleOnClick,
 }: DashboardSidebarNavProps) => {
+  const onClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    active: boolean
+  ) => {
+    if (!active) {
+      e.stopPropagation();
+      handleOnClick();
+    }
+    setIsSidebarOpen(false);
+  };
+
   return (
     <nav className="flex-1 overflow-y-auto p-4">
       <div className="space-y-2">
@@ -31,7 +44,7 @@ const DashboardSidebarNav = ({
             <Link
               key={item.href}
               href={item.href}
-              onClick={() => setIsSidebarOpen(false)}
+              onClick={(e) => onClick(e, active)}
               title={isCollapsed ? item.title : undefined}
               className={`
                 flex items-start gap-3 px-4 py-3 rounded-lg

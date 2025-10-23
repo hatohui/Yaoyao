@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import LanguageSelector from "../common/LanguageSelector";
 import DarkModeToggle from "../common/DarkModeToggle";
 import YaoTag from "../auth/YaoTag";
@@ -11,6 +11,7 @@ import NavMobile from "./NavMobile";
 import NavPc from "./NavPC";
 import useAuthStore, { AuthState } from "@/stores/useAuthStore";
 import { buildUrlWithParams } from "@/utils/params/buildUrlWithParams";
+import Loading from "../common/Loading";
 
 const NavBar = () => {
   const pathname = usePathname();
@@ -18,6 +19,24 @@ const NavBar = () => {
   const t = useTranslations("common");
   const { isYaoyao } = useYaoAuth();
   const setVerified = useAuthStore((s: AuthState) => s.setVerified);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleOnClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    active: boolean
+  ) => {
+    if (!active) {
+      e.stopPropagation();
+      setLoading(true);
+    }
+  };
+
+  useEffect(() => {
+    if (loading) {
+      setLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   const navData = [
     { title: t("home"), link: "/", public: true },
@@ -26,7 +45,6 @@ const NavBar = () => {
     { title: t("dashboard"), link: "/dashboard", public: false },
   ];
 
-  // Function to build URL with only lang param preserved
   const buildNavUrl = (link: string) => {
     return buildUrlWithParams(link, searchParams);
   };
@@ -48,6 +66,7 @@ const NavBar = () => {
               filteredNavData={filteredNavData}
               isYaoyao={isYaoyao}
               pathname={pathname}
+              handleOnClick={handleOnClick}
             />
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
@@ -62,10 +81,16 @@ const NavBar = () => {
             filteredNavData={filteredNavData}
             isYaoyao={isYaoyao}
             pathname={pathname}
+            handleOnClick={handleOnClick}
             onLogout={handleLogout}
           />
         </div>
       </div>
+      {loading && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <Loading />
+        </div>
+      )}
     </nav>
   );
 };

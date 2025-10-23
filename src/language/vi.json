@@ -299,6 +299,7 @@
     "noStagingTables": "Không có bàn staging",
     "noStagingTablesMessage": "Sao chép từ production để bắt đầu lập kế hoạch",
     "noSearchResults": "Không tìm thấy bàn staging",
-    "noSearchResultsMessage": "Thử điều chỉnh truy vấn tìm kiếm của bạn"
+    "noSearchResultsMessage": "Thử điều chỉnh truy vấn tìm kiếm của bạn",
+    "addStagingTable": "Thêm bàn Staging"
   }
 }

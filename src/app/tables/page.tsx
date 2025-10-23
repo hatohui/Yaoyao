@@ -17,7 +17,6 @@ const TableStagingPage = () => {
   const { currentPage, goToPage, resetPage } = usePagination();
   const { data } = useTables({ page: currentPage, search: searchQuery });
 
-  // Reset to page 1 when search changes
   useEffect(() => {
     if (currentPage !== 1) {
       resetPage();

@@ -11,6 +11,10 @@ export interface NavProps {
   className?: string;
   isYaoyao: boolean;
   onLogout?: () => void;
+  handleOnClick: (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    active: boolean
+  ) => void;
 }
 
 const NavMobile = ({
@@ -20,9 +24,18 @@ const NavMobile = ({
   className,
   isYaoyao,
   onLogout,
+  handleOnClick,
 }: NavProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations("common");
+
+  const onClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    active: boolean
+  ) => {
+    setIsOpen(false);
+    handleOnClick(e, active);
+  };
 
   return (
     <div className="sm:hidden">
@@ -40,15 +53,16 @@ const NavMobile = ({
           <div className="flex flex-col p-2 space-y-1">
             {/* Navigation Links */}
             {filteredNavData.map((item) => {
-              const isActive =
+              const isActive = !!(
                 pathname === item.link ||
-                (item.link !== "/" && pathname?.startsWith(item.link));
+                (item.link !== "/" && pathname?.startsWith(item.link))
+              );
 
               return (
                 <Link
                   key={item.title}
                   href={buildUrlWithParams(item.link)}
-                  onClick={() => setIsOpen(false)}
+                  onClick={(e) => onClick(e, isActive)}
                   className={`
                       px-4 py-2.5 text-sm font-medium rounded-md transition-all
                       ${className} ${

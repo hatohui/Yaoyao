@@ -298,6 +298,7 @@
     "noStagingTables": "ไม่มีโต๊ะ staging",
     "noStagingTablesMessage": "คัดลอกจาก production เพื่อเริ่มวางแผน",
     "noSearchResults": "ไม่พบโต๊ะ staging",
-    "noSearchResultsMessage": "ลองปรับคำค้นหาของคุณ"
+    "noSearchResultsMessage": "ลองปรับคำค้นหาของคุณ",
+    "addStagingTable": "เพิ่มโต๊ะ Staging"
   }
 }

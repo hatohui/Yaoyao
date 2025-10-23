@@ -299,6 +299,7 @@
     "noStagingTables": "没有预演餐桌",
     "noStagingTablesMessage": "从生产环境复制以开始规划",
     "noSearchResults": "未找到预演餐桌",
-    "noSearchResultsMessage": "尝试调整搜索条件"
+    "noSearchResultsMessage": "尝试调整搜索条件",
+    "addStagingTable": "添加预演餐桌"
   }
 }

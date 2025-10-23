@@ -18,12 +18,14 @@ interface DashboardSidebarProps {
   isActive: (href: string) => boolean;
   setIsCollapsed: (value: boolean) => void;
   setIsSidebarOpen: (value: boolean) => void;
+  handleOnClick: () => void;
 }
 
 export default function DashboardSidebar({
   isOpen,
   isCollapsed,
   navItems,
+  handleOnClick,
   isActive,
   setIsCollapsed,
   setIsSidebarOpen,
@@ -47,6 +49,7 @@ export default function DashboardSidebar({
           setIsSidebarOpen={setIsSidebarOpen}
         />
         <DashboardSidebarNav
+          handleOnClick={handleOnClick}
           navItems={navItems}
           isActive={isActive}
           isCollapsed={isCollapsed}

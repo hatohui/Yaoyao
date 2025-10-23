@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
@@ -8,6 +8,7 @@ import { FiTable, FiShoppingBag, FiUsers } from "react-icons/fi";
 import { MdRestaurantMenu } from "react-icons/md";
 import DashboardSidebar from "@/components/dashboard/sidenav/DashboardSidebar";
 import DashboardSwipeDetector from "@/components/dashboard/sidenav/DashboardSwipeDetector";
+import Loading from "@/components/common/Loading";
 
 export default function DashboardLayout({
   children,
@@ -19,6 +20,19 @@ export default function DashboardLayout({
   const t = useTranslations("dashboard");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
+  const handleOnClick = () => {
+    setLoading(true);
+  };
+
+  useEffect(() => {
+    if (loading) {
+      setLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   if (!isYaoyao) {
     return notFound();
@@ -68,6 +82,7 @@ export default function DashboardLayout({
 
       <DashboardSidebar
         isOpen={isSidebarOpen}
+        handleOnClick={handleOnClick}
         isCollapsed={isCollapsed}
         navItems={navItems}
         isActive={isActive}
@@ -78,6 +93,11 @@ export default function DashboardLayout({
       <div className="flex-1 anti-nav flex flex-col min-w-0 overflow-hidden">
         <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
+      {loading && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <Loading />
+        </div>
+      )}
     </div>
   );
 }
