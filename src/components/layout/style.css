@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@layer components {
+  .wall {
+    @apply bg-white relative;
+  }
+
+  .wall::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border: 2px solid black;
+  }
+
+  .wall.no-border-top::before {
+    border-top-color: transparent;
+  }
+
+  .wall.no-border-bottom::before {
+    border-bottom-color: transparent;
+  }
+
+  .wall.no-border-left::before {
+    border-left-color: transparent;
+  }
+
+  .wall.no-border-right::before {
+    border-right-color: transparent;
+  }
+}
