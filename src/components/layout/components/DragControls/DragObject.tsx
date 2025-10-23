@@ -20,7 +20,6 @@ type DragObjectProps = {
   width?: number;
   height?: number;
   enabled?: boolean;
-  canSwitchContainers?: boolean;
   hasCollision?: boolean; // Whether this object should check for collisions
   onPositionChange?: (id: string, x: number, y: number) => void;
   onDragEnd?: (id: string, x: number, y: number) => void;
@@ -37,7 +36,6 @@ const DragObject = ({
   enabled = true,
   children,
   className = "",
-  canSwitchContainers = false,
   hasCollision = false,
   onPositionChange,
   onDragEnd,
@@ -136,16 +134,11 @@ const DragObject = ({
     () => {
       if (!objectRef.current) return;
 
-      const bounds = canSwitchContainers
-        ? undefined
-        : containerRef?.current || undefined;
-
       draggableInstance.current = Draggable.create(objectRef.current, {
         type: "x,y",
-        bounds: bounds,
+        bounds: containerRef?.current || undefined,
         edgeResistance: 0.65,
         inertia: true,
-        zIndexBoost: canSwitchContainers,
         onDragStart: function () {
           handleDragStart();
         },
@@ -191,7 +184,6 @@ const DragObject = ({
     },
     {
       dependencies: [
-        canSwitchContainers,
         handleDragEnd,
         handleDragStart,
         checkCollision,
@@ -221,10 +213,6 @@ const DragObject = ({
     }
   );
 
-  const toggleEnabled = () => {
-    setState((prev) => ({ ...prev, enabled: !prev.enabled }));
-  };
-
   return (
     <div
       ref={objectRef}
@@ -235,32 +223,18 @@ const DragObject = ({
       }`}
       style={{
         touchAction: state.enabled ? "none" : "auto",
-        zIndex: isDragging && canSwitchContainers ? 9999 : "auto",
-        position: canSwitchContainers ? "fixed" : "absolute",
+        zIndex: isDragging ? 9999 : "auto",
       }}
     >
-      <div className="relative">
-        {children || (
-          <div className="bg-blue-500 text-white p-4 rounded-lg shadow-lg">
-            <div className="font-bold mb-1">Object #{id}</div>
-            <div className="text-xs opacity-80">Container: {containerId}</div>
-            <div className="text-xs opacity-80">
-              x: {Math.round(state.x)}, y: {Math.round(state.y)}
-            </div>
+      {children || (
+        <div className="bg-blue-500 text-white p-4 rounded-lg shadow-lg">
+          <div className="font-bold mb-1">Object #{id}</div>
+          <div className="text-xs opacity-80">Container: {containerId}</div>
+          <div className="text-xs opacity-80">
+            x: {Math.round(state.x)}, y: {Math.round(state.y)}
           </div>
-        )}
-        <button
-          onClick={toggleEnabled}
-          className={`absolute -top-2 -right-2 w-6 h-6 rounded-full text-xs font-bold shadow-lg transition-colors ${
-            state.enabled
-              ? "bg-green-500 hover:bg-green-600 text-white"
-              : "bg-red-500 hover:bg-red-600 text-white"
-          }`}
-          title={state.enabled ? "Disable dragging" : "Enable dragging"}
-        >
-          {state.enabled ? "✓" : "✗"}
-        </button>
-      </div>
+        </div>
+      )}
     </div>
   );
 };
