@@ -108,10 +108,21 @@ const PeopleInTable = ({
     }
   };
 
-  const currentCount = people?.length ?? 0;
-  const capacity = table?.capacity ?? 0;
-  const isFull = currentCount >= capacity && capacity > 0;
+  const currentCount = people?.length;
+  const capacity = table?.capacity;
+  const isFull = !!(
+    currentCount &&
+    capacity &&
+    currentCount >= capacity &&
+    capacity > 0
+  );
   const canAddMember = canManage && !isFull;
+
+  const isMutating =
+    addPeople.isPending ||
+    removePeople.isPending ||
+    assignLeader.isPending ||
+    removeLeader.isPending;
 
   return (
     <div
@@ -127,6 +138,7 @@ const PeopleInTable = ({
         isLoading={isLoading}
         isCollapsed={isCollapsed}
         onToggle={() => setIsCollapsed(!isCollapsed)}
+        isMutating={isMutating}
       />
       <div ref={contentRef} className="overflow-hidden">
         <div className="p-4 max-h-[400px] min-h-[300px] overflow-y-auto">

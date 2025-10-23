@@ -19,6 +19,7 @@ type TableCardHeaderProps = {
   isChangingCapacity?: boolean;
   isDeleting?: boolean;
   isFetching?: boolean;
+  isMutating?: boolean;
 };
 
 const TableCardHeader = ({
@@ -36,6 +37,7 @@ const TableCardHeader = ({
   isChangingCapacity,
   isDeleting,
   isFetching = false,
+  isMutating = false,
 }: TableCardHeaderProps) => {
   const t = useTranslations("tables");
   const tCommon = useTranslations("common");
@@ -46,6 +48,7 @@ const TableCardHeader = ({
   const [newCapacity, setNewCapacity] = useState(capacity.toString());
 
   const isRefetching = isFetching && !isChangingName && !isChangingCapacity;
+  const showLoadingState = isMutating || isRefetching;
 
   const handleSaveName = () => {
     if (onChangeName && newName.trim() && newName !== tableName) {
@@ -127,9 +130,7 @@ const TableCardHeader = ({
             <>
               <h3
                 className={`text-lg font-serif font-semibold text-slate-900 dark:text-slate-100 truncate ${
-                  isChangingName || isChangingCapacity || isRefetching
-                    ? "animate-pulse"
-                    : ""
+                  showLoadingState ? "animate-pulse" : ""
                 }`}
               >
                 {tableName}
@@ -196,6 +197,8 @@ const TableCardHeader = ({
             <div className="flex items-center gap-1">
               <span
                 className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
+                  showLoadingState ? "animate-pulse" : ""
+                } ${
                   isFull
                     ? "bg-red-500 dark:bg-red-600 text-white"
                     : occupancyPercentage > 75
@@ -228,6 +231,8 @@ const TableCardHeader = ({
       <div className="w-full bg-slate-200 dark:bg-slate-600 rounded-full h-1.5 overflow-hidden">
         <div
           className={`h-full transition-all duration-300 ${
+            showLoadingState ? "animate-pulse" : ""
+          } ${
             isFull
               ? "bg-red-500"
               : occupancyPercentage > 75

@@ -34,6 +34,15 @@ const DashboardTableCard = ({
   const occupancyPercentage = capacity > 0 ? (peopleCount / capacity) * 100 : 0;
   const canAddMember = !isFull;
 
+  const isMutating =
+    addPeople.isPending ||
+    removePeople.isPending ||
+    assignLeader.isPending ||
+    removeLeader.isPending ||
+    changeName.isPending ||
+    changeCapacity.isPending ||
+    deleteTable.isPending;
+
   const handleAddMember = () => {
     if (!newMemberName.trim()) return;
 
@@ -100,6 +109,7 @@ const DashboardTableCard = ({
         isChangingCapacity={changeCapacity.isPending}
         isDeleting={deleteTable.isPending}
         isFetching={isFetching}
+        isMutating={isMutating}
       />
 
       <div className="p-4">

@@ -31,6 +31,13 @@ const StagingTableCard = ({
   const isFull = peopleCount >= capacity;
   const occupancyPercentage = capacity > 0 ? (peopleCount / capacity) * 100 : 0;
 
+  const isMutating =
+    assignLeader.isPending ||
+    removeLeader.isPending ||
+    changeName.isPending ||
+    changeCapacity.isPending ||
+    deleteTable.isPending;
+
   const handleMakeLeader = (personId: string) => {
     // No confirmation in admin mode
     assignLeader.mutate({ tableId, personId });
@@ -74,6 +81,7 @@ const StagingTableCard = ({
         isChangingName={changeName.isPending}
         isChangingCapacity={changeCapacity.isPending}
         isDeleting={deleteTable.isPending}
+        isMutating={isMutating}
         isFetching={isFetching}
       />
 

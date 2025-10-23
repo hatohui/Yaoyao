@@ -45,8 +45,13 @@ const PeopleList = ({
   isRemovingLeader = false,
   isDeleting = false,
 }: PeopleListProps) => {
+  const isMutating = isAssigningLeader || isRemovingLeader || isDeleting;
+
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 relative">
+      {isMutating && (
+        <div className="absolute inset-0 bg-white/50 dark:bg-slate-800/50 backdrop-blur-[2px] z-10 rounded-lg pointer-events-none" />
+      )}
       {people.map((person) => {
         const isLeader = person.id === tableLeaderId;
         return (

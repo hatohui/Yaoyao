@@ -4,8 +4,8 @@ import { useTranslations } from "next-intl";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 
 type PeopleInTableHeaderProps = {
-  currentCount: number;
-  capacity: number;
+  currentCount: number | undefined;
+  capacity: number | undefined;
   isFull: boolean;
   isCollapsed: boolean;
   isRefetching: boolean;
@@ -26,8 +26,10 @@ const PeopleInTableHeader = ({
 }: PeopleInTableHeaderProps) => {
   const t = useTranslations("tables");
   const occupancyPercentage =
-    capacity > 0 ? (currentCount / capacity) * 100 : 0;
-  
+    capacity && currentCount !== undefined
+      ? (currentCount / capacity) * 100
+      : 0;
+
   const showLoadingState = isLoading || isMutating || isRefetching;
 
   return (
@@ -38,11 +40,11 @@ const PeopleInTableHeader = ({
       <div className="flex items-center justify-between">
         <h2
           className={`text-sm font-semibold text-white flex items-center gap-1.5 ${
-            isRefetching ? "animate-pulse" : ""
+            showLoadingState ? "animate-pulse" : ""
           }`}
         >
           {t("partyMembers")}
-          {isFull && (
+          {isFull && !showLoadingState && (
             <span className="ml-1 px-1.5 py-0.5 text-xs font-semibold bg-red-500 text-white rounded">
               {t("full")}
             </span>
@@ -51,14 +53,22 @@ const PeopleInTableHeader = ({
         <div className="flex items-center gap-2">
           <div
             className={`text-white text-sm ${
-              isRefetching ? "animate-pulse" : ""
+              showLoadingState ? "animate-pulse" : ""
             }`}
           >
-            {isLoading ? (
+            {isLoading ||
+            capacity === undefined ||
+            currentCount === undefined ? (
               <div className="flex items-center gap-1">
                 <div className="h-4 w-6 bg-white/20 rounded animate-pulse" />
                 <span className="opacity-90">/</span>
                 <div className="h-4 w-6 bg-white/20 rounded animate-pulse" />
+              </div>
+            ) : isMutating || isRefetching ? (
+              <div className="flex items-center gap-1">
+                <span className="font-bold animate-pulse">{currentCount}</span>
+                <span className="opacity-90">/</span>
+                <span className="animate-pulse">{capacity}</span>
               </div>
             ) : (
               <>
@@ -78,7 +88,9 @@ const PeopleInTableHeader = ({
         <div className="w-full bg-darkest/50 dark:bg-slate-950/50 rounded-full h-1.5 overflow-hidden">
           <div
             className={`h-full transition-all duration-300 ${
-              isFull
+              showLoadingState
+                ? "bg-main animate-pulse"
+                : isFull
                 ? "bg-red-400"
                 : occupancyPercentage > 75
                 ? "bg-yellow-400"

@@ -14,8 +14,9 @@ const TableCard = ({ table, buildUrlWithParams }: TableCardProps) => {
   const t = useTranslations("tables");
   const [isNavigating, setIsNavigating] = useState(false);
 
-  const peopleCount = table.peopleCount || 0;
+  const peopleCount = table.peopleCount ?? 0;
   const isFull = peopleCount >= table.capacity;
+  const isLoadingCount = table.peopleCount === undefined;
 
   const handleClick = () => {
     setIsNavigating(true);
@@ -81,9 +82,17 @@ const TableCard = ({ table, buildUrlWithParams }: TableCardProps) => {
               />
               <span>
                 {t("capacity")}:{" "}
-                <span className="font-semibold text-slate-900 dark:text-slate-100">
-                  {peopleCount}/{table.capacity}
-                </span>
+                {isLoadingCount ? (
+                  <span className="inline-flex items-center gap-1">
+                    <span className="inline-block h-4 w-6 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
+                    <span>/</span>
+                    <span className="inline-block h-4 w-6 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
+                  </span>
+                ) : (
+                  <span className="font-semibold text-slate-900 dark:text-slate-100">
+                    {peopleCount}/{table.capacity}
+                  </span>
+                )}
               </span>
             </div>
 
