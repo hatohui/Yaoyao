@@ -1,40 +1,33 @@
 "use client";
-import axios from "@/common/axios";
-import { GetTablesWithPeopleResponse } from "@/types/api/table/GET";
+import useTables from "./useTables";
 import { TABLE_PAGINATION_SIZE } from "@/config/app";
-import { useQuery } from "@tanstack/react-query";
 
 type UseTablesWithPeopleParams = {
   isStaging?: boolean;
   search?: string;
   page?: number;
   count?: number;
+  direction?: "asc" | "desc";
 };
 
-type TablesWithPeoplePaginatedResponse = {
-  tables: GetTablesWithPeopleResponse[];
-  pagination: {
-    page: number;
-    count: number;
-    total: number;
-    totalPages: number;
-  };
-};
-
+/**
+ * @deprecated This hook is now just a wrapper around useTables with withPeople: true.
+ * Consider using useTables directly with the withPeople parameter.
+ */
 const useTablesWithPeople = ({
   isStaging = false,
   search,
   page = 1,
   count = TABLE_PAGINATION_SIZE,
+  direction,
 }: UseTablesWithPeopleParams = {}) => {
-  return useQuery<TablesWithPeoplePaginatedResponse, Error>({
-    queryKey: ["tables", isStaging, search, page, count],
-    queryFn: () =>
-      axios
-        .get<TablesWithPeoplePaginatedResponse>("/tables", {
-          params: { people: true, isStaging, search, page, count },
-        })
-        .then((res) => res.data),
+  return useTables({
+    page,
+    count,
+    search,
+    isStaging,
+    withPeople: true,
+    direction,
   });
 };
 

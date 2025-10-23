@@ -24,7 +24,8 @@
     "paid": "Paid",
     "unpaid": "Unpaid",
     "copied": "Copied!",
-    "landingSubtitle": "Website created by <hatoLink>Hato</hatoLink> with a neck bite mark"
+    "landingSubtitle": "Website created by <hatoLink>Hato</hatoLink> with a neck bite mark",
+    "noSort": "No sort"
   },
   "success": {
     "success": "Operation completed successfully!",

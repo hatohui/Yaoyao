@@ -8,6 +8,7 @@ import { GetTablesWithPeopleResponse } from "@/types/api/table/GET";
 import useTableMutation from "@/hooks/table/useTableMutation";
 import DashboardTableCard from "./DashboardTableCard";
 import AddTableCard from "./AddTableCard";
+import SortButton from "./SortButton";
 
 type TablesNormalViewProps = {
   tables?: GetTablesWithPeopleResponse[];
@@ -18,18 +19,40 @@ type TablesNormalViewProps = {
     totalPages: number;
   };
   onPageChange?: (page: number) => void;
+  sortDirection?: "asc" | "desc";
+  onSortChange?: (direction: "asc" | "desc" | undefined) => void;
 };
 
 const TablesNormalView = ({
   tables,
   pagination,
   onPageChange,
+  sortDirection: externalSortDirection,
+  onSortChange,
 }: TablesNormalViewProps) => {
   const t = useTranslations("tables");
   const cardsRef = useCardStaggerAnimation();
   const { createTable } = useTableMutation();
   const [isCreating, setIsCreating] = useState(false);
   const [newTableName, setNewTableName] = useState("");
+
+  const isSorted = !!externalSortDirection;
+  const sortDirection = externalSortDirection || "asc";
+
+  const handleSort = () => {
+    if (!onSortChange) return;
+
+    if (!isSorted) {
+      onSortChange("asc");
+      return;
+    }
+
+    if (isSorted && sortDirection === "asc") {
+      onSortChange("desc");
+    } else if (sortDirection === "desc") {
+      onSortChange(undefined);
+    }
+  };
 
   const isLastPage = pagination
     ? pagination.page >= pagination.totalPages
@@ -112,10 +135,18 @@ const TablesNormalView = ({
   return (
     <>
       {/* Table count */}
-      <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-        {pagination?.total || tables.length}{" "}
-        {(pagination?.total || tables.length) === 1 ? "table" : "tables"}
-      </p>
+
+      <div className="flex w-full items-center justify-between mb-4">
+        <p className="text-sm text-slate-600 dark:text-slate-400">
+          {pagination?.total || tables.length}{" "}
+          {(pagination?.total || tables.length) === 1 ? "table" : "tables"}
+        </p>
+        <SortButton
+          isSorted={isSorted}
+          direction={sortDirection}
+          handleSort={handleSort}
+        />
+      </div>
 
       <div
         ref={cardsRef}

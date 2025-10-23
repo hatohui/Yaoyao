@@ -1,5 +1,9 @@
 import Status from "@/common/status";
-import { addPeopleToTable, getPeopleInTable } from "@/repositories/table-repo";
+import {
+  addPeopleToTable,
+  getPeopleInTable,
+  getTableById,
+} from "@/repositories/table-repo";
 import { PostPeopleRequest } from "@/types/api/people/POST";
 import { isValidId } from "@/utils/validation/idValidation";
 import { NextApiHandler } from "next";
@@ -24,6 +28,12 @@ const handler: NextApiHandler = async (req, res) => {
 
       if (!name) {
         return BadRequest("Name is required");
+      }
+
+      const tableToAdd = await getTableById(tableId);
+
+      if (!tableToAdd || tableToAdd.capacity <= tableToAdd._count.people) {
+        return BadRequest("Table is full");
       }
 
       const newPerson = await addPeopleToTable(tableId, name);

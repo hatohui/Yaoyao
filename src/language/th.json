@@ -32,7 +32,8 @@
     "success": "สำเร็จ",
     "paid": "ชำระเงินแล้ว",
     "unpaid": "ยังไม่ได้ชำระเงิน",
-    "landingSubtitle": "เว็บไซต์สร้างโดย <hatoLink>Hato</hatoLink> พร้อมรอยกัดที่คอ"
+    "landingSubtitle": "เว็บไซต์สร้างโดย <hatoLink>Hato</hatoLink> พร้อมรอยกัดที่คอ",
+    "noSort": "ไม่เรียง"
   },
   "success": {
     "success": "ดำเนินการสำเร็จ!",

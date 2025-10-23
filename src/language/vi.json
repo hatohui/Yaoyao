@@ -33,7 +33,8 @@
     "success": "Thành công",
     "paid": "Đã thanh toán",
     "unpaid": "Chưa thanh toán",
-    "landingSubtitle": "Website được tạo bởi <hatoLink>Hato</hatoLink> với dấu răng trên cổ"
+    "landingSubtitle": "Website được tạo bởi <hatoLink>Hato</hatoLink> với dấu răng trên cổ",
+    "noSort": "Không sắp xếp"
   },
   "success": {
     "success": "Hoạt động hoàn thành thành công!",

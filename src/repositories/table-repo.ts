@@ -7,7 +7,8 @@ const getTables = async (
   page: number = 1,
   count: number = 12,
   search?: string,
-  isStaging: boolean = false
+  isStaging: boolean = false,
+  direction?: "asc" | "desc"
 ) => {
   const skip = (page - 1) * count;
 
@@ -30,6 +31,7 @@ const getTables = async (
       where,
       skip,
       take: count,
+      orderBy: direction ? { name: direction } : undefined,
       include: {
         tableLeader: true,
         orders: {
@@ -54,11 +56,14 @@ const getTables = async (
   return { tables, total };
 };
 
+export type GetTables = Awaited<ReturnType<typeof getTables>>;
+
 const getTablesWithPeople = async (
   isStaging: boolean = false,
   search?: string,
   page: number = 1,
-  count: number = 12
+  count: number = 12,
+  direction?: "asc" | "desc"
 ) => {
   const skip = (page - 1) * count;
 
@@ -88,6 +93,7 @@ const getTablesWithPeople = async (
       where,
       skip,
       take: count,
+      orderBy: direction ? { name: direction } : undefined,
       include: {
         tableLeader: true,
         people: true,
@@ -99,10 +105,23 @@ const getTablesWithPeople = async (
   return { tables, total };
 };
 
-const getTableById = async (id: string): Promise<Table | null> => {
+export type GetTablesWithPeople = Awaited<
+  ReturnType<typeof getTablesWithPeople>
+>;
+
+const getTableById = async (
+  id: string
+): Promise<(Table & { _count: { people: number } }) | null> => {
   return await prisma.table.findUnique({
     where: { id },
-    include: { tableLeader: true },
+    include: {
+      tableLeader: true,
+      _count: {
+        select: {
+          people: true,
+        },
+      },
+    },
   });
 };
 
@@ -210,7 +229,8 @@ const createNewTable = async (data: PostTableRequest): Promise<Table> => {
 const getStagingTables = async (
   page: number = 1,
   count: number = 12,
-  search?: string
+  search?: string,
+  direction?: "asc" | "desc"
 ) => {
   const skip = (page - 1) * count;
 
@@ -233,6 +253,7 @@ const getStagingTables = async (
       where,
       skip,
       take: count,
+      orderBy: direction ? { name: direction } : undefined,
       include: {
         tableLeader: true,
         people: true, // Include people

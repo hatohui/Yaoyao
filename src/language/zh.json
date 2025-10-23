@@ -32,7 +32,8 @@
     "success": "成功",
     "paid": "已支付",
     "unpaid": "未支付",
-    "landingSubtitle": "网站由 <hatoLink>Hato</hatoLink> 创建，并带有脖子上的咬痕"
+    "landingSubtitle": "网站由 <hatoLink>Hato</hatoLink> 创建，并带有脖子上的咬痕",
+    "noSort": "不排序"
   },
   "success": {
     "success": "操作成功完成！",

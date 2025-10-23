@@ -26,6 +26,10 @@ const DashboardTablesPage = () => {
     return false;
   });
 
+  const [sortDirection, setSortDirection] = useState<
+    "asc" | "desc" | undefined
+  >(undefined);
+
   const { currentPage, goToPage, resetPage } = usePagination();
 
   // Persist isStaging to localStorage whenever it changes
@@ -37,6 +41,7 @@ const DashboardTablesPage = () => {
     isStaging: false,
     search: searchQuery,
     page: currentPage,
+    direction: sortDirection,
   });
 
   const pageRef = usePageAnimation();
@@ -76,6 +81,8 @@ const DashboardTablesPage = () => {
                 currentPage={currentPage}
                 onPageChange={goToPage}
                 onSwitchToProduction={() => setIsStaging(false)}
+                sortDirection={sortDirection}
+                onSortChange={setSortDirection}
               />
             ) : (
               <>
@@ -88,6 +95,8 @@ const DashboardTablesPage = () => {
                     tables={data?.tables}
                     pagination={data?.pagination}
                     onPageChange={goToPage}
+                    sortDirection={sortDirection}
+                    onSortChange={setSortDirection}
                   />
                 )}
               </>

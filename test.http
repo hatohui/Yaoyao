@@ -26,3 +26,11 @@ Content-Type: application/json
   "tableId": "f5c7f595-2ea6-421c-9aff-1cf5c4669ab8",
   "content": "Hello world"
 }
+
+###
+POST http://localhost:3000/api/tables/069f9ce0-5a68-4049-8049-230de623ae63/people
+Content-Type: application/json
+
+{
+  "name": "Alice"
+}

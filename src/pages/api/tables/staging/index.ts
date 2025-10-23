@@ -10,7 +10,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   switch (method) {
     case "GET":
-      const { page, count, search } = req.query;
+      const { page, count, search, direction } = req.query;
 
       const pageNum = page ? parseInt(page as string, 10) : 1;
       const countNum = count
@@ -24,7 +24,8 @@ const handler: NextApiHandler = async (req, res) => {
       const result = await getStagingTables(
         pageNum,
         countNum,
-        search as string
+        search as string,
+        direction as "asc" | "desc" | undefined
       );
 
       const totalPages = Math.ceil(result.total / countNum);
