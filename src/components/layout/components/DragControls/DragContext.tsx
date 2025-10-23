@@ -1,6 +1,13 @@
 "use client";
 import React, { createContext, useContext, useRef, useCallback } from "react";
 
+/**
+ * Information stored for each draggable object in the container registry.
+ *
+ * `ref` is the DOM ref to the element, `width`/`height` are used for
+ * bounding/collision checks and `hasCollision` flags whether the object
+ * participates in collision detection.
+ */
 export type DragObjectInfo = {
   id: string;
   ref: React.RefObject<HTMLDivElement | null>;
@@ -9,6 +16,14 @@ export type DragObjectInfo = {
   hasCollision: boolean;
 };
 
+/**
+ * Context provided to DragObjects and helpers inside a DragZone.
+ *
+ * - `containerRef` should be attached to the DOM element that acts as the
+ *   draggable bounds.
+ * - `registerObject` / `unregisterObject` manage the registry used for
+ *   collision detection.
+ */
 type DragContainerContextType = {
   containerRef: React.RefObject<HTMLDivElement | null>;
   containerId: string;

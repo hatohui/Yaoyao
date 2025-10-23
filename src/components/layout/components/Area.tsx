@@ -1,6 +1,6 @@
 import React from "react";
 
-const DragBox = ({
+const Area = ({
   full = false,
   height,
   width,
@@ -59,4 +59,4 @@ const DragBox = ({
   return <div className={buildClassName()} style={getStyle()}></div>;
 };
 
-export default DragBox;
+export default Area;

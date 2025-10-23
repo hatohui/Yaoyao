@@ -7,12 +7,32 @@ import { useDragContainer } from "./DragContext";
 
 gsap.registerPlugin(useGSAP, Draggable);
 
+/**
+ * Internal state used by the DragObject component.
+ *
+ * x/y are pixel coordinates in the DragZone's coordinate space. When
+ * `DragZone.enableResponsiveScaling` is active those coordinates are defined
+ * relative to the `width`/`height` base size and the whole content is scaled
+ * using CSS transform to fit the real container.
+ */
 export type DragObjectState = {
   x: number;
   y: number;
   enabled: boolean;
 };
 
+/**
+ * Props for DragObject
+ *
+ * - `x` / `y` are pixel coordinates inside the DragZone base coordinate
+ *   system. If the DragZone scales the entire content these values should be
+ *   provided relative to the DragZone `width` / `height` and will visually
+ *   scale.
+ * - `width` / `height` define the object's size and are used for optional
+ *   collision detection.
+ * - `onPositionChange` receives the updated coordinates after drag. These
+ *   values are in the same coordinate system as the incoming `x`/`y`.
+ */
 type DragObjectProps = {
   id: string;
   x: number;
