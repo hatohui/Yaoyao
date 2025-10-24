@@ -1,6 +1,6 @@
 {
   "common": {
-    "welcome": "ยินดีต้อนรับสู่สถานที่รับประทานอาหารค่ำของ Yao Yao!",
+    "welcome": "ยินดีต้อนรับสู่มื้อค่ำของ Yao Yao!",
     "loading": "กำลังโหลด...",
     "confirmRemove": "คุณแน่ใจหรือไม่ว่าต้องการนำคนนี้ออกจากโต๊ะ?",
     "confirmMakeLeader": "คุณแน่ใจหรือไม่ว่าต้องการให้คนนี้เป็นหัวหน้าประจำโต๊ะ?",
@@ -32,7 +32,7 @@
     "success": "สำเร็จ",
     "paid": "ชำระเงินแล้ว",
     "unpaid": "ยังไม่ได้ชำระเงิน",
-    "landingSubtitle": "เว็บไซต์สร้างโดย <hatoLink>Hato</hatoLink> พร้อมรอยกัดที่คอ",
+    "landingSubtitle": "เว็บไซต์สร้างโดย <hatoLink>Hatohui</hatoLink>",
     "noSort": "ไม่เรียง"
   },
   "success": {

@@ -1,6 +1,6 @@
 {
   "common": {
-    "welcome": "欢迎来到 Yao Yao 的晚餐地点！",
+    "welcome": "欢迎来到 Yao Yao 的晚餐！",
     "loading": "加载中...",
     "save": "保存",
     "send": "发送",
@@ -32,7 +32,7 @@
     "success": "成功",
     "paid": "已支付",
     "unpaid": "未支付",
-    "landingSubtitle": "网站由 <hatoLink>Hato</hatoLink> 创建，并带有脖子上的咬痕",
+    "landingSubtitle": "网站由 <hatoLink>Hatohui</hatoLink> 创建",
     "noSort": "不排序"
   },
   "success": {

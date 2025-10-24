@@ -1,6 +1,6 @@
 {
   "common": {
-    "welcome": "Chào mừng đến với địa điểm ăn tối của Yao Yao!",
+    "welcome": "Chào mừng đến với bữa tối của Yao Yao!",
     "loading": "Đang tải...",
     "makeLeaderPrompt": "Đặt người này làm trưởng bàn",
     "confirmRemove": "Bạn có chắc chắn muốn xóa người này khỏi bàn không?",
@@ -33,7 +33,7 @@
     "success": "Thành công",
     "paid": "Đã thanh toán",
     "unpaid": "Chưa thanh toán",
-    "landingSubtitle": "Website được tạo bởi <hatoLink>Hato</hatoLink> với dấu răng trên cổ",
+    "landingSubtitle": "Website được tạo bởi <hatoLink>Hatohui</hatoLink>",
     "noSort": "Không sắp xếp"
   },
   "success": {

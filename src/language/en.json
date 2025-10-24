@@ -1,6 +1,6 @@
 {
   "common": {
-    "welcome": "Welcome to Yao Yao's dinner place!",
+    "welcome": "Welcome to Yao Yao's dinner",
     "loading": "Loading...",
     "save": "Save",
     "send": "Send",
@@ -24,7 +24,7 @@
     "paid": "Paid",
     "unpaid": "Unpaid",
     "copied": "Copied!",
-    "landingSubtitle": "Website created by <hatoLink>Hato</hatoLink> with a neck bite mark",
+    "landingSubtitle": "Website created by <hatoLink>Hatohui</hatoLink>",
     "noSort": "No sort"
   },
   "success": {
