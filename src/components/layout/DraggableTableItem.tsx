@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
-import { Table } from "@prisma/client";
+import { GetTablesResponse } from "@/types/api/table/GET";
 import { FiGrid, FiUsers } from "react-icons/fi";
 
 type DraggableTableItemProps = {
-  table: Table;
+  table: GetTablesResponse;
   onDragStart: (tableId: string) => void;
   onDragEnd: () => void;
 };
@@ -14,12 +14,22 @@ const DraggableTableItem = ({
   onDragStart,
   onDragEnd,
 }: DraggableTableItemProps) => {
+  const [isDragging, setIsDragging] = React.useState(false);
+
   return (
     <div
       draggable
-      onDragStart={() => onDragStart(table.id)}
-      onDragEnd={onDragEnd}
-      className="p-3 mb-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg cursor-move hover:border-main hover:shadow-md transition-all"
+      onDragStart={() => {
+        setIsDragging(true);
+        onDragStart(table.id);
+      }}
+      onDragEnd={() => {
+        setIsDragging(false);
+        onDragEnd();
+      }}
+      className={`p-3 mb-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg cursor-move hover:border-main hover:shadow-md transition-all ${
+        isDragging ? "opacity-50 scale-95" : "opacity-100"
+      }`}
     >
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 bg-main/10 dark:bg-main/20 rounded-lg flex items-center justify-center">

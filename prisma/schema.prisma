@@ -148,6 +148,7 @@ model Layout {
   positionY Float
   zone      Int     @default(1)
   tableId   String? @db.Uuid @unique
+  isLocked  Boolean @default(false)
 
   table Table? @relation(fields: [tableId], references: [id], onDelete: SetNull)
   

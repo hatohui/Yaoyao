@@ -5,7 +5,12 @@ import { PutLayoutRequest } from "@/types/api/layout/PUT";
 const getLayouts = async () => {
   return await prisma.layout.findMany({
     include: {
-      table: true,
+      table: {
+        include: {
+          tableLink1: true,
+          tableLink2: true,
+        },
+      },
     },
   });
 };

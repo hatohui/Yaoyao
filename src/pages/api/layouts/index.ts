@@ -28,13 +28,15 @@ const handler: NextApiHandler = async (req, res) => {
 
         const validation = layoutSchema.parse(request);
 
-        if (!validation || !validation.tableId) {
+        if (!validation) {
           return BadRequest("Invalid layout data");
         }
 
-        const existing = await getLayoutByTableId(validation.tableId);
-
-        if (existing) return BadRequest("Layout for table already exists");
+        // Only check for existing layout if tableId is provided
+        if (validation.tableId) {
+          const existing = await getLayoutByTableId(validation.tableId);
+          if (existing) return BadRequest("Layout for table already exists");
+        }
 
         const id = await getNewLayoutId();
 

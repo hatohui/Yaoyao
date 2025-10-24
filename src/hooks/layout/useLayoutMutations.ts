@@ -1,5 +1,6 @@
 import axios from "@/common/axios";
 import { PutLayoutRequest } from "@/types/api/layout/PUT";
+import { PostLayoutRequest } from "@/types/api/layout/POST";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const useLayoutMutations = () => {
@@ -83,12 +84,22 @@ const useLayoutMutations = () => {
     },
   });
 
+  const createSlot = useMutation({
+    mutationFn: async (data: PostLayoutRequest) => {
+      return axios.post("/layouts", data).then((res) => res.data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["layouts"] });
+    },
+  });
+
   return {
     updateLayout,
     assignTableToSlot,
     unassignTable,
     deleteSlot,
     swapTables,
+    createSlot,
   };
 };
 
