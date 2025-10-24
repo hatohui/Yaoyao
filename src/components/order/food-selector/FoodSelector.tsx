@@ -14,6 +14,7 @@ import FoodCardSelector from "./FoodCardSelector";
 import CartPreview from "../cart/CartPreview";
 import FoodSelectorSearch from "./FoodSelectorSearch";
 import VariantSelector from "./VariantSelector";
+import Pagination from "../../common/Pagination";
 
 type FoodSelectorProps = {
   tableId: string;
@@ -28,6 +29,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
   const [selectedFood, setSelectedFood] = useState<string | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<number | null>(null);
   const [quantityToAdd, setQuantityToAdd] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const modalRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -35,6 +37,9 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
   const { data: categories } = useCategories();
   const { data: foodsData, isLoading } = useFoods({
     category: selectedCategory,
+    page: currentPage,
+    search: debouncedSearch,
+    count: 9,
   });
   const addOrderMutation = useAddOrder(tableId);
 
@@ -52,6 +57,11 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
   const foods = foodsData?.foods || [];
   const filteredFoods = filterBySearch(foods, debouncedSearch, ["name"]);
   const selectedFoodData = foods.find((f) => f.id === selectedFood);
+
+  // Reset page when category or search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, debouncedSearch]);
 
   // Animate modal open/close
   useEffect(() => {
@@ -222,34 +232,44 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                     </span>
                   </div>
                 ) : filteredFoods && filteredFoods.length > 0 ? (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-2 md:gap-3">
-                    {filteredFoods.map((food) => {
-                      const inCartCount =
-                        food.variants?.reduce((sum, variant) => {
-                          return sum + getCartQuantity(food.id, variant.id);
-                        }, 0) || 0;
+                  <>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-2 md:gap-3">
+                      {filteredFoods.map((food) => {
+                        const inCartCount =
+                          food.variants?.reduce((sum, variant) => {
+                            return sum + getCartQuantity(food.id, variant.id);
+                          }, 0) || 0;
 
-                      return (
-                        <FoodCardSelector
-                          key={food.id}
-                          food={food}
-                          isSelected={selectedFood === food.id}
-                          inCartCount={inCartCount}
-                          onSelect={() => {
-                            if (!food.available) return;
-                            setSelectedFood(food.id);
-                            setSelectedVariant(
-                              food.variants && food.variants.length > 0
-                                ? 0
-                                : null
-                            );
-                          }}
-                          unavailableText={tMenu("unavailable")}
-                          seasonalText={tMenu("seasonal")}
-                        />
-                      );
-                    })}
-                  </div>
+                        return (
+                          <FoodCardSelector
+                            key={food.id}
+                            food={food}
+                            isSelected={selectedFood === food.id}
+                            inCartCount={inCartCount}
+                            onSelect={() => {
+                              if (!food.available) return;
+                              setSelectedFood(food.id);
+                              setSelectedVariant(
+                                food.variants && food.variants.length > 0
+                                  ? 0
+                                  : null
+                              );
+                            }}
+                            unavailableText={tMenu("unavailable")}
+                            seasonalText={tMenu("seasonal")}
+                          />
+                        );
+                      })}
+                    </div>
+                    {foodsData && foodsData.pagination.totalPages > 1 && (
+                      <Pagination
+                        currentPage={foodsData.pagination.page}
+                        totalPages={foodsData.pagination.totalPages}
+                        onPageChange={setCurrentPage}
+                        className="mt-4"
+                      />
+                    )}
+                  </>
                 ) : (
                   <div className="text-center py-12">
                     <p className="text-slate-600 dark:text-slate-400">
