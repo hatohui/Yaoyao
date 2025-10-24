@@ -49,20 +49,20 @@ const LayoutSidebar = ({
 
   return (
     <div
-      className={`w-80 bg-slate-50 dark:bg-slate-900 border-l border-slate-200 dark:border-slate-700 flex flex-col transition-all duration-300 ${
-        isDragOver ? "bg-blue-50 dark:bg-blue-900/20 border-blue-400" : ""
+      className={`w-80 h-full bg-slate-800 dark:bg-slate-900 border-l border-slate-700 dark:border-slate-700 flex flex-col transition-all duration-300 ${
+        isDragOver ? "bg-blue-900/30 dark:bg-blue-900/20 border-blue-400" : ""
       }`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <div className="p-4 border-b border-slate-200 dark:border-slate-700">
+      <div className="p-4 border-b border-slate-700 dark:border-slate-700">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+            <h2 className="text-lg font-bold text-slate-100 dark:text-slate-100">
               Tables
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            <p className="text-xs text-slate-400 dark:text-slate-400 mt-1">
               Drag tables to assign them to slots
             </p>
           </div>
@@ -71,10 +71,10 @@ const LayoutSidebar = ({
         {/* Add Mode Button */}
         <button
           onClick={onToggleAddMode}
-          className={`w-full px-4 py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 ${
+          className={`w-full px-4 py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 border ${
             isAddMode
-              ? "bg-green-600 hover:bg-green-700 text-white"
-              : "bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600"
+              ? "bg-red-600 hover:bg-red-700 text-white border-red-600"
+              : "bg-main hover:bg-main/90 text-white border-main"
           }`}
           title={isAddMode ? "Exit Add Mode" : "Enter Add Mode"}
         >
@@ -107,8 +107,8 @@ const LayoutSidebar = ({
       </div>
 
       {isDragOver && (
-        <div className="p-4 bg-blue-100 dark:bg-blue-900/30 border-b border-blue-400">
-          <p className="text-sm text-blue-700 dark:text-blue-300 font-medium">
+        <div className="p-4 bg-blue-900/30 dark:bg-blue-900/30 border-b border-blue-400">
+          <p className="text-sm text-blue-300 dark:text-blue-300 font-medium">
             Drop here to unassign table
           </p>
         </div>
@@ -155,22 +155,13 @@ const LayoutSidebar = ({
             </div>
           ) : (
             assignedTables.map((slot) => (
-              <div
+              <DraggableTableItem
                 key={slot.id}
-                className="p-3 mb-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg"
-              >
-                <div className="flex items-center gap-2">
-                  <FiCheckSquare className="w-4 h-4 text-green-600" />
-                  <div>
-                    <p className="font-semibold text-sm text-slate-900 dark:text-slate-100">
-                      {slot.table.name}
-                    </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
-                      Slot #{slot.id}
-                    </p>
-                  </div>
-                </div>
-              </div>
+                table={slot.table}
+                onDragStart={(id) => onDragStart(id, "assigned")}
+                onDragEnd={onDragEnd}
+                slotInfo={`Slot #${slot.id}`}
+              />
             ))
           )}
         </CollapsibleSection>

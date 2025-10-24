@@ -1,18 +1,20 @@
 "use client";
 import React from "react";
 import { GetTablesResponse } from "@/types/api/table/GET";
-import { FiGrid, FiUsers } from "react-icons/fi";
+import { FiGrid, FiUsers, FiCheckSquare } from "react-icons/fi";
 
 type DraggableTableItemProps = {
-  table: GetTablesResponse;
+  table: GetTablesResponse | { name: string; id: string; capacity: number };
   onDragStart: (tableId: string) => void;
   onDragEnd: () => void;
+  slotInfo?: string;
 };
 
 const DraggableTableItem = ({
   table,
   onDragStart,
   onDragEnd,
+  slotInfo,
 }: DraggableTableItemProps) => {
   const [isDragging, setIsDragging] = React.useState(false);
 
@@ -33,7 +35,11 @@ const DraggableTableItem = ({
     >
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 bg-main/10 dark:bg-main/20 rounded-lg flex items-center justify-center">
-          <FiGrid className="w-5 h-5 text-main" />
+          {slotInfo ? (
+            <FiCheckSquare className="w-5 h-5 text-green-600" />
+          ) : (
+            <FiGrid className="w-5 h-5 text-main" />
+          )}
         </div>
         <div className="flex-1">
           <p className="font-semibold text-sm text-slate-900 dark:text-slate-100">
@@ -43,6 +49,11 @@ const DraggableTableItem = ({
             <FiUsers className="w-3 h-3" />
             <span>Capacity: {table.capacity}</span>
           </div>
+          {slotInfo && (
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              {slotInfo}
+            </p>
+          )}
         </div>
       </div>
     </div>

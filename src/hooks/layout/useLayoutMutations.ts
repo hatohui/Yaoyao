@@ -69,7 +69,37 @@ const useLayoutMutations = () => {
         .put(`/layouts/${slotId}`, { tableId })
         .then((res) => res.data);
     },
-    onSuccess: () => {
+    // Optimistic update
+    onMutate: async ({ slotId, tableId }) => {
+      await queryClient.cancelQueries({ queryKey: ["layouts"] });
+      await queryClient.cancelQueries({ queryKey: ["tables", "assigned"] });
+      await queryClient.cancelQueries({ queryKey: ["tables", "unassigned"] });
+
+      const previousLayouts = queryClient.getQueryData<TableObject[]>([
+        "layouts",
+      ]);
+
+      // Optimistically update the slot with the table assignment
+      if (previousLayouts) {
+        queryClient.setQueryData<TableObject[]>(["layouts"], (old) => {
+          if (!old) return old;
+          return old.map((slot) => {
+            if (slot.id === parseInt(slotId)) {
+              return { ...slot, tableId };
+            }
+            return slot;
+          });
+        });
+      }
+
+      return { previousLayouts };
+    },
+    onError: (_err, _variables, context) => {
+      if (context?.previousLayouts) {
+        queryClient.setQueryData(["layouts"], context.previousLayouts);
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["layouts"] });
       queryClient.invalidateQueries({ queryKey: ["tables", "assigned"] });
       queryClient.invalidateQueries({ queryKey: ["tables", "unassigned"] });
@@ -164,7 +194,45 @@ const useLayoutMutations = () => {
         .post("/layouts/swap", { slot1Id, slot2Id })
         .then((res) => res.data);
     },
-    onSuccess: () => {
+    // Optimistic update
+    onMutate: async ({ slot1Id, slot2Id }) => {
+      await queryClient.cancelQueries({ queryKey: ["layouts"] });
+      await queryClient.cancelQueries({ queryKey: ["tables", "assigned"] });
+
+      const previousLayouts = queryClient.getQueryData<TableObject[]>([
+        "layouts",
+      ]);
+
+      // Optimistically swap the tables between slots
+      if (previousLayouts) {
+        queryClient.setQueryData<TableObject[]>(["layouts"], (old) => {
+          if (!old) return old;
+
+          const slot1 = old.find((s) => s.id === parseInt(slot1Id));
+          const slot2 = old.find((s) => s.id === parseInt(slot2Id));
+
+          if (!slot1 || !slot2) return old;
+
+          return old.map((slot) => {
+            if (slot.id === parseInt(slot1Id)) {
+              return { ...slot, tableId: slot2.tableId, table: slot2.table };
+            }
+            if (slot.id === parseInt(slot2Id)) {
+              return { ...slot, tableId: slot1.tableId, table: slot1.table };
+            }
+            return slot;
+          });
+        });
+      }
+
+      return { previousLayouts };
+    },
+    onError: (_err, _variables, context) => {
+      if (context?.previousLayouts) {
+        queryClient.setQueryData(["layouts"], context.previousLayouts);
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["layouts"] });
       queryClient.invalidateQueries({ queryKey: ["tables", "assigned"] });
     },

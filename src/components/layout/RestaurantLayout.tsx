@@ -62,7 +62,7 @@ const RestaurantLayout = () => {
   }
 
   return (
-    <div className="flex h-screen bg-slate-50 dark:bg-slate-900 overflow-hidden relative">
+    <div className="flex h-screen bg-slate-50 dark:bg-slate-900 overflow-hidden">
       <LayoutMobileControls
         isMobile={isMobile}
         isSidebarOpen={isSidebarOpen}
@@ -93,7 +93,7 @@ const RestaurantLayout = () => {
       />
 
       <div
-        className={`fixed md:relative inset-y-0 right-0 z-40 transition-transform duration-300 ${
+        className={`fixed md:relative inset-y-0 right-0 z-40 h-screen transition-transform duration-300 ${
           isSidebarOpen ? "translate-x-0" : "translate-x-full md:translate-x-0"
         }`}
       >
