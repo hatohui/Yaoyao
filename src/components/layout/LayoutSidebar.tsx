@@ -7,12 +7,16 @@ import { useUnassignedTables } from "@/hooks/layout/useUnassignedTables";
 import { useAssignedTables } from "@/hooks/layout/useAssignedTables";
 
 type LayoutSidebarProps = {
+  isAddMode: boolean;
+  onToggleAddMode: () => void;
   onDragStart: (tableId: string, source: "unassigned" | "assigned") => void;
   onDragEnd: () => void;
   onUnassignDrop?: () => void;
 };
 
 const LayoutSidebar = ({
+  isAddMode,
+  onToggleAddMode,
   onDragStart,
   onDragEnd,
   onUnassignDrop,
@@ -53,12 +57,53 @@ const LayoutSidebar = ({
       onDrop={handleDrop}
     >
       <div className="p-4 border-b border-slate-200 dark:border-slate-700">
-        <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
-          Tables
-        </h2>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-          Drag tables to assign them to slots
-        </p>
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+              Tables
+            </h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              Drag tables to assign them to slots
+            </p>
+          </div>
+        </div>
+
+        {/* Add Mode Button */}
+        <button
+          onClick={onToggleAddMode}
+          className={`w-full px-4 py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 ${
+            isAddMode
+              ? "bg-green-600 hover:bg-green-700 text-white"
+              : "bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600"
+          }`}
+          title={isAddMode ? "Exit Add Mode" : "Enter Add Mode"}
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            {isAddMode ? (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            ) : (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
+            )}
+          </svg>
+          <span className="font-medium">
+            {isAddMode ? "Exit Add Mode" : "Add Slot"}
+          </span>
+        </button>
       </div>
 
       {isDragOver && (

@@ -2,9 +2,7 @@
 import React from "react";
 import "./style.css";
 import LayoutSidebar from "./LayoutSidebar";
-import LayoutInstructions from "./LayoutInstructions";
 import LayoutCanvas from "./canvas/LayoutCanvas";
-import LayoutAddModeButton from "./mutations/LayoutAddModeButton";
 import LayoutMobileControls from "./mutations/LayoutMobileControls";
 import LayoutLoadingState from "./states/LayoutLoadingState";
 import LayoutErrorState from "./states/LayoutErrorState";
@@ -17,8 +15,6 @@ import { useLayoutSlotCreation } from "@/hooks/layout/useLayoutSlotCreation";
 
 const RestaurantLayout = () => {
   const { data: slots, isLoading, isError, error } = useLayouts();
-
-  // Custom hooks for state management
   const isMobile = useMobileDetection();
   const {
     isAddMode,
@@ -49,7 +45,6 @@ const RestaurantLayout = () => {
     handleMouseLeave,
   } = useLayoutSlotCreation();
 
-  // Wrap handlers to pass isAddMode
   const handleLayoutClick = (e: React.MouseEvent<HTMLDivElement>) => {
     handleLayoutClickBase(e, isAddMode);
   };
@@ -68,8 +63,6 @@ const RestaurantLayout = () => {
 
   return (
     <div className="flex h-screen bg-slate-50 dark:bg-slate-900 overflow-hidden relative">
-      <LayoutAddModeButton isAddMode={isAddMode} onToggle={toggleAddMode} />
-
       <LayoutMobileControls
         isMobile={isMobile}
         isSidebarOpen={isSidebarOpen}
@@ -99,13 +92,14 @@ const RestaurantLayout = () => {
         onWheel={handleWheel}
       />
 
-      {/* Sidebar - Hidden on mobile unless toggled, visible on md+ */}
       <div
         className={`fixed md:relative inset-y-0 right-0 z-40 transition-transform duration-300 ${
           isSidebarOpen ? "translate-x-0" : "translate-x-full md:translate-x-0"
         }`}
       >
         <LayoutSidebar
+          isAddMode={isAddMode}
+          onToggleAddMode={toggleAddMode}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
           onUnassignDrop={handleUnassignDrop}
@@ -119,8 +113,6 @@ const RestaurantLayout = () => {
           onClick={closeSidebar}
         />
       )}
-
-      <LayoutInstructions />
     </div>
   );
 };

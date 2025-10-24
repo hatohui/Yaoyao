@@ -2,6 +2,10 @@ import { useState } from "react";
 import useLayoutMutations from "./useLayoutMutations";
 import { PostLayoutRequest } from "@/types/api/layout/POST";
 
+// DragZone base dimensions (from LayoutCanvas)
+const DRAG_ZONE_WIDTH = 1400;
+const DRAG_ZONE_HEIGHT = 700;
+
 export const useLayoutSlotCreation = () => {
   const [isCreatingSlot, setIsCreatingSlot] = useState(false);
   const [previewPosition, setPreviewPosition] = useState<{
@@ -15,28 +19,61 @@ export const useLayoutSlotCreation = () => {
     e: React.MouseEvent<HTMLDivElement>,
     isAddMode: boolean
   ) => {
-    if (isCreatingSlot) return; // Prevent creating multiple slots
-
-    // Only create slot if in add mode
-    if (!isAddMode) return;
+    // Only proceed if in add mode and not already creating
+    if (!isAddMode || isCreatingSlot) return;
 
     // Don't create if clicking on existing slots
-    if ((e.target as HTMLElement).closest("[data-slot-id]")) {
+    const target = e.target as HTMLElement;
+    if (target.closest("[data-slot-id]")) {
       return;
     }
 
-    const dragZone = e.currentTarget;
-    const rect = dragZone.getBoundingClientRect();
+    // Find the DragZone wrapper element
+    const dragZoneWrapper = e.currentTarget.querySelector(
+      '[id="layout"]'
+    ) as HTMLElement;
+    if (!dragZoneWrapper) {
+      console.error("DragZone element not found");
+      return;
+    }
 
-    // Calculate position relative to the DragZone
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    // Find the inner scaled container (the actual coordinate system)
+    const innerContainer = dragZoneWrapper.firstElementChild as HTMLElement;
+    if (!innerContainer) {
+      console.error("Inner container not found");
+      return;
+    }
 
-    // Convert to percentage for responsive positioning
-    const positionX = (x / rect.width) * 100;
-    const positionY = (y / rect.height) * 100;
+    const innerRect = innerContainer.getBoundingClientRect();
 
+    // Calculate position relative to the scaled inner container
+    const x = e.clientX - innerRect.left;
+    const y = e.clientY - innerRect.top;
+
+    const previewWidth = 160; // w-40 in pixels
+    const previewHeight = 128; // h-32 in pixels
+
+    const previewTopLeftX = x - previewWidth / 2;
+    const previewTopLeftY = y - previewHeight / 2;
+
+    const positionX = (previewTopLeftX / innerRect.width) * DRAG_ZONE_WIDTH;
+    const positionY = (previewTopLeftY / innerRect.height) * DRAG_ZONE_HEIGHT;
+
+    console.log("Creating slot at:", {
+      positionX,
+      positionY,
+      x,
+      y,
+      clickInScaled: { x, y },
+      scaledSize: { width: innerRect.width, height: innerRect.height },
+      baseSize: { width: DRAG_ZONE_WIDTH, height: DRAG_ZONE_HEIGHT },
+      scale: innerRect.width / DRAG_ZONE_WIDTH,
+    });
+
+    // Set creating state immediately to hide preview
     setIsCreatingSlot(true);
+    setPreviewPosition(null); // Clear preview while creating
+
     createSlot.mutate(
       {
         positionX,
@@ -46,10 +83,13 @@ export const useLayoutSlotCreation = () => {
       } as PostLayoutRequest,
       {
         onSettled: () => {
+          // Reset creating state after mutation completes
           setIsCreatingSlot(false);
         },
         onError: (error) => {
           console.error("Failed to create slot:", error);
+          // Still reset on error
+          setIsCreatingSlot(false);
         },
       }
     );
@@ -59,16 +99,42 @@ export const useLayoutSlotCreation = () => {
     e: React.MouseEvent<HTMLDivElement>,
     isAddMode: boolean
   ) => {
+    // Don't show preview if not in add mode or currently creating a slot
     if (!isAddMode || isCreatingSlot) {
-      setPreviewPosition(null);
+      if (previewPosition !== null) {
+        setPreviewPosition(null);
+      }
       return;
     }
 
-    const dragZone = e.currentTarget;
-    const rect = dragZone.getBoundingClientRect();
+    // Don't show preview when hovering over existing slots
+    const target = e.target as HTMLElement;
+    if (target.closest("[data-slot-id]")) {
+      if (previewPosition !== null) {
+        setPreviewPosition(null);
+      }
+      return;
+    }
 
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    // Find the DragZone wrapper element
+    const dragZoneWrapper = e.currentTarget.querySelector(
+      '[id="layout"]'
+    ) as HTMLElement;
+    if (!dragZoneWrapper) {
+      return;
+    }
+
+    // Find the inner scaled container (the actual coordinate system)
+    const innerContainer = dragZoneWrapper.firstElementChild as HTMLElement;
+    if (!innerContainer) {
+      return;
+    }
+
+    const innerRect = innerContainer.getBoundingClientRect();
+
+    // Calculate position relative to the scaled inner container
+    const x = e.clientX - innerRect.left;
+    const y = e.clientY - innerRect.top;
 
     setPreviewPosition({ x, y });
   };
