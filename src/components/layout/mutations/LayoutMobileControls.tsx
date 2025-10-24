@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 
 interface LayoutMobileControlsProps {
   isMobile: boolean;
@@ -19,12 +20,15 @@ const LayoutMobileControls: React.FC<LayoutMobileControlsProps> = ({
   onZoomOut,
   onResetZoom,
 }) => {
+  const t = useTranslations("layout");
+
   return (
     <>
       {/* Mobile Sidebar Toggle */}
       <button
         onClick={onToggleSidebar}
         className="md:hidden fixed top-20 right-4 z-50 p-3 bg-main hover:bg-main/90 text-white rounded-full shadow-lg transition-all duration-200"
+        title={t("toggleSidebar")}
       >
         <svg
           className="w-6 h-6"
@@ -56,7 +60,7 @@ const LayoutMobileControls: React.FC<LayoutMobileControlsProps> = ({
           <button
             onClick={onZoomIn}
             className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors"
-            title="Zoom In"
+            title={t("zoomIn")}
           >
             <svg
               className="w-5 h-5 text-slate-700 dark:text-slate-200"
@@ -75,14 +79,14 @@ const LayoutMobileControls: React.FC<LayoutMobileControlsProps> = ({
           <button
             onClick={onResetZoom}
             className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors text-xs font-medium text-slate-700 dark:text-slate-200"
-            title="Reset Zoom"
+            title={t("resetZoom")}
           >
             {Math.round(scale * 100)}%
           </button>
           <button
             onClick={onZoomOut}
             className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors"
-            title="Zoom Out"
+            title={t("zoomOut")}
           >
             <svg
               className="w-5 h-5 text-slate-700 dark:text-slate-200"

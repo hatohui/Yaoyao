@@ -23,10 +23,8 @@ export const useLayoutZoom = (isMobile: boolean) => {
     if (!isMobile) return;
 
     if (e.touches.length === 2) {
-      // Pinch to zoom
       setLastTouchDistance(getTouchDistance(e.touches));
     } else if (e.touches.length === 1) {
-      // Pan
       setIsPanning(true);
       setStartPan({
         x: e.touches[0].clientX - position.x,
@@ -39,8 +37,6 @@ export const useLayoutZoom = (isMobile: boolean) => {
     if (!isMobile) return;
 
     if (e.touches.length === 2) {
-      // Pinch to zoom
-      e.preventDefault();
       const distance = getTouchDistance(e.touches);
       if (lastTouchDistance > 0) {
         const delta = distance / lastTouchDistance;
@@ -48,8 +44,6 @@ export const useLayoutZoom = (isMobile: boolean) => {
       }
       setLastTouchDistance(distance);
     } else if (e.touches.length === 1 && isPanning) {
-      // Pan
-      e.preventDefault();
       setPosition({
         x: e.touches[0].clientX - startPan.x,
         y: e.touches[0].clientY - startPan.y,
@@ -64,7 +58,6 @@ export const useLayoutZoom = (isMobile: boolean) => {
 
   const handleWheel = (e: React.WheelEvent) => {
     if (e.ctrlKey) {
-      e.preventDefault();
       const delta = e.deltaY > 0 ? 0.9 : 1.1;
       setScale((prev) => Math.min(Math.max(0.5, prev * delta), 3));
     }
@@ -87,6 +80,7 @@ export const useLayoutZoom = (isMobile: boolean) => {
     scale,
     position,
     isPanning,
+    setIsPanning,
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,

@@ -1,5 +1,6 @@
 import React from "react";
 import { FiUnlock, FiX, FiTrash2 } from "react-icons/fi";
+import { useTranslations } from "next-intl";
 
 type SlotControlsProps = {
   controlsRef: React.RefObject<HTMLDivElement | null>;
@@ -21,6 +22,8 @@ const SlotControls = ({
   onUnassign,
   onDelete,
 }: SlotControlsProps) => {
+  const t = useTranslations("layout");
+
   return (
     <div
       ref={controlsRef}
@@ -34,7 +37,7 @@ const SlotControls = ({
             ? "bg-red-600 hover:bg-red-700 text-white"
             : "bg-white dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300"
         }`}
-        title={isLocked ? "Unlock" : "Lock"}
+        title={isLocked ? t("unlockSlot") : t("lockSlot")}
       >
         <FiUnlock className="w-3 h-3" />
       </button>
@@ -48,7 +51,7 @@ const SlotControls = ({
               ? "bg-slate-300 dark:bg-slate-600 cursor-not-allowed opacity-50"
               : "bg-yellow-500 hover:bg-yellow-600"
           }`}
-          title="Unassign Table"
+          title={t("unassignTable")}
         >
           <FiX className="w-3 h-3 text-white" />
         </button>
@@ -62,7 +65,7 @@ const SlotControls = ({
             ? "bg-slate-300 dark:bg-slate-600 cursor-not-allowed opacity-50"
             : "bg-red-500 hover:bg-red-600"
         }`}
-        title="Delete Slot"
+        title={t("deleteSlot")}
       >
         <FiTrash2 className="w-3 h-3 text-white" />
       </button>

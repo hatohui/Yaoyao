@@ -15,10 +15,13 @@ interface LayoutCanvasProps {
   isAddMode: boolean;
   isCreatingSlot: boolean;
   previewPosition: { x: number; y: number } | null;
+  isSlotDragging: boolean;
   onLayoutClick: (e: React.MouseEvent<HTMLDivElement>) => void;
   onMouseMove: (e: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave: () => void;
   onSlotDrop: (targetSlotId: number) => void;
+  onSlotDragStart: () => void;
+  onSlotDragEnd: () => void;
   onTouchStart: (e: React.TouchEvent) => void;
   onTouchMove: (e: React.TouchEvent) => void;
   onTouchEnd: () => void;
@@ -34,10 +37,13 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
   isAddMode,
   isCreatingSlot,
   previewPosition,
+  isSlotDragging,
   onLayoutClick,
   onMouseMove,
   onMouseLeave,
   onSlotDrop,
+  onSlotDragStart,
+  onSlotDragEnd,
   onTouchStart,
   onTouchMove,
   onTouchEnd,
@@ -50,6 +56,9 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
       onWheel={onWheel}
+      style={{
+        touchAction: isSlotDragging ? "none" : "auto",
+      }}
     >
       <div
         className="wall relative max-w-7xl aspect-[2/1] mx-auto shadow-2xl rounded-lg overflow-hidden"
@@ -57,7 +66,8 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
           transform: isMobile
             ? `translate(${position.x}px, ${position.y}px) scale(${scale})`
             : undefined,
-          transition: isPanning ? "none" : "transform 0.2s ease-out",
+          transition:
+            isPanning || isSlotDragging ? "none" : "transform 0.2s ease-out",
           touchAction: "none",
         }}
       >
@@ -106,7 +116,13 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
               </div>
             ) : (
               slots.map((slot) => (
-                <LayoutSlot key={slot.id} slot={slot} onDrop={onSlotDrop} />
+                <LayoutSlot
+                  key={slot.id}
+                  slot={slot}
+                  onDrop={onSlotDrop}
+                  onDragStart={onSlotDragStart}
+                  onDragEnd={onSlotDragEnd}
+                />
               ))
             )}
           </DragZone>

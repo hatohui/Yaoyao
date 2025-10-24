@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useCallback } from "react";
 import { FiBox, FiCheckSquare } from "react-icons/fi";
+import { useTranslations } from "next-intl";
 import CollapsibleSection from "./mutations/CollapsibleSection";
 import DraggableTableItem from "./DragAndDropKit/DraggableTableItem";
 import { useUnassignedTables } from "@/hooks/layout/useUnassignedTables";
@@ -8,24 +9,49 @@ import { useAssignedTables } from "@/hooks/layout/useAssignedTables";
 
 type LayoutSidebarProps = {
   isAddMode: boolean;
+  isMobile?: boolean;
   onToggleAddMode: () => void;
   onDragStart: (tableId: string, source: "unassigned" | "assigned") => void;
   onDragEnd: () => void;
   onUnassignDrop?: () => void;
+  onCloseSidebar?: () => void;
 };
 
 const LayoutSidebar = ({
   isAddMode,
+  isMobile = false,
   onToggleAddMode,
   onDragStart,
   onDragEnd,
   onUnassignDrop,
+  onCloseSidebar,
 }: LayoutSidebarProps) => {
+  const t = useTranslations("layout");
   const { data: unassignedTables, isLoading: loadingUnassigned } =
     useUnassignedTables();
   const { data: assignedTables, isLoading: loadingAssigned } =
     useAssignedTables();
   const [isDragOver, setIsDragOver] = useState(false);
+  const [dragSource, setDragSource] = useState<
+    "unassigned" | "assigned" | null
+  >(null);
+
+  const handleTableDragStart = useCallback(
+    (tableId: string, source: "unassigned" | "assigned") => {
+      setDragSource(source);
+      onDragStart(tableId, source);
+      // Close sidebar on mobile when dragging starts
+      if (isMobile && onCloseSidebar) {
+        onCloseSidebar();
+      }
+    },
+    [onDragStart, isMobile, onCloseSidebar]
+  );
+
+  const handleTableDragEnd = useCallback(() => {
+    setDragSource(null);
+    onDragEnd();
+  }, [onDragEnd]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -47,23 +73,28 @@ const LayoutSidebar = ({
     [onUnassignDrop]
   );
 
+  // Only show drop zone if dragging an assigned table
+  const showUnassignDropZone = isDragOver && dragSource === "assigned";
+
   return (
     <div
       className={`w-80 h-full bg-slate-800 dark:bg-slate-900 border-l border-slate-700 dark:border-slate-700 flex flex-col transition-all duration-300 ${
-        isDragOver ? "bg-blue-900/30 dark:bg-blue-900/20 border-blue-400" : ""
+        showUnassignDropZone
+          ? "bg-blue-900/30 dark:bg-blue-900/20 border-blue-400"
+          : ""
       }`}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
+      onDragOver={dragSource === "assigned" ? handleDragOver : undefined}
+      onDragLeave={dragSource === "assigned" ? handleDragLeave : undefined}
+      onDrop={dragSource === "assigned" ? handleDrop : undefined}
     >
       <div className="p-4 border-b border-slate-700 dark:border-slate-700">
         <div className="flex items-center justify-between mb-3">
           <div>
             <h2 className="text-lg font-bold text-slate-100 dark:text-slate-100">
-              Tables
+              {t("title")}
             </h2>
             <p className="text-xs text-slate-400 dark:text-slate-400 mt-1">
-              Drag tables to assign them to slots
+              {t("dragToMove")}
             </p>
           </div>
         </div>
@@ -76,7 +107,7 @@ const LayoutSidebar = ({
               ? "bg-red-600 hover:bg-red-700 text-white border-red-600"
               : "bg-main hover:bg-main/90 text-white border-main"
           }`}
-          title={isAddMode ? "Exit Add Mode" : "Enter Add Mode"}
+          title={isAddMode ? t("addModeOn") : t("addModeOff")}
         >
           <svg
             className="w-5 h-5"
@@ -101,68 +132,70 @@ const LayoutSidebar = ({
             )}
           </svg>
           <span className="font-medium">
-            {isAddMode ? "Exit Add Mode" : "Add Slot"}
+            {isAddMode ? t("addModeOn") : t("clickToAddSlot")}
           </span>
         </button>
       </div>
 
-      {isDragOver && (
+      {showUnassignDropZone && (
         <div className="p-4 bg-blue-900/30 dark:bg-blue-900/30 border-b border-blue-400">
           <p className="text-sm text-blue-300 dark:text-blue-300 font-medium">
-            Drop here to unassign table
+            {t("dropToUnassign")}
           </p>
         </div>
       )}
 
       <div className="flex-1 overflow-y-auto">
         <CollapsibleSection
-          title="Available Tables"
+          title={t("unassignedTables")}
           count={unassignedTables?.length}
           icon={<FiBox className="w-4 h-4 text-main" />}
         >
           {loadingUnassigned ? (
             <div className="text-sm text-slate-500 dark:text-slate-400">
-              Loading...
+              {t("loading")}
             </div>
           ) : !unassignedTables || unassignedTables.length === 0 ? (
             <div className="text-sm text-slate-500 dark:text-slate-400">
-              No available tables
+              {t("noUnassignedTables")}
             </div>
           ) : (
             unassignedTables.map((table) => (
               <DraggableTableItem
                 key={table.id}
                 table={table}
-                onDragStart={(id) => onDragStart(id, "unassigned")}
-                onDragEnd={onDragEnd}
+                onDragStart={(id) => handleTableDragStart(id, "unassigned")}
+                onDragEnd={handleTableDragEnd}
               />
             ))
           )}
         </CollapsibleSection>
 
         <CollapsibleSection
-          title="Assigned Tables"
+          title={t("assignedTables")}
           count={assignedTables?.length}
           icon={<FiCheckSquare className="w-4 h-4 text-green-600" />}
         >
           {loadingAssigned ? (
             <div className="text-sm text-slate-500 dark:text-slate-400">
-              Loading...
+              {t("loading")}
             </div>
           ) : !assignedTables || assignedTables.length === 0 ? (
             <div className="text-sm text-slate-500 dark:text-slate-400">
-              No assigned tables
+              {t("noAssignedTables")}
             </div>
           ) : (
-            assignedTables.map((slot) => (
-              <DraggableTableItem
-                key={slot.id}
-                table={slot.table}
-                onDragStart={(id) => onDragStart(id, "assigned")}
-                onDragEnd={onDragEnd}
-                slotInfo={`Slot #${slot.id}`}
-              />
-            ))
+            assignedTables
+              .filter((slot) => slot.table !== null)
+              .map((slot) => (
+                <DraggableTableItem
+                  key={slot.id}
+                  table={slot.table}
+                  onDragStart={(id) => handleTableDragStart(id, "assigned")}
+                  onDragEnd={handleTableDragEnd}
+                  slotInfo={t("slotNumber", { number: slot.id })}
+                />
+              ))
           )}
         </CollapsibleSection>
       </div>

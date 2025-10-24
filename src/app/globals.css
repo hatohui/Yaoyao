@@ -121,3 +121,9 @@
 body {
   overflow-x: hidden;
 }
+
+/* Mobile drag-and-drop visual feedback */
+.drag-over-mobile {
+  @apply ring-4 ring-blue-500 ring-offset-2 scale-105;
+  transition: all 0.2s ease-in-out;
+}

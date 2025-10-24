@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import { notFound } from "next/navigation";
-import { FiTable, FiShoppingBag, FiUsers } from "react-icons/fi";
+import { FiTable, FiShoppingBag, FiUsers, FiGrid } from "react-icons/fi";
 import { MdRestaurantMenu } from "react-icons/md";
 import DashboardSidebar from "@/components/dashboard/sidenav/DashboardSidebar";
 import DashboardSwipeDetector from "@/components/dashboard/sidenav/DashboardSwipeDetector";
@@ -34,11 +34,9 @@ export default function DashboardLayout({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-  useEffect(() => {
-    if (!isYaoyao) {
-      return notFound();
-    }
-  }, [isYaoyao]);
+  if (!isYaoyao) {
+    return notFound();
+  }
 
   const navItems = [
     {
@@ -52,6 +50,12 @@ export default function DashboardLayout({
       href: "/dashboard/tables",
       icon: FiTable,
       description: t("tablesManagementDesc") || "Manage table details",
+    },
+    {
+      title: t("layoutManagement") || "Layout",
+      href: "/dashboard/layout",
+      icon: FiGrid,
+      description: t("layoutManagementDesc") || "Manage restaurant layout",
     },
     {
       title: t("ordersManagement") || "Orders",

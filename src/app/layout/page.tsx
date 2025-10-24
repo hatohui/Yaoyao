@@ -1,12 +1,16 @@
-import RestaurantLayout from "@/components/layout/RestaurantLayout";
-import React from "react";
+"use client";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const LayoutPage = () => {
-  return (
-    <div className="nav-spacer">
-      <RestaurantLayout />
-    </div>
-  );
+  const router = useRouter();
+
+  useEffect(() => {
+    // Redirect to the new dashboard layout page
+    router.replace("/dashboard/layout");
+  }, [router]);
+
+  return null;
 };
 
 export default LayoutPage;

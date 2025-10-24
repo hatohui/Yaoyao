@@ -265,7 +265,9 @@
     "personFound": "person found",
     "peopleFound": "people found",
     "noPeopleFound": "No people found",
-    "noPeopleMessage": "Try adjusting your search"
+    "noPeopleMessage": "Try adjusting your search",
+    "layoutManagement": "Layout",
+    "layoutManagementDesc": "Manage restaurant layout"
   },
   "staging": {
     "title": "Staging Environment",
@@ -294,5 +296,33 @@
     "noSearchResults": "No staging tables found",
     "noSearchResultsMessage": "Try adjusting your search query",
     "addStagingTable": "Add staging table"
+  },
+  "layout": {
+    "title": "Restaurant Layout",
+    "subtitle": "Manage table positions and restaurant layout",
+    "unassignedTables": "Unassigned Tables",
+    "assignedTables": "Assigned Tables",
+    "addMode": "Add Mode",
+    "addModeOn": "Add Mode ON",
+    "addModeOff": "Add Mode OFF",
+    "clickToAddSlot": "Click to add slot",
+    "dragToMove": "Drag to move",
+    "dropToUnassign": "Drop here to unassign",
+    "noUnassignedTables": "No unassigned tables",
+    "noAssignedTables": "No assigned tables",
+    "loading": "Loading...",
+    "slot": "Slot",
+    "slotNumber": "Slot #{number}",
+    "capacity": "Capacity",
+    "lockSlot": "Lock Slot",
+    "unlockSlot": "Unlock Slot",
+    "unassignTable": "Unassign Table",
+    "deleteSlot": "Delete Slot",
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out",
+    "resetZoom": "Reset Zoom",
+    "toggleSidebar": "Toggle Sidebar",
+    "layoutManagement": "Layout",
+    "layoutManagementDesc": "Manage restaurant layout"
   }
 }

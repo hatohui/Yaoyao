@@ -1,5 +1,6 @@
 import React from "react";
 import { FiGrid, FiUsers, FiLink } from "react-icons/fi";
+import { useTranslations } from "next-intl";
 import { TableObject } from "@/types/models/table";
 import { getIconColorClass } from "@/utils/layout/slotUtils";
 
@@ -12,6 +13,19 @@ type TableSlotContentProps = {
  * Content displayed for slots with assigned tables
  */
 const TableSlotContent = ({ slot, isLinked }: TableSlotContentProps) => {
+  const t = useTranslations("layout");
+
+  // Guard against null table during optimistic updates
+  if (!slot.table) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <div className="animate-pulse text-slate-400 dark:text-slate-500 text-sm">
+          {t("loading")}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       {/* Table Info */}
@@ -30,12 +44,14 @@ const TableSlotContent = ({ slot, isLinked }: TableSlotContentProps) => {
         </div>
         <div className="flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400">
           <FiUsers className="w-3 h-3" />
-          <span>Capacity: {slot.table.capacity}</span>
+          <span>
+            {t("capacity")}: {slot.table.capacity}
+          </span>
         </div>
       </div>
       {/* Slot ID */}
       <div className="text-xs text-slate-500 dark:text-slate-400">
-        Slot #{slot.id}
+        {t("slotNumber", { number: slot.id })}
       </div>
     </>
   );

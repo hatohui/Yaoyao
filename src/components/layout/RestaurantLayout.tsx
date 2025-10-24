@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useCallback } from "react";
 import "./style.css";
 import LayoutSidebar from "./LayoutSidebar";
 import LayoutCanvas from "./canvas/LayoutCanvas";
@@ -34,6 +34,7 @@ const RestaurantLayout = () => {
     resetZoom,
     zoomIn,
     zoomOut,
+    setIsPanning,
   } = useLayoutZoom(isMobile);
   const { handleDragStart, handleDragEnd, handleSlotDrop, handleUnassignDrop } =
     useLayoutDrag(slots);
@@ -45,6 +46,9 @@ const RestaurantLayout = () => {
     handleMouseLeave,
   } = useLayoutSlotCreation();
 
+  // Track if a slot is being dragged to prevent canvas panning
+  const [isSlotDragging, setIsSlotDragging] = useState(false);
+
   const handleLayoutClick = (e: React.MouseEvent<HTMLDivElement>) => {
     handleLayoutClickBase(e, isAddMode);
   };
@@ -52,6 +56,40 @@ const RestaurantLayout = () => {
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     handleMouseMoveBase(e, isAddMode);
   };
+
+  const handleSlotDragStart = useCallback(() => {
+    setIsSlotDragging(true);
+    setIsPanning(false);
+  }, [setIsPanning]);
+
+  const handleSlotDragEnd = useCallback(() => {
+    setIsSlotDragging(false);
+  }, []);
+
+  // Conditional touch handlers - only enable when not dragging a slot
+  const conditionalTouchStart = useCallback(
+    (e: React.TouchEvent) => {
+      if (!isSlotDragging) {
+        handleTouchStart(e);
+      }
+    },
+    [isSlotDragging, handleTouchStart]
+  );
+
+  const conditionalTouchMove = useCallback(
+    (e: React.TouchEvent) => {
+      if (!isSlotDragging) {
+        handleTouchMove(e);
+      }
+    },
+    [isSlotDragging, handleTouchMove]
+  );
+
+  const conditionalTouchEnd = useCallback(() => {
+    if (!isSlotDragging) {
+      handleTouchEnd();
+    }
+  }, [isSlotDragging, handleTouchEnd]);
 
   if (isLoading) {
     return <LayoutLoadingState />;
@@ -62,7 +100,7 @@ const RestaurantLayout = () => {
   }
 
   return (
-    <div className="flex h-screen bg-slate-50 dark:bg-slate-900 overflow-hidden">
+    <div className="flex h-full bg-slate-50 dark:bg-slate-900 overflow-hidden">
       <LayoutMobileControls
         isMobile={isMobile}
         isSidebarOpen={isSidebarOpen}
@@ -82,27 +120,32 @@ const RestaurantLayout = () => {
         isAddMode={isAddMode}
         isCreatingSlot={isCreatingSlot}
         previewPosition={previewPosition}
+        isSlotDragging={isSlotDragging}
         onLayoutClick={handleLayoutClick}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         onSlotDrop={handleSlotDrop}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        onSlotDragStart={handleSlotDragStart}
+        onSlotDragEnd={handleSlotDragEnd}
+        onTouchStart={conditionalTouchStart}
+        onTouchMove={conditionalTouchMove}
+        onTouchEnd={conditionalTouchEnd}
         onWheel={handleWheel}
       />
 
       <div
-        className={`fixed md:relative inset-y-0 right-0 z-40 h-screen transition-transform duration-300 ${
+        className={`fixed md:relative inset-y-0 right-0 z-40 h-full transition-transform duration-300 ${
           isSidebarOpen ? "translate-x-0" : "translate-x-full md:translate-x-0"
         }`}
       >
         <LayoutSidebar
           isAddMode={isAddMode}
+          isMobile={isMobile}
           onToggleAddMode={toggleAddMode}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
           onUnassignDrop={handleUnassignDrop}
+          onCloseSidebar={closeSidebar}
         />
       </div>
 
