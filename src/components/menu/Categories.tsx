@@ -45,7 +45,7 @@ const Categories = ({ className }: { className?: string }) => {
       <div className="flex flex-wrap gap-1.5 sm:gap-2">
         <button
           onClick={handleShowAll}
-          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-sm transition-all ${
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium cursor-pointer text-xs sm:text-sm transition-all ${
             !currentCategory
               ? "bg-main text-white shadow-md"
               : "bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600"
@@ -59,7 +59,7 @@ const Categories = ({ className }: { className?: string }) => {
           return (
             <button
               key={category.id}
-              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-sm transition-all ${
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs cursor-pointer sm:text-sm transition-all ${
                 isActive
                   ? "bg-main text-white shadow-md"
                   : "bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600"

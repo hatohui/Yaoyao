@@ -47,7 +47,7 @@ const OrderLinkGenerator = ({
   return simple ? (
     <button
       onClick={handleCopy}
-      className={`flex items-center justify-center gap-1.5 rounded-lg font-semibold transition-all ${
+      className={`flex items-center justify-center cursor-pointer gap-1.5 rounded-lg font-semibold transition-all ${
         fullWidth
           ? "w-full px-3 py-2.5 text-xs shadow-sm hover:shadow-md"
           : "px-4 py-2 text-sm"
@@ -89,7 +89,7 @@ const OrderLinkGenerator = ({
       {/* Copy Button */}
       <button
         onClick={handleCopy}
-        className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600"
+        className="w-full flex items-center cursor-pointer justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600"
       >
         {copied ? (
           <>

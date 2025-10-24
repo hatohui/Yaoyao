@@ -41,7 +41,7 @@ const TableDetailHeader = ({
             {(isYaoyao || !isTableLeader) && (
               <button
                 onClick={handleback}
-                className="p-1.5 hover:bg-main/10 dark:hover:bg-slate-700 rounded-md transition-colors"
+                className="p-1.5 cursor-pointer hover:bg-main/10 dark:hover:bg-slate-700 rounded-md transition-colors"
                 aria-label="Go back"
               >
                 <FiArrowLeft className="w-5 h-5 text-darkest dark:text-slate-300" />
@@ -68,15 +68,13 @@ const TableDetailHeader = ({
           {/* Right Side - Status badge and Manage Orders button */}
           <div className="flex items-center gap-3">
             {/* Manage Orders Button - Only for table leaders (not verified or normal users) */}
-            {(isTableLeader || isYaoyao) && (
-              <Link
-                href={`/orders?${ordersLinkQuery}`}
-                className="px-3 py-1.5 bg-main/10 dark:bg-main/20 hover:bg-main/20 dark:hover:bg-main/30 rounded-lg transition-colors text-main font-medium text-sm flex items-center gap-2"
-              >
-                <FiShoppingCart className="w-4 h-4" />
-                <span>{tOrders("manageOrders") || "Manage Orders"}</span>
-              </Link>
-            )}
+            <Link
+              href={`/orders?${ordersLinkQuery}`}
+              className="px-3 py-1.5 bg-main/10 dark:bg-main/20 hover:bg-main/20 dark:hover:bg-main/30 rounded-lg transition-colors text-main font-medium text-sm flex items-center gap-2"
+            >
+              <FiShoppingCart className="w-4 h-4" />
+              <span>{tOrders("manageOrders") || "Manage Orders"}</span>
+            </Link>
           </div>
         </div>
       </div>

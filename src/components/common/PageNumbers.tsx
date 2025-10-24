@@ -25,7 +25,7 @@ const PageNumbers = ({
           <button
             key={page}
             onClick={() => onPageChange(page as number)}
-            className={`min-w-[32px] sm:min-w-[40px] h-[32px] sm:h-[36px] px-1.5 sm:px-3 py-1.5 sm:py-2 rounded-lg border transition-colors text-xs sm:text-sm font-medium touch-manipulation flex items-center justify-center ${
+            className={`min-w-[32px] sm:min-w-[40px] cursor-pointer h-[32px] sm:h-[36px] px-1.5 sm:px-3 py-1.5 sm:py-2 rounded-lg border transition-colors text-xs sm:text-sm font-medium touch-manipulation flex items-center justify-center ${
               currentPage === page
                 ? "bg-main text-white border-main shadow-sm"
                 : "border-slate-300 dark:border-slate-600 hover:bg-main/10 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300"
