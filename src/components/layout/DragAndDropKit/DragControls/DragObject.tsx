@@ -1,25 +1,11 @@
 "use client";
-import React, { useRef, useState, useCallback, useEffect } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Draggable } from "gsap/Draggable";
 import { useDragContainer } from "./DragContext";
 
 gsap.registerPlugin(useGSAP, Draggable);
-
-/**
- * Internal state used by the DragObject component.
- *
- * x/y are pixel coordinates in the DragZone's coordinate space. When
- * `DragZone.enableResponsiveScaling` is active those coordinates are defined
- * relative to the `width`/`height` base size and the whole content is scaled
- * using CSS transform to fit the real container.
- */
-export type DragObjectState = {
-  x: number;
-  y: number;
-  enabled: boolean;
-};
 
 /**
  * Props for DragObject
@@ -74,22 +60,13 @@ const DragObject = ({
   const objectRef = useRef<HTMLDivElement>(null);
   const draggableInstance = useRef<Draggable[] | null>(null);
   const lastValidPosition = useRef({ x, y });
-
-  const [state, setState] = useState<DragObjectState>({
-    x,
-    y,
-    enabled,
-  });
-
-  useEffect(() => {
-    setState((prev) => ({ ...prev, enabled }));
-  }, [enabled]);
+  const isDraggingRef = useRef(false);
 
   const [isDragging, setIsDragging] = useState(false);
 
   const handleDragEnd = useCallback(
     (newX: number, newY: number) => {
-      setState((prev) => ({ ...prev, x: newX, y: newY }));
+      isDraggingRef.current = false;
       setIsDragging(false);
       onDragEnd?.(id, newX, newY);
     },
@@ -97,12 +74,11 @@ const DragObject = ({
   );
 
   const handleDragStart = useCallback(() => {
+    isDraggingRef.current = true;
     setIsDragging(true);
-    lastValidPosition.current = { x: state.x, y: state.y };
+    lastValidPosition.current = { x, y };
     onDragStart?.();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.x, state.y]);
+  }, [x, y, onDragStart]);
 
   // Collision detection helper
   const checkCollision = useCallback(() => {
@@ -161,6 +137,7 @@ const DragObject = ({
     }
   );
 
+  // Create Draggable instance once on mount
   useGSAP(
     () => {
       if (!objectRef.current) return;
@@ -211,28 +188,55 @@ const DragObject = ({
         },
       });
 
-      gsap.set(objectRef.current, { x: state.x, y: state.y });
+      // Set initial position
+      gsap.set(objectRef.current, { x, y });
+
+      // Set initial enabled state
+      if (enabled) {
+        draggableInstance.current[0].enable();
+      } else {
+        draggableInstance.current[0].disable();
+      }
+
+      return () => {
+        // Cleanup on unmount
+        if (draggableInstance.current) {
+          draggableInstance.current[0].kill();
+        }
+      };
     },
     {
-      dependencies: [
-        handleDragEnd,
-        handleDragStart,
-        checkCollision,
-        hasCollision,
-        state.x,
-        state.y,
-        id,
-        onPositionChange,
-      ],
-      revertOnUpdate: true,
       scope: containerRef?.current ? containerRef : undefined,
     }
   );
 
+  // Update position when x/y props change (without recreating Draggable)
   useGSAP(
     () => {
-      if (draggableInstance.current) {
-        if (state.enabled) {
+      // Skip if dragging or no instance yet
+      if (
+        !objectRef.current ||
+        !draggableInstance.current ||
+        isDraggingRef.current
+      ) {
+        return;
+      }
+
+      // Only update if not currently dragging
+      gsap.set(objectRef.current, { x, y });
+      lastValidPosition.current = { x, y };
+    },
+    {
+      dependencies: [x, y],
+      scope: containerRef?.current ? containerRef : undefined,
+    }
+  );
+
+  // Update enabled state when prop changes
+  useGSAP(
+    () => {
+      if (draggableInstance.current && draggableInstance.current[0]) {
+        if (enabled) {
           draggableInstance.current[0].enable();
         } else {
           draggableInstance.current[0].disable();
@@ -240,7 +244,7 @@ const DragObject = ({
       }
     },
     {
-      dependencies: [state.enabled],
+      dependencies: [enabled],
     }
   );
 
@@ -248,10 +252,10 @@ const DragObject = ({
     <div
       ref={objectRef}
       className={`absolute select-none ${className} ${
-        state.enabled ? "cursor-grab active:cursor-grabbing" : lockedClassName
+        enabled ? "cursor-grab active:cursor-grabbing" : lockedClassName
       }`}
       style={{
-        touchAction: state.enabled ? "none" : "auto",
+        touchAction: enabled ? "none" : "auto",
         zIndex: isDragging ? 9999 : "auto",
       }}
     >
@@ -260,7 +264,7 @@ const DragObject = ({
           <div className="font-bold mb-1">Object #{id}</div>
           <div className="text-xs opacity-80">Container: {containerId}</div>
           <div className="text-xs opacity-80">
-            x: {Math.round(state.x)}, y: {Math.round(state.y)}
+            x: {Math.round(x)}, y: {Math.round(y)}
           </div>
         </div>
       )}
