@@ -17,7 +17,7 @@ const useAuthStore = create<AuthState>()(
       setVerified: (v: boolean) => set({ isYaoyao: v }),
     }),
     {
-      name: "yaoyao-auth",
+      name: "password-auth-storage",
       partialize: (state: AuthState) => ({ isYaoyao: state.isYaoyao }),
     }
   )
