@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useCallback } from "react";
 import { FiBox, FiCheckSquare } from "react-icons/fi";
-import CollapsibleSection from "./CollapsibleSection";
-import DraggableTableItem from "./DraggableTableItem";
+import CollapsibleSection from "./mutations/CollapsibleSection";
+import DraggableTableItem from "./DragAndDropKit/DraggableTableItem";
 import { useUnassignedTables } from "@/hooks/layout/useUnassignedTables";
 import { useAssignedTables } from "@/hooks/layout/useAssignedTables";
 
