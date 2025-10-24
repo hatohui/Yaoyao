@@ -3,7 +3,7 @@
 import useTableDetail from "@/hooks/table/useTableDetail";
 import usePeopleInTable from "@/hooks/table/usePeopleInTable";
 import useTableOrders from "@/hooks/order/useTableOrders";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import Loading from "@/components/common/Loading";
 import FoodSelector from "@/components/order/food-selector/FoodSelector";
@@ -11,8 +11,7 @@ import OrderList from "@/components/order/OrderList";
 import OrderSummary from "@/components/order/OrderSummary";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { FiUsers, FiGrid } from "react-icons/fi";
-import OrderLinkGenerator from "@/components/order/OrderLinkGenerator";
+import { FiUsers, FiGrid, FiArrowLeft } from "react-icons/fi";
 import { mergeQueryParams } from "@/utils/params/mergeQueryParams";
 
 const OrderPage = () => {
@@ -20,6 +19,7 @@ const OrderPage = () => {
   const tTable = useTranslations("tables");
   const params = useSearchParams();
   const tableId = params?.get("table");
+  const router = useRouter();
   // const leaderId = params?.get("id");
 
   const { data: table, isLoading: isLoadingTable } = useTableDetail(
@@ -60,15 +60,13 @@ const OrderPage = () => {
           <div className="flex items-center justify-between">
             {/* Left Side - Title and Info */}
             <div className="flex items-center gap-3">
-              {table && (
-                <OrderLinkGenerator
-                  tableId={table.id}
-                  tableLeaderId={table.tableLeader?.id ?? ""}
-                  tableName={table.name}
-                  simple
-                />
-              )}
-
+              <button
+                onClick={() => router.push(`/tables/${tableId}`)}
+                className="p-1.5 cursor-pointer hover:bg-main/10 dark:hover:bg-slate-700 rounded-md transition-colors"
+                aria-label="Go back"
+              >
+                <FiArrowLeft className="w-5 h-5 text-darkest dark:text-slate-300" />
+              </button>
               <div>
                 <h1 className="text-lg font-semibold text-darkest dark:text-slate-100">
                   {table?.name || t("title")}

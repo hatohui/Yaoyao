@@ -11,7 +11,7 @@ const useYaoAuth = (table?: GetTableByIdResponse | undefined) => {
   const userId = searchParams?.get("id");
 
   const isTableLeader = !!table && table?.tableLeader?.id === userId;
-  const canManage = isYaoyao || isTableLeader;
+  const canManage = true;
 
   return { isYaoyao, isTableLeader, canManage, setisYaoyao, userId };
 };
