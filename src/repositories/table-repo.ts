@@ -475,6 +475,18 @@ const commitStagingToProduction = async () => {
   });
 };
 
+const getUnassignedTables = async () => {
+  // Get all tables that are not assigned to any layout
+  const tables = await prisma.table.findMany({
+    where: {
+      layout: null,
+      isStaging: false,
+    },
+  });
+
+  return tables;
+};
+
 export {
   getTables,
   getTablesWithPeople,
@@ -495,4 +507,5 @@ export {
   copyProductionToStaging,
   clearStaging,
   commitStagingToProduction,
+  getUnassignedTables,
 };

@@ -143,10 +143,13 @@ model TableLink {
 }
 
 model Layout {
-  id        Int    @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   positionX Float    
-  positionY Float    
-  tableId   String?  @db.Uuid @unique // Table assigned to this slot (nullable)
+  positionY Float
+  zone      Int     @default(1)
+  tableId   String? @db.Uuid @unique
 
-  table Table? @relation(fields: [tableId], references: [id], onDelete: SetNull) 
+  table Table? @relation(fields: [tableId], references: [id], onDelete: SetNull)
+  
+  @@index([zone])
 } 

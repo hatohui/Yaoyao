@@ -59,6 +59,30 @@ const getNewLayoutId = async () => {
   return min;
 };
 
+const swapTablesBetweenSlots = async (slot1Id: number, slot2Id: number) => {
+  const slot1 = await getLayoutById(slot1Id);
+  const slot2 = await getLayoutById(slot2Id);
+
+  if (!slot1 || !slot2) {
+    throw new Error("One or both slots not found");
+  }
+
+  // Swap the tableIds
+  const temp = slot1.tableId;
+
+  await prisma.layout.update({
+    where: { id: slot1Id },
+    data: { tableId: slot2.tableId },
+  });
+
+  await prisma.layout.update({
+    where: { id: slot2Id },
+    data: { tableId: temp },
+  });
+
+  return { success: true };
+};
+
 export {
   getLayouts,
   createLayout,
@@ -67,4 +91,5 @@ export {
   getLayoutByTableId,
   getLayoutById,
   getNewLayoutId,
+  swapTablesBetweenSlots,
 };
