@@ -279,6 +279,7 @@
   "layout": {
     "title": "ผังร้านอาหาร",
     "subtitle": "จัดการตำแหน่งโต๊ะและผังร้าน",
+    "emptySlot": "ว่าง",
     "unassignedTables": "โต๊ะที่ยังไม่ได้กำหนด",
     "assignedTables": "โต๊ะที่กำหนดแล้ว",
     "addMode": "โหมดเพิ่ม",
@@ -304,6 +305,7 @@
     "layoutManagement": "ผังร้าน",
     "layoutManagementDesc": "จัดการผังร้านอาหาร"
   },
+
   "staging": {
     "title": "สภาพแวดล้อม Staging",
     "subtitle": "วางแผนและทดสอบการจัดโต๊ะก่อนนำไปใช้จริง",

@@ -280,6 +280,7 @@
   "layout": {
     "title": "餐厅布局",
     "subtitle": "管理餐桌位置和餐厅布局",
+    "emptySlot": "空位",
     "unassignedTables": "未分配的餐桌",
     "assignedTables": "已分配的餐桌",
     "addMode": "添加模式",

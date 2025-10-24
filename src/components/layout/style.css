@@ -1,40 +1,31 @@
-@import "tailwindcss";
-
-@layer components {
-  .wall {
-    @apply bg-white relative;
-  }
-
-  .wall::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    border: 2px solid black;
-  }
-
-  .wall.no-border-top::before {
-    border-top-color: transparent;
-  }
-
-  .wall.no-border-bottom::before {
-    border-bottom-color: transparent;
-  }
-
-  .wall.no-border-left::before {
-    border-left-color: transparent;
-  }
-
-  .wall.no-border-right::before {
-    border-right-color: transparent;
-  }
-
-  /* Mobile drag feedback */
-  .drag-over-mobile {
-    @apply bg-blue-50 dark:bg-blue-900/20 border-blue-400 dark:border-blue-400 scale-105 shadow-lg ring-2 ring-blue-500 ring-offset-2;
-  }
-
-  .drag-over-invalid {
-    @apply bg-red-50 dark:bg-red-900/20 border-red-400 dark:border-red-400 scale-105 shadow-lg ring-2 ring-red-500 ring-offset-2;
-  }
+.wall::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 2px solid black;
 }
+
+.dark .wall::before {
+  border-color: rgb(
+    148 163 184
+  ); /* slate-400 for better visibility in dark mode */
+}
+
+.wall.no-border-top::before {
+  border-top-color: transparent;
+}
+
+.wall.no-border-bottom::before {
+  border-bottom-color: transparent;
+}
+
+.wall.no-border-left::before {
+  border-left-color: transparent;
+}
+
+.wall.no-border-right::before {
+  border-right-color: transparent;
+}
+
+/* Mobile drag feedback */

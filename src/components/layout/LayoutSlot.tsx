@@ -96,8 +96,8 @@ const LayoutSlot = ({
       <div
         ref={slotRef}
         data-slot-id={slot.id}
-        className={`w-40 h-32 border-2 rounded-lg transition-all duration-300 ease-in-out ${slotColorClasses} ${lockedStyleClasses} hover:shadow-lg relative ${
-          isDragOver ? "ring-2 ring-blue-500 ring-offset-2" : ""
+        className={`w-40 h-32 border-2 rounded-xl transition-all duration-300 ease-in-out ${slotColorClasses} ${lockedStyleClasses} hover:shadow-xl hover:scale-105 relative ${
+          isDragOver ? "ring-4 ring-blue-500 ring-offset-2" : ""
         } ${isLocked ? "cursor-not-allowed" : "cursor-move"}`}
         onClick={handleSlotClick}
         onMouseEnter={handleMouseEnter}

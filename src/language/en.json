@@ -313,6 +313,7 @@
     "loading": "Loading...",
     "slot": "Slot",
     "slotNumber": "Slot #{number}",
+    "emptySlot": "Empty",
     "capacity": "Capacity",
     "lockSlot": "Lock Slot",
     "unlockSlot": "Unlock Slot",

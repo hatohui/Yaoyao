@@ -280,6 +280,7 @@
   "layout": {
     "title": "Bố cục nhà hàng",
     "subtitle": "Quản lý vị trí bàn và bố cục nhà hàng",
+    "emptySlot": "Trống",
     "unassignedTables": "Bàn chưa phân bổ",
     "assignedTables": "Bàn đã phân bổ",
     "addMode": "Chế độ thêm",

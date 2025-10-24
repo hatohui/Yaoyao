@@ -23,11 +23,11 @@ const CollapsibleSection = ({
     <div className="border-b border-slate-200 dark:border-slate-700">
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="w-full px-4 py-3 flex items-center justify-between bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+        className="w-full px-4 py-3 flex items-center justify-between bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
       >
         <div className="flex items-center gap-2">
           {icon}
-          <span className="font-semibold text-sm text-slate-900 dark:text-slate-100">
+          <span className="font-semibold text-sm text-slate-900 dark:text-slate-100 font-mon">
             {title}
           </span>
           {count !== undefined && (

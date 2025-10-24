@@ -105,11 +105,11 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
           >
             {slots.length === 0 ? (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="text-center p-8 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-lg">
-                  <p className="text-lg font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <div className="text-center p-8 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl shadow-lg">
+                  <p className="text-lg font-bold text-slate-900 dark:text-white mb-2 font-mon">
                     No slots created yet
                   </p>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
                     Click the &quot;Add Slot&quot; button to start
                   </p>
                 </div>

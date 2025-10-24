@@ -9,15 +9,15 @@ export const getSlotColorClasses = (
   isDragOver: boolean
 ): string => {
   if (isDragOver) {
-    return "bg-blue-50 dark:bg-blue-900/20 border-blue-400 dark:border-blue-400 scale-105 shadow-lg";
+    return "bg-blue-100 dark:bg-blue-900/30 border-blue-500 dark:border-blue-400 scale-105 shadow-xl";
   }
   if (!hasTable) {
-    return "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600";
+    return "bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-600 hover:border-slate-400 dark:hover:border-slate-500";
   }
   if (isLinked) {
-    return "bg-indigo-50 dark:bg-indigo-900/20 border-indigo-300 dark:border-indigo-600";
+    return "bg-purple-50 dark:bg-purple-900/30 border-purple-400 dark:border-purple-500 shadow-md";
   }
-  return "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-300 dark:border-emerald-600";
+  return "bg-main-light/20 dark:bg-main-dark/30 border-main dark:border-main-light shadow-md";
 };
 
 /**
@@ -25,7 +25,7 @@ export const getSlotColorClasses = (
  */
 export const getLockedStyleClasses = (isLocked: boolean): string => {
   if (isLocked) {
-    return "ring-2 ring-red-400 dark:ring-red-500 ring-offset-2 cursor-not-allowed";
+    return "ring-4 ring-red-500 dark:ring-red-400 ring-offset-2 opacity-75 cursor-not-allowed";
   }
   return "";
 };
@@ -53,6 +53,6 @@ export const isTableLinked = (slot: TableObject): boolean => {
  */
 export const getIconColorClass = (isLinked: boolean): string => {
   return isLinked
-    ? "text-indigo-600 dark:text-indigo-400"
-    : "text-emerald-600 dark:text-emerald-400";
+    ? "text-purple-600 dark:text-purple-400"
+    : "text-main-dark dark:text-main-light";
 };

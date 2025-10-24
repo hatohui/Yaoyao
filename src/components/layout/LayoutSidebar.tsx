@@ -78,22 +78,22 @@ const LayoutSidebar = ({
 
   return (
     <div
-      className={`w-80 h-full bg-slate-800 dark:bg-slate-900 border-l border-slate-700 dark:border-slate-700 flex flex-col transition-all duration-300 ${
+      className={`w-80 h-full bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-700 flex flex-col transition-all duration-300 ${
         showUnassignDropZone
-          ? "bg-blue-900/30 dark:bg-blue-900/20 border-blue-400"
+          ? "bg-blue-50 dark:bg-blue-900/20 border-blue-400"
           : ""
       }`}
       onDragOver={dragSource === "assigned" ? handleDragOver : undefined}
       onDragLeave={dragSource === "assigned" ? handleDragLeave : undefined}
       onDrop={dragSource === "assigned" ? handleDrop : undefined}
     >
-      <div className="p-4 border-b border-slate-700 dark:border-slate-700">
+      <div className="p-4 border-b border-slate-200 dark:border-slate-700">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <h2 className="text-lg font-bold text-slate-100 dark:text-slate-100">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 font-mon">
               {t("title")}
             </h2>
-            <p className="text-xs text-slate-400 dark:text-slate-400 mt-1">
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
               {t("dragToMove")}
             </p>
           </div>
