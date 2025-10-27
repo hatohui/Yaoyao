@@ -25,7 +25,8 @@
     "unpaid": "Unpaid",
     "copied": "Copied!",
     "landingSubtitle": "Website created by <hatoLink>Hatohui</hatoLink>",
-    "noSort": "No sort"
+    "noSort": "No sort",
+    "layout": "Layout"
   },
   "success": {
     "success": "Operation completed successfully!",

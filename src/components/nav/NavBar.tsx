@@ -40,6 +40,7 @@ const NavBar = () => {
 
   const navData = [
     { title: t("home"), link: "/", public: true },
+    { title: t("layout"), link: "/layout", public: true },
     { title: t("menu"), link: "/menu", public: true },
     { title: t("tables"), link: "/tables", public: true },
     { title: t("dashboard"), link: "/dashboard", public: false },

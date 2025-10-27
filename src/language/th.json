@@ -33,7 +33,8 @@
     "paid": "ชำระเงินแล้ว",
     "unpaid": "ยังไม่ได้ชำระเงิน",
     "landingSubtitle": "เว็บไซต์สร้างโดย <hatoLink>Hatohui</hatoLink>",
-    "noSort": "ไม่เรียง"
+    "noSort": "ไม่เรียง",
+    "layout": "ผังร้าน"
   },
   "success": {
     "success": "ดำเนินการสำเร็จ!",

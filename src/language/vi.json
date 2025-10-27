@@ -34,7 +34,8 @@
     "paid": "Đã thanh toán",
     "unpaid": "Chưa thanh toán",
     "landingSubtitle": "Website được tạo bởi <hatoLink>Hatohui</hatoLink>",
-    "noSort": "Không sắp xếp"
+    "noSort": "Không sắp xếp",
+    "layout": "Bố cục"
   },
   "success": {
     "success": "Hoạt động hoàn thành thành công!",

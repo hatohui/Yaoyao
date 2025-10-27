@@ -79,7 +79,7 @@ const StaticRestaurantLayout = () => {
 
   if (isLoading) {
     return (
-      <div className="flex-1 h-screen overflow-hidden p-4 md:p-8">
+      <div className="flex-1 anti-nav overflow-hidden p-4 md:p-8">
         <div className="max-w-7xl mx-auto mb-6 md:mb-8">
           <div className="flex items-center gap-3 mb-2">
             <FiMapPin className="w-7 h-7 md:w-8 md:h-8 text-main" />
@@ -110,7 +110,7 @@ const StaticRestaurantLayout = () => {
   }
 
   return (
-    <div className="flex-1 h-screen overflow-hidden p-4 md:p-8">
+    <div className="flex-1 anti-nav overflow-hidden p-4 md:p-8">
       {/* Header Section */}
       <div className="max-w-7xl mx-auto mb-6 md:mb-8">
         <div className="flex items-center gap-3 mb-2">

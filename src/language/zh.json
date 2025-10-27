@@ -33,7 +33,8 @@
     "paid": "已支付",
     "unpaid": "未支付",
     "landingSubtitle": "网站由 <hatoLink>Hatohui</hatoLink> 创建",
-    "noSort": "不排序"
+    "noSort": "不排序",
+    "layout": "布局"
   },
   "success": {
     "success": "操作成功完成！",
