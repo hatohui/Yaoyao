@@ -14,7 +14,10 @@ import { useLayoutDrag } from "@/hooks/layout/useLayoutDrag";
 import { useLayoutSlotCreation } from "@/hooks/layout/useLayoutSlotCreation";
 
 const RestaurantLayout = () => {
-  const { data: slots, isLoading, isError, error } = useLayouts();
+  const [zone, setZone] = useState<number>(1);
+  const { data, isLoading, isError, error } = useLayouts();
+  const slots = data?.filter((slot) => slot.zone === zone) || [];
+
   const isMobile = useMobileDetection();
   const {
     isAddMode,
@@ -23,6 +26,7 @@ const RestaurantLayout = () => {
     toggleSidebar,
     closeSidebar,
   } = useLayoutMode();
+
   const {
     scale,
     position,
@@ -38,6 +42,7 @@ const RestaurantLayout = () => {
   } = useLayoutZoom(isMobile);
   const { handleDragStart, handleDragEnd, handleSlotDrop, handleUnassignDrop } =
     useLayoutDrag(slots);
+
   const {
     isCreatingSlot,
     previewPosition,
@@ -46,11 +51,10 @@ const RestaurantLayout = () => {
     handleMouseLeave,
   } = useLayoutSlotCreation();
 
-  // Track if a slot is being dragged to prevent canvas panning
   const [isSlotDragging, setIsSlotDragging] = useState(false);
 
   const handleLayoutClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    handleLayoutClickBase(e, isAddMode);
+    handleLayoutClickBase(e, isAddMode, zone);
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -66,7 +70,6 @@ const RestaurantLayout = () => {
     setIsSlotDragging(false);
   }, []);
 
-  // Conditional touch handlers - only enable when not dragging a slot
   const conditionalTouchStart = useCallback(
     (e: React.TouchEvent) => {
       if (!isSlotDragging) {
@@ -113,6 +116,7 @@ const RestaurantLayout = () => {
 
       <LayoutCanvas
         slots={slots}
+        zone={zone}
         isMobile={isMobile}
         isPanning={isPanning}
         scale={scale}
@@ -121,6 +125,7 @@ const RestaurantLayout = () => {
         isCreatingSlot={isCreatingSlot}
         previewPosition={previewPosition}
         isSlotDragging={isSlotDragging}
+        setZone={setZone}
         onLayoutClick={handleLayoutClick}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}

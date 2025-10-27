@@ -7,9 +7,7 @@
 }
 
 .dark .wall::before {
-  border-color: rgb(
-    148 163 184
-  ); /* slate-400 for better visibility in dark mode */
+  border-color: rgb(148 163 184);
 }
 
 .wall.no-border-top::before {

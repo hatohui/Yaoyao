@@ -10,10 +10,12 @@ const Area = ({
   noLeft = false,
   spanX,
   spanY,
+  label,
 }: {
   height?: number;
   width?: number;
   full?: boolean;
+  label?: string;
   noBottom?: boolean;
   noTop?: boolean;
   noRight?: boolean;
@@ -43,7 +45,7 @@ const Area = ({
   };
 
   const buildClassName = () => {
-    let className = "wall ";
+    let className = "wall flex items-center justify-center font-serif ";
     if (full) {
       className += "h-full w-full ";
     } else {
@@ -56,7 +58,11 @@ const Area = ({
     return className.slice(0, -1);
   };
 
-  return <div className={buildClassName()} style={getStyle()}></div>;
+  return (
+    <div className={buildClassName()} style={getStyle()}>
+      {label}
+    </div>
+  );
 };
 
 export default Area;

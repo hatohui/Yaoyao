@@ -5,6 +5,8 @@ import { GetLayouts } from "@/types/api/layout/GET";
 import LayoutCreatingOverlay from "../states/LayoutCreatingOverlay";
 import LayoutPreview from "../states/LayoutPreview";
 import FirstFloor from "../floors/FirstFloor";
+import SecondFloor from "../floors/SecondFloor";
+import EmptySlot from "../states/EmptySlot";
 
 interface LayoutCanvasProps {
   slots: GetLayouts;
@@ -16,6 +18,7 @@ interface LayoutCanvasProps {
   isCreatingSlot: boolean;
   previewPosition: { x: number; y: number } | null;
   isSlotDragging: boolean;
+  zone: number;
   onLayoutClick: (e: React.MouseEvent<HTMLDivElement>) => void;
   onMouseMove: (e: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave: () => void;
@@ -26,6 +29,7 @@ interface LayoutCanvasProps {
   onTouchMove: (e: React.TouchEvent) => void;
   onTouchEnd: () => void;
   onWheel: (e: React.WheelEvent) => void;
+  setZone: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
@@ -33,6 +37,7 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
   isMobile,
   isPanning,
   scale,
+  zone,
   position,
   isAddMode,
   isCreatingSlot,
@@ -42,6 +47,7 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
   onMouseMove,
   onMouseLeave,
   onSlotDrop,
+  setZone,
   onSlotDragStart,
   onSlotDragEnd,
   onTouchStart,
@@ -71,7 +77,26 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
           touchAction: "none",
         }}
       >
-        <FirstFloor />
+        {/* Floor selector (styled to match app) */}
+        <div className="absolute top-4 right-4 z-20">
+          <label htmlFor="zone-select" className="sr-only">
+            Select floor
+          </label>
+          <select
+            id="zone-select"
+            value={zone}
+            onChange={(e) => setZone(Number(e.target.value))}
+            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-700 dark:text-white px-3 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value={1}>First Floor</option>
+            <option value={2}>Second Floor</option>
+          </select>
+        </div>
+        {/* Flooring */}
+        {zone == 1 && <FirstFloor />}
+        {zone == 2 && <SecondFloor />}
+
+        {/* Content goes here  */}
         <div
           onClick={onLayoutClick}
           onMouseMove={onMouseMove}
@@ -104,16 +129,7 @@ const LayoutCanvas: React.FC<LayoutCanvasProps> = ({
             responsive
           >
             {slots.length === 0 ? (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="text-center p-8 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl shadow-lg">
-                  <p className="text-lg font-bold text-slate-900 dark:text-white mb-2 font-mon">
-                    No slots created yet
-                  </p>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">
-                    Click the &quot;Add Slot&quot; button to start
-                  </p>
-                </div>
-              </div>
+              <EmptySlot />
             ) : (
               slots.map((slot) => (
                 <LayoutSlot

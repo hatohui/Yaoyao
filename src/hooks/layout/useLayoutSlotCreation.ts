@@ -1,10 +1,7 @@
 import { useState } from "react";
 import useLayoutMutations from "./useLayoutMutations";
 import { PostLayoutRequest } from "@/types/api/layout/POST";
-
-// DragZone base dimensions (from LayoutCanvas)
-const DRAG_ZONE_WIDTH = 1400;
-const DRAG_ZONE_HEIGHT = 700;
+import { DRAG_ZONE_WIDTH, DRAG_ZONE_HEIGHT } from "@/config/app";
 
 export const useLayoutSlotCreation = () => {
   const [isCreatingSlot, setIsCreatingSlot] = useState(false);
@@ -17,18 +14,16 @@ export const useLayoutSlotCreation = () => {
 
   const handleLayoutClick = (
     e: React.MouseEvent<HTMLDivElement>,
-    isAddMode: boolean
+    isAddMode: boolean,
+    zone: number
   ) => {
-    // Only proceed if in add mode and not already creating
     if (!isAddMode || isCreatingSlot) return;
-
     // Don't create if clicking on existing slots
     const target = e.target as HTMLElement;
     if (target.closest("[data-slot-id]")) {
       return;
     }
 
-    // Find the DragZone wrapper element
     const dragZoneWrapper = e.currentTarget.querySelector(
       '[id="layout"]'
     ) as HTMLElement;
@@ -59,36 +54,22 @@ export const useLayoutSlotCreation = () => {
     const positionX = (previewTopLeftX / innerRect.width) * DRAG_ZONE_WIDTH;
     const positionY = (previewTopLeftY / innerRect.height) * DRAG_ZONE_HEIGHT;
 
-    console.log("Creating slot at:", {
-      positionX,
-      positionY,
-      x,
-      y,
-      clickInScaled: { x, y },
-      scaledSize: { width: innerRect.width, height: innerRect.height },
-      baseSize: { width: DRAG_ZONE_WIDTH, height: DRAG_ZONE_HEIGHT },
-      scale: innerRect.width / DRAG_ZONE_WIDTH,
-    });
-
-    // Set creating state immediately to hide preview
     setIsCreatingSlot(true);
-    setPreviewPosition(null); // Clear preview while creating
+    setPreviewPosition(null);
 
     createSlot.mutate(
       {
         positionX,
         positionY,
-        zone: 1,
+        zone: zone ?? 1,
         tableId: null,
       } as PostLayoutRequest,
       {
         onSettled: () => {
-          // Reset creating state after mutation completes
           setIsCreatingSlot(false);
         },
         onError: (error) => {
           console.error("Failed to create slot:", error);
-          // Still reset on error
           setIsCreatingSlot(false);
         },
       }
@@ -99,7 +80,6 @@ export const useLayoutSlotCreation = () => {
     e: React.MouseEvent<HTMLDivElement>,
     isAddMode: boolean
   ) => {
-    // Don't show preview if not in add mode or currently creating a slot
     if (!isAddMode || isCreatingSlot) {
       if (previewPosition !== null) {
         setPreviewPosition(null);
@@ -107,7 +87,6 @@ export const useLayoutSlotCreation = () => {
       return;
     }
 
-    // Don't show preview when hovering over existing slots
     const target = e.target as HTMLElement;
     if (target.closest("[data-slot-id]")) {
       if (previewPosition !== null) {
