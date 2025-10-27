@@ -280,6 +280,12 @@
   "layout": {
     "title": "餐厅布局",
     "subtitle": "管理餐桌位置和餐厅布局",
+    "publicTitle": "欢迎光临瑶瑶餐厅",
+    "publicSubtitle": "探索我们的用餐空间，找到您完美的餐桌",
+    "publicInfoBanner": "点击任意餐桌查看空位情况和座位信息",
+    "selectFloor": "选择楼层",
+    "firstFloor": "一楼",
+    "secondFloor": "二楼",
     "emptySlot": "空位",
     "unassignedTables": "未分配的餐桌",
     "assignedTables": "已分配的餐桌",

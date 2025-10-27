@@ -300,6 +300,12 @@
   "layout": {
     "title": "Restaurant Layout",
     "subtitle": "Manage table positions and restaurant layout",
+    "publicTitle": "Welcome to Yao Yao Restaurant",
+    "publicSubtitle": "Explore our dining space and find your perfect table",
+    "publicInfoBanner": "Click on any table to check availability and view seating information",
+    "selectFloor": "Select floor",
+    "firstFloor": "First Floor",
+    "secondFloor": "Second Floor",
     "unassignedTables": "Unassigned Tables",
     "assignedTables": "Assigned Tables",
     "addMode": "Add Mode",
