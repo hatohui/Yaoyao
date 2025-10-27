@@ -45,7 +45,8 @@ const Area = ({
   };
 
   const buildClassName = () => {
-    let className = "wall flex items-center justify-center font-serif ";
+    let className =
+      "wall text-3xl flex items-center justify-center font-serif ";
     if (full) {
       className += "h-full w-full ";
     } else {
