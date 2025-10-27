@@ -28,9 +28,8 @@ const FoodGallery = ({ className }: FoodGalleryProps) => {
     search: searchQuery,
   });
 
-  // Reset to page 1 when category or search changes
   useEffect(() => {
-    if (currentPage !== 1) {
+    if (currentPage !== 1 && (searchQuery || category)) {
       resetPage();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -46,7 +46,7 @@ const DashboardTablesPage = () => {
   const pageRef = usePageAnimation();
 
   useEffect(() => {
-    if (currentPage !== 1) {
+    if (currentPage !== 1 && searchQuery) {
       resetPage();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -40,7 +40,6 @@ const FoodCard = ({
   const cardRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
 
-  // Entrance animation
   useGSAP(() => {
     if (cardRef.current) {
       gsap.from(cardRef.current, {

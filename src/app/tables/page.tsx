@@ -8,7 +8,7 @@ import usePagination from "@/hooks/common/usePagination";
 import useSearch from "@/hooks/common/useSearch";
 import useTables from "@/hooks/table/useTables";
 import { useTranslations } from "next-intl";
-import React, { useEffect } from "react";
+import React from "react";
 
 const TableStagingPage = () => {
   const t = useTranslations("tables");
@@ -17,15 +17,8 @@ const TableStagingPage = () => {
   const { currentPage, goToPage, resetPage } = usePagination();
   const { data } = useTables({ page: currentPage, search: searchQuery });
 
-  useEffect(() => {
-    if (currentPage !== 1) {
-      resetPage();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchQuery]);
-
   return (
-    <div className="nav-spacer min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
+    <div className="nav-spacer anti-nav min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
         <SearchBar
           placeholder={t("searchPlaceholder") || "Search for tables..."}
@@ -35,7 +28,11 @@ const TableStagingPage = () => {
       {/* Main Content */}
       {TABLE_PUBLIC_ENABLED || isYaoyao ? (
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 pb-8">
-          <TableMap page={currentPage} searchQuery={searchQuery} />
+          <TableMap
+            page={currentPage}
+            searchQuery={searchQuery}
+            resetPage={resetPage}
+          />
 
           {data && data.pagination.totalPages > 1 && (
             <Pagination

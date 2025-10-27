@@ -13,7 +13,6 @@ const useSearch = () => {
   const router = useRouter();
   const pathname = usePathname() || "/";
 
-  // Get search from URL first, then localStorage as fallback
   const urlSearch = searchParams?.get("search") || "";
   const storedSearch = getPageSearch(pathname);
   const initialSearch = urlSearch || storedSearch;

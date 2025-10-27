@@ -27,7 +27,7 @@ const DashboardPage = () => {
 
   // Reset to page 1 when search or category changes
   useEffect(() => {
-    if (currentPage !== 1) {
+    if (currentPage !== 1 && (searchQuery || selectedCategory)) {
       resetPage();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

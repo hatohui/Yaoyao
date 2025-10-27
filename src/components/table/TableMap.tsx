@@ -1,6 +1,6 @@
 "use client";
 import useTables from "@/hooks/table/useTables";
-import React from "react";
+import React, { useEffect } from "react";
 import { FiInbox, FiSearch } from "react-icons/fi";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
@@ -11,12 +11,20 @@ import TableMapGrid from "./TableMapGrid";
 export interface TableMapProps {
   page: number;
   searchQuery?: string;
+  resetPage: () => void;
 }
 
-const TableMap = ({ page, searchQuery = "" }: TableMapProps) => {
+const TableMap = ({ page, searchQuery = "", resetPage }: TableMapProps) => {
   const { data, isLoading } = useTables({ page, search: searchQuery });
   const searchParams = useSearchParams();
   const t = useTranslations("tables");
+
+  useEffect(() => {
+    if (page !== 1 && (searchQuery || searchParams?.get("category"))) {
+      resetPage();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery, searchParams, page]);
 
   const buildUrlWithParams = (tableId: string) => {
     const params = searchParams?.toString();

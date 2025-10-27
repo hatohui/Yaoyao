@@ -30,7 +30,7 @@ const TableDetailPage = () => {
   const isNormalMember = !canManage;
 
   return (
-    <div className="nav-spacer bg-slate-50 dark:bg-slate-900">
+    <div className="nav-spacer h-screen bg-slate-50 dark:bg-slate-900">
       {/* Compact Header */}
       <TableDetailHeader
         table={table}

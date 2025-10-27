@@ -1,19 +1,9 @@
+import { GetFoodsResponse } from "@/types/api/food/GET";
 import Image from "next/image";
 import { FiPackage } from "react-icons/fi";
 
 type FoodCardSelectorProps = {
-  food: {
-    id: string;
-    name: string;
-    imageUrl: string | null;
-    available: boolean;
-    variants?: Array<{
-      id: string;
-      label: string;
-      price?: number | null;
-      isSeasonal?: boolean;
-    }>;
-  };
+  food: GetFoodsResponse["foods"][number];
   isSelected: boolean;
   inCartCount: number;
   onSelect: () => void;
@@ -29,13 +19,13 @@ const FoodCardSelector = ({
   unavailableText,
   seasonalText,
 }: FoodCardSelectorProps) => {
-  const isAvailable = food.available;
+  const isAvailable = food;
 
   return (
     <button
       onClick={onSelect}
       disabled={!isAvailable}
-      className={`relative text-left rounded-lg border-2 overflow-hidden transition-all ${
+      className={`relative text-left cursor-pointer rounded-lg border-2 overflow-hidden transition-all ${
         isSelected
           ? "border-darkest dark:border-main shadow-lg ring-2 ring-darkest/20 dark:ring-main/20"
           : inCartCount > 0
@@ -87,7 +77,7 @@ const FoodCardSelector = ({
             ) : (
               <span className="font-semibold">{`${food.variants[0].price?.toFixed(
                 2
-              )} RM`}</span>
+              )} ${food.variants[0].currency || "RM"}`}</span>
             )}
           </p>
         )}

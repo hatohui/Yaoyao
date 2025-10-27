@@ -11,7 +11,6 @@ const SearchBar = ({ placeholder }: { placeholder: string }) => {
     handleClearSearch,
   } = useSearch();
 
-  // Show loading indicator when input differs from URL query (debouncing)
   const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
