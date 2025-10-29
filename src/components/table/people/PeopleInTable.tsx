@@ -4,7 +4,7 @@ import usePeopleInTableMutation from "@/hooks/table/usePeopleInTableMutation";
 import { GetTableByIdResponse } from "@/types/api/table/GET";
 import { People } from "@prisma/client";
 import { useTranslations } from "next-intl";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
@@ -43,6 +43,12 @@ const PeopleInTable = ({
 
   const isRefetching = isFetching && !isLoading;
 
+  // Collapse by default on mobile
+  useEffect(() => {
+    const isMobile = window.innerWidth < 1024; // lg breakpoint
+    setIsCollapsed(isMobile);
+  }, []);
+
   useGSAP(() => {
     if (contentRef.current) {
       if (isCollapsed) {
@@ -53,7 +59,6 @@ const PeopleInTable = ({
           ease: "power2.inOut",
         });
       } else {
-        // Get the natural height
         const element = contentRef.current;
         gsap.set(element, { height: "auto" });
         const height = element.offsetHeight;
@@ -127,7 +132,7 @@ const PeopleInTable = ({
   return (
     <div
       className={`bg-white ${
-        isCollapsed ? "h-auto" : "grow"
+        isCollapsed ? "h-auto" : "flex flex-col min-h-0"
       } dark:bg-slate-800 rounded-lg shadow-md overflow-hidden border border-main/10 dark:border-slate-700`}
     >
       <PeopleInTableHeader
@@ -140,8 +145,11 @@ const PeopleInTable = ({
         onToggle={() => setIsCollapsed(!isCollapsed)}
         isMutating={isMutating}
       />
-      <div ref={contentRef} className="overflow-hidden">
-        <div className="p-4 max-h-[400px] min-h-[300px] overflow-y-auto">
+      <div
+        ref={contentRef}
+        className={`${isCollapsed ? "" : "flex-1 min-h-0"} overflow-hidden`}
+      >
+        <div className={`p-4 ${isCollapsed ? "" : "h-full"} overflow-y-auto`}>
           {isLoading || people === undefined ? (
             <PeopleInTableLoading />
           ) : people.length > 0 ? (

@@ -1,7 +1,7 @@
 "use client";
 import useTableOrders from "@/hooks/order/useTableOrders";
 import { useTranslations } from "next-intl";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FiShoppingCart, FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -14,6 +14,12 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
   const t = useTranslations("orders");
   const [isCollapsed, setIsCollapsed] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  // Collapse by default on mobile
+  useEffect(() => {
+    const isMobile = window.innerWidth < 1024; // lg breakpoint
+    setIsCollapsed(isMobile);
+  }, []);
 
   useGSAP(() => {
     if (contentRef.current) {
@@ -83,7 +89,7 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
   return (
     <div
       className={`bg-white ${
-        isCollapsed ? "h-auto" : "h-full"
+        isCollapsed ? "h-auto" : "flex flex-col min-h-0"
       } dark:bg-slate-800 rounded-lg shadow-md border border-main/10 dark:border-slate-700 overflow-hidden`}
     >
       {/* Header */}
@@ -106,34 +112,43 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
         </div>
       </div>
 
-      <div ref={contentRef} className="overflow-hidden">
-        {/* Summary */}
-        <div className="px-4 py-3 border-b border-main/10 dark:border-main/30 bg-white dark:bg-slate-800">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-500 dark:text-slate-400">
-                {t("items")}:
-              </span>
-              <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                {totalItems}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-500 dark:text-slate-400">
-                {t("total")}:
-              </span>
-              <span className="text-sm font-semibold text-main dark:text-main">
-                {subtotal.toFixed(2)} RM
-              </span>
+      <div
+        ref={contentRef}
+        className={`${isCollapsed ? "" : "flex-1 min-h-0"} overflow-hidden`}
+      >
+        <div className={`${isCollapsed ? "" : "h-full flex flex-col"}`}>
+          {/* Summary */}
+          <div className="px-4 py-3 border-b border-main/10 dark:border-main/30 bg-white dark:bg-slate-800">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-slate-500 dark:text-slate-400">
+                  {t("items")}:
+                </span>
+                <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  {totalItems}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-slate-500 dark:text-slate-400">
+                  {t("total")}:
+                </span>
+                <span className="text-sm font-semibold text-main dark:text-main">
+                  {subtotal.toFixed(2)} RM
+                </span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Orders List */}
-        <div className="p-4 space-y-3 max-h-[calc(100vh-13rem)] overflow-y-auto min-h-[300px]">
-          {orders.map((order) => (
-            <OrderItem key={order.id} order={order} isEditable={false} />
-          ))}
+          {/* Orders List */}
+          <div
+            className={`p-4 space-y-3 ${
+              isCollapsed ? "" : "flex-1 min-h-0"
+            } overflow-y-auto`}
+          >
+            {orders.map((order) => (
+              <OrderItem key={order.id} order={order} isEditable={false} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

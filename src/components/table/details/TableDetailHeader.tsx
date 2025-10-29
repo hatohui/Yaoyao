@@ -1,10 +1,10 @@
 import { GetTableByIdResponse } from "@/types/api/table/GET";
 import { useTranslations } from "next-intl";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
-import { FiArrowLeft, FiShoppingCart } from "react-icons/fi";
-import Link from "next/link";
-import { mergeQueryParams } from "@/utils/params/mergeQueryParams";
+import { FiArrowLeft } from "react-icons/fi";
+// import Link from "next/link";
+// import { mergeQueryParams } from "@/utils/params/mergeQueryParams";
 
 export type TableHeaderProps = {
   table: GetTableByIdResponse | undefined;
@@ -14,19 +14,19 @@ export type TableHeaderProps = {
 
 const TableDetailHeader = ({ table }: TableHeaderProps) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
   const t = useTranslations("tables");
-  const tOrders = useTranslations("orders");
+  // const tOrders = useTranslations("orders");
 
   const handleback = () => {
     router.push("/tables");
   };
 
   // Generate orders link with preserved query params
-  const ordersLinkQuery = mergeQueryParams(searchParams, {
-    table: table?.id,
-    id: table?.tableLeader?.id,
-  });
+  // const ordersLinkQuery = mergeQueryParams(searchParams, {
+  //   table: table?.id,
+  //   id: table?.tableLeader?.id,
+  // });
 
   return (
     <div className="bg-white dark:bg-slate-800 shadow-sm border-b border-main/20 dark:border-slate-700">
@@ -54,13 +54,13 @@ const TableDetailHeader = ({ table }: TableHeaderProps) => {
           {/* Right Side - Status badge and Manage Orders button */}
           <div className="flex items-center gap-3">
             {/* Manage Orders Button - Only for table leaders (not verified or normal users) */}
-            <Link
+            {/* <Link
               href={`/orders?${ordersLinkQuery}`}
               className="px-3 py-1.5 bg-main/10 dark:bg-main/20 hover:bg-main/20 dark:hover:bg-main/30 rounded-lg transition-colors text-main font-medium text-sm flex items-center gap-2"
             >
               <FiShoppingCart className="w-4 h-4" />
               <span>{tOrders("manageOrders") || "Manage Orders"}</span>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
