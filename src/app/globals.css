@@ -139,3 +139,25 @@ body {
   @apply ring-4 ring-blue-500 ring-offset-2 scale-105;
   transition: all 0.2s ease-in-out;
 }
+
+/* Mobile-only tap / press feedback for touch devices
+   Keeps desktop styles unchanged and only applies a subtle
+   transform on active (tap) for devices narrower than 640px. */
+@media (max-width: 639px) {
+  .button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .button:active {
+    transform: translateY(1px) scale(0.995);
+    transition: all 120ms ease;
+    background-color: #d399f0;
+  }
+
+  /* Improve focus visibility on mobile when keyboard / accessibility used */
+  .button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(211, 153, 240, 0.18);
+  }
+}

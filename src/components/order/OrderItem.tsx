@@ -34,9 +34,7 @@ const OrderItem = ({ order, isEditable }: OrderItemProps) => {
   };
 
   const handleDelete = () => {
-    if (window.confirm(t("confirmRemoveOrder"))) {
-      deleteMutation.mutate();
-    }
+    deleteMutation.mutate();
   };
 
   const isAvailable =

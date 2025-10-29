@@ -162,17 +162,16 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
   return (
     <>
       {/* Trigger Button */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="w-full button flex items-center justify-center gap-2 relative"
-      >
-        <FiPlus className="w-5 h-5" />
-        {t("orderFood")}
-        {cartItemCount > 0 && (
-          <span className="absolute -top-2 -right-2 bg-red-500 dark:bg-red-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
-            {cartItemCount}
-          </span>
-        )}
+      <button onClick={() => setIsOpen(true)} className="block w-full button">
+        <div className="flex items-center justify-center gap-2 relative">
+          <FiPlus className="w-5 h-5" />
+          <span className="text-sm dark:text-slate-100">{t("orderFood")}</span>
+          {cartItemCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 dark:bg-red-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+              {cartItemCount}
+            </span>
+          )}
+        </div>
       </button>
 
       {/* Modal */}
@@ -221,9 +220,9 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
             </div>
 
             {/* Food Grid and Cart Split View */}
-            <div className="flex-1 overflow-hidden flex flex-col md:flex-row min-h-0">
+            <div className="flex-1 overflow-hidden flex flex-col lg:flex-row min-h-0">
               {/* Left: Food Grid */}
-              <div className="flex-1 overflow-y-auto p-3 md:p-4 md:border-r border-slate-200 dark:border-slate-700">
+              <div className="flex-1 overflow-y-auto p-3 md:p-4 lg:border-r border-slate-200 dark:border-slate-700">
                 {isLoading ? (
                   <div className="flex items-center justify-center py-12">
                     <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-main border-r-transparent"></div>

@@ -34,7 +34,7 @@ const CartPreview = ({
   const hasSeasonal = cart.some((item) => item.isSeasonal);
 
   return (
-    <div className="hidden md:block w-80 bg-slate-50 dark:bg-slate-900 p-4 overflow-y-auto">
+    <div className="hidden lg:block w-80 bg-slate-50 dark:bg-slate-900 p-4 overflow-y-auto">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold text-slate-900 dark:text-slate-100">
           {cartText}
