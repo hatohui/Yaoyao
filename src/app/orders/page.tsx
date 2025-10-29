@@ -45,10 +45,10 @@ const OrderPage = () => {
   const peopleCount = people?.length ?? 0;
   const isLoading = isLoadingTable || isLoadingPeople;
 
-  // Generate back link with preserved query params
-  const backLinkQuery = mergeQueryParams(params, {
-    // Keep existing params like lang
-  });
+  // // Generate back link with preserved query params
+  // const backLinkQuery = mergeQueryParams(params, {
+  //   // Keep existing params like lang
+  // });
 
   if (isLoading) return <Loading />;
 
@@ -68,7 +68,7 @@ const OrderPage = () => {
                 <FiArrowLeft className="w-5 h-5 text-darkest dark:text-slate-300" />
               </button>
               <div>
-                <h1 className="text-lg font-semibold text-darkest dark:text-slate-100">
+                <h1 className="text-lg font-semibold truncate text-nowrap text-darkest dark:text-slate-100">
                   {table?.name || t("title")}
                 </h1>
                 <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
@@ -80,17 +80,6 @@ const OrderPage = () => {
                 </div>
               </div>
             </div>
-
-            {/* Right Side - Manage Table Button */}
-            <div>
-              <Link
-                href={`/tables/${tableId}?${backLinkQuery}`}
-                className="px-3 py-1.5 bg-main/10 dark:bg-main/20 hover:bg-main/20 dark:hover:bg-main/30 rounded-lg transition-colors text-main font-medium text-sm flex items-center gap-2"
-              >
-                <FiGrid className="w-4 h-4" />
-                <span>{t("manageTable") || "Manage Table"}</span>
-              </Link>
-            </div>
           </div>
         </div>
       </div>
@@ -98,7 +87,7 @@ const OrderPage = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-          {/* Left Column - Order Summary (Sticky on desktop, normal on mobile) */}
+          {/* Left Column - Order Summary */}
           <div className="lg:col-span-1 order-2 lg:order-1">
             <div className="lg:sticky lg:top-24">
               {table && (
