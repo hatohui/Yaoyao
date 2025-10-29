@@ -10,9 +10,7 @@ import FoodSelector from "@/components/order/food-selector/FoodSelector";
 import OrderList from "@/components/order/OrderList";
 import OrderSummary from "@/components/order/OrderSummary";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
-import { FiUsers, FiGrid, FiArrowLeft } from "react-icons/fi";
-import { mergeQueryParams } from "@/utils/params/mergeQueryParams";
+import { FiUsers, FiArrowLeft } from "react-icons/fi";
 
 const OrderPage = () => {
   const t = useTranslations("orders");
