@@ -1,12 +1,13 @@
 "use client";
 import Image from "next/image";
-import { FiImage, FiCheck, FiLink } from "react-icons/fi";
-import { useCopyToClipboard } from "@/hooks/common/useCopyToClipboard";
+import { FiImage } from "react-icons/fi";
+// import { useCopyToClipboard } from "@/hooks/common/useCopyToClipboard";
 import { useSearchParams } from "next/navigation";
 import { mergeQueryParams } from "@/utils/params/mergeQueryParams";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import Link from "next/link";
 
 type FoodCardProps = {
   food: {
@@ -35,9 +36,9 @@ const FoodCard = ({
   t,
 }: FoodCardProps) => {
   const isUnavailable = !food.available;
-  const { copied, copyToClipboard } = useCopyToClipboard();
+  // const { copied, copyToClipboard } = useCopyToClipboard();
   const searchParams = useSearchParams();
-  const cardRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLAnchorElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -51,17 +52,17 @@ const FoodCard = ({
     }
   }, []);
 
-  const handleCopyLink = async (e: React.MouseEvent) => {
-    e.preventDefault();
+  // const handleCopyLink = async (e: React.MouseEvent) => {
+  //   e.preventDefault();
 
-    // Generate URL with preserved query params (especially lang)
-    const queryString = mergeQueryParams(searchParams, {});
-    const foodUrl = `${
-      typeof window !== "undefined" ? window.location.origin : ""
-    }/menu/${food.id}${queryString ? `?${queryString}` : ""}`;
+  //   // Generate URL with preserved query params (especially lang)
+  //   const queryString = mergeQueryParams(searchParams, {});
+  //   const foodUrl = `${
+  //     typeof window !== "undefined" ? window.location.origin : ""
+  //   }/menu/${food.id}${queryString ? `?${queryString}` : ""}`;
 
-    await copyToClipboard(foodUrl);
-  };
+  //   await copyToClipboard(foodUrl);
+  // };
 
   const handleMouseEnter = () => {
     if (imageRef.current) {
@@ -84,22 +85,13 @@ const FoodCard = ({
   };
 
   return (
-    <div
+    <Link
+      href={`/menu/${food.id}?${mergeQueryParams(searchParams, {})}`}
       ref={cardRef}
-      onClick={handleCopyLink}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          const syntheticEvent = {
-            preventDefault: () => {},
-          } as React.MouseEvent;
-          handleCopyLink(syntheticEvent);
-        }
-      }}
       className={`bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all cursor-pointer border border-main/10 dark:border-slate-700 hover:border-main/30 dark:hover:border-main/50 relative group flex flex-col h-full ${
         isUnavailable ? "opacity-60 grayscale" : ""
       }`}
@@ -127,7 +119,7 @@ const FoodCard = ({
         )}
 
         {/* Copy Link Indicator - Shows on hover and when copied */}
-        <div
+        {/* <div
           className={`absolute top-2 left-2 px-2.5 py-1 text-white text-xs font-semibold rounded-full shadow-lg transition-all ${
             copied
               ? "bg-green-500 dark:bg-green-600 opacity-100"
@@ -145,7 +137,7 @@ const FoodCard = ({
               {t("clickToCopyLink")}
             </span>
           )}
-        </div>
+        </div> */}
 
         {/* Availability Badge */}
         {isUnavailable && (
@@ -210,7 +202,7 @@ const FoodCard = ({
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
