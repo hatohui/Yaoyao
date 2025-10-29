@@ -1,5 +1,6 @@
 //features
 export const TABLE_PUBLIC_ENABLED = true;
+export const LAYOUT_PUBLIC_ENABLED = false;
 
 //settings
 export const PASSWORD = "awrfawrf";

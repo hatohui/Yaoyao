@@ -12,6 +12,7 @@ import NavPc from "./NavPC";
 import useAuthStore, { AuthState } from "@/stores/useAuthStore";
 import { buildUrlWithParams } from "@/utils/params/buildUrlWithParams";
 import Loading from "../common/Loading";
+import { LAYOUT_PUBLIC_ENABLED } from "@/config/app";
 
 const NavBar = () => {
   const pathname = usePathname();
@@ -40,7 +41,7 @@ const NavBar = () => {
 
   const navData = [
     { title: t("home"), link: "/", public: true },
-    { title: t("layout"), link: "/layout", public: true },
+    { title: t("layout"), link: "/layout", public: LAYOUT_PUBLIC_ENABLED },
     { title: t("menu"), link: "/menu", public: true },
     { title: t("tables"), link: "/tables", public: true },
     { title: t("dashboard"), link: "/dashboard", public: false },
