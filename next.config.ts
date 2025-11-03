@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
         hostname: "trello.com",
       },
     ],
+    unoptimized: true,
   },
 };
 
