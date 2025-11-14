@@ -1,3 +1,5 @@
+import { PresetMenu, Food, FoodVariant } from "@prisma/client";
+
 // GET /api/tables/[tableId]/orders
 export type GetOrdersResponse = {
   id: string;
@@ -31,4 +33,12 @@ export type GetOrdersResponse = {
     currency: string | null;
     available: boolean;
   } | null;
+};
+
+export type GetOrdersWithPresetsResponse = {
+  orders: GetOrdersResponse[];
+  presetMenus: (PresetMenu & {
+    food: Food;
+    variant: FoodVariant | null;
+  })[];
 };

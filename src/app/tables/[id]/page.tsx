@@ -27,7 +27,9 @@ const TableDetailPage = () => {
 
   const { data: orders } = useTableOrders(id);
   const isLoading = isLoadingTable || isLoadingPeople;
-  const hasOrders = orders && orders.length > 0;
+  const hasOrders =
+    (orders?.orders && orders.orders.length > 0) ||
+    (orders?.presetMenus && orders.presetMenus.length > 0);
   const isNormalMember = !canManage;
 
   return (

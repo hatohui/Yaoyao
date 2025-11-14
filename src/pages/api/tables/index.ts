@@ -21,7 +21,8 @@ const handler: NextApiHandler = async (req, res) => {
 
   switch (method) {
     case "GET":
-      const { people, page, count, search, isStaging, direction } = req.query;
+      const { people, page, count, search, isStaging, direction, sortBy } =
+        req.query;
 
       const isStagingMode = isStaging === "true";
       const pageNum = page ? parseInt(page as string, 10) : 1;
@@ -40,7 +41,8 @@ const handler: NextApiHandler = async (req, res) => {
           search as string,
           pageNum,
           countNum,
-          direction as "asc" | "desc" | undefined
+          direction as "asc" | "desc" | undefined,
+          sortBy as "name" | "layout" | undefined
         );
       } else {
         result = await getTables(
@@ -48,7 +50,8 @@ const handler: NextApiHandler = async (req, res) => {
           countNum,
           search as string,
           isStagingMode,
-          direction as "asc" | "desc" | undefined
+          direction as "asc" | "desc" | undefined,
+          sortBy as "name" | "layout" | undefined
         );
       }
 

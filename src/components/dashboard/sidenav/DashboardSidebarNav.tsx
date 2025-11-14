@@ -52,7 +52,7 @@ const DashboardSidebarNav = ({
                 ${
                   active
                     ? "bg-main dark:bg-dark-main/20 dark:border dark:border-main/40 text-white dark:text-dark-text shadow-lg"
-                    : "text-white/80 dark:text-dark-text-secondary hover:bg-white/10 dark:hover:bg-slate-700/50 hover:text-white dark:hover:text-dark-text"
+                    : "text-white/80 border border-transparent dark:text-dark-text-secondary hover:bg-white/10 dark:hover:bg-slate-700/50 hover:text-white dark:hover:text-dark-text"
                 }
                 ${isCollapsed ? "justify-center" : ""}
               `}
@@ -61,7 +61,7 @@ const DashboardSidebarNav = ({
               {!isCollapsed && (
                 <div className="flex-1 min-w-0">
                   <div className="font-medium text-sm">{item.title}</div>
-                  <div className="text-xs opacity-80 mt-0.5">
+                  <div className="text-xs opacity-80 mt-0.5 truncate">
                     {item.description}
                   </div>
                 </div>

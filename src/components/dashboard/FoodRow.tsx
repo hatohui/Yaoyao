@@ -1,25 +1,36 @@
 "use client";
+import React from "react";
+import Image from "next/image";
 import { useFoodAvailabilityMutation } from "@/hooks/food/useFoodAvailabilityMutation";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import { FiEye, FiEyeOff, FiEdit2 } from "react-icons/fi";
 
 type FoodRowProps = {
   food: {
     id: string;
     name: string;
     available: boolean;
+    imageUrl?: string | null;
     variants?: Array<{
       label: string;
       price?: number | null;
       currency?: string | null;
       available?: boolean;
+      isSeasonal?: boolean;
     }>;
   };
   translatedName: string;
   categoryName: string;
   t: (key: string) => string;
+  onEdit: () => void;
 };
 
-const FoodRow = ({ food, translatedName, categoryName, t }: FoodRowProps) => {
+const FoodRow = ({
+  food,
+  translatedName,
+  categoryName,
+  t,
+  onEdit,
+}: FoodRowProps) => {
   const availabilityMutation = useFoodAvailabilityMutation(food.id);
 
   const handleToggle = () => {
@@ -29,90 +40,110 @@ const FoodRow = ({ food, translatedName, categoryName, t }: FoodRowProps) => {
   return (
     <tr className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
       <td className="px-6 py-4">
-        <div className="font-semibold text-slate-900 dark:text-slate-100">
-          {translatedName}
+        <div className="flex items-center gap-3">
+          <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700 flex-shrink-0">
+            {food.imageUrl ? (
+              <Image
+                src={food.imageUrl}
+                alt={translatedName}
+                fill
+                className="object-cover"
+                sizes="48px"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-slate-400 dark:text-slate-500 text-xs">
+                No img
+              </div>
+            )}
+          </div>
+          <div
+            className="font-semibold text-slate-900 dark:text-slate-100 truncate"
+            title={translatedName}
+          >
+            {translatedName}
+          </div>
         </div>
       </td>
-      <td className="px-6 py-4">
-        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
-          {categoryName}
+      <td className="px-3 py-4">
+        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 max-w-full">
+          <span className="truncate">{categoryName}</span>
         </span>
       </td>
-      <td className="px-6 py-4">
-        <div className="text-sm">
+      <td className="px-3 py-4">
+        <div className="flex flex-wrap gap-1.5">
           {food.variants && food.variants.length > 0 ? (
-            <div className="space-y-2">
-              {food.variants.map((variant, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between gap-3 py-1.5 px-3 rounded-lg bg-slate-50 dark:bg-slate-700/30"
-                >
-                  <span className="font-medium text-slate-700 dark:text-slate-300">
-                    {variant.label}
+            food.variants.map((variant, idx) => (
+              <React.Fragment key={idx}>
+                {variant.isSeasonal ? (
+                  <span className="inline-block px-2 py-1 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 text-xs font-medium rounded truncate">
+                    {t("seasonal")}
                   </span>
-                  <div className="flex items-center gap-2">
+                ) : (
+                  <div className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-medium">
+                    {variant.label && (
+                      <span className="truncate">{variant.label}</span>
+                    )}
                     {variant.price && (
-                      <span className="font-semibold text-main dark:text-main">
+                      <span className="font-semibold text-main dark:text-main whitespace-nowrap">
                         {variant.price} RM
                       </span>
                     )}
-                    {variant.available ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 text-xs font-medium rounded">
-                        <FiEye className="w-3 h-3" />
-                        {t("available")}
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-xs font-medium rounded">
-                        <FiEyeOff className="w-3 h-3" />
-                        {t("unavailable")}
-                      </span>
-                    )}
                   </div>
-                </div>
-              ))}
-            </div>
+                )}
+              </React.Fragment>
+            ))
           ) : (
             <span className="text-slate-400 dark:text-slate-500">-</span>
           )}
         </div>
       </td>
-      <td className="px-6 py-4 text-center">
-        {food.available ? (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 text-sm font-semibold rounded-full">
-            <FiEye className="w-4 h-4" />
-            {t("available")}
-          </span>
-        ) : (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-sm font-semibold rounded-full">
-            <FiEyeOff className="w-4 h-4" />
-            {t("unavailable")}
-          </span>
-        )}
-      </td>
-      <td className="px-6 py-4 text-center">
-        <button
-          onClick={handleToggle}
-          disabled={availabilityMutation.isPending}
-          className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm ${
-            food.available
-              ? "bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 hover:shadow"
-              : "bg-green-500 hover:bg-green-600 text-white hover:shadow-md"
-          }`}
-        >
-          {availabilityMutation.isPending ? (
-            "..."
-          ) : food.available ? (
-            <>
-              <FiEyeOff className="inline w-4 h-4 mr-1.5" />
-              {t("hideItem")}
-            </>
+      <td className="px-3 py-4 text-center">
+        <div className="flex items-center justify-center">
+          {food.available ? (
+            <div
+              className="flex items-center justify-center w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/40"
+              title={t("available")}
+            >
+              <FiEye className="w-4 h-4 text-green-700 dark:text-green-300" />
+            </div>
           ) : (
-            <>
-              <FiEye className="inline w-4 h-4 mr-1.5" />
-              {t("showItem")}
-            </>
+            <div
+              className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700"
+              title={t("unavailable")}
+            >
+              <FiEyeOff className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+            </div>
           )}
-        </button>
+        </div>
+      </td>
+      <td className="px-3 py-4">
+        <div className="flex items-center justify-center gap-1.5">
+          <button
+            onClick={onEdit}
+            className="p-2 rounded-lg font-semibold text-sm transition-all shadow-sm bg-slate-600 dark:bg-slate-500 hover:bg-slate-700 dark:hover:bg-slate-400 text-white hover:shadow flex items-center justify-center"
+            title="Edit"
+          >
+            <FiEdit2 className="w-4 h-4" />
+          </button>
+          <button
+            onClick={handleToggle}
+            disabled={availabilityMutation.isPending}
+            className={`p-2 rounded-lg font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm flex items-center justify-center ${
+              food.available
+                ? "bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 hover:shadow"
+                : "bg-green-500 hover:bg-green-600 text-white hover:shadow-md"
+            }`}
+            title={food.available ? t("lockItem") : t("unlockItem")}
+          >
+            {availabilityMutation.isPending ? (
+              "..."
+            ) : food.available ? (
+              <FiEyeOff className="w-4 h-4" />
+            ) : (
+              <FiEye className="w-4 h-4" />
+            )}
+          </button>
+        </div>
       </td>
     </tr>
   );

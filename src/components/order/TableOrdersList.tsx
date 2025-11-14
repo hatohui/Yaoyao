@@ -6,11 +6,14 @@ import { FiShoppingCart, FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import OrderItem from "./OrderItem";
+import PresetMenuItem from "./PresetMenuItem";
 
 type TableOrdersListProps = { tableId: string };
 
 const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
-  const { data: orders, isLoading } = useTableOrders(tableId);
+  const { data, isLoading } = useTableOrders(tableId);
+  const orders = data?.orders || [];
+  const presetMenus = data?.presetMenus || [];
   const t = useTranslations("orders");
   const [isCollapsed, setIsCollapsed] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -48,12 +51,25 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
   // compute totals
   const totalItems =
     orders?.reduce((acc, o) => acc + (o.quantity ?? 0), 0) ?? 0;
-  const subtotal = orders
+  const presetItemsCount =
+    presetMenus?.reduce((acc, p) => acc + (p.quantity ?? 0), 0) ?? 0;
+  const totalItemsWithPresets = totalItems + presetItemsCount;
+
+  const ordersSubtotal = orders
     ? orders.reduce((acc, o) => {
         const price = o.variant?.price ?? o.food?.variants?.[0]?.price ?? 0;
         return acc + price * (o.quantity ?? 0);
       }, 0)
     : 0;
+
+  const presetsSubtotal = presetMenus
+    ? presetMenus.reduce((acc, p) => {
+        const price = p.variant?.price ?? 0;
+        return acc + price * (p.quantity ?? 0);
+      }, 0)
+    : 0;
+
+  const subtotal = ordersSubtotal + presetsSubtotal;
 
   if (isLoading) {
     return (
@@ -68,7 +84,11 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
     );
   }
 
-  if (!orders || orders.length === 0) {
+  // Show empty state only if both orders and preset menus are empty
+  if (
+    (!orders || orders.length === 0) &&
+    (!presetMenus || presetMenus.length === 0)
+  ) {
     return (
       <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-main/10 dark:border-slate-700 p-8">
         <div className="text-center">
@@ -101,7 +121,7 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
           <h2 className="text-sm font-semibold text-white flex items-center gap-1.5">
             {t("myOrders")}
             <span className="ml-1 px-1.5 py-0.5 text-xs font-semibold bg-main text-white dark:bg-main dark:text-slate-900 dark:shadow-main/30 rounded">
-              {orders.length}
+              {orders.length + presetMenus.length}
             </span>
           </h2>
           {isCollapsed ? (
@@ -125,7 +145,7 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
                   {t("items")}:
                 </span>
                 <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                  {totalItems}
+                  {totalItemsWithPresets}
                 </span>
               </div>
               <div className="flex items-center gap-2">
@@ -145,6 +165,32 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
               isCollapsed ? "" : "flex-1 min-h-0"
             } overflow-y-auto`}
           >
+            {/* Preset Menu Items */}
+            {presetMenus && presetMenus.length > 0 && (
+              <>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="h-px flex-1 bg-yellow-300 dark:bg-yellow-700"></div>
+                  <span className="text-xs font-semibold text-yellow-700 dark:text-yellow-400 uppercase tracking-wide">
+                    Preset Menu
+                  </span>
+                  <div className="h-px flex-1 bg-yellow-300 dark:bg-yellow-700"></div>
+                </div>
+                {presetMenus.map((presetMenu) => (
+                  <PresetMenuItem key={presetMenu.id} presetMenu={presetMenu} />
+                ))}
+                {orders && orders.length > 0 && (
+                  <div className="flex items-center gap-2 my-4">
+                    <div className="h-px flex-1 bg-slate-300 dark:bg-slate-700"></div>
+                    <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">
+                      Additional Orders
+                    </span>
+                    <div className="h-px flex-1 bg-slate-300 dark:bg-slate-700"></div>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Regular Orders */}
             {orders.map((order) => (
               <OrderItem key={order.id} order={order} isEditable={false} />
             ))}

@@ -12,10 +12,23 @@ export interface TableMapProps {
   page: number;
   searchQuery?: string;
   resetPage: () => void;
+  direction?: "asc" | "desc";
+  sortBy?: "name" | "layout";
 }
 
-const TableMap = ({ page, searchQuery = "", resetPage }: TableMapProps) => {
-  const { data, isLoading } = useTables({ page, search: searchQuery });
+const TableMap = ({
+  page,
+  searchQuery = "",
+  resetPage,
+  direction,
+  sortBy,
+}: TableMapProps) => {
+  const { data, isLoading } = useTables({
+    page,
+    search: searchQuery,
+    direction,
+    sortBy,
+  });
   const searchParams = useSearchParams();
   const t = useTranslations("tables");
 
@@ -59,10 +72,22 @@ const TableMap = ({ page, searchQuery = "", resetPage }: TableMapProps) => {
   }
 
   return (
-    <TableMapGrid
-      tables={data.tables}
-      buildUrlWithParams={buildUrlWithParams}
-    />
+    <>
+      {searchQuery && (
+        <div className="mb-4 px-1">
+          <p className="text-sm text-slate-600 dark:text-slate-400">
+            {t("searchResultsFor", {
+              query: searchQuery,
+              count: data.pagination.total,
+            })}
+          </p>
+        </div>
+      )}
+      <TableMapGrid
+        tables={data.tables}
+        buildUrlWithParams={buildUrlWithParams}
+      />
+    </>
   );
 };
 

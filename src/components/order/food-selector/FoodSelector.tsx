@@ -88,6 +88,15 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
         alert(t("selectVariantPrompt"));
         return;
       }
+
+      // Check if selected variant is available
+      const selectedVariantData = selectedFoodData.variants[selectedVariant];
+      if (!selectedVariantData.available) {
+        alert(
+          t("variantUnavailable") || "This variant is currently unavailable"
+        );
+        return;
+      }
     }
 
     const variant =
@@ -178,20 +187,20 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
       {isOpen && (
         <div
           ref={modalRef}
-          className="fixed inset-0 z-50 flex h-screen items-center justify-center p-0 md:p-4 bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex h-screen items-center justify-center p-0 bg-black/60 backdrop-blur-sm"
         >
           <div
             ref={contentRef}
-            className="bg-white dark:bg-slate-800 md:rounded-xl shadow-2xl w-full h-full md:max-w-6xl md:max-h-[90vh] overflow-hidden flex flex-col"
+            className="bg-white dark:bg-slate-800 shadow-2xl w-full h-full overflow-hidden flex flex-col"
           >
             {/* Header */}
-            <div className="bg-darkest dark:bg-slate-900 px-4 md:px-6 py-4 flex items-center justify-between flex-shrink-0">
-              <div className="flex items-center gap-2 md:gap-3">
-                <h2 className="text-base md:text-lg font-semibold text-white dark:text-slate-100">
+            <div className="bg-darkest dark:bg-slate-900 px-6 lg:px-8 py-3 lg:py-4 flex items-center justify-between flex-shrink-0 border-b border-white/10">
+              <div className="flex items-center gap-3 lg:gap-4">
+                <h2 className="text-base lg:text-lg font-bold text-white dark:text-slate-100">
                   {t("selectFood")}
                 </h2>
                 {cartItemCount > 0 && (
-                  <span className="bg-main text-white text-xs md:text-sm font-semibold px-2 md:px-3 py-1 rounded-full">
+                  <span className="bg-main text-white text-sm lg:text-base font-bold px-3 lg:px-4 py-1.5 lg:py-2 rounded-full shadow-lg">
                     {cartItemCount}{" "}
                     {cartItemCount === 1 ? t("item") : t("items")}
                   </span>
@@ -199,14 +208,14 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
               </div>
               <button
                 onClick={handleCloseModal}
-                className="text-white/80 dark:text-slate-300 hover:text-white dark:hover:text-white transition-colors p-1"
+                className="text-white/70 hover:text-white hover:bg-white/10 transition-colors p-2 rounded-lg cursor-pointer"
               >
                 <FiX className="w-5 h-5 md:w-6 md:h-6" />
               </button>
             </div>
 
             {/* Search and Categories */}
-            <div className="border-b border-slate-200 dark:border-slate-700 p-3 md:p-4 space-y-3 flex-shrink-0">
+            <div className="border-b border-slate-200 dark:border-slate-700 p-4 lg:p-6 space-y-4 lg:space-y-5 flex-shrink-0 bg-slate-50 dark:bg-slate-800/50">
               <FoodSelectorSearch
                 value={searchInput}
                 onChange={setSearchInput}
@@ -222,7 +231,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
             {/* Food Grid and Cart Split View */}
             <div className="flex-1 overflow-hidden flex flex-col lg:flex-row min-h-0">
               {/* Left: Food Grid */}
-              <div className="flex-1 overflow-y-auto p-3 md:p-4 lg:border-r border-slate-200 dark:border-slate-700">
+              <div className="flex-1 overflow-y-auto p-4 lg:p-8 lg:border-r border-slate-200 dark:border-slate-700">
                 {isLoading ? (
                   <div className="flex items-center justify-center py-12">
                     <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-main border-r-transparent"></div>
@@ -232,7 +241,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                   </div>
                 ) : filteredFoods && filteredFoods.length > 0 ? (
                   <>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-2 md:gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 lg:gap-4">
                       {filteredFoods.map((food) => {
                         const inCartCount =
                           food.variants?.reduce((sum, variant) => {
@@ -265,7 +274,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                         currentPage={foodsData.pagination.page}
                         totalPages={foodsData.pagination.totalPages}
                         onPageChange={setCurrentPage}
-                        className="mt-4"
+                        className="mt-6 lg:mt-8"
                       />
                     )}
                   </>
@@ -315,17 +324,17 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                 addToCartText={t("addToCart") || "Add to Cart"}
                 seasonalText={tMenu("seasonal")}
                 priceText={t("price") || "Price"}
-                notAvailableText={t("notAvailable")}
+                notAvailableText={t("notAvailable") || "Not Available"}
               />
             )}
 
             {/* Submit Cart Footer */}
             {cart.length > 0 && !selectedFood && (
-              <div className="border-t border-slate-200 dark:border-slate-700 p-3 md:p-4 bg-white dark:bg-slate-800 flex-shrink-0">
+              <div className="border-t border-slate-200 dark:border-slate-700 p-4 lg:p-6 bg-white dark:bg-slate-800 flex-shrink-0">
                 <button
                   onClick={handleSubmitCart}
                   disabled={addOrderMutation.isPending}
-                  className="button w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="button w-full text-base lg:text-lg font-bold py-3 lg:py-4 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {addOrderMutation.isPending
                     ? t("ordering") || "Processing..."

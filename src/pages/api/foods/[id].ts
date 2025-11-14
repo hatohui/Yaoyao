@@ -1,7 +1,12 @@
 import { Language, SUPPORTED_LANGS } from "@/common/language";
 import { Status } from "@/common/status";
-import { getFoodById, updateFoodAvailability } from "@/repositories/food-repo";
+import {
+  getFoodById,
+  updateFoodAvailability,
+  updateFood,
+} from "@/repositories/food-repo";
 import { GetFoodByIdResponse } from "@/types/api/food/GET";
+import { PutFoodRequest } from "@/types/api/food/PUT";
 import { TranslatedFood } from "@/types/models/food";
 import { isValidId } from "@/utils/validation/idValidation";
 import { mapFoodToResponse } from "@/utils/mappers/mapFoodToResponse";
@@ -34,13 +39,25 @@ const handler: NextApiHandler = async (req, res) => {
         return BadRequest("id is required and must be a valid UUID");
 
       try {
-        const body = req.body as { available?: boolean };
+        const body = req.body as PutFoodRequest;
 
-        if (typeof body.available !== "boolean") {
-          return BadRequest(
-            "available field is required and must be a boolean",
-            "INVALID_INPUT"
-          );
+        // Check if it's just an availability update (legacy behavior)
+        if (
+          typeof body.available === "boolean" &&
+          Object.keys(body).length === 1
+        ) {
+          const existingFood = await getFoodById(id);
+          if (!existingFood) {
+            return NotFound("Food not found", "FOOD_NOT_FOUND");
+          }
+
+          const updatedFood = await updateFoodAvailability(id, body.available);
+          return Ok(updatedFood);
+        }
+
+        // Full update
+        if (Object.keys(body).length === 0) {
+          return BadRequest("No fields to update", "INVALID_INPUT");
         }
 
         const existingFood = await getFoodById(id);
@@ -48,13 +65,12 @@ const handler: NextApiHandler = async (req, res) => {
           return NotFound("Food not found", "FOOD_NOT_FOUND");
         }
 
-        const updatedFood = await updateFoodAvailability(id, body.available);
-
+        const updatedFood = await updateFood(id, body);
         return Ok(updatedFood);
       } catch (error) {
-        console.error("Error updating food availability:", error);
+        console.error("Error updating food:", error);
         return Status(res).InternalError(
-          "Failed to update food availability",
+          "Failed to update food",
           "GENERIC_ERROR"
         );
       }

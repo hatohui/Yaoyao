@@ -1,4 +1,11 @@
-import { People, Table, Order, Food, FoodVariant } from "@prisma/client";
+import {
+  People,
+  Table,
+  Order,
+  Food,
+  FoodVariant,
+  Layout,
+} from "@prisma/client";
 
 export type GetTablesResponse = Omit<Table, "tableLeaderId"> & {
   orders: (Order & {
@@ -6,6 +13,7 @@ export type GetTablesResponse = Omit<Table, "tableLeaderId"> & {
   })[];
   peopleCount: number;
   tableLeader: People | null;
+  layout: Layout | null;
 };
 
 export type GetTablesWithPaginationResponse = {
@@ -25,6 +33,7 @@ export type TablesDTO = Omit<GetTableByIdResponse, "_count"> & {
 export type GetTablesWithPeopleResponse = Omit<Table, "tableLeaderId"> & {
   people: People[];
   tableLeader: People | null;
+  layout: Layout | null;
 };
 
 export type GetTableByIdResponse = Omit<

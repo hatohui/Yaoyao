@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from "next-intl";
 import NavBar from "@/components/nav/NavBar";
 import TanstackProvider from "@/config/TanstackProvider";
 import ThemeProvider from "@/components/common/ThemeProvider";
+import { Toaster } from "sonner";
 import dynamic from "next/dynamic";
 import "./globals.css";
 
@@ -124,6 +125,7 @@ export default async function RootLayout({
               <NavBar />
               <main>{children}</main>
               <AuthHydrator />
+              <Toaster position="top-center" richColors />
             </NextIntlClientProvider>
           </TanstackProvider>
         </ThemeProvider>
