@@ -15,19 +15,21 @@ const TableOrderCard = ({ table }: TableOrderCardProps) => {
   const tOrder = useTranslations("orders");
 
   // Fetch orders for this table
-  const { data: orders, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["orders", table.id],
     queryFn: () =>
       axios.get(`/tables/${table.id}/orders`).then((res) => res.data),
   });
 
+  const orders = data?.orders || [];
+
   const totalItems =
-    orders?.reduce(
+    orders.reduce(
       (sum: number, order: { quantity: number }) => sum + order.quantity,
       0
     ) || 0;
   const totalAmount =
-    orders?.reduce(
+    orders.reduce(
       (
         sum: number,
         order: {
@@ -47,7 +49,7 @@ const TableOrderCard = ({ table }: TableOrderCardProps) => {
   const currency = "RM";
 
   // Don't show this table if it has no orders or total is 0
-  if (!isLoading && (!orders || orders.length === 0 || totalAmount === 0)) {
+  if (!isLoading && (orders.length === 0 || totalAmount === 0)) {
     return null;
   }
 

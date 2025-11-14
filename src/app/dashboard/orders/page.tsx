@@ -2,24 +2,38 @@
 import useTables from "@/hooks/table/useTables";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import { useTranslations } from "next-intl";
-import { notFound } from "next/navigation";
-import { useState } from "react";
+import { notFound, useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
 import { FiFilter, FiShoppingBag } from "react-icons/fi";
 import Loading from "@/components/common/Loading";
 import TableOrderCard from "@/components/dashboard/TableOrderCard";
+import usePagination from "@/hooks/common/usePagination";
+import Pagination from "@/components/common/Pagination";
 
 const DashboardOrdersPage = () => {
   const { isYaoyao } = useYaoAuth();
   const t = useTranslations("dashboard");
   const tOrder = useTranslations("orders");
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams?.get("search") || "";
+  const { currentPage, goToPage, resetPage } = usePagination();
 
   const [paymentFilter, setPaymentFilter] = useState<"all" | "paid" | "unpaid">(
     "all"
   );
 
   const { data, isLoading } = useTables({
-    count: 9999, // Get all tables to filter occupied ones
+    page: currentPage,
+    search: searchQuery,
   });
+
+  // Reset to page 1 when search changes
+  useEffect(() => {
+    if (currentPage !== 1 && searchQuery) {
+      resetPage();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery]);
 
   if (!isYaoyao) {
     return notFound();
@@ -98,6 +112,17 @@ const DashboardOrdersPage = () => {
               </div>
             )}
           </>
+        )}
+
+        {/* Pagination */}
+        {data?.pagination && data.pagination.totalPages > 1 && (
+          <div className="mt-6">
+            <Pagination
+              currentPage={data.pagination.page}
+              totalPages={data.pagination.totalPages}
+              onPageChange={goToPage}
+            />
+          </div>
         )}
       </div>
     </div>
