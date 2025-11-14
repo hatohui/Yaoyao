@@ -57,6 +57,7 @@ model Food {
   variants    FoodVariant[]
   translations FoodTranslation[]
   orders      Order[]
+  presetMenus PresetMenu[]
 }
 
 model FoodVariant {
@@ -68,8 +69,9 @@ model FoodVariant {
   available Boolean  @default(true)
   isSeasonal Boolean  @default(false)
 
-  food      Food     @relation(fields: [foodId], references: [id])
-  orders    Order[]
+  food        Food         @relation(fields: [foodId], references: [id])
+  orders      Order[]
+  presetMenus PresetMenu[]
 }
 
 model FoodTranslation {
@@ -121,6 +123,18 @@ model Order {
   variant FoodVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
 
   @@index([tableId])
+  @@index([foodId])
+}
+
+model PresetMenu {
+  id        String   @id @default(uuid()) @db.Uuid
+  foodId    String   @db.Uuid
+  variantId String?  @db.Uuid
+  quantity  Int      @default(1)
+
+  food    Food         @relation(fields: [foodId], references: [id], onDelete: Cascade)
+  variant FoodVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
   @@index([foodId])
 }
 

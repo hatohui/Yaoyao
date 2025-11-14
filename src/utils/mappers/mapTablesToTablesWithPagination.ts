@@ -19,6 +19,7 @@ export const mapTablesToTablesWithPagination = (
       updatedAt: table.updatedAt,
       peopleCount: table._count.people,
       orders: table.orders,
+      layout: table.layout,
     })),
     pagination: {
       page: pageNum,
@@ -46,6 +47,7 @@ export const mapTablesWithPeopleAndPaginationToTables = (
       createdAt: table.createdAt,
       updatedAt: table.updatedAt,
       people: table.people,
+      layout: table.layout,
     })),
     pagination: {
       page: pageNum,

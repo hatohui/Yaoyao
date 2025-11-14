@@ -3,17 +3,22 @@ import React from "react";
 import { TranslatedFood } from "@/types/models/food";
 import { useFoodAvailabilityMutation } from "@/hooks/food/useFoodAvailabilityMutation";
 import { useTranslations } from "next-intl";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
 
 type FoodCardMobileProps = {
   food: TranslatedFood;
   translatedName: string;
   categoryName: string;
+  onEdit: () => void;
+  onDelete: () => void;
 };
 
 const FoodCardMobile = ({
   food,
   translatedName,
   categoryName,
+  onEdit,
+  onDelete,
 }: FoodCardMobileProps) => {
   const availabilityMutation = useFoodAvailabilityMutation(food.id);
   const t = useTranslations("menu");
@@ -57,28 +62,22 @@ const FoodCardMobile = ({
             {food.variants.map((variant) => (
               <div
                 key={variant.id}
-                className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 dark:bg-slate-700/30"
+                className="flex items-center justify-between gap-2 p-2.5 rounded-lg bg-slate-50 dark:bg-slate-700/30"
               >
-                <span className="font-medium text-sm text-slate-700 dark:text-slate-300">
-                  {variant.label}
+                <span className="font-medium text-sm text-slate-700 dark:text-slate-300 truncate">
+                  {variant.label || "-"}
                 </span>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-shrink-0">
                   {variant.price && (
-                    <span className="font-semibold text-sm text-main dark:text-main">
+                    <span className="font-semibold text-sm text-main dark:text-main whitespace-nowrap">
                       {variant.price} RM
                     </span>
                   )}
-                  <span
-                    className={`px-2 py-0.5 rounded text-xs font-medium ${
-                      variant.available
-                        ? "bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300"
-                        : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
-                    }`}
-                  >
-                    {variant.available
-                      ? t("available") || "Available"
-                      : t("unavailable") || "Unavailable"}
-                  </span>
+                  {variant.isSeasonal && (
+                    <span className="inline-flex items-center px-2 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 text-xs font-medium rounded whitespace-nowrap">
+                      {t("seasonal")}
+                    </span>
+                  )}
                 </div>
               </div>
             ))}
@@ -87,21 +86,37 @@ const FoodCardMobile = ({
       )}
 
       {/* Action */}
-      <div className="p-4 bg-slate-50 dark:bg-slate-700/30">
+      <div className="p-4 bg-slate-50 dark:bg-slate-700/30 flex flex-col gap-2">
+        <div className="flex gap-2">
+          <button
+            onClick={onEdit}
+            className="flex-1 px-4 py-2.5 rounded-lg font-semibold text-sm transition-all shadow-sm bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-500 text-white hover:shadow flex items-center justify-center gap-2"
+          >
+            <FiEdit2 className="w-4 h-4" />
+            Edit
+          </button>
+          <button
+            onClick={handleToggleFood}
+            disabled={availabilityMutation.isPending}
+            className={`flex-1 px-4 py-2.5 rounded-lg font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm ${
+              food.available
+                ? "bg-gray-300 dark:bg-slate-700 hover:bg-gray-400 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-300"
+                : "bg-green-500 hover:bg-green-600 text-white hover:shadow-md"
+            }`}
+          >
+            {availabilityMutation.isPending
+              ? "..."
+              : food.available
+              ? t("lockItem") || "Lock Item"
+              : t("unlockItem") || "Unlock Item"}
+          </button>
+        </div>
         <button
-          onClick={handleToggleFood}
-          disabled={availabilityMutation.isPending}
-          className={`w-full px-4 py-2.5 rounded-lg font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm ${
-            food.available
-              ? "bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300"
-              : "bg-green-500 hover:bg-green-600 text-white hover:shadow-md"
-          }`}
+          onClick={onDelete}
+          className="w-full px-4 py-2.5 rounded-lg font-semibold text-sm transition-all shadow-sm bg-red-500 dark:bg-red-600 hover:bg-red-600 dark:hover:bg-red-500 text-white hover:shadow flex items-center justify-center gap-2"
         >
-          {availabilityMutation.isPending
-            ? "..."
-            : food.available
-            ? t("hideItem") || "Hide Item"
-            : t("showItem") || "Show Item"}
+          <FiTrash2 className="w-4 h-4" />
+          Delete
         </button>
       </div>
     </div>

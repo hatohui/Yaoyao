@@ -4,7 +4,13 @@ import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
 import { notFound } from "next/navigation";
-import { FiTable, FiShoppingBag, FiUsers, FiGrid } from "react-icons/fi";
+import {
+  FiTable,
+  FiShoppingBag,
+  FiUsers,
+  FiGrid,
+  FiStar,
+} from "react-icons/fi";
 import { MdRestaurantMenu } from "react-icons/md";
 import DashboardSidebar from "@/components/dashboard/sidenav/DashboardSidebar";
 import DashboardSwipeDetector from "@/components/dashboard/sidenav/DashboardSwipeDetector";
@@ -44,6 +50,12 @@ export default function DashboardLayout({
       href: "/dashboard",
       icon: MdRestaurantMenu,
       description: t("foodManagementDesc") || "Manage menu availability",
+    },
+    {
+      title: "Preset Menu",
+      href: "/dashboard/preset-menu",
+      icon: FiStar,
+      description: "Manage default menu items for all tables",
     },
     {
       title: t("tablesManagement") || "Tables",

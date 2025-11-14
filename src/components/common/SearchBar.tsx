@@ -2,7 +2,13 @@ import useSearch from "@/hooks/common/useSearch";
 import { useEffect, useState } from "react";
 import { FiSearch, FiX } from "react-icons/fi";
 
-const SearchBar = ({ placeholder }: { placeholder: string }) => {
+const SearchBar = ({
+  placeholder,
+  hint,
+}: {
+  placeholder: string;
+  hint?: string;
+}) => {
   const {
     searchInput,
     searchQuery,
@@ -46,6 +52,11 @@ const SearchBar = ({ placeholder }: { placeholder: string }) => {
           </button>
         )}
       </div>
+      {hint && (
+        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+          {hint}
+        </p>
+      )}
     </form>
   );
 };

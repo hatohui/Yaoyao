@@ -4,6 +4,7 @@ import { createOrder, getOrdersByTableId } from "@/repositories/order-repo";
 import { getFoodWithVariantsForOrder } from "@/repositories/food-repo";
 import { isValidId } from "@/utils/validation/idValidation";
 import { PostOrderRequest } from "@/types/api/order/POST";
+import { PresetMenuRepository } from "@/repositories/preset-menu-repo";
 import { NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {
@@ -26,7 +27,9 @@ const handler: NextApiHandler = async (req, res) => {
       try {
         const lang = (req.query.lang as string) || "en";
         const orders = await getOrdersByTableId(tableId as string, lang);
-        return Ok(orders);
+        const presetMenus = await PresetMenuRepository.getAllPresetMenus();
+
+        return Ok({ orders, presetMenus });
       } catch (error) {
         console.error("Error fetching orders:", error);
         return Status(res).InternalError(

@@ -26,9 +26,11 @@ const OrderPage = () => {
   const { data: people, isLoading: isLoadingPeople } = usePeopleInTable(
     table?.id ?? ""
   );
-  const { data: orders, isLoading: isLoadingOrders } = useTableOrders(
+  const { data: tableOrdersData, isLoading: isLoadingOrders } = useTableOrders(
     table?.id ?? ""
   );
+  const orders = tableOrdersData?.orders;
+  const presetMenus = tableOrdersData?.presetMenus;
 
   // const { isValid } = useTableLeaderAuth(table?.tableLeader?.id, leaderId);
 
@@ -89,7 +91,11 @@ const OrderPage = () => {
           <div className="lg:col-span-1 order-2 lg:order-1">
             <div className="lg:sticky lg:top-24">
               {table && (
-                <OrderSummary orders={orders} peopleCount={peopleCount} />
+                <OrderSummary
+                  orders={orders}
+                  presetMenus={presetMenus}
+                  peopleCount={peopleCount}
+                />
               )}
             </div>
           </div>

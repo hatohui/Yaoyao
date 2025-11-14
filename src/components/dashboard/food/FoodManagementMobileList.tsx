@@ -8,11 +8,15 @@ import { useTranslations } from "next-intl";
 type FoodManagementMobileListProps = {
   foods?: TranslatedFood[];
   categories?: (Category & { translation?: Array<{ name: string }> })[];
+  onEditFood: (food: TranslatedFood) => void;
+  onDeleteFood: (food: TranslatedFood) => void;
 };
 
 const FoodManagementMobileList = ({
   foods,
   categories,
+  onEditFood,
+  onDeleteFood,
 }: FoodManagementMobileListProps) => {
   const t = useTranslations("menu");
 
@@ -42,6 +46,8 @@ const FoodManagementMobileList = ({
             food={food}
             translatedName={translatedName}
             categoryName={categoryName}
+            onEdit={() => onEditFood(food)}
+            onDelete={() => onDeleteFood(food)}
           />
         );
       })}

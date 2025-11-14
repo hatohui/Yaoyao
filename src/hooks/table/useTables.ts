@@ -14,6 +14,7 @@ type UseTablesParams = {
   isStaging?: boolean;
   withPeople?: boolean;
   direction?: "asc" | "desc";
+  sortBy?: "name" | "layout";
 };
 
 type TablesWithPeoplePaginatedResponse = {
@@ -37,9 +38,19 @@ const useTables = <T extends boolean = false>({
   isStaging = false,
   withPeople = false as T,
   direction,
+  sortBy,
 }: UseTablesParams & { withPeople?: T }) => {
   return useQuery<TablesResponse<T>, Error>({
-    queryKey: ["tables", page, count, search, isStaging, withPeople, direction],
+    queryKey: [
+      "tables",
+      page,
+      count,
+      search,
+      isStaging,
+      withPeople,
+      direction,
+      sortBy,
+    ],
     queryFn: () =>
       axios
         .get<TablesResponse<T>>("/tables", {
@@ -50,6 +61,7 @@ const useTables = <T extends boolean = false>({
             isStaging,
             people: withPeople,
             direction,
+            sortBy,
           },
         })
         .then((res) => res.data),

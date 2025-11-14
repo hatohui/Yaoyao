@@ -2,7 +2,7 @@
 import { GetOrdersResponse } from "@/types/api/order/GET";
 import { useDeleteOrder, useUpdateOrder } from "@/hooks/order/useOrderMutation";
 import { useTranslations } from "next-intl";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FiMinus, FiPlus, FiTrash2, FiPackage } from "react-icons/fi";
 import Image from "next/image";
 
@@ -14,6 +14,7 @@ type OrderItemProps = {
 const OrderItem = ({ order, isEditable }: OrderItemProps) => {
   const t = useTranslations("orders");
   const [quantity, setQuantity] = useState(order.quantity);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const updateMutation = useUpdateOrder(order.tableId, order.id);
   const deleteMutation = useDeleteOrder(order.tableId, order.id);
@@ -27,10 +28,28 @@ const OrderItem = ({ order, isEditable }: OrderItemProps) => {
   // Use translated name if available, fallback to original name
   const foodName = order.food.translations?.[0]?.name || order.food.name;
 
+  // Cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
+
   const handleQuantityChange = (newQuantity: number) => {
     if (newQuantity < 1) return;
     setQuantity(newQuantity);
-    updateMutation.mutate({ quantity: newQuantity });
+
+    // Clear existing timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    // Set new timer to update after 500ms of no changes
+    debounceTimerRef.current = setTimeout(() => {
+      updateMutation.mutate({ quantity: newQuantity });
+    }, 500);
   };
 
   const handleDelete = () => {

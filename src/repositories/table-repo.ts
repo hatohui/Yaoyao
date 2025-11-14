@@ -8,7 +8,8 @@ const getTables = async (
   count: number = 12,
   search?: string,
   isStaging: boolean = false,
-  direction?: "asc" | "desc"
+  direction?: "asc" | "desc",
+  sortBy?: "name" | "layout"
 ) => {
   const skip = (page - 1) * count;
 
@@ -22,18 +23,41 @@ const getTables = async (
               name: { contains: search, mode: "insensitive" as const },
             },
           },
+          {
+            people: {
+              some: {
+                name: { contains: search, mode: "insensitive" as const },
+              },
+            },
+          },
+          {
+            layout: {
+              id: isNaN(parseInt(search)) ? undefined : parseInt(search),
+            },
+          },
         ],
       }
     : { isStaging };
+
+  let orderBy: object | undefined = undefined;
+
+  if (direction && sortBy) {
+    if (sortBy === "layout") {
+      orderBy = { layout: { id: direction } };
+    } else {
+      orderBy = { name: direction };
+    }
+  }
 
   const [tables, total] = await Promise.all([
     prisma.table.findMany({
       where,
       skip,
       take: count,
-      orderBy: direction ? { name: direction } : undefined,
+      orderBy,
       include: {
         tableLeader: true,
+        layout: true,
         orders: {
           include: {
             food: {
@@ -63,7 +87,8 @@ const getTablesWithPeople = async (
   search?: string,
   page: number = 1,
   count: number = 12,
-  direction?: "asc" | "desc"
+  direction?: "asc" | "desc",
+  sortBy?: "name" | "layout"
 ) => {
   const skip = (page - 1) * count;
 
@@ -84,19 +109,34 @@ const getTablesWithPeople = async (
               },
             },
           },
+          {
+            layout: {
+              id: isNaN(parseInt(search)) ? undefined : parseInt(search),
+            },
+          },
         ],
       }
     : { isStaging };
+
+  let orderBy: object | undefined = undefined;
+  if (direction && sortBy) {
+    if (sortBy === "layout") {
+      orderBy = { layout: { id: direction } };
+    } else {
+      orderBy = { name: direction };
+    }
+  }
 
   const [tables, total] = await Promise.all([
     prisma.table.findMany({
       where,
       skip,
       take: count,
-      orderBy: direction ? { name: direction } : undefined,
+      orderBy,
       include: {
         tableLeader: true,
         people: true,
+        layout: true,
       },
     }),
     prisma.table.count({ where }),

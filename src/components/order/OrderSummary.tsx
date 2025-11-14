@@ -1,26 +1,47 @@
 "use client";
 import { GetOrdersResponse } from "@/types/api/order/GET";
+import { PresetMenu, Food, FoodVariant } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import React from "react";
 import { FiShoppingBag, FiDollarSign } from "react-icons/fi";
 
 type OrderSummaryProps = {
   orders: GetOrdersResponse[] | undefined;
+  presetMenus:
+    | (PresetMenu & {
+        food: Food;
+        variant: FoodVariant | null;
+      })[]
+    | undefined;
   peopleCount: number;
 };
 
-const OrderSummary = ({ orders, peopleCount }: OrderSummaryProps) => {
+const OrderSummary = ({
+  orders,
+  presetMenus,
+  peopleCount,
+}: OrderSummaryProps) => {
   const t = useTranslations("orders");
 
   const totalItems =
     orders?.reduce((sum, order) => sum + order.quantity, 0) ?? 0;
+  const presetItems =
+    presetMenus?.reduce((sum, preset) => sum + preset.quantity, 0) ?? 0;
+  const totalItemsWithPresets = totalItems + presetItems;
 
-  const totalPrice =
+  const ordersPrice =
     orders?.reduce((sum, order) => {
       const price = order.variant?.price ?? order.food.variants[0]?.price ?? 0;
       return sum + price * order.quantity;
     }, 0) ?? 0;
 
+  const presetsPrice =
+    presetMenus?.reduce((sum, preset) => {
+      const price = preset.variant?.price ?? 0;
+      return sum + price * preset.quantity;
+    }, 0) ?? 0;
+
+  const totalPrice = ordersPrice + presetsPrice;
   const pricePerPerson = peopleCount > 0 ? totalPrice / peopleCount : 0;
 
   // Currency is always RM
@@ -45,7 +66,8 @@ const OrderSummary = ({ orders, peopleCount }: OrderSummaryProps) => {
             {t("totalItems")}
           </span>
           <span className="text-base font-semibold text-slate-900 dark:text-slate-100">
-            {totalItems} {totalItems === 1 ? t("item") : t("items")}
+            {totalItemsWithPresets}{" "}
+            {totalItemsWithPresets === 1 ? t("item") : t("items")}
           </span>
         </div>
 

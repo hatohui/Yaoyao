@@ -3,6 +3,7 @@ import { FiPlus, FiMinus } from "react-icons/fi";
 type Variant = {
   label: string;
   price?: number | null;
+  currency?: string | null;
   available?: boolean;
   isSeasonal?: boolean;
 };
@@ -35,126 +36,104 @@ const VariantSelector = ({
   quantityText,
   addToCartText,
   seasonalText,
-  priceText,
   notAvailableText,
 }: VariantSelectorProps) => {
+  const selectedVariantData =
+    selectedVariant !== null ? variants[selectedVariant] : null;
+  const isSelectedVariantAvailable = selectedVariantData?.available ?? true;
+
   return (
-    <div className="border-t border-slate-200 dark:border-slate-700 p-3 md:p-4 bg-slate-50 dark:bg-slate-900">
-      <div className="max-w-2xl mx-auto">
-        <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">
+    <div className="border-t border-slate-200 dark:border-slate-700 p-4 lg:p-6 bg-slate-50 dark:bg-slate-900">
+      <div className="max-w-4xl mx-auto">
+        <h3 className="text-base lg:text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">
           {foodName}
         </h3>
 
         {variants.length > 0 && (
-          <div className="space-y-3">
-            <label className="text-xs md:text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
-              {selectVariantText}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+            <label className="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wide whitespace-nowrap">
+              {selectVariantText}:
             </label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="flex flex-wrap gap-2">
               {variants.map((variant, idx) => (
                 <button
                   key={idx}
                   onClick={() => onSelectVariant(idx)}
                   disabled={!variant.available}
-                  className={`p-3 md:p-4 rounded-lg border-2 text-left transition-all relative ${
+                  className={`px-4 py-2.5 rounded-lg border-2 transition-colors font-bold text-sm uppercase tracking-wide whitespace-nowrap cursor-pointer ${
                     selectedVariant === idx
-                      ? "border-main dark:border-main bg-main/10 dark:bg-main/20 shadow-lg ring-2 ring-main/30 dark:ring-main/40"
+                      ? "border-main dark:border-main bg-main text-white shadow-lg"
                       : variant.available
-                      ? "border-slate-300 dark:border-slate-600 hover:border-main/50 dark:hover:border-main/50 hover:bg-slate-50 dark:hover:bg-slate-700/50"
-                      : "border-slate-200 dark:border-slate-700 opacity-50 cursor-not-allowed"
+                      ? "border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 hover:border-main dark:hover:border-main hover:bg-slate-100 dark:hover:bg-slate-700"
+                      : "border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/50 text-slate-400 dark:text-slate-600 opacity-60 cursor-not-allowed line-through"
                   }`}
                 >
-                  {selectedVariant === idx && (
-                    <div className="absolute top-1 right-1 w-5 h-5 bg-main rounded-full flex items-center justify-center">
-                      <svg
-                        className="w-3 h-3 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={3}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </div>
-                  )}
-
-                  <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-1.5">
-                      <div
-                        className={`text-sm md:text-base font-bold uppercase tracking-wide ${
+                  <div className="flex items-center gap-2">
+                    <span>{variant.label}</span>
+                    {variant.price && !variant.isSeasonal && (
+                      <span
+                        className={`text-sm font-normal ${
                           selectedVariant === idx
-                            ? "text-main dark:text-main"
-                            : "text-slate-900 dark:text-slate-100"
+                            ? "text-white/90"
+                            : "text-slate-600 dark:text-slate-400"
                         }`}
                       >
-                        {variant.label}
-                      </div>
-                      {variant.isSeasonal && (
-                        <span className="text-[9px] px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 rounded font-semibold whitespace-nowrap">
-                          {seasonalText}
-                        </span>
-                      )}
-                    </div>
-                    <div
-                      className={`text-xs md:text-sm font-bold ${
-                        selectedVariant === idx
-                          ? "text-main dark:text-main"
-                          : "text-slate-600 dark:text-slate-400"
-                      }`}
-                    >
-                      {variant.isSeasonal ? (
-                        <span className="text-amber-600 dark:text-amber-400">
-                          ({seasonalText} {priceText})
-                        </span>
-                      ) : (
-                        `${variant.price?.toFixed(2)} RM`
-                      )}
-                    </div>
+                        ({variant.price.toFixed(2)} {variant.currency || "RM"})
+                      </span>
+                    )}
+                    {variant.isSeasonal && (
+                      <span
+                        className={`text-xs px-1.5 py-0.5 rounded font-semibold ${
+                          selectedVariant === idx
+                            ? "text-amber-300"
+                            : "bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300"
+                        }`}
+                      >
+                        {seasonalText}
+                      </span>
+                    )}
+                    {!variant.available && (
+                      <span className="text-xs px-1.5 py-0.5 bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 rounded font-semibold">
+                        {notAvailableText}
+                      </span>
+                    )}
                   </div>
-                  {!variant.available && (
-                    <div className="text-xs text-red-600 dark:text-red-400 mt-1 font-semibold">
-                      {notAvailableText}
-                    </div>
-                  )}
                 </button>
               ))}
             </div>
           </div>
         )}
 
-        <div className="mt-4 flex items-center justify-between bg-white dark:bg-slate-800 rounded-lg p-3 border border-slate-200 dark:border-slate-700">
-          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+        <div className="mt-6 flex items-center justify-between bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+          <span className="text-base font-bold text-slate-700 dark:text-slate-300">
             {quantityText}
           </span>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <button
               onClick={() => onQuantityChange(-1)}
-              className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors cursor-pointer"
             >
-              <FiMinus className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+              <FiMinus className="w-5 h-5 text-slate-700 dark:text-slate-300" />
             </button>
-            <span className="text-lg font-semibold text-slate-900 dark:text-slate-100 min-w-[2rem] text-center">
+            <span className="text-xl font-bold text-slate-900 dark:text-slate-100 min-w-[3rem] text-center">
               {quantity}
             </span>
             <button
               onClick={() => onQuantityChange(1)}
-              className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors cursor-pointer"
             >
-              <FiPlus className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+              <FiPlus className="w-5 h-5 text-slate-700 dark:text-slate-300" />
             </button>
           </div>
         </div>
 
         <button
           onClick={onAddToCart}
-          className="w-full mt-4 button text-sm md:text-base"
+          disabled={!isSelectedVariantAvailable}
+          className="w-full mt-6 button text-base lg:text-lg font-bold py-3 lg:py-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-slate-300 dark:disabled:bg-slate-700"
         >
-          <FiPlus className="w-4 h-4 inline mr-2" />
-          {addToCartText}
+          <FiPlus className="w-5 h-5 inline mr-2" />
+          {!isSelectedVariantAvailable ? notAvailableText : addToCartText}
         </button>
       </div>
     </div>
