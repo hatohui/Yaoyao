@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { useFoodAvailabilityMutation } from "@/hooks/food/useFoodAvailabilityMutation";
-import { FiEye, FiEyeOff, FiEdit2 } from "react-icons/fi";
+import { FiEye, FiEyeOff, FiEdit2, FiTrash2 } from "react-icons/fi";
 
 type FoodRowProps = {
   food: {
@@ -22,6 +22,7 @@ type FoodRowProps = {
   categoryName: string;
   t: (key: string) => string;
   onEdit: () => void;
+  onDelete: () => void;
 };
 
 const FoodRow = ({
@@ -30,6 +31,7 @@ const FoodRow = ({
   categoryName,
   t,
   onEdit,
+  onDelete,
 }: FoodRowProps) => {
   const availabilityMutation = useFoodAvailabilityMutation(food.id);
 
@@ -120,7 +122,7 @@ const FoodRow = ({
         <div className="flex items-center justify-center gap-1.5">
           <button
             onClick={onEdit}
-            className="p-2 rounded-lg font-semibold text-sm transition-all shadow-sm bg-slate-600 dark:bg-slate-500 hover:bg-slate-700 dark:hover:bg-slate-400 text-white hover:shadow flex items-center justify-center"
+            className="p-2 rounded-lg font-semibold text-sm transition-all shadow-sm bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-500 text-white hover:shadow flex items-center justify-center"
             title="Edit"
           >
             <FiEdit2 className="w-4 h-4" />
@@ -130,7 +132,7 @@ const FoodRow = ({
             disabled={availabilityMutation.isPending}
             className={`p-2 rounded-lg font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm flex items-center justify-center ${
               food.available
-                ? "bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 hover:shadow"
+                ? "bg-gray-300 dark:bg-slate-700 hover:bg-gray-400 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-300 hover:shadow"
                 : "bg-green-500 hover:bg-green-600 text-white hover:shadow-md"
             }`}
             title={food.available ? t("lockItem") : t("unlockItem")}
@@ -142,6 +144,13 @@ const FoodRow = ({
             ) : (
               <FiEye className="w-4 h-4" />
             )}
+          </button>
+          <button
+            onClick={onDelete}
+            className="p-2 rounded-lg font-semibold text-sm transition-all shadow-sm bg-red-500 dark:bg-red-600 hover:bg-red-600 dark:hover:bg-red-500 text-white hover:shadow flex items-center justify-center"
+            title="Delete"
+          >
+            <FiTrash2 className="w-4 h-4" />
           </button>
         </div>
       </td>

@@ -46,7 +46,8 @@
     "availabilityUpdated": "Đã cập nhật trạng thái thành công!",
     "paymentStatusUpdated": "Đã cập nhật trạng thái thanh toán thành công!",
     "foodCreated": "Đã tạo món ăn thành công!",
-    "foodUpdated": "Đã cập nhật món ăn thành công!"
+    "foodUpdated": "Đã cập nhật món ăn thành công!",
+    "foodDeleted": "Đã xóa món ăn thành công!"
   },
   "errors": {
     "MAX_CAPACITY_REACHED": "Không thể đặt sức chứa thấp hơn số người hiện tại",
@@ -271,6 +272,8 @@
     "ordersTitle": "Bảng điều khiển đơn hàng",
     "ordersSubtitle": "Xem và quản lý tất cả đơn hàng của bàn",
     "filterByTable": "Lọc theo bàn",
+    "deleteFood": "Xóa món ăn",
+    "confirmDeleteFood": "Bạn có chắc chắn muốn xóa món ăn này không? Hành động này không thể hoàn tác.",
     "filterByPayment": "Lọc theo thanh toán",
     "allTables": "Tất cả bàn",
     "paidOnly": "Chỉ đã thanh toán",

@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Category } from "@prisma/client";
 import { TranslatedFood } from "@/types/models/food";
 import { FiX, FiPlus, FiTrash2, FiGlobe } from "react-icons/fi";
+import useFoodWithTranslations from "@/hooks/food/useFoodWithTranslations";
 
 type Variant = {
   id?: string;
@@ -68,16 +69,28 @@ const FoodFormModalEnhanced = ({
 
   const [showTranslations, setShowTranslations] = useState(false);
 
+  // Fetch food with all translations when editing
+  const { data: foodWithTranslations } = useFoodWithTranslations(
+    food?.id || null
+  );
   useEffect(() => {
-    if (food) {
+    if (food && foodWithTranslations) {
+      // Use the food with all translations fetched from the API
+      const translations =
+        foodWithTranslations.translations?.map((t) => ({
+          language: t.language,
+          name: t.name,
+          description: t.description || "",
+        })) || [];
+
       setFormData({
-        name: food.name,
-        description: food.description || "",
-        categoryId: food.categoryId,
-        imageUrl: food.imageUrl || "",
-        available: food.available,
-        variants: food.variants
-          ? food.variants.map((v) => ({
+        name: foodWithTranslations.name,
+        description: foodWithTranslations.description || "",
+        categoryId: foodWithTranslations.categoryId,
+        imageUrl: foodWithTranslations.imageUrl || "",
+        available: foodWithTranslations.available,
+        variants: foodWithTranslations.variants
+          ? foodWithTranslations.variants.map((v) => ({
               id: v.id,
               label: v.label,
               price: v.price ?? null,
@@ -86,9 +99,14 @@ const FoodFormModalEnhanced = ({
               isSeasonal: v.isSeasonal ?? false,
             }))
           : [],
-        translations: [],
+        translations,
       });
-    } else {
+
+      // Auto-expand translations section if translations exist
+      if (translations.length > 0) {
+        setShowTranslations(true);
+      }
+    } else if (!food) {
       setFormData({
         name: "",
         description: "",
@@ -98,9 +116,9 @@ const FoodFormModalEnhanced = ({
         variants: [],
         translations: [],
       });
+      setShowTranslations(false);
     }
-    setShowTranslations(false);
-  }, [food, isOpen]);
+  }, [food, foodWithTranslations]);
 
   const addVariant = () => {
     setFormData({

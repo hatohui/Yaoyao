@@ -37,7 +37,8 @@
     "availabilityUpdated": "Availability updated successfully!",
     "paymentStatusUpdated": "Payment status updated successfully!",
     "foodCreated": "Food created successfully!",
-    "foodUpdated": "Food updated successfully!"
+    "foodUpdated": "Food updated successfully!",
+    "foodDeleted": "Food deleted successfully!"
   },
   "errors": {
     "MAX_CAPACITY_REACHED": "Cannot set capacity lower than current number of people",
@@ -263,6 +264,8 @@
     "ordersTitle": "Orders Dashboard",
     "ordersSubtitle": "View and manage all table orders",
     "filterByTable": "Filter by Table",
+    "deleteFood": "Delete Food",
+    "confirmDeleteFood": "Are you sure you want to delete this food item? This action cannot be undone.",
     "filterByPayment": "Filter by Payment",
     "allTables": "All Tables",
     "paidOnly": "Paid Only",

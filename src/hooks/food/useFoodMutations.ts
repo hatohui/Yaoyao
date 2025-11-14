@@ -29,3 +29,15 @@ export const useUpdateFoodMutation = (foodId: string) => {
     },
   });
 };
+
+export const useDeleteFoodMutation = (foodId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutationWithError({
+    mutationFn: () => axios.delete(`/foods/${foodId}`),
+    successMessageKey: "foodDeleted",
+    onSuccessCallback: () => {
+      queryClient.invalidateQueries({ queryKey: ["foods"] });
+    },
+  });
+};

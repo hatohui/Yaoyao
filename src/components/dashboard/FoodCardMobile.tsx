@@ -3,13 +3,14 @@ import React from "react";
 import { TranslatedFood } from "@/types/models/food";
 import { useFoodAvailabilityMutation } from "@/hooks/food/useFoodAvailabilityMutation";
 import { useTranslations } from "next-intl";
-import { FiEdit2 } from "react-icons/fi";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
 
 type FoodCardMobileProps = {
   food: TranslatedFood;
   translatedName: string;
   categoryName: string;
   onEdit: () => void;
+  onDelete: () => void;
 };
 
 const FoodCardMobile = ({
@@ -17,6 +18,7 @@ const FoodCardMobile = ({
   translatedName,
   categoryName,
   onEdit,
+  onDelete,
 }: FoodCardMobileProps) => {
   const availabilityMutation = useFoodAvailabilityMutation(food.id);
   const t = useTranslations("menu");
@@ -84,28 +86,37 @@ const FoodCardMobile = ({
       )}
 
       {/* Action */}
-      <div className="p-4 bg-slate-50 dark:bg-slate-700/30 flex gap-2">
+      <div className="p-4 bg-slate-50 dark:bg-slate-700/30 flex flex-col gap-2">
+        <div className="flex gap-2">
+          <button
+            onClick={onEdit}
+            className="flex-1 px-4 py-2.5 rounded-lg font-semibold text-sm transition-all shadow-sm bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-500 text-white hover:shadow flex items-center justify-center gap-2"
+          >
+            <FiEdit2 className="w-4 h-4" />
+            Edit
+          </button>
+          <button
+            onClick={handleToggleFood}
+            disabled={availabilityMutation.isPending}
+            className={`flex-1 px-4 py-2.5 rounded-lg font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm ${
+              food.available
+                ? "bg-gray-300 dark:bg-slate-700 hover:bg-gray-400 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-300"
+                : "bg-green-500 hover:bg-green-600 text-white hover:shadow-md"
+            }`}
+          >
+            {availabilityMutation.isPending
+              ? "..."
+              : food.available
+              ? t("lockItem") || "Lock Item"
+              : t("unlockItem") || "Unlock Item"}
+          </button>
+        </div>
         <button
-          onClick={onEdit}
-          className="flex-1 px-4 py-2.5 rounded-lg font-semibold text-sm transition-all shadow-sm bg-slate-600 dark:bg-slate-500 hover:bg-slate-700 dark:hover:bg-slate-400 text-white hover:shadow flex items-center justify-center gap-2"
+          onClick={onDelete}
+          className="w-full px-4 py-2.5 rounded-lg font-semibold text-sm transition-all shadow-sm bg-red-500 dark:bg-red-600 hover:bg-red-600 dark:hover:bg-red-500 text-white hover:shadow flex items-center justify-center gap-2"
         >
-          <FiEdit2 className="w-4 h-4" />
-          Edit
-        </button>
-        <button
-          onClick={handleToggleFood}
-          disabled={availabilityMutation.isPending}
-          className={`flex-1 px-4 py-2.5 rounded-lg font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm ${
-            food.available
-              ? "bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300"
-              : "bg-green-500 hover:bg-green-600 text-white hover:shadow-md"
-          }`}
-        >
-          {availabilityMutation.isPending
-            ? "..."
-            : food.available
-            ? t("lockItem") || "Lock Item"
-            : t("unlockItem") || "Unlock Item"}
+          <FiTrash2 className="w-4 h-4" />
+          Delete
         </button>
       </div>
     </div>

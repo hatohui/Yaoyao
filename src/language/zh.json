@@ -45,7 +45,8 @@
     "availabilityUpdated": "成功更新可用性！",
     "paymentStatusUpdated": "成功更新付款状态！",
     "foodCreated": "成功创建菜品！",
-    "foodUpdated": "成功更新菜品！"
+    "foodUpdated": "成功更新菜品！",
+    "foodDeleted": "成功删除菜品！"
   },
   "errors": {
     "MAX_CAPACITY_REACHED": "无法将容量设置为低于当前人数",
@@ -268,9 +269,11 @@
     "addVariant": "添加变体",
     "noVariants": "没有添加变体。点击“添加变体”创建价格选项。",
     "seasonal": "季节性",
-    "ordersTitle": "订单仪表板",
+    "ordersTitle": "订单管理",
     "ordersSubtitle": "查看和管理所有餐桌订单",
     "filterByTable": "按餐桌筛选",
+    "deleteFood": "删除菜品",
+    "confirmDeleteFood": "您确定要删除此菜品吗？此操作无法撤销。",
     "filterByPayment": "按付款筛选",
     "allTables": "所有餐桌",
     "paidOnly": "仅已付款",

@@ -105,20 +105,6 @@ const handler: NextApiHandler = async (req, res) => {
 
         const newFood = await createFood(body);
 
-        // Create translations if provided
-        if (body.translations && body.translations.length > 0) {
-          for (const translation of body.translations) {
-            if (translation.name) {
-              await createFoodTranslation(
-                newFood.id,
-                translation.language as any,
-                translation.name,
-                translation.description
-              );
-            }
-          }
-        }
-
         return Ok(newFood);
       } catch (error) {
         console.error("Error creating food:", error);

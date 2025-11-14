@@ -48,6 +48,46 @@ const getFoodById = async (
     });
 };
 
+const getFoodByIdWithAllTranslations = async (
+  id: string
+): Promise<
+  | (Food & {
+      translations: {
+        language: string;
+        name: string;
+        description?: string | null;
+      }[];
+      variants: {
+        id: string;
+        label: string;
+        price: number | null;
+        currency: string | null;
+        isSeasonal: boolean;
+        available: boolean;
+      }[];
+    })
+  | null
+> => {
+  return await prisma.food.findUnique({
+    where: { id },
+    include: {
+      translations: {
+        select: { language: true, name: true, description: true },
+      },
+      variants: {
+        select: {
+          id: true,
+          label: true,
+          price: true,
+          currency: true,
+          isSeasonal: true,
+          available: true,
+        },
+      },
+    },
+  });
+};
+
 const getFoods = async (
   lang?: Language,
   page?: number,
@@ -221,7 +261,7 @@ const getFoodsByCategory = async (
 };
 
 const createFood = async (data: PostFoodRequest) => {
-  const { variants, ...foodData } = data;
+  const { variants, translations, ...foodData } = data;
 
   return await prisma.food.create({
     data: {
@@ -237,9 +277,19 @@ const createFood = async (data: PostFoodRequest) => {
             })),
           }
         : undefined,
+      translations: translations
+        ? {
+            create: translations.map((t) => ({
+              language: t.language,
+              name: t.name,
+              description: t.description,
+            })),
+          }
+        : undefined,
     },
     include: {
       variants: true,
+      translations: true,
     },
   });
 };
@@ -297,11 +347,29 @@ const updateFoodAvailability = async (id: string, available: boolean) => {
  * Update food with partial data
  */
 const updateFood = async (id: string, data: PutFoodRequest) => {
-  const { variants, ...foodData } = data;
+  const { variants, translations, ...foodData } = data;
 
-  // If variants are provided, we need to handle them separately
+  // If translations are provided, handle them
+  if (translations !== undefined) {
+    // Delete existing translations
+    await prisma.foodTranslation.deleteMany({
+      where: { foodId: id },
+    });
+
+    // Create new translations
+    if (translations.length > 0) {
+      await prisma.foodTranslation.createMany({
+        data: translations.map((t) => ({
+          foodId: id,
+          language: t.language,
+          name: t.name,
+          description: t.description,
+        })),
+      });
+    }
+  }
+
   if (variants !== undefined) {
-    // Delete existing variants and create new ones
     await prisma.foodVariant.deleteMany({
       where: { foodId: id },
     });
@@ -322,6 +390,7 @@ const updateFood = async (id: string, data: PutFoodRequest) => {
       },
       include: {
         variants: true,
+        translations: true,
       },
     });
   }
@@ -329,11 +398,24 @@ const updateFood = async (id: string, data: PutFoodRequest) => {
   return await prisma.food.update({
     where: { id },
     data: foodData,
+    include: {
+      translations: true,
+    },
+  });
+};
+
+/**
+ * Delete food by ID
+ */
+const deleteFood = async (id: string) => {
+  return await prisma.food.delete({
+    where: { id },
   });
 };
 
 export {
   getFoodById,
+  getFoodByIdWithAllTranslations,
   getFoods,
   createFood,
   createFoodTranslation,
@@ -341,4 +423,5 @@ export {
   getFoodWithVariantsForOrder,
   updateFoodAvailability,
   updateFood,
+  deleteFood,
 };

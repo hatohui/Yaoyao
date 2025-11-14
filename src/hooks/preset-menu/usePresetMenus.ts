@@ -7,6 +7,7 @@ const usePresetMenus = () => {
     queryKey: ["preset-menus"],
     queryFn: () =>
       axios.get<GetPresetMenuResponse>("/preset-menu").then((res) => res.data),
+    retry: false,
   });
 };
 

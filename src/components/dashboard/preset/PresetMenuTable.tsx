@@ -1,6 +1,6 @@
 "use client";
 import { PresetMenu, Food, FoodVariant } from "@prisma/client";
-import { FiTrash2, FiPackage } from "react-icons/fi";
+import { FiTrash2, FiPackage, FiXCircle } from "react-icons/fi";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
@@ -10,12 +10,14 @@ type PresetMenuTableProps = {
     variant: FoodVariant | null;
   })[];
   onDelete: (id: string) => void;
+  onDeleteFood: (food: Food) => void;
   isDeleting: boolean;
 };
 
 const PresetMenuTable = ({
   presetMenus,
   onDelete,
+  onDeleteFood,
   isDeleting,
 }: PresetMenuTableProps) => {
   const t = useTranslations("presetMenu");
@@ -131,14 +133,26 @@ const PresetMenuTable = ({
                     </p>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <button
-                      onClick={() => onDelete(preset.id)}
-                      disabled={isDeleting}
-                      className="inline-flex items-center justify-center p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors disabled:opacity-50"
-                      aria-label="Delete"
-                    >
-                      <FiTrash2 className="w-4 h-4" />
-                    </button>
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        onClick={() => onDelete(preset.id)}
+                        disabled={isDeleting}
+                        className="inline-flex items-center justify-center p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors disabled:opacity-50"
+                        aria-label="Remove from preset"
+                        title="Remove from preset menu"
+                      >
+                        <FiTrash2 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => onDeleteFood(preset.food)}
+                        disabled={isDeleting}
+                        className="inline-flex items-center justify-center p-2 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded-lg transition-colors disabled:opacity-50"
+                        aria-label="Delete food permanently"
+                        title="Delete food permanently"
+                      >
+                        <FiXCircle className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               );
@@ -191,14 +205,26 @@ const PresetMenuTable = ({
                     </span>
                   </div>
                 </div>
-                <button
-                  onClick={() => onDelete(preset.id)}
-                  disabled={isDeleting}
-                  className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors disabled:opacity-50"
-                  aria-label="Delete"
-                >
-                  <FiTrash2 className="w-4 h-4" />
-                </button>
+                <div className="flex flex-col gap-2">
+                  <button
+                    onClick={() => onDelete(preset.id)}
+                    disabled={isDeleting}
+                    className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors disabled:opacity-50"
+                    aria-label="Remove from preset"
+                    title="Remove from preset menu"
+                  >
+                    <FiTrash2 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => onDeleteFood(preset.food)}
+                    disabled={isDeleting}
+                    className="p-2 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded-lg transition-colors disabled:opacity-50"
+                    aria-label="Delete food permanently"
+                    title="Delete food permanently"
+                  >
+                    <FiXCircle className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </div>
           );

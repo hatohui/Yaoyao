@@ -10,6 +10,7 @@ type FoodManagementTableProps = {
   foods?: TranslatedFood[];
   categories?: (Category & { translation?: Array<{ name: string }> })[];
   onEditFood: (food: TranslatedFood) => void;
+  onDeleteFood: (food: TranslatedFood) => void;
   viewMode?: "list" | "grid";
 };
 
@@ -17,6 +18,7 @@ const FoodManagementTable = ({
   foods,
   categories,
   onEditFood,
+  onDeleteFood,
   viewMode = "list",
 }: FoodManagementTableProps) => {
   const t = useTranslations("menu");
@@ -29,6 +31,7 @@ const FoodManagementTable = ({
         foods={foods}
         categories={categories}
         onEditFood={onEditFood}
+        onDeleteFood={onDeleteFood}
       />
     );
   }
@@ -86,6 +89,7 @@ const FoodManagementTable = ({
                   categoryName={categoryName}
                   t={t}
                   onEdit={() => onEditFood(food)}
+                  onDelete={() => onDeleteFood(food)}
                 />
               );
             })}
