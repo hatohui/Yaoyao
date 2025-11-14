@@ -17,7 +17,9 @@ const DashboardOrdersPage = () => {
     "all"
   );
 
-  const { data, isLoading } = useTables({});
+  const { data, isLoading } = useTables({
+    count: 9999, // Get all tables to filter occupied ones
+  });
 
   if (!isYaoyao) {
     return notFound();
