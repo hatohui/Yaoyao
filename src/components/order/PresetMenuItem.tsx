@@ -12,10 +12,7 @@ type PresetMenuItemProps = {
 };
 
 const PresetMenuItem = ({ presetMenu }: PresetMenuItemProps) => {
-  const price = presetMenu.variant?.price ?? 0;
-  const currency = "RM";
   const variantLabel = presetMenu.variant?.label || "";
-  const totalPrice = price * presetMenu.quantity;
   const foodName = presetMenu.food.name;
 
   return (
@@ -57,22 +54,10 @@ const PresetMenuItem = ({ presetMenu }: PresetMenuItemProps) => {
               </div>
             </div>
 
-            {/* Price and Quantity */}
-            <div className="flex items-center justify-between mt-2">
-              <div className="text-sm">
-                <span className="font-semibold text-yellow-700 dark:text-yellow-400">
-                  {totalPrice.toFixed(2)} {currency}
-                </span>
-                <span className="text-xs text-slate-500 dark:text-slate-400 ml-1">
-                  ({price.toFixed(2)} × {presetMenu.quantity})
-                </span>
-              </div>
-
-              {/* Quantity Display */}
-              <span className="text-sm text-slate-600 dark:text-slate-400">
-                Qty: {presetMenu.quantity}
-              </span>
-            </div>
+            {/* Quantity Display */}
+            <span className="text-sm text-slate-600 dark:text-slate-400">
+              Qty: {presetMenu.quantity}
+            </span>
           </div>
         </div>
       </div>

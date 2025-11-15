@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import OrderItem from "./OrderItem";
 import PresetMenuItem from "./PresetMenuItem";
+import { DEFAULT_SET_PRICE } from "@/config/app";
 
 type TableOrdersListProps = { tableId: string };
 
@@ -15,6 +16,7 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
   const orders = data?.orders || [];
   const presetMenus = data?.presetMenus || [];
   const t = useTranslations("orders");
+  const tPreset = useTranslations("presetMenu");
   const [isCollapsed, setIsCollapsed] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -62,12 +64,8 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
       }, 0)
     : 0;
 
-  const presetsSubtotal = presetMenus
-    ? presetMenus.reduce((acc, p) => {
-        const price = p.variant?.price ?? 0;
-        return acc + price * (p.quantity ?? 0);
-      }, 0)
-    : 0;
+  const presetsSubtotal =
+    presetMenus && presetMenus.length > 0 ? DEFAULT_SET_PRICE : 0;
 
   const subtotal = ordersSubtotal + presetsSubtotal;
 
@@ -139,8 +137,8 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
         <div className={`${isCollapsed ? "" : "h-full flex flex-col"}`}>
           {/* Summary */}
           <div className="px-4 py-3 border-b border-main/10 dark:border-main/30 bg-white dark:bg-slate-800">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
                 <span className="text-xs text-slate-500 dark:text-slate-400">
                   {t("items")}:
                 </span>
@@ -148,13 +146,35 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
                   {totalItemsWithPresets}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-500 dark:text-slate-400">
-                  {t("total")}:
-                </span>
-                <span className="text-sm font-semibold text-main dark:text-main">
-                  {subtotal.toFixed(2)} RM
-                </span>
+              {presetMenus && presetMenus.length > 0 && (
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-yellow-700 dark:text-yellow-400">
+                    {tPreset("title")} ({tPreset("fixedPrice")}):
+                  </span>
+                  <span className="text-sm font-semibold text-yellow-700 dark:text-yellow-400">
+                    {DEFAULT_SET_PRICE.toFixed(2)} RM
+                  </span>
+                </div>
+              )}
+              {orders && orders.length > 0 && (
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                    Additional Orders:
+                  </span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                    {ordersSubtotal.toFixed(2)} RM
+                  </span>
+                </div>
+              )}
+              <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                    {t("total")}:
+                  </span>
+                  <span className="text-base font-bold text-main dark:text-main">
+                    {subtotal.toFixed(2)} RM
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -171,7 +191,7 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
                 <div className="flex items-center gap-2 mb-2">
                   <div className="h-px flex-1 bg-yellow-300 dark:bg-yellow-700"></div>
                   <span className="text-xs font-semibold text-yellow-700 dark:text-yellow-400 uppercase tracking-wide">
-                    Preset Menu
+                    {tPreset("title")}
                   </span>
                   <div className="h-px flex-1 bg-yellow-300 dark:bg-yellow-700"></div>
                 </div>

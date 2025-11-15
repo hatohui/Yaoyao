@@ -404,6 +404,7 @@
     "adding": "กำลังเพิ่ม...",
     "change": "เปลี่ยน",
     "variantsCount": "ตัวเลือก",
-    "variantCount": "ตัวเลือก"
+    "variantCount": "ตัวเลือก",
+    "fixedPrice": "ราคาคงที่"
   }
 }

@@ -1,7 +1,24 @@
+import { Language } from "@/common/language";
 import { prisma } from "@/common/prisma";
 import { PostPresetMenuRequest } from "@/types/api/preset-menu/POST";
 
-const getAllPresetMenus = async () => {
+const getAllPresetMenus = async (lang?: Language) => {
+  if (lang && lang !== "en") {
+    return await prisma.presetMenu.findMany({
+      include: {
+        food: {
+          include: {
+            translations: {
+              where: { language: lang },
+              select: { name: true, description: true },
+            },
+          },
+        },
+        variant: true,
+      },
+    });
+  }
+
   return await prisma.presetMenu.findMany({
     include: {
       food: true,
@@ -10,7 +27,24 @@ const getAllPresetMenus = async () => {
   });
 };
 
-const getPresetMenuById = async (id: string) => {
+const getPresetMenuById = async (id: string, lang?: Language) => {
+  if (lang && lang !== "en") {
+    return await prisma.presetMenu.findUnique({
+      where: { id },
+      include: {
+        food: {
+          include: {
+            translations: {
+              where: { language: lang },
+              select: { name: true, description: true },
+            },
+          },
+        },
+        variant: true,
+      },
+    });
+  }
+
   return await prisma.presetMenu.findUnique({
     where: { id },
     include: {
