@@ -2,7 +2,7 @@
 import { useGetFeedback } from "@/hooks/feedback/useFeedback";
 import { useTranslations } from "next-intl";
 import React from "react";
-import { FiMessageSquare, FiUser, FiCalendar } from "react-icons/fi";
+import { FiMessageSquare, FiCalendar } from "react-icons/fi";
 
 const FeedbackList = () => {
   const t = useTranslations("feedback");
@@ -51,24 +51,19 @@ const FeedbackList = () => {
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-2">
               <div className="flex items-center justify-center w-8 h-8 rounded-full bg-main/10 dark:bg-main/20">
-                <FiUser className="w-4 h-4 text-main dark:text-main" />
+                <FiMessageSquare className="w-4 h-4 text-main dark:text-main" />
               </div>
-              <div>
-                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                  {item.by}
-                </p>
-                <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
-                  <FiCalendar className="w-3 h-3" />
-                  <span>
-                    {new Date(item.createdAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </span>
-                </div>
+              <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
+                <FiCalendar className="w-3 h-3" />
+                <span>
+                  {new Date(item.createdAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
               </div>
             </div>
           </div>

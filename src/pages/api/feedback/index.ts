@@ -30,14 +30,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         const body = req.body as PostFeedbackRequest;
 
-        if (!body.by || !body.content) {
-          return BadRequest("Name and content are required");
+        if (!body.content) {
+          return BadRequest("Content is required");
         }
 
-        const feedback = await FeedbackRepository.createFeedback(
-          body.by,
-          body.content
-        );
+        const feedback = await FeedbackRepository.createFeedback(body.content);
 
         const response: PostFeedbackResponse = {
           message: "Feedback submitted successfully",

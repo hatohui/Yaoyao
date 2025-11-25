@@ -428,6 +428,7 @@
     "noFeedbackMessage": "成为第一个分享想法的人！",
     "loading": "加载反馈中...",
     "dashboardTitle": "客户反馈",
-    "dashboardSubtitle": "查看所有来自客户的匿名反馈"
+    "dashboardSubtitle": "查看所有来自客户的匿名反馈",
+    "allFeedback": "所有反馈"
   }
 }

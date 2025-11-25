@@ -8,10 +8,9 @@ const getAllFeedback = async () => {
   });
 };
 
-const createFeedback = async (by: string, content: string) => {
+const createFeedback = async (content: string) => {
   return await prisma.feedback.create({
     data: {
-      by,
       content,
     },
   });

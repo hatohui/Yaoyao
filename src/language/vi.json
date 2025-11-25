@@ -428,6 +428,7 @@
     "noFeedbackMessage": "Hãy là người đầu tiên chia sẻ suy nghĩ của bạn!",
     "loading": "Đang tải phản hồi...",
     "dashboardTitle": "Phản hồi khách hàng",
-    "dashboardSubtitle": "Xem tất cả phản hồi ẩn danh từ khách hàng"
+    "dashboardSubtitle": "Xem tất cả phản hồi ẩn danh từ khách hàng",
+    "allFeedback": "Tất cả phản hồi"
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import FeedbackBox from "@/components/common/FeedbackBox";
+import FeedbackList from "@/components/common/FeedbackList";
 import { useTranslations } from "next-intl";
 import { FiMessageSquare } from "react-icons/fi";
 
@@ -23,8 +24,18 @@ const FeedbackPage = () => {
           </p>
         </div>
 
-        {/* Feedback Box */}
-        <FeedbackBox />
+        {/* Feedback Box - Sticky at Top */}
+        <div className="sticky top-20 z-10 mb-8">
+          <FeedbackBox />
+        </div>
+
+        {/* Feedback List */}
+        <div>
+          <h2 className="text-xl font-semibold text-darkest dark:text-white mb-4">
+            {t("allFeedback")}
+          </h2>
+          <FeedbackList />
+        </div>
       </div>
     </div>
   );

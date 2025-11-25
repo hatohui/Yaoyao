@@ -420,6 +420,7 @@
     "noFeedbackMessage": "Be the first to share your thoughts!",
     "loading": "Loading feedback...",
     "dashboardTitle": "Customer Feedback",
-    "dashboardSubtitle": "View all anonymous feedback from customers"
+    "dashboardSubtitle": "View all anonymous feedback from customers",
+    "allFeedback": "All Feedback"
   }
 }
