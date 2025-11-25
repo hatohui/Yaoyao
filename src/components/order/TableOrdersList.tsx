@@ -213,7 +213,7 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
                 <div className="flex items-center gap-2 mb-2">
                   <div className="h-px flex-1 bg-yellow-300 dark:bg-yellow-700"></div>
                   <span className="text-xs font-semibold text-yellow-700 dark:text-yellow-400 uppercase tracking-wide">
-                    Preset Menu
+                    {tPreset("title")}
                   </span>
                   <div className="h-px flex-1 bg-yellow-300 dark:bg-yellow-700"></div>
                 </div>

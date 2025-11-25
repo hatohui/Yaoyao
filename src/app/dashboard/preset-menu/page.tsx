@@ -30,7 +30,8 @@ const PresetMenuPage = () => {
   const tErrors = useTranslations("errors");
   const tDashboard = useTranslations("dashboard");
   const tCommon = useTranslations("common");
-  const { data: presetData, isLoading: isLoadingPresets } = usePresetMenus();
+  const { data: presetData, isLoading: isLoadingPresets } =
+    usePresetMenus("en");
   const { data: foodsData, isLoading: isLoadingFoods } = useFoods({
     count: 9999, // Get all foods for the dropdown
   });
