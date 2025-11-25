@@ -14,5 +14,5 @@ export const SEARCH_DEBOUNCE_DELAY = 500;
 export const DRAG_ZONE_WIDTH = 1400;
 export const DRAG_ZONE_HEIGHT = 700;
 
-//Price
+//preset menu
 export const DEFAULT_SET_PRICE = 500;

@@ -44,6 +44,7 @@ const NavBar = () => {
     { title: t("layout"), link: "/layout", public: LAYOUT_PUBLIC_ENABLED },
     { title: t("menu"), link: "/menu", public: true },
     { title: t("tables"), link: "/tables", public: true },
+    { title: t("feedback"), link: "/feedback", public: true },
     { title: t("dashboard"), link: "/dashboard", public: false },
   ];
 

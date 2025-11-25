@@ -109,6 +109,7 @@ const OrderPage = () => {
             {table && (
               <OrderList
                 orders={orders}
+                presetMenus={presetMenus}
                 isLoading={isLoadingOrders}
                 isEditable={true} // Always editable since only table leader can access this page
               />

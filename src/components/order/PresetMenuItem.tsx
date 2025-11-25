@@ -54,10 +54,13 @@ const PresetMenuItem = ({ presetMenu }: PresetMenuItemProps) => {
               </div>
             </div>
 
-            {/* Quantity Display */}
-            <span className="text-sm text-slate-600 dark:text-slate-400">
-              Qty: {presetMenu.quantity}
-            </span>
+            {/* Price and Quantity */}
+            <div className="flex items-center justify-between mt-2">
+              {/* Quantity Display */}
+              <span className="text-sm text-slate-600 dark:text-slate-400">
+                x {presetMenu.quantity}
+              </span>
+            </div>
           </div>
         </div>
       </div>

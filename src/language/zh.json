@@ -25,7 +25,8 @@
     "tables": "餐桌",
     "dashboard": "仪表板",
     "orders": "订单",
-    "logout": "登出",
+    "feedback": "反馈",
+    "logout": "退出",
     "language": "语言",
     "error": "发生错误",
     "notFoundMessage": "您正在寻找的页面不存在或已被移动。",
@@ -240,7 +241,11 @@
     "manageOrders": "管理订单",
     "browseMenu": "浏览菜单",
     "backToTable": "返回餐桌",
-    "manageTable": "管理餐桌"
+    "manageTable": "管理餐桌",
+    "additionalOrders": "额外订单",
+    "perPax": "每人",
+    "person": "人",
+    "people": "人"
   },
   "dashboard": {
     "title": "食物管理仪表板",
@@ -380,7 +385,7 @@
     "addStagingTable": "添加预演餐桌"
   },
   "presetMenu": {
-    "title": "预设菜单管理",
+    "title": "预设菜单",
     "subtitle": "配置所有餐桌默认显示的菜单项",
     "addToPreset": "添加到预设",
     "createNewFood": "创建新菜品",
@@ -406,5 +411,23 @@
     "variantsCount": "个规格",
     "variantCount": "个规格",
     "fixedPrice": "固定价格"
+  },
+  "feedback": {
+    "title": "分享您的反馈",
+    "subtitle": "我们很想听到您的想法！分享任何有趣或有趣的内容 - 所有反馈均为匿名。",
+    "nameLabel": "您的姓名",
+    "namePlaceholder": "输入您的姓名或昵称",
+    "messageLabel": "您的留言",
+    "messagePlaceholder": "分享您的想法、笑话或反馈...",
+    "submit": "发送反馈",
+    "submitting": "发送中...",
+    "fillAllFields": "请填写所有字段",
+    "feedbackSubmitted": "感谢您的反馈！",
+    "feedbackError": "发送反馈失败。请重试。",
+    "noFeedback": "还没有反馈",
+    "noFeedbackMessage": "成为第一个分享想法的人！",
+    "loading": "加载反馈中...",
+    "dashboardTitle": "客户反馈",
+    "dashboardSubtitle": "查看所有来自客户的匿名反馈"
   }
 }
