@@ -1,10 +1,10 @@
 "use client";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { notFound } from "next/navigation";
 import React from "react";
 import FeedbackList from "@/components/common/FeedbackList";
 import { useTranslations } from "next-intl";
 import { FiMessageSquare } from "react-icons/fi";
+import useAuthStore from "@/stores/useAuthStore";
 
 const FeedbackPage = () => {
   const { isYaoyao } = useAuthStore();

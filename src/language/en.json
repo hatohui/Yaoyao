@@ -234,7 +234,10 @@
     "browseMenu": "Browse Menu",
     "backToTable": "Back to Table",
     "manageTable": "Manage Table",
-    "additionalOrders": "Additional Orders"
+    "additionalOrders": "Additional Orders",
+    "perPax": "Per pax",
+    "person": "person",
+    "people": "people"
   },
   "dashboard": {
     "title": "Food Management Dashboard",

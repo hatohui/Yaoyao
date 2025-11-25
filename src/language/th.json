@@ -242,7 +242,10 @@
     "browseMenu": "เรียกดูเมนู",
     "backToTable": "กลับไปที่โต๊ะ",
     "manageTable": "จัดการโต๊ะ",
-    "additionalOrders": "รายการสั่งเพิ่มเติม"
+    "additionalOrders": "รายการสั่งเพิ่มเติม",
+    "perPax": "ต่อคน",
+    "person": "คน",
+    "people": "คน"
   },
   "dashboard": {
     "title": "แดชบอร์ดจัดการอาหาร",

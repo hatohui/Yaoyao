@@ -7,14 +7,19 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import OrderItem from "./OrderItem";
 import PresetMenuItem from "./PresetMenuItem";
+import { DEFAULT_SET_PRICE } from "@/config/app";
+import usePeopleInTable from "@/hooks/table/usePeopleInTable";
 
 type TableOrdersListProps = { tableId: string };
 
 const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
   const { data, isLoading } = useTableOrders(tableId);
+  const { data: people } = usePeopleInTable(tableId);
   const orders = data?.orders || [];
   const presetMenus = data?.presetMenus || [];
+  const peopleCount = people?.length || 0;
   const t = useTranslations("orders");
+  const tPreset = useTranslations("presetMenu");
   const [isCollapsed, setIsCollapsed] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -62,12 +67,9 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
       }, 0)
     : 0;
 
-  const presetsSubtotal = presetMenus
-    ? presetMenus.reduce((acc, p) => {
-        const price = p.variant?.price ?? 0;
-        return acc + price * (p.quantity ?? 0);
-      }, 0)
-    : 0;
+  // Preset menu uses fixed price of 500 RM total
+  const presetsSubtotal =
+    presetMenus && presetMenus.length > 0 ? DEFAULT_SET_PRICE : 0;
 
   const subtotal = ordersSubtotal + presetsSubtotal;
 
@@ -139,23 +141,63 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
         <div className={`${isCollapsed ? "" : "h-full flex flex-col"}`}>
           {/* Summary */}
           <div className="px-4 py-3 border-b border-main/10 dark:border-main/30 bg-white dark:bg-slate-800">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-500 dark:text-slate-400">
-                  {t("items")}:
-                </span>
-                <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                  {totalItemsWithPresets}
-                </span>
+            <div className="space-y-2">
+              {/* Items and Total */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                    {t("items")}:
+                  </span>
+                  <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                    {totalItemsWithPresets}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                    {t("total")}:
+                  </span>
+                  <span className="text-sm font-semibold text-main dark:text-main">
+                    {subtotal.toFixed(2)} RM
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-500 dark:text-slate-400">
-                  {t("total")}:
-                </span>
-                <span className="text-sm font-semibold text-main dark:text-main">
-                  {subtotal.toFixed(2)} RM
-                </span>
-              </div>
+
+              {/* Per Pax */}
+              {peopleCount > 0 && (
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-slate-500 dark:text-slate-400">
+                    {t("perPax")} ({peopleCount}{" "}
+                    {peopleCount === 1 ? t("person") : t("people")})
+                  </span>
+                  <span className="text-slate-600 dark:text-slate-300 font-medium">
+                    {(subtotal / peopleCount).toFixed(2)} RM
+                  </span>
+                </div>
+              )}
+
+              {/* Breakdown */}
+              {presetMenus && presetMenus.length > 0 && (
+                <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-yellow-700 dark:text-yellow-400 font-medium">
+                      {tPreset("title")} ({tPreset("fixedPrice")})
+                    </span>
+                    <span className="text-yellow-700 dark:text-yellow-400 font-semibold">
+                      {DEFAULT_SET_PRICE.toFixed(2)} RM
+                    </span>
+                  </div>
+                  {orders && orders.length > 0 && (
+                    <div className="flex items-center justify-between text-xs mt-1">
+                      <span className="text-slate-500 dark:text-slate-400">
+                        {t("additionalOrders")}
+                      </span>
+                      <span className="text-slate-600 dark:text-slate-400">
+                        {ordersSubtotal.toFixed(2)} RM
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 

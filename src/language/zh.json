@@ -242,7 +242,10 @@
     "browseMenu": "浏览菜单",
     "backToTable": "返回餐桌",
     "manageTable": "管理餐桌",
-    "additionalOrders": "额外订单"
+    "additionalOrders": "额外订单",
+    "perPax": "每人",
+    "person": "人",
+    "people": "人"
   },
   "dashboard": {
     "title": "食物管理仪表板",

@@ -242,7 +242,10 @@
     "browseMenu": "Xem thực đơn",
     "backToTable": "Quay lại bàn",
     "manageTable": "Quản lý bàn",
-    "additionalOrders": "Đơn hàng bổ sung"
+    "additionalOrders": "Đơn hàng bổ sung",
+    "perPax": "Mỗi người",
+    "person": "người",
+    "people": "người"
   },
   "dashboard": {
     "title": "Bảng điều khiển quản lý thực phẩm",
