@@ -4,6 +4,7 @@ import { PresetMenu, Food, FoodVariant } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import React from "react";
 import { FiShoppingBag, FiDollarSign } from "react-icons/fi";
+import { DEFAULT_SET_PRICE } from "@/config/app";
 
 type OrderSummaryProps = {
   orders: GetOrdersResponse[] | undefined;
@@ -22,6 +23,7 @@ const OrderSummary = ({
   peopleCount,
 }: OrderSummaryProps) => {
   const t = useTranslations("orders");
+  const tPreset = useTranslations("presetMenu");
 
   const totalItems =
     orders?.reduce((sum, order) => sum + order.quantity, 0) ?? 0;
@@ -35,11 +37,9 @@ const OrderSummary = ({
       return sum + price * order.quantity;
     }, 0) ?? 0;
 
+  // Calculate preset price using fixed price of 500 RM
   const presetsPrice =
-    presetMenus?.reduce((sum, preset) => {
-      const price = preset.variant?.price ?? 0;
-      return sum + price * preset.quantity;
-    }, 0) ?? 0;
+    presetMenus && presetMenus.length > 0 ? DEFAULT_SET_PRICE : 0;
 
   const totalPrice = ordersPrice + presetsPrice;
   const pricePerPerson = peopleCount > 0 ? totalPrice / peopleCount : 0;
@@ -71,10 +71,34 @@ const OrderSummary = ({
           </span>
         </div>
 
+        {/* Preset Menu Price */}
+        {presetMenus && presetMenus.length > 0 && (
+          <div className="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-700">
+            <span className="text-sm text-yellow-700 dark:text-yellow-400">
+              {tPreset("title")} ({tPreset("fixedPrice")}):
+            </span>
+            <span className="text-base font-semibold text-yellow-700 dark:text-yellow-400">
+              {DEFAULT_SET_PRICE.toFixed(2)} {currency}
+            </span>
+          </div>
+        )}
+
+        {/* Additional Orders Price */}
+        {orders && orders.length > 0 && (
+          <div className="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-700">
+            <span className="text-sm text-slate-600 dark:text-slate-400">
+              {t("additionalOrders")}:
+            </span>
+            <span className="text-base font-semibold text-slate-700 dark:text-slate-300">
+              {ordersPrice.toFixed(2)} {currency}
+            </span>
+          </div>
+        )}
+
         {/* Total Price */}
         <div className="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-700">
-          <span className="text-sm text-slate-600 dark:text-slate-400">
-            {t("totalPrice")}
+          <span className="text-sm text-slate-600 dark:text-slate-400 font-semibold">
+            {t("totalPrice")}:
           </span>
           <span className="text-lg font-bold text-main dark:text-main">
             {totalPrice.toFixed(2)} {currency}
@@ -83,7 +107,7 @@ const OrderSummary = ({
 
         {/* Price Per Person */}
         {peopleCount > 0 && (
-          <div className="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-700">
+          <div className="flex items-center justify-between py-2">
             <span className="text-sm text-slate-600 dark:text-slate-400">
               {t("pricePerPerson")} ({peopleCount}{" "}
               {peopleCount === 1 ? "person" : "people"})

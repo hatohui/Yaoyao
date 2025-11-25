@@ -26,6 +26,7 @@
     "tables": "Bàn ăn",
     "dashboard": "Bảng điều khiển",
     "orders": "Đơn hàng",
+    "feedback": "Phản hồi",
     "logout": "Đăng xuất",
     "language": "Ngôn ngữ",
     "error": "Đã xảy ra lỗi",
@@ -240,7 +241,8 @@
     "manageOrders": "Quản lý đơn hàng",
     "browseMenu": "Xem thực đơn",
     "backToTable": "Quay lại bàn",
-    "manageTable": "Quản lý bàn"
+    "manageTable": "Quản lý bàn",
+    "additionalOrders": "Đơn hàng bổ sung"
   },
   "dashboard": {
     "title": "Bảng điều khiển quản lý thực phẩm",
@@ -380,7 +382,7 @@
     "addStagingTable": "Thêm bàn Staging"
   },
   "presetMenu": {
-    "title": "Quản lý Menu Cài đặt sẵn",
+    "title": "Menu Cài đặt sẵn",
     "subtitle": "Cấu hình món ăn mặc định xuất hiện cho tất cả các bàn",
     "addToPreset": "Thêm vào Cài đặt sẵn",
     "createNewFood": "Tạo món ăn mới",
@@ -404,6 +406,25 @@
     "adding": "Đang thêm...",
     "change": "Thay đổi",
     "variantsCount": "tùy chọn",
-    "variantCount": "tùy chọn"
+    "variantCount": "tùy chọn",
+    "fixedPrice": "Giá cố định"
+  },
+  "feedback": {
+    "title": "Chia sẻ ý kiến của bạn",
+    "subtitle": "Chúng tôi muốn nghe suy nghĩ của bạn! Chia sẻ bất cứ điều gì vui vẻ hoặc hài hước - tất cả phản hồi đều ẩn danh.",
+    "nameLabel": "Tên của bạn",
+    "namePlaceholder": "Nhập tên hoặc biệt danh của bạn",
+    "messageLabel": "Tin nhắn của bạn",
+    "messagePlaceholder": "Chia sẻ suy nghĩ, trò đùa hoặc phản hồi của bạn...",
+    "submit": "Gửi phản hồi",
+    "submitting": "Đang gửi...",
+    "fillAllFields": "Vui lòng điền vào tất cả các trường",
+    "feedbackSubmitted": "Cảm ơn phản hồi của bạn!",
+    "feedbackError": "Gửi phản hồi thất bại. Vui lòng thử lại.",
+    "noFeedback": "Chưa có phản hồi",
+    "noFeedbackMessage": "Hãy là người đầu tiên chia sẻ suy nghĩ của bạn!",
+    "loading": "Đang tải phản hồi...",
+    "dashboardTitle": "Phản hồi khách hàng",
+    "dashboardSubtitle": "Xem tất cả phản hồi ẩn danh từ khách hàng"
   }
 }

@@ -10,6 +10,7 @@ import {
   FiUsers,
   FiGrid,
   FiStar,
+  FiMessageSquare,
 } from "react-icons/fi";
 import { MdRestaurantMenu } from "react-icons/md";
 import DashboardSidebar from "@/components/dashboard/sidenav/DashboardSidebar";
@@ -80,6 +81,12 @@ export default function DashboardLayout({
       href: "/dashboard/people",
       icon: FiUsers,
       description: t("peopleManagementDesc") || "Manage all guests",
+    },
+    {
+      title: "Feedback",
+      href: "/dashboard/feedback",
+      icon: FiMessageSquare,
+      description: "View customer feedback",
     },
   ];
 

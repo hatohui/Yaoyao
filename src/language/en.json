@@ -16,6 +16,7 @@
     "tables": "Tables",
     "dashboard": "Dashboard",
     "orders": "Orders",
+    "feedback": "Feedback",
     "logout": "Logout",
     "language": "Language",
     "error": "An error occurred",
@@ -232,7 +233,8 @@
     "manageOrders": "Manage Orders",
     "browseMenu": "Browse Menu",
     "backToTable": "Back to Table",
-    "manageTable": "Manage Table"
+    "manageTable": "Manage Table",
+    "additionalOrders": "Additional Orders"
   },
   "dashboard": {
     "title": "Food Management Dashboard",
@@ -372,7 +374,7 @@
     "layoutManagementDesc": "Manage restaurant layout"
   },
   "presetMenu": {
-    "title": "Preset Menu Management",
+    "title": "Preset Menu",
     "subtitle": "Configure default menu items that appear for all tables",
     "addToPreset": "Add to Preset",
     "createNewFood": "Create New Food",
@@ -396,6 +398,25 @@
     "adding": "Adding...",
     "change": "Change",
     "variantsCount": "variants",
-    "variantCount": "variant"
+    "variantCount": "variant",
+    "fixedPrice": "Fixed Price"
+  },
+  "feedback": {
+    "title": "Share Your Feedback",
+    "subtitle": "We'd love to hear your thoughts! Share anything fun or funny - all feedback is anonymous.",
+    "nameLabel": "Your Name",
+    "namePlaceholder": "Enter your name or nickname",
+    "messageLabel": "Your Message",
+    "messagePlaceholder": "Share your thoughts, jokes, or feedback...",
+    "submit": "Send Feedback",
+    "submitting": "Sending...",
+    "fillAllFields": "Please fill in all fields",
+    "feedbackSubmitted": "Thanks for your feedback!",
+    "feedbackError": "Failed to send feedback. Please try again.",
+    "noFeedback": "No Feedback Yet",
+    "noFeedbackMessage": "Be the first to share your thoughts!",
+    "loading": "Loading feedback...",
+    "dashboardTitle": "Customer Feedback",
+    "dashboardSubtitle": "View all anonymous feedback from customers"
   }
 }
