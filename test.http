@@ -1,0 +1,8 @@
+POST https://yaoyaodinner.vercel.app/api/tables/5fff51b9-0027-491c-baf8-effe46d7c09e/orders
+Content-Type: application/json
+
+{
+    "foodId": "25d40736-01da-44fc-b09c-4df07076d5d7",
+    "variantId": "76e4892a-4200-41a6-805d-98f1cb4b4c56",
+    "quantity": 20000
+}

@@ -26,7 +26,6 @@ const FoodGallery = ({ className }: FoodGalleryProps) => {
     category,
     page: currentPage,
     search: searchQuery,
-    available: true, // Only show available foods in menu
   });
 
   useEffect(() => {
