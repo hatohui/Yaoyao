@@ -92,9 +92,7 @@ const FoodCard = ({
       onMouseLeave={handleMouseLeave}
       role="button"
       tabIndex={0}
-      className={`bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all cursor-pointer border border-main/10 dark:border-slate-700 hover:border-main/30 dark:hover:border-main/50 relative group flex flex-col h-full ${
-        isUnavailable ? "opacity-60 grayscale" : ""
-      }`}
+      className={`bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all cursor-pointer border border-main/10 dark:border-slate-700 hover:border-main/30 dark:hover:border-main/50 relative group flex flex-col h-full`}
     >
       {/* Fixed Height Image */}
       <div
