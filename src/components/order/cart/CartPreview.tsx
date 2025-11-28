@@ -1,3 +1,5 @@
+import React, { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
 import { FiShoppingCart } from "react-icons/fi";
 import { CartItem as CartItemType } from "@/hooks/order/useFoodCart";
 import CartItem from "./CartItem";
@@ -31,10 +33,75 @@ const CartPreview = ({
   seasonalText,
   seasonalWarningText,
 }: CartPreviewProps) => {
+  const [width, setWidth] = useState<number>(384); // default width (w-96)
+  const cartRef = useRef<HTMLDivElement | null>(null);
+  const isResizingRef = useRef(false);
+  const startXRef = useRef(0);
+  const startWidthRef = useRef(384);
+
+  useEffect(() => {
+    if (cartRef.current) {
+      gsap.fromTo(
+        cartRef.current,
+        { x: 20, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.35, ease: "power2.out" }
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent | TouchEvent) => {
+      if (!isResizingRef.current) return;
+      const clientX = (e as TouchEvent).touches
+        ? (e as TouchEvent).touches[0].clientX
+        : (e as MouseEvent).clientX;
+      const dx = startXRef.current - clientX; // positive dx when dragging left
+      const newWidth = Math.max(
+        300,
+        Math.min(window.innerWidth * 0.6, startWidthRef.current + dx)
+      );
+      setWidth(newWidth);
+    };
+    const onUp = () => {
+      isResizingRef.current = false;
+    };
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("touchmove", onMove);
+    document.addEventListener("mouseup", onUp);
+    document.addEventListener("touchend", onUp);
+    return () => {
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("touchmove", onMove);
+      document.removeEventListener("mouseup", onUp);
+      document.removeEventListener("touchend", onUp);
+    };
+  }, []);
   const hasSeasonal = cart.some((item) => item.isSeasonal);
 
   return (
-    <div className="hidden lg:block w-96 xl:w-[28rem] bg-slate-50 dark:bg-slate-900 p-6 xl:p-8 overflow-y-auto">
+    <div
+      ref={cartRef}
+      className="hidden lg:block bg-slate-50 dark:bg-slate-900 p-6 xl:p-8 overflow-y-auto relative"
+      style={{ width }}
+    >
+      {/* Resize handle */}
+      <div
+        role="separator"
+        aria-orientation="vertical"
+        aria-label="Resize cart preview"
+        className="absolute -left-2 top-0 bottom-0 w-3 cursor-ew-resize"
+        onMouseDown={(e) => {
+          isResizingRef.current = true;
+          startXRef.current = e.clientX;
+          startWidthRef.current = width;
+        }}
+        onTouchStart={(e) => {
+          isResizingRef.current = true;
+          startXRef.current = e.touches[0].clientX;
+          startWidthRef.current = width;
+        }}
+      />
+      {/* Make sure layout accounts for handle width */}
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
           {cartText}

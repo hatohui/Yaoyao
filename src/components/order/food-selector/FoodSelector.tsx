@@ -160,11 +160,15 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
         onComplete: () => {
           setIsOpen(false);
           clearCart();
+          setSelectedFood(null);
+          setSelectedVariant(null);
         },
       });
     } else {
       setIsOpen(false);
       clearCart();
+      setSelectedFood(null);
+      setSelectedVariant(null);
     }
   };
 
@@ -215,7 +219,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
             </div>
 
             {/* Search and Categories */}
-            <div className="border-b border-slate-200 dark:border-slate-700 p-4 lg:p-6 space-y-4 lg:space-y-5 flex-shrink-0 bg-slate-50 dark:bg-slate-800/50">
+            <div className="sticky top-0 z-20 border-b border-slate-200 dark:border-slate-700 p-4 lg:p-6 space-y-4 lg:space-y-5 flex-shrink-0 bg-slate-50 dark:bg-slate-800/50">
               <FoodSelectorSearch
                 value={searchInput}
                 onChange={setSearchInput}
@@ -231,7 +235,10 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
             {/* Food Grid and Cart Split View */}
             <div className="flex-1 overflow-hidden flex flex-col lg:flex-row min-h-0">
               {/* Left: Food Grid */}
-              <div className="flex-1 overflow-y-auto p-4 lg:p-8 lg:border-r border-slate-200 dark:border-slate-700">
+              <div
+                id="food-left-column"
+                className={`flex-1 relative overflow-y-auto p-4 lg:p-6 lg:border-r border-slate-200 dark:border-slate-700 lg:pb-56 pb-44`}
+              >
                 {isLoading ? (
                   <div className="flex items-center justify-center py-12">
                     <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-main border-r-transparent"></div>
@@ -241,7 +248,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                   </div>
                 ) : filteredFoods && filteredFoods.length > 0 ? (
                   <>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 lg:gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 lg:gap-5">
                       {filteredFoods.map((food) => {
                         const inCartCount =
                           food.variants?.reduce((sum, variant) => {
@@ -277,6 +284,30 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                         className="mt-6 lg:mt-8"
                       />
                     )}
+
+                    {selectedFood && selectedFoodData && (
+                      <VariantSelector
+                        foodName={selectedFoodData.name}
+                        variants={selectedFoodData.variants || []}
+                        selectedVariant={selectedVariant}
+                        quantity={quantityToAdd}
+                        onSelectVariant={setSelectedVariant}
+                        onQuantityChange={(delta) =>
+                          setQuantityToAdd(Math.max(1, quantityToAdd + delta))
+                        }
+                        onAddToCart={handleAddToCart}
+                        onClose={() => {
+                          setSelectedFood(null);
+                          setSelectedVariant(null);
+                        }}
+                        selectVariantText={t("selectVariant")}
+                        quantityText={t("quantity") || "Quantity"}
+                        addToCartText={t("addToCart") || "Add to Cart"}
+                        seasonalText={tMenu("seasonal")}
+                        priceText={t("price") || "Price"}
+                        notAvailableText={t("notAvailable") || "Not Available"}
+                      />
+                    )}
                   </>
                 ) : (
                   <div className="text-center py-12">
@@ -287,6 +318,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                 )}
               </div>
 
+              {/* Variant Selection Footer should be anchored inside left column to avoid flowing content; moved below */}
               {/* Right: Cart Preview */}
               <CartPreview
                 cart={cart}
@@ -307,26 +339,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
               />
             </div>
 
-            {/* Variant Selection Footer */}
-            {selectedFood && selectedFoodData && (
-              <VariantSelector
-                foodName={selectedFoodData.name}
-                variants={selectedFoodData.variants || []}
-                selectedVariant={selectedVariant}
-                quantity={quantityToAdd}
-                onSelectVariant={setSelectedVariant}
-                onQuantityChange={(delta) =>
-                  setQuantityToAdd(Math.max(1, quantityToAdd + delta))
-                }
-                onAddToCart={handleAddToCart}
-                selectVariantText={t("selectVariant")}
-                quantityText={t("quantity") || "Quantity"}
-                addToCartText={t("addToCart") || "Add to Cart"}
-                seasonalText={tMenu("seasonal")}
-                priceText={t("price") || "Price"}
-                notAvailableText={t("notAvailable") || "Not Available"}
-              />
-            )}
+            {/* Move variant selector inside the left column (so it's anchored at the bottom) */}
 
             {/* Submit Cart Footer */}
             {cart.length > 0 && !selectedFood && (
