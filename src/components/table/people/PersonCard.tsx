@@ -36,7 +36,7 @@ const PersonCard = ({
 
   return (
     <div
-      className={`flex items-center justify-between p-3 rounded-md border transition-all ${
+      className={`flex relative items-center justify-between p-3 rounded-md border min-w-0 transition-all ${
         isLeader
           ? "border-yellow-300 dark:border-yellow-900/50 bg-yellow-50 dark:bg-yellow-900/20"
           : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 hover:border-slate-300 dark:hover:border-slate-600"
@@ -51,8 +51,11 @@ const PersonCard = ({
           {person.name?.charAt(0).toUpperCase() ?? "?"}
         </div>
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5">
-            <span className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <span
+              className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate w-0 flex-1 min-w-0"
+              title={person.name}
+            >
               {person.name}
             </span>
             {isLeader && <TableLeaderTag />}

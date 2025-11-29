@@ -50,7 +50,7 @@ const TableCardPeopleList = ({
                 {isLeader && (
                   <FiStar className="w-3.5 h-3.5 text-yellow-500 flex-shrink-0" />
                 )}
-                <span className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">
+                <span className="text-sm font-medium max-w-md text-slate-900 dark:text-slate-100 truncate">
                   {person.name}
                 </span>
               </div>
