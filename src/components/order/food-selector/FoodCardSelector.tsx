@@ -1,4 +1,5 @@
 import { GetFoodsResponse } from "@/types/api/food/GET";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { FiPackage } from "react-icons/fi";
 
@@ -9,6 +10,8 @@ type FoodCardSelectorProps = {
   onSelect: () => void;
   unavailableText: string;
   seasonalText: string;
+  isPreset?: boolean;
+  presetText?: string;
 };
 
 const FoodCardSelector = ({
@@ -18,7 +21,10 @@ const FoodCardSelector = ({
   onSelect,
   unavailableText,
   seasonalText,
+  isPreset = false,
+  presetText = "Preset",
 }: FoodCardSelectorProps) => {
+  const tPreset = useTranslations("presetMenu");
   const isAvailable = food;
 
   return (
@@ -59,6 +65,14 @@ const FoodCardSelector = ({
             <span className="text-xs font-bold text-white px-2 py-1 bg-red-500 dark:bg-red-600 rounded">
               {unavailableText}
             </span>
+          </div>
+        )}
+        {isPreset && (
+          <div
+            className="absolute left-2 top-2 px-2 py-0.5 bg-purple-600 text-white text-[10px] font-semibold rounded-md"
+            aria-label={presetText}
+          >
+            {presetText || tPreset("presetItem")}
           </div>
         )}
       </div>

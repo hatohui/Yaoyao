@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { FiPlus, FiMinus, FiX } from "react-icons/fi";
 
 type Variant = {
+  id?: string | null;
   label: string;
   price?: number | null;
   currency?: string | null;
@@ -26,6 +27,7 @@ type VariantSelectorProps = {
   priceText: string;
   notAvailableText: string;
   onClose?: () => void;
+  presetData?: { variantId?: string | null; quantity?: number } | null;
 };
 
 const VariantSelector = ({
@@ -42,6 +44,7 @@ const VariantSelector = ({
   seasonalText,
   notAvailableText,
   onClose,
+  presetData,
 }: VariantSelectorProps) => {
   const selectedVariantData =
     selectedVariant !== null ? variants[selectedVariant] : null;
@@ -183,6 +186,16 @@ const VariantSelector = ({
             <h3 className="text-sm lg:text-sm font-semibold text-slate-900 dark:text-slate-100 mb-2 tracking-wide">
               {foodName}
             </h3>
+            {presetData && (
+              <div className="mb-2 text-xs text-slate-600 dark:text-slate-400">
+                <span className="font-semibold">Preset</span>:{" "}
+                {presetData.quantity || 1} • Variant:{" "}
+                {presetData.variantId
+                  ? variants.find((v) => v.id === presetData.variantId)
+                      ?.label || "Default"
+                  : "Default"}
+              </div>
+            )}
 
             {/* Content */}
             {/* Variants */}

@@ -14,6 +14,8 @@ import FoodCardSelector from "./FoodCardSelector";
 import CartPreview from "../cart/CartPreview";
 import FoodSelectorSearch from "./FoodSelectorSearch";
 import VariantSelector from "./VariantSelector";
+import usePresetMenus from "@/hooks/preset-menu/usePresetMenus";
+import { GetPresetMenuResponse } from "@/types/api/preset-menu/GET";
 import Pagination from "../../common/Pagination";
 
 type FoodSelectorProps = {
@@ -55,6 +57,18 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
   } = useFoodCart();
 
   const foods = foodsData?.foods || [];
+  const { data: presetMenusData } = usePresetMenus();
+  const tPreset = useTranslations("presetMenu");
+  const presetMenuMap = React.useMemo(() => {
+    const map = new Map<string, GetPresetMenuResponse["presetMenus"][number]>();
+    (presetMenusData?.presetMenus || []).forEach((pm) => {
+      map.set(pm.foodId, pm);
+    });
+    return map;
+  }, [presetMenusData]);
+  const presetMenuFoodIds = React.useMemo(() => {
+    return new Set(presetMenusData?.presetMenus?.map((pm) => pm.foodId) || []);
+  }, [presetMenusData]);
   const filteredFoods = filterBySearch(foods, debouncedSearch, ["name"]);
   const selectedFoodData = foods.find((f) => f.id === selectedFood);
 
@@ -264,13 +278,36 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                             onSelect={() => {
                               if (!food.available) return;
                               setSelectedFood(food.id);
-                              setSelectedVariant(
-                                food.variants && food.variants.length > 0
-                                  ? 0
-                                  : null
-                              );
+                              // If this food is a preset menu item, prefer the preset's variant and quantity
+                              const preset = presetMenuMap.get(food.id);
+                              if (preset) {
+                                // find variant index
+                                const variantIndex =
+                                  food.variants && preset.variantId
+                                    ? food.variants.findIndex(
+                                        (v) => v.id === preset.variantId
+                                      )
+                                    : -1;
+                                setSelectedVariant(
+                                  variantIndex >= 0
+                                    ? variantIndex
+                                    : food.variants && food.variants.length > 0
+                                    ? 0
+                                    : null
+                                );
+                                setQuantityToAdd(preset.quantity || 1);
+                              } else {
+                                setSelectedVariant(
+                                  food.variants && food.variants.length > 0
+                                    ? 0
+                                    : null
+                                );
+                                setQuantityToAdd(1);
+                              }
                             }}
                             unavailableText={tMenu("unavailable")}
+                            isPreset={presetMenuFoodIds.has(food.id)}
+                            presetText={tPreset("presetItem")}
                             seasonalText={tMenu("seasonal")}
                           />
                         );
@@ -300,6 +337,16 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                           setSelectedFood(null);
                           setSelectedVariant(null);
                         }}
+                        presetData={
+                          presetMenuMap.get(selectedFood) || null
+                            ? {
+                                variantId:
+                                  presetMenuMap.get(selectedFood)?.variantId,
+                                quantity:
+                                  presetMenuMap.get(selectedFood)?.quantity,
+                              }
+                            : null
+                        }
                         selectVariantText={t("selectVariant")}
                         quantityText={t("quantity") || "Quantity"}
                         addToCartText={t("addToCart") || "Add to Cart"}
