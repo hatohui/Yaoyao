@@ -16,10 +16,11 @@ import { NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {
   const method = req.method;
-  const { lang, id, includeAllTranslations } = req.query as {
+  const { lang, id, includeAllTranslations, includeHidden } = req.query as {
     lang?: Language;
     id?: string;
     includeAllTranslations?: string;
+    includeHidden?: string;
   };
   const { NotAllowed, Ok, BadRequest, NotFound } = Status(res);
 
@@ -37,6 +38,10 @@ const handler: NextApiHandler = async (req, res) => {
             return NotFound("Food not found");
           }
 
+          // if hidden and not including hidden, return NotFound
+          if (food && food.isHidden && includeHidden !== "true") {
+            return NotFound("Food not found");
+          }
           return Ok(food);
         } catch (error) {
           console.error("Error fetching food with translations:", error);
@@ -51,8 +56,9 @@ const handler: NextApiHandler = async (req, res) => {
         );
 
       const food = (await getFoodById(id, lang)) as TranslatedFood;
-
       if (food === null) return NotFound("No food found");
+      if (food.isHidden && includeHidden !== "true")
+        return NotFound("No food found");
 
       const response: GetFoodByIdResponse = mapFoodToResponse(food);
 

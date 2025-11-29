@@ -13,5 +13,6 @@ export const mapFoodToResponse = (food: TranslatedFood): TranslatedFood => {
     createdAt: food.createdAt,
     updatedAt: food.updatedAt,
     variants: food.variants,
+    isHidden: food.isHidden ?? false,
   };
 };

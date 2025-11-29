@@ -33,8 +33,25 @@ const OrderSummary = ({
 
   const ordersPrice =
     orders?.reduce((sum, order) => {
-      const price = order.variant?.price ?? order.food.variants[0]?.price ?? 0;
-      return sum + price * order.quantity;
+      // Compute availability like OrderItem: food.available && variant?.available
+      const isVariantAvailable = order.variant?.available ?? true;
+      const isFoodAvailable = order.food?.available ?? true;
+      const isAvailable = isFoodAvailable && isVariantAvailable;
+
+      if (!isAvailable) return sum;
+
+      // choose used variant: prefer explicit order.variant, else fall back to first food variant
+      const usedVariant = order.variant ?? order.food.variants?.[0] ?? null;
+      const price = usedVariant?.price ?? 0;
+      // Zero price when food/variant is not available or when the food is hidden
+      const multiplier = Number(
+        !!(
+          order.food?.available &&
+          !order.food?.isHidden &&
+          (order.variant?.available ?? true)
+        )
+      );
+      return sum + price * order.quantity * multiplier;
     }, 0) ?? 0;
 
   // Calculate preset price using fixed price of 500 RM
@@ -44,8 +61,11 @@ const OrderSummary = ({
   const totalPrice = ordersPrice + presetsPrice;
   const pricePerPerson = peopleCount > 0 ? totalPrice / peopleCount : 0;
 
-  // Currency is always RM
-  const currency = "RM";
+  // Prefer currency from first order variant or fallback to RM
+  const currency =
+    orders?.[0]?.variant?.currency ??
+    orders?.[0]?.food?.variants?.[0]?.currency ??
+    "RM";
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-main/10 dark:border-slate-700 overflow-hidden">

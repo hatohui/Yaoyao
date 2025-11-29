@@ -36,6 +36,7 @@ export type FoodFormData = {
   categoryId: string;
   imageUrl?: string;
   available: boolean;
+  isHidden?: boolean;
   variants: Variant[];
   translations?: Translation[];
 };
@@ -63,6 +64,7 @@ const FoodFormModalEnhanced = ({
     categoryId: "",
     imageUrl: "",
     available: true,
+    isHidden: false,
     variants: [],
     translations: [],
   });
@@ -71,7 +73,8 @@ const FoodFormModalEnhanced = ({
 
   // Fetch food with all translations when editing
   const { data: foodWithTranslations } = useFoodWithTranslations(
-    food?.id || null
+    food?.id || null,
+    true
   );
   useEffect(() => {
     if (food && foodWithTranslations) {
@@ -89,6 +92,7 @@ const FoodFormModalEnhanced = ({
         categoryId: foodWithTranslations.categoryId,
         imageUrl: foodWithTranslations.imageUrl || "",
         available: foodWithTranslations.available,
+        isHidden: foodWithTranslations.isHidden ?? false,
         variants: foodWithTranslations.variants
           ? foodWithTranslations.variants.map((v) => ({
               id: v.id,
@@ -352,6 +356,25 @@ const FoodFormModalEnhanced = ({
                 className="text-sm font-semibold text-slate-700 dark:text-slate-300"
               >
                 {t("availableLabel")}
+              </label>
+            </div>
+
+            {/* Hidden */}
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="hidden"
+                checked={!!formData.isHidden}
+                onChange={(e) =>
+                  setFormData({ ...formData, isHidden: e.target.checked })
+                }
+                className="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-main focus:ring-main"
+              />
+              <label
+                htmlFor="hidden"
+                className="text-sm font-semibold text-slate-700 dark:text-slate-300"
+              >
+                Hidden (not visible in menu)
               </label>
             </div>
 

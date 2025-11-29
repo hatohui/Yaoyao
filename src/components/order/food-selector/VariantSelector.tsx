@@ -25,7 +25,7 @@ type VariantSelectorProps = {
   addToCartText: string;
   seasonalText: string;
   priceText: string;
-  notAvailableText: string;
+  // notAvailableText removed - unused since adding unavailable items is allowed
   onClose?: () => void;
   presetData?: { variantId?: string | null; quantity?: number } | null;
 };
@@ -42,13 +42,11 @@ const VariantSelector = ({
   quantityText,
   addToCartText,
   seasonalText,
-  notAvailableText,
   onClose,
   presetData,
 }: VariantSelectorProps) => {
   const selectedVariantData =
     selectedVariant !== null ? variants[selectedVariant] : null;
-  const isSelectedVariantAvailable = selectedVariantData?.available ?? true;
 
   const panelRef = useRef<HTMLDivElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -209,16 +207,14 @@ const VariantSelector = ({
                     <button
                       key={idx}
                       onClick={() => onSelectVariant(idx)}
-                      disabled={!variant.available}
                       className={`px-3 h-8 sm:h-9 min-w-[3.25rem] sm:min-w-[3.5rem] rounded-md border transition-colors font-semibold uppercase tracking-wide whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-main ${
                         selectedVariant === idx
                           ? "border-main bg-main text-white shadow"
                           : variant.available
                           ? "border-slate-300 text-slate-900 dark:text-slate-100 cursor-pointer"
-                          : "border-slate-200 text-slate-400 opacity-40 line-through cursor-not-allowed"
+                          : "border-slate-200 text-slate-400 opacity-40 line-through"
                       }`}
                       aria-pressed={selectedVariant === idx}
-                      aria-disabled={!variant.available}
                     >
                       <div className="flex items-center gap-2 h-full">
                         <span className="truncate max-w-[8rem] block">
@@ -292,12 +288,12 @@ const VariantSelector = ({
 
             <button
               onClick={handleAddClick}
-              disabled={!isSelectedVariantAvailable}
+              disabled={variants.length > 0 && selectedVariant === null}
               className="w-full mt-4 button text-sm font-bold py-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-slate-300 dark:disabled:bg-slate-700"
-              aria-disabled={!isSelectedVariantAvailable}
+              aria-disabled={variants.length > 0 && selectedVariant === null}
             >
               <FiPlus className="w-5 h-5 inline mr-2" />
-              {!isSelectedVariantAvailable ? notAvailableText : addToCartText}
+              {addToCartText}
             </button>
           </div>
         </div>

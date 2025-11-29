@@ -47,6 +47,7 @@ const DashboardPage = () => {
     search: searchQuery,
     available:
       selectedStatus === "all" ? undefined : selectedStatus === "available",
+    includeHidden: true,
   });
 
   const createFoodMutation = useCreateFoodMutation();
@@ -82,6 +83,7 @@ const DashboardPage = () => {
         ...data,
         imageUrl: data.imageUrl || null,
         description: data.description || null,
+        isHidden: data.isHidden ?? false,
       };
 
       if (editingFood) {

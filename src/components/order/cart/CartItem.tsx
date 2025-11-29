@@ -15,6 +15,8 @@ const CartItem = ({
   onUpdateQuantity,
   seasonalText,
 }: CartItemProps) => {
+  const currency = item.variantCurrency ?? "RM";
+
   return (
     <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-3">
       <div className="flex gap-2">
@@ -49,9 +51,14 @@ const CartItem = ({
               <span className="text-amber-600 dark:text-amber-400">
                 Market Price
               </span>
+            ) : item.foodAvailable === false ||
+              item.variantAvailable === false ? (
+              <span className="text-red-600 dark:text-red-400">
+                Unavailable
+              </span>
             ) : (
               <>
-                {(item.variantPrice * item.quantity).toFixed(2)} RM
+                {(item.variantPrice * item.quantity).toFixed(2)} {currency}
               </>
             )}
           </p>
@@ -77,6 +84,7 @@ const CartItem = ({
           </span>
           <button
             onClick={() => onUpdateQuantity(1)}
+            disabled={false}
             className="w-6 h-6 flex items-center justify-center rounded border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300"
           >
             <FiPlus className="w-3 h-3" />
@@ -84,7 +92,7 @@ const CartItem = ({
         </div>
         {!item.isSeasonal && (
           <span className="text-xs text-slate-500 dark:text-slate-400">
-            {item.variantPrice.toFixed(2)} RM × {item.quantity}
+            {item.variantPrice.toFixed(2)} {currency} × {item.quantity}
           </span>
         )}
       </div>

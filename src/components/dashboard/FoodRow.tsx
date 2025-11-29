@@ -2,11 +2,13 @@
 import React from "react";
 import Image from "next/image";
 import { useFoodAvailabilityMutation } from "@/hooks/food/useFoodAvailabilityMutation";
+import { useUpdateFoodMutation } from "@/hooks/food/useFoodMutations";
 import { FiEye, FiEyeOff, FiEdit2, FiTrash2 } from "react-icons/fi";
 
 type FoodRowProps = {
   food: {
     id: string;
+    isHidden?: boolean | null;
     name: string;
     available: boolean;
     imageUrl?: string | null;
@@ -34,9 +36,14 @@ const FoodRow = ({
   onDelete,
 }: FoodRowProps) => {
   const availabilityMutation = useFoodAvailabilityMutation(food.id);
+  const updateFoodMutation = useUpdateFoodMutation(food.id);
 
   const handleToggle = () => {
     availabilityMutation.mutate(!food.available);
+  };
+
+  const toggleHidden = () => {
+    updateFoodMutation.mutate({ isHidden: !food.isHidden });
   };
 
   return (
@@ -151,6 +158,24 @@ const FoodRow = ({
             title="Delete"
           >
             <FiTrash2 className="w-4 h-4" />
+          </button>
+          <button
+            onClick={toggleHidden}
+            disabled={updateFoodMutation.isPending}
+            className={`p-2 rounded-lg font-semibold text-sm transition-all shadow-sm flex items-center justify-center ${
+              food.isHidden
+                ? "bg-yellow-500 hover:bg-yellow-600 text-white hover:shadow-md"
+                : "bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 text-gray-700 dark:text-slate-300"
+            }`}
+            title={food.isHidden ? "Unhide" : "Hide"}
+          >
+            {updateFoodMutation.isPending ? (
+              "..."
+            ) : food.isHidden ? (
+              <FiEyeOff className="w-4 h-4" />
+            ) : (
+              <FiEye className="w-4 h-4" />
+            )}
           </button>
         </div>
       </td>

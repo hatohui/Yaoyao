@@ -25,12 +25,11 @@ const FoodCardSelector = ({
   presetText = "Preset",
 }: FoodCardSelectorProps) => {
   const tPreset = useTranslations("presetMenu");
-  const isAvailable = food;
+  const isAvailable = food.available;
 
   return (
     <button
       onClick={onSelect}
-      disabled={!isAvailable}
       className={`relative text-left cursor-pointer rounded-lg border-2 overflow-hidden transition-all ${
         isSelected
           ? "border-darkest dark:border-main shadow-lg ring-2 ring-darkest/20 dark:ring-main/20"
@@ -38,7 +37,7 @@ const FoodCardSelector = ({
           ? "border-main dark:border-main shadow-md ring-2 ring-main/20 dark:ring-main/30"
           : isAvailable
           ? "border-slate-200 dark:border-slate-700 hover:border-darkest/30 dark:hover:border-main/30 hover:shadow-md"
-          : "border-slate-200 dark:border-slate-700 opacity-50 cursor-not-allowed"
+          : "border-slate-200 dark:border-slate-700 opacity-50"
       }`}
     >
       {inCartCount > 0 && (

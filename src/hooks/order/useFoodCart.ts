@@ -8,14 +8,25 @@ export type CartItem = {
   variantId?: string;
   variantLabel?: string;
   variantPrice: number;
+  variantCurrency?: string;
   quantity: number;
   isSeasonal?: boolean;
+  // availability flags are snapped when adding to cart
+  foodAvailable?: boolean;
+  variantAvailable?: boolean;
 };
 
 export const useFoodCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  const addToCart = (item: Omit<CartItem, "quantity">, quantity: number) => {
+  const addToCart = (
+    item: Omit<CartItem, "quantity"> & {
+      // allow callers to optionally provide availability flags
+      foodAvailable?: boolean;
+      variantAvailable?: boolean;
+    },
+    quantity: number
+  ) => {
     const existingItemIndex = cart.findIndex(
       (i) => i.foodId === item.foodId && i.variantId === item.variantId
     );
@@ -32,6 +43,8 @@ export const useFoodCart = () => {
   const removeFromCart = (index: number) => {
     setCart(cart.filter((_, i) => i !== index));
   };
+
+  // removeItems removed - not currently used
 
   const updateQuantity = (index: number, delta: number) => {
     const newCart = [...cart];

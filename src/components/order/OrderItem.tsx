@@ -19,9 +19,11 @@ const OrderItem = ({ order, isEditable }: OrderItemProps) => {
   const updateMutation = useUpdateOrder(order.tableId, order.id);
   const deleteMutation = useDeleteOrder(order.tableId, order.id);
 
-  const price = order.variant?.price ?? order.food.variants[0]?.price ?? 0;
+  const usedVariant = order.variant ?? order.food.variants?.[0] ?? null;
+  const price = usedVariant?.price ?? 0;
   // Currency is always RM
-  const currency = "RM";
+  const currency =
+    usedVariant?.currency ?? order.food.variants?.[0]?.currency ?? "RM";
   const variantLabel = order.variant?.label || "";
   const totalPrice = price * quantity;
 
@@ -83,13 +85,7 @@ const OrderItem = ({ order, isEditable }: OrderItemProps) => {
                 <FiPackage className="w-6 h-6 text-slate-400 dark:text-slate-500" />
               </div>
             )}
-            {!isAvailable && (
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                <span className="text-[10px] font-bold text-white px-1.5 py-0.5 bg-red-500 dark:bg-red-600 rounded">
-                  {t("notAvailable")}
-                </span>
-              </div>
-            )}
+            {/* Not showing availability overlay per design — keep border styling */}
           </div>
 
           {/* Content */}

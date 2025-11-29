@@ -15,13 +15,16 @@ type FoodWithAllTranslations = Food & {
   >[];
 };
 
-const useFoodWithTranslations = (foodId: string | null) => {
+const useFoodWithTranslations = (
+  foodId: string | null,
+  includeHidden: boolean = false
+) => {
   return useQuery({
     queryKey: ["food-with-translations", foodId],
     queryFn: () =>
       axios
         .get<FoodWithAllTranslations>(`/foods/${foodId}`, {
-          params: { includeAllTranslations: true },
+          params: { includeAllTranslations: true, includeHidden },
         })
         .then((res) => res.data),
     enabled: !!foodId,

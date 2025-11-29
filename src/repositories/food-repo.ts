@@ -93,13 +93,15 @@ const getFoods = async (
   page?: number,
   count?: number,
   search?: string,
-  available?: boolean
+  available?: boolean,
+  includeHidden?: boolean
 ): Promise<{ foods: TranslatedFood[] | Food[]; total: number }> => {
   const skip = page && count ? (page - 1) * count : undefined;
   const take = count;
 
   const whereClause = {
     ...(available !== undefined && { available }),
+    ...(includeHidden === true ? {} : { isHidden: false }),
     ...(search && {
       OR: [
         { name: { contains: search, mode: "insensitive" as const } },
@@ -177,7 +179,8 @@ const getFoodsByCategory = async (
   page?: number,
   count?: number,
   search?: string,
-  available?: boolean
+  available?: boolean,
+  includeHidden?: boolean
 ): Promise<{ foods: TranslatedFood[] | Food[]; total: number }> => {
   const skip = page && count ? (page - 1) * count : undefined;
   const take = count;
@@ -185,6 +188,7 @@ const getFoodsByCategory = async (
   const whereClause = {
     categoryId,
     ...(available !== undefined && { available }),
+    ...(includeHidden === true ? {} : { isHidden: false }),
     ...(search
       ? {
           OR: [

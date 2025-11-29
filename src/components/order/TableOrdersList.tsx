@@ -62,16 +62,29 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
 
   const ordersSubtotal = orders
     ? orders.reduce((acc, o) => {
-        const price = o.variant?.price ?? o.food?.variants?.[0]?.price ?? 0;
-        return acc + price * (o.quantity ?? 0);
+        // Compute availability like OrderItem: food.available && variant?.available
+        const isVariantAvailable = o.variant?.available ?? true;
+        const isFoodAvailable =
+          (o.food?.available ?? true) && !o.food?.isHidden;
+        const isAvailable = isFoodAvailable && isVariantAvailable;
+
+        // Use price from order.variant if present else fall back to first food variant
+        const usedVariant = o.variant ?? o.food.variants?.[0] ?? null;
+        const price = usedVariant?.price ?? 0;
+        const multiplier = Number(isAvailable);
+        return acc + price * (o.quantity ?? 0) * multiplier;
       }, 0)
     : 0;
 
-  // Preset menu uses fixed price of 500 RM total
+  // Preset menu uses fixed price of 500 (DEFAULT_SET_PRICE) total
   const presetsSubtotal =
     presetMenus && presetMenus.length > 0 ? DEFAULT_SET_PRICE : 0;
 
   const subtotal = ordersSubtotal + presetsSubtotal;
+  const currency =
+    orders?.[0]?.variant?.currency ??
+    orders?.[0]?.food?.variants?.[0]?.currency ??
+    "RM";
 
   if (isLoading) {
     return (
@@ -157,7 +170,7 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
                     {t("total")}:
                   </span>
                   <span className="text-sm font-semibold text-main dark:text-main">
-                    {subtotal.toFixed(2)} RM
+                    {subtotal.toFixed(2)} {currency}
                   </span>
                 </div>
               </div>
@@ -170,7 +183,7 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
                     {peopleCount === 1 ? t("person") : t("people")})
                   </span>
                   <span className="text-slate-600 dark:text-slate-300 font-medium">
-                    {(subtotal / peopleCount).toFixed(2)} RM
+                    {(subtotal / peopleCount).toFixed(2)} {currency}
                   </span>
                 </div>
               )}
@@ -183,7 +196,7 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
                       {tPreset("title")} ({tPreset("fixedPrice")})
                     </span>
                     <span className="text-yellow-700 dark:text-yellow-400 font-semibold">
-                      {DEFAULT_SET_PRICE.toFixed(2)} RM
+                      {DEFAULT_SET_PRICE.toFixed(2)} {currency}
                     </span>
                   </div>
                   {orders && orders.length > 0 && (
@@ -192,7 +205,7 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
                         {t("additionalOrders")}
                       </span>
                       <span className="text-slate-600 dark:text-slate-400">
-                        {ordersSubtotal.toFixed(2)} RM
+                        {ordersSubtotal.toFixed(2)} {currency}
                       </span>
                     </div>
                   )}

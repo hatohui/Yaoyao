@@ -50,6 +50,7 @@ model Food {
   description String?
   categoryId  String   @db.Uuid
   available   Boolean  @default(true)
+  isHidden    Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

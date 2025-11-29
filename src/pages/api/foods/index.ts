@@ -14,14 +14,16 @@ import { NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {
   const method = req.method;
-  const { lang, category, page, count, search, available } = req.query as {
-    lang?: Language;
-    category?: string;
-    page?: string;
-    count?: string;
-    search?: string;
-    available?: string;
-  };
+  const { lang, category, page, count, search, available, includeHidden } =
+    req.query as {
+      lang?: Language;
+      category?: string;
+      page?: string;
+      count?: string;
+      search?: string;
+      available?: string;
+      includeHidden?: string;
+    };
   const { NotAllowed, Ok, BadRequest } = Status(res);
 
   switch (method) {
@@ -42,6 +44,7 @@ const handler: NextApiHandler = async (req, res) => {
       const availableFilter =
         available === "true" ? true : available === "false" ? false : undefined;
 
+      const includeHiddenBool = includeHidden === "true";
       if (category) {
         const categoryData = await getCategoryByName(category);
 
@@ -52,7 +55,8 @@ const handler: NextApiHandler = async (req, res) => {
             pageNum,
             countNum,
             search,
-            availableFilter
+            availableFilter,
+            includeHiddenBool
           );
         } else {
           return BadRequest("Invalid category");
@@ -63,7 +67,8 @@ const handler: NextApiHandler = async (req, res) => {
           pageNum,
           countNum,
           search,
-          availableFilter
+          availableFilter,
+          includeHiddenBool
         );
       }
 
@@ -90,6 +95,7 @@ const handler: NextApiHandler = async (req, res) => {
           totalPages,
         },
       };
+      // ensure hidden is returned by mapFoodToResponse if present
 
       return Ok(response);
     case "POST":

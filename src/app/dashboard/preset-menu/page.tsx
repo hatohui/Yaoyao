@@ -34,6 +34,7 @@ const PresetMenuPage = () => {
     usePresetMenus("en");
   const { data: foodsData, isLoading: isLoadingFoods } = useFoods({
     count: 9999, // Get all foods for the dropdown
+    includeHidden: true,
   });
   const { data: categories } = useCategories();
   const createPresetMutation = useCreatePresetMenu();
@@ -122,6 +123,7 @@ const PresetMenuPage = () => {
         ...data,
         imageUrl: data.imageUrl || null,
         description: data.description || null,
+        isHidden: data.isHidden ?? false,
       };
 
       const response = await createFoodMutation.mutateAsync(payload);

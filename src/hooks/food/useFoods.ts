@@ -10,6 +10,7 @@ type UseFoodsParams = {
   count?: number;
   search?: string;
   available?: boolean;
+  includeHidden?: boolean;
 };
 
 const useFoods = ({
@@ -18,15 +19,33 @@ const useFoods = ({
   count = MENU_PAGINATION_SIZE,
   search,
   available,
+  includeHidden,
 }: UseFoodsParams = {}) => {
   const locale = useSearchParams()?.get("lang") || "en";
 
   return useQuery({
-    queryKey: ["foods", category, page, count, search, locale, available],
+    queryKey: [
+      "foods",
+      category,
+      page,
+      count,
+      search,
+      locale,
+      available,
+      includeHidden,
+    ],
     queryFn: () =>
       axios
         .get<GetFoodsResponse>("/foods", {
-          params: { category, lang: locale, page, count, search, available },
+          params: {
+            category,
+            lang: locale,
+            page,
+            count,
+            search,
+            available,
+            includeHidden,
+          },
         })
         .then((res) => res.data),
   });

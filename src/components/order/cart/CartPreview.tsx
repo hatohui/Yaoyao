@@ -77,6 +77,7 @@ const CartPreview = ({
     };
   }, []);
   const hasSeasonal = cart.some((item) => item.isSeasonal);
+  const currency = cart?.[0]?.variantCurrency ?? "RM";
 
   return (
     <div
@@ -144,8 +145,11 @@ const CartPreview = ({
             <span className="text-slate-900 dark:text-slate-100">
               {totalText}
             </span>
-            <span className="text-main">{cartTotal.toFixed(2)} RM</span>
+            <span className="text-main">
+              {cartTotal.toFixed(2)} {currency}
+            </span>
           </div>
+          {/* Removed unavailable hint: cart totals show all non-seasonal items by design */}
         </div>
       )}
     </div>

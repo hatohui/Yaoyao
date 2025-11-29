@@ -14,6 +14,7 @@ export type GetOrdersResponse = {
     name: string;
     imageUrl: string | null;
     available: boolean;
+    isHidden?: boolean | null;
     translations?: {
       name: string;
       description: string | null;

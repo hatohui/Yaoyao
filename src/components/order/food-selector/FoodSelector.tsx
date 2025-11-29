@@ -56,7 +56,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
     cartItemCount,
   } = useFoodCart();
 
-  const foods = foodsData?.foods || [];
+  const foods = (foodsData?.foods || []).filter((f) => !f.isHidden);
   const { data: presetMenusData } = usePresetMenus();
   const tPreset = useTranslations("presetMenu");
   const presetMenuMap = React.useMemo(() => {
@@ -103,14 +103,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
         return;
       }
 
-      // Check if selected variant is available
-      const selectedVariantData = selectedFoodData.variants[selectedVariant];
-      if (!selectedVariantData.available) {
-        alert(
-          t("variantUnavailable") || "This variant is currently unavailable"
-        );
-        return;
-      }
+      // Note: allow adding unavailable variants, they will be captured with availability flags
     }
 
     const variant =
@@ -128,7 +121,11 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
         variantId: variant?.id,
         variantLabel: variant?.label,
         variantPrice: variant?.price ?? 0,
+        variantCurrency: variant?.currency ?? undefined,
         isSeasonal: variant?.isSeasonal ?? false,
+        // set availability flags at the time of adding to cart
+        foodAvailable: selectedFoodData.available ?? true,
+        variantAvailable: variant?.available ?? true,
       },
       quantityToAdd
     );
@@ -150,6 +147,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
           quantity: item.quantity,
         });
       }
+      // Clear the cart after a successful submission
       clearCart();
       setIsOpen(false);
     } catch (error) {
@@ -185,6 +183,8 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
       setSelectedVariant(null);
     }
   };
+
+  const cartCurrency = cart?.[0]?.variantCurrency ?? "RM";
 
   return (
     <>
@@ -276,7 +276,6 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                             isSelected={selectedFood === food.id}
                             inCartCount={inCartCount}
                             onSelect={() => {
-                              if (!food.available) return;
                               setSelectedFood(food.id);
                               // If this food is a preset menu item, prefer the preset's variant and quantity
                               const preset = presetMenuMap.get(food.id);
@@ -352,7 +351,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                         addToCartText={t("addToCart") || "Add to Cart"}
                         seasonalText={tMenu("seasonal")}
                         priceText={t("price") || "Price"}
-                        notAvailableText={t("notAvailable") || "Not Available"}
+                        // notAvailableText removed from VariantSelector - no longer needed
                       />
                     )}
                   </>
@@ -400,7 +399,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                     ? t("ordering") || "Processing..."
                     : `${
                         t("confirmOrder") || "Confirm Order"
-                      } • ${cartTotal.toFixed(2)} RM`}
+                      } • ${cartTotal.toFixed(2)} ${cartCurrency}`}
                 </button>
               </div>
             )}

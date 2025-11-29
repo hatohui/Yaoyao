@@ -34,13 +34,32 @@ const TableOrderCard = ({ table }: TableOrderCardProps) => {
         sum: number,
         order: {
           quantity: number;
-          variant?: { price?: number | null };
-          food?: { variants?: Array<{ price?: number | null }> };
+          variant?: { price?: number | null; available?: boolean };
+          food?: {
+            variants?: Array<{ price?: number | null; available?: boolean }>;
+            available?: boolean;
+            isHidden?: boolean;
+          };
         }
       ) => {
+        // Compute availability same as OrderItem: food.available && variant?.available
+        const isVariantAvailable = order.variant?.available ?? true;
+        const isFoodAvailable = order.food?.available ?? true;
+        const isAvailable = isFoodAvailable && isVariantAvailable;
+
+        if (!isAvailable) return sum;
+
         const price =
           order.variant?.price || order.food?.variants?.[0]?.price || 0;
-        return sum + price * order.quantity;
+        // Treat hidden and unavailable foods and unavailable variants as zero-priced
+        const multiplier = Number(
+          !!(
+            (order.food?.available ?? true) &&
+            !order.food?.isHidden &&
+            (order.variant?.available ?? true)
+          )
+        );
+        return sum + price * order.quantity * multiplier;
       },
       0
     ) || 0;

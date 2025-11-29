@@ -7,6 +7,7 @@ export type OrderWithDetails = Order & {
     name: string;
     imageUrl: string | null;
     available: boolean;
+    isHidden?: boolean | null;
     translations?: {
       name: string;
       description: string | null;
@@ -44,6 +45,7 @@ export const getOrdersByTableId = async (
           name: true,
           imageUrl: true,
           available: true,
+          isHidden: true,
           translations: {
             where: {
               language: lang,
@@ -95,6 +97,7 @@ export const getOrderById = async (
           name: true,
           imageUrl: true,
           available: true,
+          isHidden: true,
           variants: {
             select: {
               id: true,
