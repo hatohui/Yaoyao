@@ -35,7 +35,6 @@ const FoodCard = ({
   translatedDescription,
   t,
 }: FoodCardProps) => {
-  const isUnavailable = !food.available;
   // const { copied, copyToClipboard } = useCopyToClipboard();
   const searchParams = useSearchParams();
   const cardRef = useRef<HTMLAnchorElement>(null);
@@ -105,7 +104,7 @@ const FoodCard = ({
             alt={translatedName}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className={`object-cover ${isUnavailable ? "opacity-50" : ""}`}
+            className="object-cover"
             onError={(e) => {
               e.currentTarget.style.display = "none";
             }}
@@ -136,25 +135,12 @@ const FoodCard = ({
             </span>
           )}
         </div> */}
-
-        {/* Availability Badge */}
-        {isUnavailable && (
-          <div className="absolute top-2 right-2 px-2.5 py-1 bg-red-500 dark:bg-red-600 text-white text-xs font-semibold rounded-full shadow-lg">
-            {t("unavailable")}
-          </div>
-        )}
       </div>
 
       {/* Content - Fixed layout */}
       <div className="p-4 flex flex-col flex-grow">
         {/* Title */}
-        <h3
-          className={`text-lg font-bold mb-1 line-clamp-2 ${
-            isUnavailable
-              ? "text-slate-500 dark:text-slate-400"
-              : "text-slate-900 dark:text-slate-100"
-          }`}
-        >
+        <h3 className="text-lg font-bold mb-1 line-clamp-2 text-slate-900 dark:text-slate-100">
           {translatedName}
         </h3>
 
