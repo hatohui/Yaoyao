@@ -21,6 +21,8 @@ const LanguageSelector = ({ className }: LanguageSelectorProps) => {
     zh: "🇨🇳 中文",
     th: "🇹🇭 ไทย",
     vi: "🇻🇳 Tiếng Việt",
+    ja: "🇯🇵 日本語",
+    iu: "🇨🇦 Inuktitut",
   };
 
   return (

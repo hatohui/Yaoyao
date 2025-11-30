@@ -304,7 +304,6 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                                 setQuantityToAdd(1);
                               }
                             }}
-                            unavailableText={tMenu("unavailable")}
                             isPreset={presetMenuFoodIds.has(food.id)}
                             presetText={tPreset("presetItem")}
                             seasonalText={tMenu("seasonal")}
