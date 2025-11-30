@@ -8,7 +8,6 @@ type FoodCardSelectorProps = {
   isSelected: boolean;
   inCartCount: number;
   onSelect: () => void;
-  unavailableText: string;
   seasonalText: string;
   isPreset?: boolean;
   presetText?: string;
@@ -19,7 +18,6 @@ const FoodCardSelector = ({
   isSelected,
   inCartCount,
   onSelect,
-  unavailableText,
   seasonalText,
   isPreset = false,
   presetText = "Preset",
@@ -59,13 +57,7 @@ const FoodCardSelector = ({
             <FiPackage className="w-8 h-8 text-slate-400 dark:text-slate-500" />
           </div>
         )}
-        {!isAvailable && (
-          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-            <span className="text-xs font-bold text-white px-2 py-1 bg-red-500 dark:bg-red-600 rounded">
-              {unavailableText}
-            </span>
-          </div>
-        )}
+
         {isPreset && (
           <div
             className="absolute left-2 top-2 px-2 py-0.5 bg-purple-600 text-white text-[10px] font-semibold rounded-md"
