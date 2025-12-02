@@ -102,8 +102,6 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
         alert(t("selectVariantPrompt"));
         return;
       }
-
-      // Note: allow adding unavailable variants, they will be captured with availability flags
     }
 
     const variant =

@@ -149,7 +149,6 @@ const CartPreview = ({
               {cartTotal.toFixed(2)} {currency}
             </span>
           </div>
-          {/* Removed unavailable hint: cart totals show all non-seasonal items by design */}
         </div>
       )}
     </div>

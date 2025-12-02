@@ -27,7 +27,19 @@
     "copied": "Copied!",
     "landingSubtitle": "Website created by <hatoLink>Hatohui</hatoLink>",
     "noSort": "No sort",
-    "layout": "Layout"
+    "layout": "Layout",
+    "info": "Info"
+  },
+  "info": {
+    "restaurantName": "Gao Ren Guan",
+    "restaurantType": "Chinese Restaurant",
+    "address": "Address",
+    "phone": "Phone",
+    "hours": "Hours",
+    "open": "Open",
+    "closes": "Closes",
+    "reopens": "Reopens",
+    "viewOnMap": "View on Google Maps"
   },
   "success": {
     "success": "Operation completed successfully!",

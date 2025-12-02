@@ -35,7 +35,19 @@
     "unpaid": "未支付",
     "landingSubtitle": "网站由 <hatoLink>Hatohui</hatoLink> 创建",
     "noSort": "不排序",
-    "layout": "布局"
+    "layout": "布局",
+    "info": "信息"
+  },
+  "info": {
+    "restaurantName": "高人馆",
+    "restaurantType": "中餐厅",
+    "address": "地址",
+    "phone": "电话",
+    "hours": "营业时间",
+    "open": "营业中",
+    "closes": "关门",
+    "reopens": "重新营业",
+    "viewOnMap": "在 Google 地图上查看"
   },
   "success": {
     "success": "操作成功完成！",

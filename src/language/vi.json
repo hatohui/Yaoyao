@@ -36,7 +36,19 @@
     "unpaid": "Chưa thanh toán",
     "landingSubtitle": "Website được tạo bởi <hatoLink>Hatohui</hatoLink>",
     "noSort": "Không sắp xếp",
-    "layout": "Bố cục"
+    "layout": "Bố cục",
+    "info": "Thông tin"
+  },
+  "info": {
+    "restaurantName": "Gao Ren Guan",
+    "restaurantType": "Nhà hàng Trung Quốc",
+    "address": "Địa chỉ",
+    "phone": "Điện thoại",
+    "hours": "Giờ mở cửa",
+    "open": "Mở cửa",
+    "closes": "Đóng cửa",
+    "reopens": "Mở lại",
+    "viewOnMap": "Xem trên Google Maps"
   },
   "success": {
     "success": "Thao tác thành công!",

@@ -35,18 +35,18 @@ const FeedbackBox = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-main/10 dark:border-slate-700 overflow-hidden">
+    <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200/50 dark:border-slate-700/50 overflow-hidden backdrop-blur-sm">
       {/* Header */}
-      <div className="bg-gradient-to-r from-darkest to-darkest/90 dark:from-slate-900 dark:to-slate-900/90 px-4 py-3">
-        <h2 className="text-base font-semibold text-white flex items-center gap-2">
+      <div className="bg-gradient-to-r from-main via-main to-main/90 dark:from-main dark:via-main dark:to-main/90 px-6 py-4">
+        <h2 className="text-lg font-bold text-white flex items-center gap-2">
           <FiMessageSquare className="w-5 h-5" />
           {t("title")}
         </h2>
       </div>
 
       {/* Content */}
-      <div className="p-4">
-        <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+      <div className="p-6">
+        <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
           {t("subtitle")}
         </p>
 
@@ -64,8 +64,8 @@ const FeedbackBox = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder={t("messagePlaceholder")}
-              rows={4}
-              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-main focus:border-transparent resize-none"
+              rows={5}
+              className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-main focus:border-main transition-all resize-none"
               disabled={createFeedback.isPending}
             />
           </div>
@@ -74,9 +74,9 @@ const FeedbackBox = () => {
           <button
             type="submit"
             disabled={createFeedback.isPending}
-            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-main hover:bg-main/90 dark:bg-main dark:hover:bg-main/90 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-main to-main/90 hover:from-main/90 hover:to-main text-white font-semibold rounded-xl shadow-lg shadow-main/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl hover:shadow-main/30"
           >
-            <FiSend className="w-4 h-4" />
+            <FiSend className="w-5 h-5" />
             {createFeedback.isPending ? t("submitting") : t("submit")}
           </button>
         </form>

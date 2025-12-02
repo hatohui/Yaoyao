@@ -51,11 +51,6 @@ const CartItem = ({
               <span className="text-amber-600 dark:text-amber-400">
                 Market Price
               </span>
-            ) : item.foodAvailable === false ||
-              item.variantAvailable === false ? (
-              <span className="text-red-600 dark:text-red-400">
-                Unavailable
-              </span>
             ) : (
               <>
                 {(item.variantPrice * item.quantity).toFixed(2)} {currency}

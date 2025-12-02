@@ -35,7 +35,19 @@
     "unpaid": "ยังไม่ได้ชำระเงิน",
     "landingSubtitle": "เว็บไซต์สร้างโดย <hatoLink>Hatohui</hatoLink>",
     "noSort": "ไม่เรียง",
-    "layout": "ผังร้าน"
+    "layout": "ผังร้าน",
+    "info": "ข้อมูล"
+  },
+  "info": {
+    "restaurantName": "高人馆",
+    "restaurantType": "ร้านอาหารจีน",
+    "address": "ที่อยู่",
+    "phone": "โทรศัพท์",
+    "hours": "เวลาทำการ",
+    "open": "เปิด",
+    "closes": "ปิด",
+    "reopens": "เปิดอีกครั้ง",
+    "viewOnMap": "ดูใน Google Maps"
   },
   "success": {
     "success": "ดำเนินการสำเร็จ!",

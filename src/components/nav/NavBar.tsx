@@ -41,6 +41,7 @@ const NavBar = () => {
 
   const navData = [
     { title: t("home"), link: "/", public: true },
+    { title: t("info"), link: "/info", public: true },
     { title: t("layout"), link: "/layout", public: LAYOUT_PUBLIC_ENABLED },
     { title: t("menu"), link: "/menu", public: true },
     { title: t("tables"), link: "/tables", public: true },
