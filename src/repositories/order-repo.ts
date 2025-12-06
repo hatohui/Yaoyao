@@ -40,56 +40,26 @@ export const getOrdersByTableId = async (
   tableId: string,
   lang: string = "en"
 ): Promise<OrderWithDetails[]> => {
-  return await prisma.order.findMany({
+  return (await prisma.order.findMany({
     where: { tableId },
     include: {
       food: {
-        select: {
-          id: true,
-          name: true,
-          imageUrl: true,
-          available: true,
-          isHidden: true,
+        include: {
           translations: {
             where: {
               language: lang,
             },
-            select: {
-              name: true,
-              description: true,
-            },
           },
-          variants: {
-            select: {
-              id: true,
-              label: true,
-              price: true,
-              currency: true,
-              available: true,
-            },
-          },
+          variants: true,
         },
       },
-      variant: {
-        select: {
-          id: true,
-          label: true,
-          price: true,
-          currency: true,
-          available: true,
-        },
-      },
-      taggedPerson: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
+      variant: true,
+      taggedPerson: true,
     },
     orderBy: {
       createdAt: "desc",
     },
-  });
+  })) as OrderWithDetails[];
 };
 
 /**
@@ -98,44 +68,18 @@ export const getOrdersByTableId = async (
 export const getOrderById = async (
   orderId: string
 ): Promise<OrderWithDetails | null> => {
-  return await prisma.order.findUnique({
+  return (await prisma.order.findUnique({
     where: { id: orderId },
     include: {
       food: {
-        select: {
-          id: true,
-          name: true,
-          imageUrl: true,
-          available: true,
-          isHidden: true,
-          variants: {
-            select: {
-              id: true,
-              label: true,
-              price: true,
-              currency: true,
-              available: true,
-            },
-          },
+        include: {
+          variants: true,
         },
       },
-      variant: {
-        select: {
-          id: true,
-          label: true,
-          price: true,
-          currency: true,
-          available: true,
-        },
-      },
-      taggedPerson: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
+      variant: true,
+      taggedPerson: true,
     },
-  });
+  })) as OrderWithDetails | null;
 };
 
 /**

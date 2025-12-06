@@ -328,7 +328,9 @@
     "noPeopleFound": "No people found",
     "noPeopleMessage": "Try adjusting your search",
     "layoutManagement": "Layout",
-    "layoutManagementDesc": "Manage restaurant layout"
+    "layoutManagementDesc": "Manage restaurant layout",
+    "exportManagement": "Export",
+    "exportManagementDesc": "Export data to Excel"
   },
   "staging": {
     "title": "Staging Environment",
@@ -443,5 +445,22 @@
     "dashboardTitle": "Customer Feedback",
     "dashboardSubtitle": "View all anonymous feedback from customers",
     "allFeedback": "All Feedback"
+  },
+  "export": {
+    "title": "Export to Excel",
+    "subtitle": "Export table data to Excel",
+    "description": "Download a comprehensive Excel file containing all table information, including layout positions, table names, number of people, and order details.",
+    "exportIncludesTitle": "Export Includes:",
+    "includesTableNumber": "Table number (position in restaurant layout)",
+    "includesPeople": "Number of people at each table",
+    "includesFoodItem": "Food items ordered",
+    "includesSize": "Size/variant of each item",
+    "includesQuantity": "Quantity of each item",
+    "exportButton": "Export to Excel",
+    "exporting": "Exporting...",
+    "exportSuccess": "Export completed successfully!",
+    "exportError": "Failed to export data",
+    "note": "Note",
+    "noteText": "The export will include only active tables (non-staging tables). The file will be named with today's date."
   }
 }

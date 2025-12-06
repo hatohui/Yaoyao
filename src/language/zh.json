@@ -336,7 +336,9 @@
     "stagingManagement": "预演管理",
     "stagingManagementDesc": "规划餐桌布置",
     "layoutManagement": "布局",
-    "layoutManagementDesc": "管理餐厅布局"
+    "layoutManagementDesc": "管理餐厅布局",
+    "exportManagement": "导出",
+    "exportManagementDesc": "导出数据到Excel"
   },
   "layout": {
     "title": "餐厅布局",
@@ -451,5 +453,22 @@
     "dashboardTitle": "客户反馈",
     "dashboardSubtitle": "查看所有来自客户的匿名反馈",
     "allFeedback": "所有反馈"
+  },
+  "export": {
+    "title": "导出到Excel",
+    "subtitle": "导出餐桌数据到Excel",
+    "description": "下载包含所有餐桌信息的综合Excel文件，包括布局位置、餐桌名称、人数和订单详情。",
+    "exportIncludesTitle": "导出包括：",
+    "includesTableNumber": "桌号（餐厅布局中的位置）",
+    "includesPeople": "每张餐桌的人数",
+    "includesFoodItem": "订购的食品",
+    "includesSize": "每个项目的尺寸/变体",
+    "includesQuantity": "每个项目的数量",
+    "exportButton": "导出到Excel",
+    "exporting": "导出中...",
+    "exportSuccess": "导出成功完成！",
+    "exportError": "导出数据失败",
+    "note": "注意",
+    "noteText": "导出将只包含活动餐桌（非预演餐桌）。文件将以今天的日期命名。"
   }
 }

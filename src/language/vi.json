@@ -336,7 +336,9 @@
     "stagingManagement": "Quản lý Staging",
     "stagingManagementDesc": "Lập kế hoạch bố trí bàn",
     "layoutManagement": "Bố cục",
-    "layoutManagementDesc": "Quản lý bố cục nhà hàng"
+    "layoutManagementDesc": "Quản lý bố cục nhà hàng",
+    "exportManagement": "Xuất",
+    "exportManagementDesc": "Xuất dữ liệu ra Excel"
   },
   "layout": {
     "title": "Bố cục nhà hàng",
@@ -451,5 +453,22 @@
     "dashboardTitle": "Phản hồi khách hàng",
     "dashboardSubtitle": "Xem tất cả phản hồi ẩn danh từ khách hàng",
     "allFeedback": "Tất cả phản hồi"
+  },
+  "export": {
+    "title": "Xuất ra Excel",
+    "subtitle": "Xuất dữ liệu bàn ra Excel",
+    "description": "Tải xuống tệp Excel toàn diện chứa tất cả thông tin bàn, bao gồm vị trí bố cục, tên bàn, số người và chi tiết đơn hàng.",
+    "exportIncludesTitle": "Xuất bao gồm:",
+    "includesTableNumber": "Số bàn (vị trí trong bố cục nhà hàng)",
+    "includesPeople": "Số người ở mỗi bàn",
+    "includesFoodItem": "Món ăn đã đặt",
+    "includesSize": "Kích thước/biến thể của từng món",
+    "includesQuantity": "Số lượng từng món",
+    "exportButton": "Xuất ra Excel",
+    "exporting": "Đang xuất...",
+    "exportSuccess": "Xuất thành công!",
+    "exportError": "Xuất dữ liệu thất bại",
+    "note": "Lưu ý",
+    "noteText": "Xuất sẽ chỉ bao gồm các bàn hoạt động (không phải bàn staging). Tệp sẽ được đặt tên với ngày hôm nay."
   }
 }

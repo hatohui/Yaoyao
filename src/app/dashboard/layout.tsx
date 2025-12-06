@@ -11,6 +11,7 @@ import {
   FiGrid,
   FiStar,
   FiMessageSquare,
+  FiDownload,
 } from "react-icons/fi";
 import { MdRestaurantMenu } from "react-icons/md";
 import DashboardSidebar from "@/components/dashboard/sidenav/DashboardSidebar";
@@ -87,6 +88,12 @@ export default function DashboardLayout({
       href: "/dashboard/feedback",
       icon: FiMessageSquare,
       description: "View customer feedback",
+    },
+    {
+      title: t("exportManagement") || "Export",
+      href: "/dashboard/export",
+      icon: FiDownload,
+      description: t("exportManagementDesc") || "Export data to Excel",
     },
   ];
 

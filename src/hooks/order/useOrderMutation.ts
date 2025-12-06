@@ -14,7 +14,12 @@ export const useAddOrder = (tableId: string) => {
   const queryClient = useQueryClient();
   const locale = useSearchParams()?.get("lang") || "en";
 
-  return useMutationWithError<any, Error, PostOrderRequest>({
+  return useMutationWithError<
+    GetOrdersResponse,
+    Error,
+    PostOrderRequest,
+    { previousOrders?: GetOrdersWithPresetsResponse }
+  >({
     mutationFn: (data: PostOrderRequest) =>
       axios.post(`/tables/${tableId}/orders`, data),
     successMessageKey: "orderAdded",
@@ -35,7 +40,27 @@ export const useAddOrder = (tableId: string) => {
       // Optimistically update to the new value
       if (previousOrders) {
         // Get food data from the foods query cache to populate the optimistic order
-        const foodsQueries = queryClient.getQueriesData<any>({
+        const foodsQueries = queryClient.getQueriesData<{
+          foods: Array<{
+            id: string;
+            name: string;
+            imageUrl: string | null;
+            available: boolean;
+            isHidden: boolean;
+            translations: {
+              name: string;
+              description: string | null;
+            }[];
+            variants: Array<{
+              id: string;
+              label: string;
+              price: number | null;
+              currency: string | null;
+              available: boolean;
+              isSeasonal: boolean;
+            }>;
+          }>;
+        }>({
           queryKey: ["foods"],
         });
         let foodData = null;
@@ -43,7 +68,7 @@ export const useAddOrder = (tableId: string) => {
         // Search through all foods cache entries to find the food
         for (const [, data] of foodsQueries) {
           if (data?.foods) {
-            foodData = data.foods.find((f: any) => f.id === newOrder.foodId);
+            foodData = data.foods.find((f) => f.id === newOrder.foodId);
             if (foodData) break;
           }
         }
@@ -69,9 +94,8 @@ export const useAddOrder = (tableId: string) => {
               variants: foodData.variants || [],
             },
             variant: newOrder.variantId
-              ? foodData.variants?.find(
-                  (v: any) => v.id === newOrder.variantId
-                ) || null
+              ? foodData.variants?.find((v) => v.id === newOrder.variantId) ||
+                null
               : null,
           };
 
@@ -88,7 +112,7 @@ export const useAddOrder = (tableId: string) => {
       // Return a context object with the snapshotted value
       return { previousOrders };
     },
-    onError: (_err, _newOrder, context) => {
+    onErrorCallback: (_err, _newOrder, context) => {
       // If the mutation fails, roll back to the previous value
       if (context?.previousOrders) {
         queryClient.setQueryData(
@@ -108,7 +132,12 @@ export const useUpdateOrder = (tableId: string, orderId: string) => {
   const queryClient = useQueryClient();
   const locale = useSearchParams()?.get("lang") || "en";
 
-  return useMutationWithError<any, Error, PatchOrderRequest>({
+  return useMutationWithError<
+    GetOrdersResponse,
+    Error,
+    PatchOrderRequest,
+    { previousOrders?: GetOrdersWithPresetsResponse }
+  >({
     mutationFn: (data: PatchOrderRequest) =>
       axios.put(`/tables/${tableId}/orders/${orderId}`, data),
     successMessageKey: "orderUpdated",
@@ -148,7 +177,7 @@ export const useUpdateOrder = (tableId: string, orderId: string) => {
 
       return { previousOrders };
     },
-    onError: (_err, _updatedData, context) => {
+    onErrorCallback: (_err, _updatedData, context) => {
       if (context?.previousOrders) {
         queryClient.setQueryData(
           ["orders", tableId, locale],
@@ -166,7 +195,12 @@ export const useDeleteOrder = (tableId: string, orderId: string) => {
   const queryClient = useQueryClient();
   const locale = useSearchParams()?.get("lang") || "en";
 
-  return useMutationWithError({
+  return useMutationWithError<
+    unknown,
+    Error,
+    void,
+    { previousOrders?: GetOrdersWithPresetsResponse }
+  >({
     mutationFn: () => axios.delete(`/tables/${tableId}/orders/${orderId}`),
     successMessageKey: "orderRemoved",
     onMutate: async () => {
@@ -195,7 +229,7 @@ export const useDeleteOrder = (tableId: string, orderId: string) => {
 
       return { previousOrders };
     },
-    onError: (_err, _variables, context) => {
+    onErrorCallback: (_err, _variables, context) => {
       if (context?.previousOrders) {
         queryClient.setQueryData(
           ["orders", tableId, locale],

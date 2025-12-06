@@ -336,7 +336,9 @@
     "stagingManagement": "การจัดการ Staging",
     "stagingManagementDesc": "วางแผนการจัดโต๊ะ",
     "layoutManagement": "ผังร้าน",
-    "layoutManagementDesc": "จัดการผังร้านอาหาร"
+    "layoutManagementDesc": "จัดการผังร้านอาหาร",
+    "exportManagement": "ส่งออก",
+    "exportManagementDesc": "ส่งออกข้อมูลไปยัง Excel"
   },
   "layout": {
     "title": "ผังร้านอาหาร",
@@ -452,5 +454,22 @@
     "dashboardTitle": "ความคิดเห็นของลูกค้า",
     "dashboardSubtitle": "ดูความคิดเห็นไม่ระบุตัวตนทั้งหมดจากลูกค้า",
     "allFeedback": "ความคิดเห็นทั้งหมด"
+  },
+  "export": {
+    "title": "ส่งออกไปยัง Excel",
+    "subtitle": "ส่งออกข้อมูลโต๊ะไปยัง Excel",
+    "description": "ดาวน์โหลดไฟล์ Excel ที่มีข้อมูลโต๊ะทั้งหมด รวมถึงตำแหน่งผัง ชื่อโต๊ะ จำนวนคน และรายละเอียดคำสั่ง",
+    "exportIncludesTitle": "การส่งออกรวม:",
+    "includesTableNumber": "หมายเลขโต๊ะ (ตำแหน่งในผังร้านอาหาร)",
+    "includesPeople": "จำนวนคนที่แต่ละโต๊ะ",
+    "includesFoodItem": "รายการอาหารที่สั่ง",
+    "includesSize": "ขนาด/รูปแบบของแต่ละรายการ",
+    "includesQuantity": "จำนวนของแต่ละรายการ",
+    "exportButton": "ส่งออกไปยัง Excel",
+    "exporting": "กำลังส่งออก...",
+    "exportSuccess": "ส่งออกสำเร็จแล้ว!",
+    "exportError": "การส่งออกข้อมูลล้มเหลว",
+    "note": "หมายเหตุ",
+    "noteText": "การส่งออกจะรวมเฉพาะโต๊ะที่ใช้งานอยู่เท่านั้น (ไม่ใช่โต๊ะ staging) ไฟล์จะถูกตั้งชื่อด้วยวันที่ของวันนี้"
   }
 }
