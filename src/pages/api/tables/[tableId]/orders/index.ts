@@ -60,28 +60,22 @@ const handler: NextApiHandler = async (req, res) => {
           return BadRequest("Invalid variant ID", "INVALID_INPUT");
         }
 
-        // Verify food exists and is available
+        // Verify food exists
         const food = await getFoodWithVariantsForOrder(body.foodId);
         if (!food) {
           return NotFound("Food not found", "FOOD_NOT_FOUND");
         }
 
-        if (!food.available) {
-          return BadRequest("Food is not available", "FOOD_NOT_AVAILABLE");
-        }
+        // Note: Unavailable food can be ordered (treated as "meme food" with zero pricing)
+        // Pricing logic in calculatePerPersonCost handles unavailable items
 
-        // If variant is specified, verify it exists and is available
+        // If variant is specified, verify it exists
         if (body.variantId) {
           const variant = food.variants.find((v) => v.id === body.variantId);
           if (!variant) {
             return NotFound("Variant not found", "VARIANT_NOT_FOUND");
           }
-          if (!variant.available) {
-            return BadRequest(
-              "Variant is not available",
-              "VARIANT_NOT_AVAILABLE"
-            );
-          }
+          // Note: Unavailable variants can also be ordered (zero pricing)
         }
 
         // Create order
