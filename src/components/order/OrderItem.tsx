@@ -3,18 +3,30 @@ import { GetOrdersResponse } from "@/types/api/order/GET";
 import { useDeleteOrder, useUpdateOrder } from "@/hooks/order/useOrderMutation";
 import { useTranslations } from "next-intl";
 import React, { useState, useEffect, useRef } from "react";
-import { FiMinus, FiPlus, FiTrash2, FiPackage } from "react-icons/fi";
+import {
+  FiMinus,
+  FiPlus,
+  FiTrash2,
+  FiPackage,
+  FiUser,
+  FiUsers,
+} from "react-icons/fi";
 import Image from "next/image";
 
 type OrderItemProps = {
   order: GetOrdersResponse;
   isEditable: boolean;
+  people?: { id: string; name: string }[];
 };
 
-const OrderItem = ({ order, isEditable }: OrderItemProps) => {
+const OrderItem = ({ order, isEditable, people = [] }: OrderItemProps) => {
   const t = useTranslations("orders");
   const [quantity, setQuantity] = useState(order.quantity);
+  const [taggedPersonId, setTaggedPersonId] = useState<string | null>(
+    order.taggedPersonId
+  );
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const tagDebounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const updateMutation = useUpdateOrder(order.tableId, order.id);
   const deleteMutation = useDeleteOrder(order.tableId, order.id);
@@ -30,11 +42,14 @@ const OrderItem = ({ order, isEditable }: OrderItemProps) => {
   // Use translated name if available, fallback to original name
   const foodName = order.food.translations?.[0]?.name || order.food.name;
 
-  // Cleanup debounce timer on unmount
+  // Cleanup debounce timers on unmount
   useEffect(() => {
     return () => {
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
+      }
+      if (tagDebounceTimerRef.current) {
+        clearTimeout(tagDebounceTimerRef.current);
       }
     };
   }, []);
@@ -56,6 +71,22 @@ const OrderItem = ({ order, isEditable }: OrderItemProps) => {
 
   const handleDelete = () => {
     deleteMutation.mutate();
+  };
+
+  const handleTagChange = (newPersonId: string | null) => {
+    setTaggedPersonId(newPersonId);
+
+    // Clear existing timer
+    if (tagDebounceTimerRef.current) {
+      clearTimeout(tagDebounceTimerRef.current);
+    }
+
+    // Set new timer to update after 300ms of no changes
+    tagDebounceTimerRef.current = setTimeout(() => {
+      updateMutation.mutate({
+        taggedPersonId: newPersonId,
+      });
+    }, 300);
   };
 
   const isAvailable =
@@ -91,7 +122,7 @@ const OrderItem = ({ order, isEditable }: OrderItemProps) => {
           {/* Content */}
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 flex gap-2 min-w-0">
                 <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">
                   {foodName}
                 </h3>
@@ -114,6 +145,55 @@ const OrderItem = ({ order, isEditable }: OrderItemProps) => {
                 </button>
               )}
             </div>
+
+            {/* Tag Selection */}
+            {isEditable && people.length > 0 && (
+              <div className="mt-2 flex items-center gap-2">
+                <div className="flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400">
+                  {!taggedPersonId ? (
+                    <FiUsers className="w-3 h-3" />
+                  ) : (
+                    <FiUser className="w-3 h-3" />
+                  )}
+                  <span>{t("taggedFor")}:</span>
+                </div>
+                <select
+                  value={taggedPersonId || ""}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    handleTagChange(value || null);
+                  }}
+                  disabled={updateMutation.isPending}
+                  className="flex-1 text-xs px-2 py-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-main disabled:opacity-50"
+                >
+                  <option value="">{t("shared")}</option>
+                  {people.map((person) => (
+                    <option key={person.id} value={person.id}>
+                      {person.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {/* Display tag for non-editable view */}
+            {!isEditable && (
+              <div className="mt-1 flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400">
+                {!order.taggedPersonId ? (
+                  <>
+                    <FiUsers className="w-3 h-3" />
+                    <span>{t("sharedOrder")}</span>
+                  </>
+                ) : order.taggedPerson ? (
+                  <>
+                    <FiUser className="w-3 h-3" />
+                    <span>
+                      {t("taggedFor")}: {order.taggedPerson.name}
+                    </span>
+                  </>
+                ) : null}
+              </div>
+            )}
 
             {/* Price and Quantity */}
             <div className="flex items-center justify-between mt-2">

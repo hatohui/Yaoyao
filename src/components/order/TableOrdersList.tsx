@@ -247,7 +247,12 @@ const TableOrdersList = ({ tableId }: TableOrdersListProps) => {
 
             {/* Regular Orders */}
             {orders.map((order) => (
-              <OrderItem key={order.id} order={order} isEditable={false} />
+              <OrderItem
+                key={order.id}
+                order={order}
+                isEditable={false}
+                people={people || []}
+              />
             ))}
           </div>
         </div>

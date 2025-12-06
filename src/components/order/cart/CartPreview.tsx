@@ -17,6 +17,7 @@ type CartPreviewProps = {
   totalText: string;
   seasonalText: string;
   seasonalWarningText: string;
+  showHeader?: boolean;
 };
 
 const CartPreview = ({
@@ -32,6 +33,7 @@ const CartPreview = ({
   totalText,
   seasonalText,
   seasonalWarningText,
+  showHeader = true,
 }: CartPreviewProps) => {
   const [width, setWidth] = useState<number>(384); // default width (w-96)
   const cartRef = useRef<HTMLDivElement | null>(null);
@@ -82,15 +84,20 @@ const CartPreview = ({
   return (
     <div
       ref={cartRef}
-      className="hidden lg:block bg-slate-50 dark:bg-slate-900 p-6 xl:p-8 overflow-y-auto relative"
-      style={{ width }}
+      className="bg-slate-50 dark:bg-slate-900 relative h-full flex flex-col w-full lg:w-auto"
+      style={{
+        width:
+          typeof window !== "undefined" && window.innerWidth >= 1024
+            ? width
+            : undefined,
+      }}
     >
       {/* Resize handle */}
       <div
         role="separator"
         aria-orientation="vertical"
         aria-label="Resize cart preview"
-        className="absolute -left-2 top-0 bottom-0 w-3 cursor-ew-resize"
+        className="hidden lg:block absolute -left-2 top-0 bottom-0 w-3 cursor-ew-resize"
         onMouseDown={(e) => {
           isResizingRef.current = true;
           startXRef.current = e.clientX;
@@ -102,39 +109,49 @@ const CartPreview = ({
           startWidthRef.current = width;
         }}
       />
-      {/* Make sure layout accounts for handle width */}
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
-          {cartText}
-        </h3>
-        <span className="text-sm font-medium text-slate-600 dark:text-slate-400 bg-slate-200 dark:bg-slate-800 px-3 py-1 rounded-full">
-          {cartItemCount} {cartItemCount === 1 ? itemText : itemsText}
-        </span>
-      </div>
-
-      {cart.length === 0 ? (
-        <div className="text-center py-12">
-          <FiShoppingCart className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            {emptyCartText}
-          </p>
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {cart.map((item, index) => (
-            <CartItem
-              key={index}
-              item={item}
-              onRemove={() => onRemoveItem(index)}
-              onUpdateQuantity={(delta) => onUpdateQuantity(index, delta)}
-              seasonalText={seasonalText}
-            />
-          ))}
+      {/* Header - fixed at top */}
+      {showHeader && (
+        <div className="flex items-center justify-between mb-6 p-6 lg:px-6 lg:pt-6 lg:pb-0 xl:px-8 xl:pt-8 flex-shrink-0">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+            {cartText}
+          </h3>
+          <span className="text-sm font-medium text-slate-600 dark:text-slate-400 bg-slate-200 dark:bg-slate-800 px-3 py-1 rounded-full">
+            {cartItemCount} {cartItemCount === 1 ? itemText : itemsText}
+          </span>
         </div>
       )}
 
+      {/* Scrollable content area */}
+      <div
+        className={`flex-1 overflow-y-auto px-6 lg:px-6 xl:px-8 min-h-0 ${
+          !showHeader ? "pt-6" : ""
+        }`}
+      >
+        {cart.length === 0 ? (
+          <div className="text-center py-12">
+            <FiShoppingCart className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              {emptyCartText}
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {cart.map((item, index) => (
+              <CartItem
+                key={index}
+                item={item}
+                onRemove={() => onRemoveItem(index)}
+                onUpdateQuantity={(delta) => onUpdateQuantity(index, delta)}
+                seasonalText={seasonalText}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Total section - fixed at bottom */}
       {cart.length > 0 && (
-        <div className="mt-6 pt-6 border-t border-slate-300 dark:border-slate-700">
+        <div className="mt-6 pt-6 border-t border-slate-300 dark:border-slate-700 px-6 pb-6 lg:px-6 lg:pb-6 xl:px-8 xl:pb-8 flex-shrink-0">
           {hasSeasonal && (
             <p className="text-xs text-amber-600 dark:text-amber-400 mb-3 flex items-center gap-1.5 bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg">
               <span className="text-base">⚠️</span>

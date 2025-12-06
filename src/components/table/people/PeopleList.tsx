@@ -4,6 +4,13 @@ import { People } from "@prisma/client";
 import PersonCard from "./PersonCard";
 import AddMemberInput from "./AddMemberInput";
 
+type PersonCost = {
+  personId: string;
+  sharedCost: number;
+  specificCost: number;
+  totalCost: number;
+};
+
 type PeopleListProps = {
   people: People[];
   tableLeaderId?: string;
@@ -23,6 +30,8 @@ type PeopleListProps = {
   isAssigningLeader?: boolean;
   isRemovingLeader?: boolean;
   isDeleting?: boolean;
+  personCosts?: PersonCost[];
+  currency?: string;
 };
 
 const PeopleList = ({
@@ -44,6 +53,8 @@ const PeopleList = ({
   isAssigningLeader = false,
   isRemovingLeader = false,
   isDeleting = false,
+  personCosts = [],
+  currency = "RM",
 }: PeopleListProps) => {
   const isMutating = isAssigningLeader || isRemovingLeader || isDeleting;
 
@@ -54,6 +65,7 @@ const PeopleList = ({
       )}
       {people.map((person) => {
         const isLeader = person.id === tableLeaderId;
+        const personCost = personCosts.find((c) => c.personId === person.id);
         return (
           <PersonCard
             key={person.id}
@@ -67,6 +79,8 @@ const PeopleList = ({
             isAssigningLeader={isAssigningLeader}
             isRemovingLeader={isRemovingLeader}
             isDeleting={isDeleting}
+            cost={personCost}
+            currency={currency}
           />
         );
       })}

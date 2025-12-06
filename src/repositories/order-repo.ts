@@ -27,6 +27,10 @@ export type OrderWithDetails = Order & {
     currency: string | null;
     available: boolean;
   } | null;
+  taggedPerson?: {
+    id: string;
+    name: string;
+  } | null;
 };
 
 /**
@@ -75,6 +79,12 @@ export const getOrdersByTableId = async (
           available: true,
         },
       },
+      taggedPerson: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
     },
     orderBy: {
       createdAt: "desc",
@@ -118,6 +128,12 @@ export const getOrderById = async (
           available: true,
         },
       },
+      taggedPerson: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
     },
   });
 };
@@ -142,16 +158,29 @@ export const createOrder = async (data: {
 };
 
 /**
- * Update order quantity
+ * Update order
+ */
+export const updateOrder = async (
+  orderId: string,
+  data: {
+    quantity?: number;
+    taggedPersonId?: string | null;
+  }
+): Promise<Order> => {
+  return await prisma.order.update({
+    where: { id: orderId },
+    data,
+  });
+};
+
+/**
+ * Update order quantity (legacy - kept for compatibility)
  */
 export const updateOrderQuantity = async (
   orderId: string,
   quantity: number
 ): Promise<Order> => {
-  return await prisma.order.update({
-    where: { id: orderId },
-    data: { quantity },
-  });
+  return updateOrder(orderId, { quantity });
 };
 
 /**

@@ -1,7 +1,7 @@
 import Status from "@/common/status";
 import {
   getOrderById,
-  updateOrderQuantity,
+  updateOrder,
   deleteOrder,
   verifyOrderOwnership,
 } from "@/repositories/order-repo";
@@ -53,17 +53,27 @@ const handler: NextApiHandler = async (req, res) => {
         const body = req.body as PatchOrderRequest;
 
         // Validate request body
-        if (!body.quantity || body.quantity <= 0) {
+        if (body.quantity !== undefined && body.quantity <= 0) {
           return BadRequest(
             "Quantity must be a positive number",
             "INVALID_QUANTITY"
           );
         }
 
-        const updatedOrder = await updateOrderQuantity(
-          orderId as string,
-          body.quantity
-        );
+        const updateData: {
+          quantity?: number;
+          taggedPersonId?: string | null;
+        } = {};
+
+        if (body.quantity !== undefined) {
+          updateData.quantity = body.quantity;
+        }
+
+        if (body.taggedPersonId !== undefined) {
+          updateData.taggedPersonId = body.taggedPersonId;
+        }
+
+        const updatedOrder = await updateOrder(orderId as string, updateData);
 
         return Ok(updatedOrder);
       } catch (error) {

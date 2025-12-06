@@ -7,6 +7,11 @@ export type GetOrdersResponse = {
   foodId: string;
   variantId: string | null;
   quantity: number;
+  taggedPersonId: string | null;
+  taggedPerson?: {
+    id: string;
+    name: string;
+  } | null;
   createdAt: string;
   updatedAt: string;
   food: {

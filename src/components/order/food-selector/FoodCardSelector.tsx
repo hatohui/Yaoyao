@@ -7,6 +7,7 @@ type FoodCardSelectorProps = {
   food: GetFoodsResponse["foods"][number];
   isSelected: boolean;
   inCartCount: number;
+  orderedCount?: number;
   onSelect: () => void;
   seasonalText: string;
   isPreset?: boolean;
@@ -17,6 +18,7 @@ const FoodCardSelector = ({
   food,
   isSelected,
   inCartCount,
+  orderedCount = 0,
   onSelect,
   seasonalText,
   isPreset = false,
@@ -38,6 +40,15 @@ const FoodCardSelector = ({
       {inCartCount > 0 && (
         <div className="absolute top-2 right-2 z-10 bg-main text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-lg">
           {inCartCount}
+        </div>
+      )}
+
+      {orderedCount > 0 && (
+        <div
+          className="absolute top-2 right-2 z-10 bg-green-600 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-lg"
+          style={{ marginTop: inCartCount > 0 ? "32px" : "0" }}
+        >
+          x{orderedCount}
         </div>
       )}
 

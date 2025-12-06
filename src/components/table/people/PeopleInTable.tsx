@@ -4,7 +4,7 @@ import usePeopleInTableMutation from "@/hooks/table/usePeopleInTableMutation";
 import { GetTableByIdResponse } from "@/types/api/table/GET";
 import { People } from "@prisma/client";
 import { useTranslations } from "next-intl";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import useYaoAuth from "@/hooks/auth/useYaoAuth";
@@ -12,6 +12,9 @@ import PeopleInTableHeader from "./PeopleInTableHeader";
 import PeopleInTableLoading from "./PeopleInTableLoading";
 import PeopleInTableEmpty from "./PeopleInTableEmpty";
 import PeopleList from "./PeopleList";
+import { GetOrdersResponse } from "@/types/api/order/GET";
+import { calculatePerPersonCost } from "@/utils/calculatePerPersonCost";
+import { PresetMenu, Food, FoodVariant } from "@prisma/client";
 
 type PeopleInTableProps = {
   table: GetTableByIdResponse | undefined;
@@ -21,6 +24,8 @@ type PeopleInTableProps = {
   userId?: string | null;
   isLoading?: boolean;
   isFetching?: boolean;
+  orders?: GetOrdersResponse[];
+  presetMenus?: (PresetMenu & { food: Food; variant: FoodVariant | null })[];
 };
 
 const PeopleInTable = ({
@@ -31,6 +36,8 @@ const PeopleInTable = ({
   userId,
   isLoading = false,
   isFetching = false,
+  orders = [],
+  presetMenus = [],
 }: PeopleInTableProps) => {
   const { removePeople, assignLeader, removeLeader, addPeople } =
     usePeopleInTableMutation();
@@ -42,6 +49,22 @@ const PeopleInTable = ({
   const contentRef = useRef<HTMLDivElement>(null);
 
   const isRefetching = isFetching && !isLoading;
+
+  // Calculate per-person costs
+  const personCosts = useMemo(() => {
+    if (!people || !orders) return [];
+    return calculatePerPersonCost(orders, people, presetMenus);
+  }, [orders, people, presetMenus]);
+
+  // Get currency from first order
+  const currency = useMemo(() => {
+    const firstOrder = orders?.[0];
+    return (
+      firstOrder?.variant?.currency ??
+      firstOrder?.food?.variants?.[0]?.currency ??
+      "RM"
+    );
+  }, [orders]);
 
   // Collapse by default on mobile
   useEffect(() => {
@@ -176,6 +199,8 @@ const PeopleInTable = ({
               isAssigningLeader={assignLeader.isPending}
               isRemovingLeader={removeLeader.isPending}
               isDeleting={removePeople.isPending}
+              personCosts={personCosts}
+              currency={currency}
             />
           ) : (
             <PeopleInTableEmpty />

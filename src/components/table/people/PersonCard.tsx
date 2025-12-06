@@ -18,6 +18,12 @@ type PersonCardProps = {
   isAssigningLeader?: boolean;
   isRemovingLeader?: boolean;
   isDeleting?: boolean;
+  cost?: {
+    sharedCost: number;
+    specificCost: number;
+    totalCost: number;
+  };
+  currency?: string;
 };
 
 const PersonCard = ({
@@ -31,8 +37,11 @@ const PersonCard = ({
   isAssigningLeader = false,
   isRemovingLeader = false,
   isDeleting = false,
+  cost,
+  currency = "RM",
 }: PersonCardProps) => {
   const t = useTranslations("tables");
+  const tOrders = useTranslations("orders");
 
   return (
     <div
@@ -63,6 +72,23 @@ const PersonCard = ({
           <p className="text-xs text-slate-600 dark:text-slate-400">
             {isLeader ? t("leader") : t("guest")}
           </p>
+          {cost && cost.totalCost > 0 && (
+            <div className="mt-1 space-y-0.5">
+              <div className="flex items-center gap-1 text-xs">
+                <span className="text-slate-500 dark:text-slate-400">
+                  {tOrders("perPersonCost")}:
+                </span>
+                <span className="font-semibold text-main dark:text-main">
+                  {cost.totalCost.toFixed(2)} {currency}
+                </span>
+              </div>
+              {cost.specificCost > 0 && (
+                <div className="text-xs text-slate-500 dark:text-slate-400">
+                  ({tOrders("shared")}: {cost.sharedCost.toFixed(2)} + {tOrders("specific")}: {cost.specificCost.toFixed(2)} {currency})
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
       {canManage && (

@@ -25,9 +25,13 @@ type VariantSelectorProps = {
   addToCartText: string;
   seasonalText: string;
   priceText: string;
-  // notAvailableText removed - unused since adding unavailable items is allowed
   onClose?: () => void;
   presetData?: { variantId?: string | null; quantity?: number } | null;
+  currentCartQuantity?: number;
+  orderedQuantity?: number;
+  orderedQuantitiesByVariant?: Record<string, number>;
+  inCartText?: string;
+  orderedText?: string;
 };
 
 const VariantSelector = ({
@@ -44,6 +48,9 @@ const VariantSelector = ({
   seasonalText,
   onClose,
   presetData,
+  currentCartQuantity = 0,
+  orderedQuantitiesByVariant = {},
+  inCartText = "In cart",
 }: VariantSelectorProps) => {
   const selectedVariantData =
     selectedVariant !== null ? variants[selectedVariant] : null;
@@ -203,63 +210,86 @@ const VariantSelector = ({
                   {selectVariantText}:
                 </label>
                 <div className="flex flex-wrap gap-2">
-                  {variants.map((variant, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => onSelectVariant(idx)}
-                      className={`px-3 h-8 sm:h-9 min-w-[3.25rem] sm:min-w-[3.5rem] rounded-md border transition-colors font-semibold uppercase tracking-wide whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-main ${
-                        selectedVariant === idx
-                          ? "border-main bg-main text-white shadow"
-                          : variant.available
-                          ? "border-slate-300 text-slate-900 dark:text-slate-100 cursor-pointer"
-                          : "border-slate-200 text-slate-400 opacity-40 line-through"
-                      }`}
-                      aria-pressed={selectedVariant === idx}
-                    >
-                      <div className="flex items-center gap-2 h-full">
-                        <span className="truncate max-w-[8rem] block">
-                          <span
-                            className={`leading-none ${
-                              selectedVariant === idx
-                                ? "text-sm font-bold"
-                                : "text-xs"
-                            }`}
-                          >
-                            {variant.label}
-                          </span>
-                        </span>
-                        {variant.price !== null &&
-                          variant.price !== undefined &&
-                          !variant.isSeasonal && (
-                            <span
-                              className={`text-xs ${
-                                selectedVariant === idx
-                                  ? "text-white/90"
-                                  : "text-slate-500 dark:text-slate-400"
-                              }`}
-                              aria-hidden
-                            >
-                              ({variant.price.toFixed(2)}{" "}
-                              {variant.currency || "RM"})
-                            </span>
-                          )}
-                        {variant.isSeasonal && (
-                          <span className="inline-flex items-center text-xs px-1 py-0.5 rounded-full font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 ml-1">
-                            {seasonalText}
+                  {variants.map((variant, idx) => {
+                    const variantOrderedQty = variant.id
+                      ? orderedQuantitiesByVariant[variant.id] || 0
+                      : 0;
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => onSelectVariant(idx)}
+                        className={`relative px-3 h-8 sm:h-9 min-w-[3.25rem] sm:min-w-[3.5rem] rounded-md border transition-colors font-semibold uppercase tracking-wide whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-main ${
+                          selectedVariant === idx
+                            ? "border-main bg-main text-white shadow"
+                            : variant.available
+                            ? "border-slate-300 text-slate-900 dark:text-slate-100 cursor-pointer"
+                            : "border-slate-200 text-slate-400 opacity-40 line-through"
+                        }`}
+                        aria-pressed={selectedVariant === idx}
+                      >
+                        {variantOrderedQty > 0 && (
+                          <span className="absolute -top-2 -right-2 bg-green-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-md">
+                            x{variantOrderedQty}
                           </span>
                         )}
-                      </div>
-                    </button>
-                  ))}
+                        <div className="flex items-center gap-2 h-full">
+                          <span className="truncate max-w-[8rem] block">
+                            <span
+                              className={`leading-none ${
+                                selectedVariant === idx
+                                  ? "text-sm font-bold"
+                                  : "text-xs"
+                              }`}
+                            >
+                              {variant.label}
+                            </span>
+                          </span>
+                          {variant.price !== null &&
+                            variant.price !== undefined &&
+                            !variant.isSeasonal && (
+                              <span
+                                className={`text-xs ${
+                                  selectedVariant === idx
+                                    ? "text-white/90"
+                                    : "text-slate-500 dark:text-slate-400"
+                                }`}
+                                aria-hidden
+                              >
+                                ({variant.price.toFixed(2)}{" "}
+                                {variant.currency || "RM"})
+                              </span>
+                            )}
+                          {variant.isSeasonal && (
+                            <span className="inline-flex items-center text-xs px-1 py-0.5 rounded-full font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 ml-1">
+                              {seasonalText}
+                            </span>
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
+              </div>
+            )}
+
+            {/* Current cart quantity info */}
+            {currentCartQuantity > 0 && (
+              <div className="mt-3 inline-flex items-center gap-2 text-sm bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 px-3 py-1.5 rounded-md">
+                <span className="font-semibold">{inCartText}:</span>
+                <span className="font-bold">{currentCartQuantity}</span>
               </div>
             )}
 
             {/* Quantity & add */}
             <div className="mt-4 flex items-center justify-between bg-white dark:bg-slate-800 rounded-md p-3 border border-slate-200 dark:border-slate-700 text-sm">
-              <span className="text-base font-bold text-slate-700 dark:text-slate-300">
-                {quantityText}
-              </span>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-base font-bold text-slate-700 dark:text-slate-300">
+                  {quantityText}
+                </span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">
+                  Adding to order
+                </span>
+              </div>
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => onQuantityChange(-1)}

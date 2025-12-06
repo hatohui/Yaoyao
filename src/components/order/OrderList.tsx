@@ -17,6 +17,7 @@ type OrderListProps = {
     | undefined;
   isLoading: boolean;
   isEditable: boolean;
+  people?: { id: string; name: string }[];
 };
 
 const OrderList = ({
@@ -24,6 +25,7 @@ const OrderList = ({
   presetMenus,
   isLoading,
   isEditable,
+  people = [],
 }: OrderListProps) => {
   const t = useTranslations("orders");
 
@@ -107,7 +109,12 @@ const OrderList = ({
         {/* Regular Orders */}
         {orders &&
           orders.map((order) => (
-            <OrderItem key={order.id} order={order} isEditable={isEditable} />
+            <OrderItem
+              key={order.id}
+              order={order}
+              isEditable={isEditable}
+              people={people}
+            />
           ))}
       </div>
     </div>

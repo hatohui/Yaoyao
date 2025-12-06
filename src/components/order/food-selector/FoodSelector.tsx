@@ -3,11 +3,12 @@ import useFoods from "@/hooks/food/useFoods";
 import useCategories from "@/hooks/food/useCategories";
 import { useAddOrder } from "@/hooks/order/useOrderMutation";
 import { useFoodCart } from "@/hooks/order/useFoodCart";
+import useTableOrders from "@/hooks/order/useTableOrders";
 import { useDebouncedSearch } from "@/hooks/common/useDebouncedSearch";
 import { filterBySearch } from "@/utils/filterBySearch";
 import { useTranslations } from "next-intl";
 import React, { useState, useRef, useEffect } from "react";
-import { FiPlus, FiX } from "react-icons/fi";
+import { FiPlus, FiX, FiShoppingCart } from "react-icons/fi";
 import gsap from "gsap";
 import CategorySelector from "../../food/CategorySelector";
 import FoodCardSelector from "./FoodCardSelector";
@@ -32,6 +33,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
   const [selectedVariant, setSelectedVariant] = useState<number | null>(null);
   const [quantityToAdd, setQuantityToAdd] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showMobileCart, setShowMobileCart] = useState(false);
 
   const modalRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -44,6 +46,7 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
     count: 9,
   });
   const addOrderMutation = useAddOrder(tableId);
+  const { data: ordersData } = useTableOrders(tableId);
 
   const {
     cart,
@@ -55,6 +58,21 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
     cartTotal,
     cartItemCount,
   } = useFoodCart();
+
+  // Calculate already ordered quantities
+  const getOrderedQuantity = React.useCallback(
+    (foodId: string, variantId?: string | null) => {
+      if (!ordersData?.orders) return 0;
+      return ordersData.orders
+        .filter(
+          (order) =>
+            order.foodId === foodId &&
+            (variantId ? order.variantId === variantId : true)
+        )
+        .reduce((sum, order) => sum + order.quantity, 0);
+    },
+    [ordersData]
+  );
 
   const foods = (foodsData?.foods || []).filter((f) => !f.isHidden);
   const { data: presetMenusData } = usePresetMenus();
@@ -170,16 +188,19 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
         onComplete: () => {
           setIsOpen(false);
           clearCart();
-          setSelectedFood(null);
-          setSelectedVariant(null);
         },
       });
     } else {
       setIsOpen(false);
       clearCart();
-      setSelectedFood(null);
-      setSelectedVariant(null);
     }
+  };
+
+  // Deselect food without clearing cart
+  const handleDeselectFood = () => {
+    setSelectedFood(null);
+    setSelectedVariant(null);
+    setQuantityToAdd(1);
   };
 
   const cartCurrency = cart?.[0]?.variantCurrency ?? "RM";
@@ -222,12 +243,26 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                   </span>
                 )}
               </div>
-              <button
-                onClick={handleCloseModal}
-                className="text-white/70 hover:text-white hover:bg-white/10 transition-colors p-2 rounded-lg cursor-pointer"
-              >
-                <FiX className="w-5 h-5 md:w-6 md:h-6" />
-              </button>
+              <div className="flex items-center gap-2">
+                {/* Mobile cart toggle button */}
+                {cartItemCount > 0 && (
+                  <button
+                    onClick={() => setShowMobileCart(!showMobileCart)}
+                    className="lg:hidden text-white/70 hover:text-white hover:bg-white/10 transition-colors p-2 rounded-lg cursor-pointer relative"
+                  >
+                    <FiShoppingCart className="w-5 h-5" />
+                    <span className="absolute -top-1 -right-1 bg-main text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                      {cartItemCount}
+                    </span>
+                  </button>
+                )}
+                <button
+                  onClick={handleCloseModal}
+                  className="text-white/70 hover:text-white hover:bg-white/10 transition-colors p-2 rounded-lg cursor-pointer"
+                >
+                  <FiX className="w-5 h-5 md:w-6 md:h-6" />
+                </button>
+              </div>
             </div>
 
             {/* Search and Categories */}
@@ -267,12 +302,15 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                             return sum + getCartQuantity(food.id, variant.id);
                           }, 0) || 0;
 
+                        const orderedCount = getOrderedQuantity(food.id);
+
                         return (
                           <FoodCardSelector
                             key={food.id}
                             food={food}
                             isSelected={selectedFood === food.id}
                             inCartCount={inCartCount}
+                            orderedCount={orderedCount}
                             onSelect={() => {
                               setSelectedFood(food.id);
                               // If this food is a preset menu item, prefer the preset's variant and quantity
@@ -318,39 +356,67 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                       />
                     )}
 
-                    {selectedFood && selectedFoodData && (
-                      <VariantSelector
-                        foodName={selectedFoodData.name}
-                        variants={selectedFoodData.variants || []}
-                        selectedVariant={selectedVariant}
-                        quantity={quantityToAdd}
-                        onSelectVariant={setSelectedVariant}
-                        onQuantityChange={(delta) =>
-                          setQuantityToAdd(Math.max(1, quantityToAdd + delta))
+                    {selectedFood &&
+                      selectedFoodData &&
+                      (() => {
+                        // Build ordered quantities map for all variants
+                        const orderedByVariant: Record<string, number> = {};
+                        if (selectedFoodData.variants) {
+                          selectedFoodData.variants.forEach((v) => {
+                            if (v.id) {
+                              orderedByVariant[v.id] = getOrderedQuantity(
+                                selectedFood,
+                                v.id
+                              );
+                            }
+                          });
                         }
-                        onAddToCart={handleAddToCart}
-                        onClose={() => {
-                          setSelectedFood(null);
-                          setSelectedVariant(null);
-                        }}
-                        presetData={
-                          presetMenuMap.get(selectedFood) || null
-                            ? {
-                                variantId:
-                                  presetMenuMap.get(selectedFood)?.variantId,
-                                quantity:
-                                  presetMenuMap.get(selectedFood)?.quantity,
-                              }
-                            : null
-                        }
-                        selectVariantText={t("selectVariant")}
-                        quantityText={t("quantity") || "Quantity"}
-                        addToCartText={t("addToCart") || "Add to Cart"}
-                        seasonalText={tMenu("seasonal")}
-                        priceText={t("price") || "Price"}
-                        // notAvailableText removed from VariantSelector - no longer needed
-                      />
-                    )}
+                        return (
+                          <VariantSelector
+                            foodName={selectedFoodData.name}
+                            variants={selectedFoodData.variants || []}
+                            selectedVariant={selectedVariant}
+                            quantity={quantityToAdd}
+                            onSelectVariant={setSelectedVariant}
+                            onQuantityChange={(delta) =>
+                              setQuantityToAdd(
+                                Math.max(1, quantityToAdd + delta)
+                              )
+                            }
+                            onAddToCart={handleAddToCart}
+                            onClose={handleDeselectFood}
+                            presetData={
+                              presetMenuMap.get(selectedFood) || null
+                                ? {
+                                    variantId:
+                                      presetMenuMap.get(selectedFood)
+                                        ?.variantId,
+                                    quantity:
+                                      presetMenuMap.get(selectedFood)?.quantity,
+                                  }
+                                : null
+                            }
+                            selectVariantText={t("selectVariant")}
+                            quantityText={t("quantity") || "Quantity"}
+                            addToCartText={t("addToCart") || "Add to Cart"}
+                            seasonalText={tMenu("seasonal")}
+                            priceText={t("price") || "Price"}
+                            currentCartQuantity={
+                              selectedVariant !== null &&
+                              selectedFoodData.variants?.[selectedVariant]
+                                ? getCartQuantity(
+                                    selectedFood,
+                                    selectedFoodData.variants[selectedVariant]
+                                      .id
+                                  )
+                                : 0
+                            }
+                            orderedQuantitiesByVariant={orderedByVariant}
+                            inCartText={t("inCart") || "In cart"}
+                            orderedText={t("ordered") || "Already ordered"}
+                          />
+                        );
+                      })()}
                   </>
                 ) : (
                   <div className="text-center py-12">
@@ -361,28 +427,84 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
                 )}
               </div>
 
-              {/* Variant Selection Footer should be anchored inside left column to avoid flowing content; moved below */}
-              {/* Right: Cart Preview */}
-              <CartPreview
-                cart={cart}
-                cartItemCount={cartItemCount}
-                cartTotal={cartTotal}
-                onRemoveItem={removeFromCart}
-                onUpdateQuantity={updateQuantity}
-                cartText={t("cart") || "Cart"}
-                itemText={t("item")}
-                itemsText={t("items")}
-                emptyCartText={t("emptyCart") || "Your cart is empty"}
-                totalText={t("total") || "Total"}
-                seasonalText={tMenu("seasonal")}
-                seasonalWarningText={
-                  t("seasonalWarning") ||
-                  "Seasonal items priced at market rate (not included in total)"
-                }
-              />
+              <div className="hidden lg:block">
+                <CartPreview
+                  cart={cart}
+                  cartItemCount={cartItemCount}
+                  cartTotal={cartTotal}
+                  onRemoveItem={removeFromCart}
+                  onUpdateQuantity={updateQuantity}
+                  cartText={t("cart") || "Cart"}
+                  itemText={t("item")}
+                  itemsText={t("items")}
+                  emptyCartText={t("emptyCart") || "Your cart is empty"}
+                  totalText={t("total") || "Total"}
+                  seasonalText={tMenu("seasonal")}
+                  seasonalWarningText={
+                    t("seasonalWarning") ||
+                    "Seasonal items priced at market rate (not included in total)"
+                  }
+                />
+              </div>
             </div>
 
-            {/* Move variant selector inside the left column (so it's anchored at the bottom) */}
+            {/* Mobile Cart Drawer */}
+            {showMobileCart && (
+              <div className="lg:hidden fixed inset-0 z-50 flex flex-col bg-white dark:bg-slate-800">
+                <div className="bg-darkest dark:bg-slate-900 px-6 py-4 flex items-center justify-between border-b border-white/10 flex-shrink-0">
+                  <div className="flex items-center gap-3">
+                    <h3 className="text-lg font-bold text-white dark:text-slate-100">
+                      {t("cart") || "Cart"}
+                    </h3>
+                    <span className="text-sm font-medium text-white bg-main px-3 py-1 rounded-full">
+                      {cartItemCount}{" "}
+                      {cartItemCount === 1 ? t("item") : t("items")}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setShowMobileCart(false)}
+                    className="text-white/70 hover:text-white hover:bg-white/10 transition-colors p-2 rounded-lg"
+                  >
+                    <FiX className="w-6 h-6" />
+                  </button>
+                </div>
+                <div className="flex-1 overflow-hidden min-h-0">
+                  <CartPreview
+                    cart={cart}
+                    cartItemCount={cartItemCount}
+                    cartTotal={cartTotal}
+                    onRemoveItem={(index) => {
+                      removeFromCart(index);
+                      if (cart.length === 1) setShowMobileCart(false);
+                    }}
+                    onUpdateQuantity={updateQuantity}
+                    cartText={t("cart") || "Cart"}
+                    itemText={t("item")}
+                    itemsText={t("items")}
+                    emptyCartText={t("emptyCart") || "Your cart is empty"}
+                    totalText={t("total") || "Total"}
+                    seasonalText={tMenu("seasonal")}
+                    seasonalWarningText={
+                      t("seasonalWarning") ||
+                      "Seasonal items priced at market rate (not included in total)"
+                    }
+                    showHeader={false}
+                  />
+                </div>
+                {cart.length > 0 && (
+                  <div className="border-t border-slate-200 dark:border-slate-700 p-6 bg-white dark:bg-slate-800 flex-shrink-0">
+                    <button
+                      onClick={() => {
+                        setShowMobileCart(false);
+                      }}
+                      className="button w-full text-lg font-bold py-4"
+                    >
+                      {t("continueShopping") || "Continue Shopping"}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Submit Cart Footer */}
             {cart.length > 0 && !selectedFood && (
@@ -406,5 +528,4 @@ const FoodSelector = ({ tableId }: FoodSelectorProps) => {
     </>
   );
 };
-
 export default FoodSelector;

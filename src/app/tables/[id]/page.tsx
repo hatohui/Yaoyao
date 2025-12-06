@@ -8,6 +8,7 @@ import TableOrdersList from "@/components/order/TableOrdersList";
 import TableDetail from "@/components/table/details/TableDetail";
 import TableDetailHeader from "@/components/table/details/TableDetailHeader";
 import ManageOrderButton from "@/components/table/buttons/ManageOrderButton";
+import useTableOrders from "@/hooks/order/useTableOrders";
 
 const TableDetailPage = () => {
   const { id } = useParams() as { id: string };
@@ -22,6 +23,7 @@ const TableDetailPage = () => {
     isLoading: isLoadingPeople,
     isFetching: isFetchingPeople,
   } = usePeopleInTable(table?.id ?? "");
+  const { data: tableOrdersData } = useTableOrders(table?.id ?? "");
   const { isYaoyao, canManage, isTableLeader, userId } = useYaoAuth();
 
   const isLoading = isLoadingTable || isLoadingPeople;
@@ -64,6 +66,8 @@ const TableDetailPage = () => {
               userId={userId}
               isLoading={isLoadingPeople}
               isFetching={isFetchingPeople}
+              orders={tableOrdersData?.orders}
+              presetMenus={tableOrdersData?.presetMenus}
             />
           </div>
         </div>

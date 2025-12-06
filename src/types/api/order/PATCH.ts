@@ -1,6 +1,7 @@
 // PATCH /api/tables/[tableId]/orders/[orderId]
 export type PatchOrderRequest = {
-  quantity: number;
+  quantity?: number;
+  taggedPersonId?: string | null;
 };
 
 export type PatchOrderResponse = {
@@ -9,6 +10,7 @@ export type PatchOrderResponse = {
   foodId: string;
   variantId: string | null;
   quantity: number;
+  taggedPersonId: string | null;
   createdAt: string;
   updatedAt: string;
 };
