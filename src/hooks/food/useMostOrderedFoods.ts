@@ -12,7 +12,7 @@ type MostOrdered = {
   } | null;
 };
 
-const useMostOrderedFoods = (limit = 3) => {
+const useMostOrderedFoods = (limit = 50) => {
   return useQuery<MostOrdered[]>({
     queryKey: ["most-ordered", limit],
     queryFn: () =>

@@ -6,7 +6,7 @@ type Props = {
   limit?: number;
 };
 
-const MostOrderedFoods = ({ limit = 7 }: Props) => {
+const MostOrderedFoods = ({ limit = 40 }: Props) => {
   const { data, isLoading, isError } = useMostOrderedFoods(limit);
 
   if (isLoading) {
