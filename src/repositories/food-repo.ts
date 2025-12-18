@@ -417,6 +417,36 @@ const deleteFood = async (id: string) => {
   });
 };
 
+/**
+ * Get the most ordered foods across all orders.
+ * Returns an array of objects with foodId and totalQuantity and food details.
+ */
+const getMostOrderedFoods = async (limit = 1) => {
+  // group orders by foodId and sum quantities, ordered by sum desc
+  const grouped = await prisma.order.groupBy({
+    by: ["foodId"],
+    _sum: { quantity: true },
+    orderBy: { _sum: { quantity: "desc" } },
+    take: limit,
+  });
+
+  if (!grouped || grouped.length === 0) return [];
+
+  const foodIds = grouped.map((g) => g.foodId);
+
+  const foods = await prisma.food.findMany({
+    where: { id: { in: foodIds } },
+    include: { variants: true },
+  });
+
+  // map results to include summed quantity
+  return grouped.map((g) => ({
+    foodId: g.foodId,
+    quantity: g._sum.quantity ?? 0,
+    food: foods.find((f) => f.id === g.foodId) || null,
+  }));
+};
+
 export {
   getFoodById,
   getFoodByIdWithAllTranslations,
@@ -424,6 +454,7 @@ export {
   createFood,
   createFoodTranslation,
   getFoodsByCategory,
+  getMostOrderedFoods,
   getFoodWithVariantsForOrder,
   updateFoodAvailability,
   updateFood,

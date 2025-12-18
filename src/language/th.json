@@ -338,7 +338,12 @@
     "layoutManagement": "ผังร้าน",
     "layoutManagementDesc": "จัดการผังร้านอาหาร",
     "exportManagement": "ส่งออก",
-    "exportManagementDesc": "ส่งออกข้อมูลไปยัง Excel"
+    "exportManagementDesc": "ส่งออกข้อมูลไปยัง Excel",
+    "statistics": "สถิติ",
+    "statisticsDesc": "ดูสถิติการใช้งาน",
+    "mostOrdered": "เมนูที่ถูกสั่งมากที่สุด",
+    "noOrdersYet": "ยังไม่มีรายการสั่งซื้อ",
+    "failedToLoad": "โหลดล้มเหลว"
   },
   "layout": {
     "title": "ผังร้านอาหาร",

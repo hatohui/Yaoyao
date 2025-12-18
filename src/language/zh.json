@@ -339,7 +339,12 @@
     "layoutManagementDesc": "管理餐厅布局",
     "exportManagement": "导出",
     "exportManagementDesc": "导出数据到Excel"
-  },
+    "exportManagementDesc": "将数据导出到 Excel",
+    "statistics": "统计",
+    "statisticsDesc": "查看使用统计",
+    "mostOrdered": "最常点的菜品",
+    "noOrdersYet": "尚无订单",
+    "failedToLoad": "加载失败"
   "layout": {
     "title": "餐厅布局",
     "subtitle": "管理餐桌位置和餐厅布局",

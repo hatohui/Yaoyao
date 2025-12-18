@@ -1,8 +1,7 @@
-POST https://yaoyaodinner.vercel.app/api/tables/5fff51b9-0027-491c-baf8-effe46d7c09e/orders
-Content-Type: application/json
 
-{
-    "foodId": "25d40736-01da-44fc-b09c-4df07076d5d7",
-    "variantId": "76e4892a-4200-41a6-805d-98f1cb4b4c56",
-    "quantity": 20000
-}
+GET http://localhost:3000/api/foods/most-ordered?limit=10
+Accept: application/json
+
+# Or against production
+GET https://yaoyaodinner.vercel.app/api/foods/most-ordered?limit=1
+Accept: application/json

@@ -330,7 +330,12 @@
     "layoutManagement": "Layout",
     "layoutManagementDesc": "Manage restaurant layout",
     "exportManagement": "Export",
-    "exportManagementDesc": "Export data to Excel"
+    "exportManagementDesc": "Export data to Excel",
+    "statistics": "Statistics",
+    "statisticsDesc": "View usage statistics",
+    "mostOrdered": "Most ordered foods",
+    "noOrdersYet": "No orders yet",
+    "failedToLoad": "Failed to load"
   },
   "staging": {
     "title": "Staging Environment",

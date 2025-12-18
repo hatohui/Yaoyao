@@ -9,6 +9,7 @@ import {
   FiShoppingBag,
   FiUsers,
   FiGrid,
+  FiBarChart2,
   FiStar,
   FiMessageSquare,
   FiDownload,
@@ -76,6 +77,12 @@ export default function DashboardLayout({
       href: "/dashboard/orders",
       icon: FiShoppingBag,
       description: t("ordersManagementDesc") || "View all orders",
+    },
+    {
+      title: t("statistics") || "Statistics",
+      href: "/dashboard/statistics",
+      icon: FiBarChart2,
+      description: t("statisticsDesc") || "View usage statistics",
     },
     {
       title: t("peopleManagement") || "People",

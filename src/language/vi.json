@@ -338,7 +338,12 @@
     "layoutManagement": "Bố cục",
     "layoutManagementDesc": "Quản lý bố cục nhà hàng",
     "exportManagement": "Xuất",
-    "exportManagementDesc": "Xuất dữ liệu ra Excel"
+    "exportManagementDesc": "Xuất dữ liệu ra Excel",
+    "statistics": "Thống kê",
+    "statisticsDesc": "Xem thống kê sử dụng",
+    "mostOrdered": "Món được đặt nhiều nhất",
+    "noOrdersYet": "Chưa có đơn hàng",
+    "failedToLoad": "Tải thất bại"
   },
   "layout": {
     "title": "Bố cục nhà hàng",
